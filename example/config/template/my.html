@@ -1,0 +1,13 @@
+My doc's template.
+
+Versions :
+{%- for version in sources.versions.values()|sort %}
+    {{ version.name }}
+{%- endfor %}
+
+Methods :
+{%- for section in sources.sections.values()|sort -%}
+    {%- for method in section.methods.values()|sort %}
+    {{ section.name }}.{{ method.name }}()
+    {%- endfor -%}
+{%- endfor %}

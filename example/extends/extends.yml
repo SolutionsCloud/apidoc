@@ -1,0 +1,85 @@
+versions:
+  v1.0:
+    major: 1
+    minor: 0
+    sections:
+      S:
+        methods:
+          M:
+            uri: /url
+            description: Method M
+          M2:
+            extends: M
+            description: M2 extends M. The property uri is not extended. But not this description
+          M3:
+            extends: v1.0/S/M
+            description: M3 extends M only in version v1.0
+  v1.1:
+    major: 1
+    minor: 1
+    extends: v1.0
+    description: The first version is extended
+    sections:
+      S2:
+        description: A new Section
+        methods:
+          M1:
+            uri: /url
+  v10.2:
+    major: 10
+    minor: 2
+    extends: v1.0
+    description: The first version is extended
+    sections:
+      S:
+        methods:
+          M:
+            uri: /url/v1.2
+            description: >
+              The URI is overrided for this Method.
+              Look the uri change also in M2 because M2 still override M
+              But M3 didnt change because M3 override explecitely M of version 1.0
+  v9.3:
+    major: 9
+    minor: 3
+    sections:
+      S1:
+        methods:
+          M1:
+            uri: /url
+      S2:
+        methods:
+          M2:
+            uri: /url
+      S3:
+        description: S4 extends the two previous version
+        extends:
+          - S1
+          - S2
+  v1.4:
+    major: 1
+    minor: 4
+    extends: v1.0
+    sections:
+      S:
+        description: This section break the inheritance.
+        inherit: false
+        methods:
+          M0:
+            uri: /url
+  v1.5:
+    major: 1
+    minor: 5
+    extends: v1.1
+    description: The section S is removed but the section S2 is extended by v1.1
+    sections:
+      S:
+        removed: true
+  v1.6:
+    major: 1
+    minor: 6
+    extends: v1.5
+    description: The section S is restored
+    sections:
+      S:
+        removed: False

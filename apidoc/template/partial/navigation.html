@@ -1,0 +1,38 @@
+<input type="search" placeholder="search" class="span12">
+
+{%- if sources.versions|length > 1 %}
+<ul id="nav-versions" class="nav nav-list doc-sidenav">
+    <li class="nav-header"><h5>Versions</h5></li>
+    {%- for version in sources.versions.values()|sort %}
+    <li data-version="{{ version.name }}" data-status="{{ version.status|upper }}">
+        <a href="javascript:navigateTo({version: '{{ version.name }}'}, ['section', 'method', 'namespace', 'type'])" data-target="#v-{{ version.name }}">{{ version.name }} <code>{{ version.status|upper }}</code></a>
+    </li>
+    {%- endfor %}
+</ul>
+{%- endif %}
+<div class="scroll-spyable">
+    <ul class="nav nav-list doc-sidenav">
+        <li class="nav-header"><h5>Methods</h5></li>
+{%- for section in sources.sections.values()|sort %}
+        <li class="nav-header"><a href="javascript:navigateTo({section: '{{ section.name }}'}, ['namespace', 'type', 'method'])" data-target="#s-{{ section.name }}"><h6>{{ section.name }}</h6></a></li>
+    {%- for method in section.methods.values()|sort %}
+        <li><a href="javascript:navigateTo({section: '{{ section.name }}', method: '{{ method.name }}'}, ['namespace', 'type'])" data-target="#m-{{ section.name }}-{{ method.name }}"><i class="icon-chevron-right"></i>{{ method.name }}</a></li>
+    {%- endfor %}
+    {%- if not loop.last %}
+        <li class="separator"></li>
+    {%- endif %}
+{%- endfor %}
+    </ul>
+    <ul class="nav nav-list doc-sidenav">
+        <li class="nav-header"><h5>Types</h5></li>
+{%- for namespace in sources.namespaces.values()|sort %}
+        <li class="nav-header"><a href="javascript:navigateTo({namespace: '{{ namespace.name }}'}, ['section', 'method', 'type'])" data-target="#n-{{ namespace.name }}">{{ namespace.name }}</a></li>
+    {%- for type in namespace.types.values()|sort %}
+        <li><a href="javascript:navigateTo({namespace: '{{ namespace.name }}', type: '{{ type.name }}'}, ['section', 'method'])" data-target="#t-{{ namespace.name }}-{{ type.name }}"><i class="icon-chevron-right"></i>{{ type.name }}</a></li>
+    {%- endfor %}
+    {%- if not loop.last %}
+        <li class="separator"></li>
+    {%- endif %}
+{%- endfor %}
+    </ul>
+</div>

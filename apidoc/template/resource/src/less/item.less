@@ -1,0 +1,40 @@
+@import "item-wrapper.less";
+@import "item-header.less";
+
+.item {
+    > .contents > LI {
+        display: none;
+
+        .stack {
+            border-bottom: 1px dotted #ddd;
+            padding: 10px 15px;
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+
+        > P.description {
+            font-style: italic;
+            margin-bottom: 0;
+        }
+
+        H5 {
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        H6 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        .table {
+            background-color: #FFF;
+
+            THEAD {
+                background-color: #F5F5F5;
+            }
+        }
+    }
+}

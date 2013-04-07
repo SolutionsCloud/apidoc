@@ -1,0 +1,150 @@
+.item {
+    margin: 15px 0;
+    padding: 0;
+    border: 1px solid #ccc;
+    min-height:30px;
+    position: relative;
+    -webkit-border-radius: 4px;
+       -moz-border-radius: 4px;
+            border-radius: 4px;
+    & {
+        background-color: #f0f0f0;
+        &, &::before, > .versions, > .versions > LI, > .contents > LI > .stack {
+            border-color: #ddd;
+        }
+        &::before {
+            background-color: #666;
+        }
+    }
+}
+
+.method, #item-head {
+    &[data-method]::before {
+        content: attr(data-method);
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        width: 45px;
+        padding: 3px 5px;
+        font-size: 12px;
+        font-weight: bold;
+        border: 1px solid #ccc;
+        border-top: none;
+        border-left: none;
+        color: #FFF;
+        -webkit-border-radius: 4px 0 4px 0;
+           -moz-border-radius: 4px 0 4px 0;
+                border-radius: 4px 0 4px 0;
+    }
+
+    &[data-method=GET] {
+        background-color: hsl(200, 65%, 90%);
+        &, &::before, > .versions, > .versions > LI, > .contents > LI > .stack {
+            border-color: hsl(200, 65%, 70%);
+        }
+        &::before {
+            background-color: hsl(200, 100%, 35%);
+        }
+        &#item-head::after {
+            background-image: -webkit-gradient(
+              linear, left top, left bottom, from(hsla(200, 65%, 90%, 1)), to(hsla(200, 65%, 90%, 0))
+            );
+            background-image: -moz-linear-gradient(
+              hsla(200, 65%, 90%, 1) 0%, hsla(200, 65%, 90%, 0)100%
+            );
+        }
+    }
+    &[data-method=POST] {
+        background-color: hsl(103, 45%, 90%);
+        &, &::before, > .versions, > .versions > LI, > .contents > LI > .stack {
+            border-color: hsl(103, 45%, 70%);
+        }
+        &::before {
+            background-color: hsl(103, 90%, 35%);
+        }
+        &#item-head::after {
+            background-image: -webkit-gradient(
+              linear, left top, left bottom, from(hsla(103, 45%, 90%, 1)), to(hsla(103, 45%, 90%, 0))
+            );
+            background-image: -moz-linear-gradient(
+              hsla(103, 45%, 90%, 1) 0%, hsla(103, 45%, 90%, 0)100%
+            );
+        }
+    }
+    &[data-method=PUT] {
+        background-color: hsl(38, 80%, 90%);
+        &, &::before, > .versions, > .versions > LI, > .contents > LI > .stack {
+            border-color: hsl(38, 80%, 70%);
+        }
+        &::before {
+            background-color: hsl(38, 90%, 40%);
+        }
+        &#item-head::after {
+            background-image: -webkit-gradient(
+              linear, left top, left bottom, from(hsla(38, 80%, 90%, 1)), to(hsla(38, 80%, 90%, 0))
+            );
+            background-image: -moz-linear-gradient(
+              hsla(38, 80%, 90%, 1) 0%, hsla(38, 80%, 90%, 0)100%
+            );
+        }
+    }
+    &[data-method=DELETE] {
+        background-color: hsl(0, 45%, 90%);
+        &, &::before, > .versions, > .versions > LI, > .contents > LI > .stack {
+            border-color: hsl(0, 45%, 70%);
+        }
+        &::before {
+            background-color: hsl(0, 90%, 35%);
+        }
+        &#item-head::after {
+            background-image: -webkit-gradient(
+              linear, left top, left bottom, from(hsla(0, 45%, 90%, 1)), to(hsla(0, 45%, 90%, 0))
+            );
+            background-image: -moz-linear-gradient(
+              hsla(0, 45%, 90%, 1) 0%, hsla(0, 45%, 90%, 0)100%
+            );
+        }
+    }
+
+    &#item-head::after {
+        content: "";
+        position: absolute;
+        height: 15px;
+        width: 100%;
+        top: 26px;
+
+        background-image: -webkit-gradient(
+          linear, left top, left bottom, from(hsla(0, 0%, 94%, 1)), to(hsla(0, 0%, 94%, 0))
+        );
+        background-image: -moz-linear-gradient(
+          hsla(0, 0%, 94%, 1) 0%, hsla(0, 0%, 94%, 0) 100%
+        );
+    }
+}
+
+#item-head {
+    display: none;
+    position: fixed;
+    top: -1px;
+    margin: 0;
+    border-bottom: none;
+    z-index: 2;
+
+    &.item {
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+
+        &::before {
+            -webkit-border-radius: 0 0 4px 0;
+               -moz-border-radius: 0 0 4px 0;
+                    border-radius: 0 0 4px 0;
+        }
+
+        > .versions {
+            -webkit-border-radius: 0 0 0 4px;
+               -moz-border-radius: 0 0 0 4px;
+                    border-radius: 0 0 0 4px;
+        }
+    }
+}

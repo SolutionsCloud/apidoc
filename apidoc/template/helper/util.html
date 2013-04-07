@@ -1,0 +1,34 @@
+{%- macro none_to_empty(value) -%}
+    {{ none_to_default(value, "") }}
+{%- endmacro -%}
+
+{%- macro none_to_default(value, default) -%}
+    {%- if value is not None %}
+        {{- value -}}
+    {%- else %}
+        {{- default -}}
+    {%- endif -%}
+{%- endmacro -%}
+
+{%- macro render_table(cols) -%}
+    <table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+    {%- for col in cols %}
+            <col
+        {%- if "width" in col %} width="{{ col["width"] }}"{% endif -%}
+            ></col>
+    {%- endfor %}
+        </colgroup>
+        <thead>
+            <tr>
+    {%- for col in cols %}
+            <th><span
+            >{{ col["name"] }}</span></th>
+    {%- endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {{ caller() }}
+        </tbody>
+    </table>
+{%- endmacro -%}

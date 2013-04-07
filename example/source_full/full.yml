@@ -1,0 +1,185 @@
+versions:
+  v1.0:
+    description: First release of the API
+    status: beta
+    major: 1
+    minor: 0
+    uri: www.example.com
+    sections:
+      SectionOne:
+        description: First Section
+        order: 2
+        methods:
+          MyResource:
+            uri: /{version}/resource/{resource_id}
+            code: 200
+            method: PUT
+            description: >
+              Update the resource
+            request_headers:
+              X-Auth-Token:
+                type: string
+                description: Authentification token
+                sample: 1234567890abcdefghij
+            request_parameters:
+              version:
+                type: version
+                description: Api version
+              resource_id:
+                type: number
+                description: Resource identifier
+                optional: true
+              does_not_exists:
+                type: number
+                description: Should not be displayed
+            request_body:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Resource Name
+                ref:
+                  type: version
+                elements:
+                  type: array
+                  description: A list of elements
+                  items:
+                    type: reference
+                    reference: element
+            response_body:
+              type: object
+              properties:
+                id:
+                  type: number
+                  description: Resource identifier
+                name:
+                  type: string
+                  description: Resource Name
+                elements:
+                  type: array
+                  description: A list of elements
+                  items:
+                    type: reference
+                    reference: full_element
+            response_codes:
+              - code: 400
+                message: Bad name format
+                description: The resource name is not correct
+              - code: 400
+                message: Bad element Syntaxe
+                description: The resource element is not correct
+              - code: 404
+                message: Resource not found
+      Section2:
+        description: Another Section
+        order: 1
+        methods:
+          Bar:
+            uri: /endpoint
+            method: delete
+            description: A simple method
+          Baz:
+            extends: Bar
+            uri: /endpoint
+          Fum:
+            extends: SectionOne/MyResource
+          Qux:
+            extends: v3.0/Hello/World
+      Section3:
+        extends: Section2
+        description: Another Section
+        order: 1
+        methods:
+          Bar:
+            uri: /endpoint
+    references:
+      element:
+        type: object
+        properties:
+          name:
+            type: string
+          values:
+            type: array
+            items:
+              type: number
+      full_element:
+        type: object
+        extends: element
+        properties:
+          name:
+            removed: true
+          size:
+            type: number
+          active:
+            type: bool
+          version:
+            type: version
+            description: A link to the type
+            optional: true
+          nothing:
+            type: none
+          sub_element:
+            type: reference
+            reference: element
+          sub_element:
+            type: reference
+            reference: element
+          metadata:
+            type: dynamic
+            item_type: string
+          typed:
+            type: enumStatus
+    types:
+      version:
+        primary: string
+        namespace: global
+        description: Defined a version
+        format:
+          pretty: VN.N
+          sample: V0.1
+          advanced: V\d+\.\d+
+      enumStatus:
+        namespace: Lists
+        primary: enum
+        description: List the version's status
+        values:
+          DRAFT:
+            description: Specifications not freezed
+          BETA:
+            description: Specifications freezed but implementation in progress
+          CURRENT:
+            description: Current stable version
+          DEPRECATED:
+            description: Old version. Will be removed
+        format:
+          sample: CURRENT
+  v2.0:
+    extends: v1.0
+    major: 2
+    minor: 0
+    status: current
+    references:
+      element:
+        properties:
+          name:
+            description: foooo
+  v3.0:
+    display: false
+    major: 3
+    minor: 0
+    uri: www.example2.com
+    sections:
+      Hello:
+        methods:
+          World:
+            uri: /hello
+      SectionOne:
+        description: First Section
+        order: 2
+        methods:
+          Theresource:
+            uri: /{version}/resource/{resource_id}
+            code: 200
+            method: PUT
+            description: >
+              Update the resource

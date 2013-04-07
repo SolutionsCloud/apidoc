@@ -1,0 +1,53 @@
+{%- for section in sources.sections.values()|sort %}
+    <li class="section" id="s-{{ section.name }}">
+        <h3>{{ section.name }}</h3>
+    {%- if section.description %}
+        <p class="description">{{ section.description }}</p>
+        {%- endif %}
+        <ul class="unstyled">
+    {%- for method_versioned in section.methods.values()|sort %}
+            <li class="method item"
+                id="m-{{ section.name }}-{{ method_versioned.name }}"
+                data-method="{{ method_versioned.reference.method|upper }}"
+            >
+                <h4>{{ method_versioned.name }}</h4>
+        {%- if sources.versions|length > 1 %}
+                <ul class="versions inline">
+            {%- for version in sources.versions.values()|sort %}
+                    <li data-version="{{ version.name }}" data-changed="{{ method_versioned.changed_status(version.name)|lower }}"
+                {%- if version.name not in method_versioned.versions -%}
+                    data-exists="no"
+                {%- else -%}
+                    data-exists="yes"
+                {%- endif -%}>
+                        <i class="icon-bookmark"></i>
+                        {{- version.name -}}
+                    </li>
+            {%- endfor %}
+                </ul>
+        {%- endif %}
+                <ul class="contents unstyled">
+        {%- if sources.versions|length > 1 %}
+                    <li class="version" data-version="
+            {%- for version in sources.versions.values()|sort %}
+                {%- if version.name not in method_versioned.versions %}{{ version.name }} {% endif %}
+            {%- endfor -%}
+                    ">
+                        <p class="description stack">no implementation for this version</p>
+                    </li>
+        {%- endif %}
+        {%- for method in method_versioned.signatures.values() %}
+                    <li class="version" data-version="
+            {%- for (method_version_name, method_version) in method_versioned.versions.items() %}
+                {%- if method_version.signature == method.signature %}{{ method_version_name }} {% endif %}
+            {%- endfor -%}
+                    ">
+                    {%- include "partial/method.html" %}
+                    </li>
+        {%- endfor %}
+                </ul>
+            </li>
+    {%- endfor %}
+        </ul>
+    </li>
+{%- endfor -%}

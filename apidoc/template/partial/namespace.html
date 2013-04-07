@@ -1,0 +1,50 @@
+{%- for namespace in sources.namespaces.values()|sort %}
+    <li class="namespace" id="n-{{ namespace.name }}">
+        <h3>{{ namespace.name }}</h3>
+    {%- if namespace.description %}
+        <p class="description">{{ namespace.description }}</p>
+    {%- endif %}
+        <ul class="unstyled">
+    {%- for type_versioned in namespace.types.values()|sort %}
+            <li class="type item" id="t-{{ type_versioned.name }}">
+                <h4>{{ type_versioned.name }}</h4>
+        {%- if sources.versions|length > 1 %}
+                <ul class="versions inline">
+            {%- for version in sources.versions.values()|sort %}
+                    <li data-version="{{ version.name }}" data-changed="{{ type_versioned.changed_status(version.name)|lower }}"
+                {%- if version.name not in type_versioned.versions -%}
+                    data-exists="no"
+                {%- else -%}
+                    data-exists="yes"
+                {%- endif -%}>
+                        <i class="icon-bookmark"></i>
+                        {{- version.name -}}
+                    </li>
+            {%- endfor %}
+                </ul>
+        {%- endif %}
+                <ul class="contents unstyled">
+        {%- if sources.versions|length > 1 %}
+                    <li class="version" data-version="
+            {%- for version in sources.versions.values()|sort %}
+                {%- if version.name not in type_versioned.versions %}{{ version.name }} {% endif %}
+            {%- endfor -%}
+                    ">
+                        <p class="description stack">no implementation for this version</p>
+                    </li>
+        {%- endif %}
+        {%- for type in type_versioned.signatures.values() %}
+                    <li class="version" data-version="
+            {%- for (type_version_name, type_version) in type_versioned.versions.items() %}
+                {%- if type_version.signature == type.signature %}{{ type_version_name }} {% endif %}
+            {%- endfor -%}
+                    ">
+                    {%- include "partial/type.html" %}
+                    </li>
+        {%- endfor %}
+                </ul>
+            </li>
+    {%- endfor %}
+        </ul>
+    </li>
+{%- endfor -%}

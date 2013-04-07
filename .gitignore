@@ -1,0 +1,7 @@
+__pycache__
+.coverage
+cover/
+.noseids
+ApiDoc.egg-info/*
+build/*
+dist/*

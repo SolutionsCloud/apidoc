@@ -1,0 +1,24 @@
+versions:
+  v1.0:
+    sections:
+      A:
+        description: A
+        methods:
+          A:
+            description: null
+      B:
+        description: B
+        extends: A
+      C:
+        description: C
+        extends:
+        - B
+        - D
+      D:
+        description: D
+        extends: E
+      E:
+        description: E
+        methods:
+          E:
+            description: null

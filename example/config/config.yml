@@ -1,0 +1,31 @@
+input:
+  directories:
+    - ./sources
+  files:
+#    - ./sources/one.yml
+#    - ./sources/two.yml
+filter: # undefined => all
+  versions: # undefined => all
+    includes: # undefined => all but excludes
+#      - v1.0
+    excludes: # undefined => none
+#      - v1.0
+  sections: # undefined => all
+    includes: # undefined => all but excludes
+#      - foo
+    excludes: # undefined => none
+#      - qux
+  methods: # undefined => all
+    includes: # undefined => all but excludes
+#      - foo.bar
+    excludes: # undefined => none
+#      - foo.baz
+output:
+  location: stdout
+#  location: ./output/sample.html
+#  template: default
+  template: ./template/my.html
+  componants: local
+#  componants: embedded
+#  componants: remote
+#

@@ -1,0 +1,102 @@
+
+.doc-sidenav {
+    &.nav {
+        margin: 20px 0 0;
+        border: 1px solid #e5e5e5;
+        position:relative;
+        -webkit-border-radius: 6px;
+           -moz-border-radius: 6px;
+                border-radius: 6px;
+        -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+           -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+                box-shadow: 0 1px 4px rgba(0,0,0,.065);
+        >li {
+            &.nav-header > a {
+                padding-left: 15px;
+                margin-top: 0;
+            }
+
+            &:first-child > a {
+                -webkit-border-radius: 6px 6px 0 0;
+                   -moz-border-radius: 6px 6px 0 0;
+                        border-radius: 6px 6px 0 0;
+            }
+            &:last-child > a {
+                -webkit-border-radius: 0 0 6px 6px;
+                   -moz-border-radius: 0 0 6px 6px;
+                        border-radius: 0 0 6px 6px;
+            }
+            &.active > a {
+                text-shadow: 0 1px 0 rgba(0,0,0,.15);
+                -webkit-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+                   -moz-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+                        box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+                padding-right: 24px;
+                > .icon-chevron-right {
+                    right: 12px;
+                }
+            }
+            > a {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding-left: 32px;
+                &:focus {
+                    outline: none;
+                }
+
+                > .icon-chevron-right {
+                    position: absolute;
+                    right: 4px;
+                    margin-top: 3px;
+                }
+
+            }
+        }
+
+        H5 {
+            margin: 5px 0;
+        }
+        H6 {
+            margin: 2px 0;
+        }
+    }
+}
+
+.doc-sidebar {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 10px;
+    width: 100% !important;
+    &.affix {
+        width: inherit !important;
+        top: 0;
+        bottom: 0;
+        overflow: auto;
+    }
+
+    CODE {
+        padding: 0 4px;
+        line-height: 11px;
+        font-size: 11px;
+    }
+}
+
+
+
+@media (max-width: 767px) {
+    /* Remove any padding from the body */
+    body {
+        padding-top: 0;
+    }
+
+    /* Sidenav */
+    .doc-sidenav {
+        width: auto;
+        margin-bottom: 20px;
+    }
+    .doc-sidebar.affix {
+        position: static;
+        width: auto;
+        top: 0;
+    }
+}

@@ -1,0 +1,4 @@
+Jinja2==2.6
+PyYAML==3.10
+pyaml==13.01.0
+pyinotify==0.9.4

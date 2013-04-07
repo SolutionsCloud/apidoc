@@ -1,0 +1,25 @@
+versions:
+  v1.0:
+    uri: www.example.com
+    status: beta
+    sections:
+      Foo:
+        methods:
+          Bar:
+            uri: /endpoint
+            description: >
+              Sample request
+          Baz:
+            uri: /endpoint
+            description: >
+              Sample request
+      Foo2:
+        methods:
+          Bar:
+            uri: /endpoint
+            description: >
+              Sample request
+          Baz:
+            uri: /endpoint
+            description: >
+              Sample request
