@@ -31,19 +31,15 @@ Installation
 
 The fastest way to get started is by using the command line tool
 
-```shell
-sudo apt-get install python3 python3-setuptools
-python3 setup.py install
-```
+	sudo apt-get install python3 python3-setuptools
+	python3 setup.py install
+
 
 For fast yaml file parsing, install libyaml (see http://pyyaml.org/wiki/PyYAML)
 
-
 For developpers, it's strongly recommended to use `virtualenv`
 
-```shell
-pip install -r requirements-dev.txt
-```
+	pip install -r requirements-dev.txt
 
 
 
@@ -54,15 +50,12 @@ Two set of tests are imlpemented. Behaviours Test with `behave` and UnitTests wi
 
 BehavioursTest
 
-```shell
-behave tests/features
-```
+	behave tests/features
+
 
 UnitTess
 
-```shell
-nosetests --with-coverage --cover-package=apidoc --cover-package=util --cover-erase --cover-html
-```
+	nosetests --with-coverage --cover-package=apidoc --cover-package=util --cover-erase --cover-html
 
 
 Using the Application
@@ -70,49 +63,39 @@ Using the Application
 
 The application analyse provide a way to check configuration files
 
-```shell
-bin/analyse -h
-```
+	bin/analyse -h
+
 
 The application analyse build the full documentation
 
-```shell
-bin/build -h
-```
+	bin/build -h
+
 
 Generate documentation from a source file
 
-```shell
-bin/build -f ./example/source_simple/simple.yml
-```
+	bin/build -f ./example/source_simple/simple.yml
+
 
 Split sources in multiple files
 
-```shell
-bin/build -f ./example/source_multiple/one.yml ./example/source_multiple/two.yml
-```
+	bin/build -f ./example/source_multiple/one.yml ./example/source_multiple/two.yml
+
 
 Generate documentation from files contained in a directory
 
-```shell
-bin/build -d ./example/source_multiple/
-```
+	bin/build -d ./example/source_multiple/
+
 
 Generate documentation with options definied in a config file
 
-```shell
-bin/build -c ./example/config/config.yaml
-```
+	bin/build -c ./example/config/config.yaml
+
 
 Mix everything
 
-```shell
-bin/build -c ./config.yaml -d ./folder1/ ./folder2/ -f /folder3/file.yaml /folder3/file.json
-```
+	bin/build -c ./config.yaml -d ./folder1/ ./folder2/ -f /folder3/file.yaml /folder3/file.json
+
 
 TODO
 ----
-
-* RunMode: The user can run the methods through his browser
-* Diff: Provide a diff file between versions
-* Variable: Some parts of the sources can refered to variables defined in the source file or injected when the document is builded
+[see TODO.md](TODO.md)
