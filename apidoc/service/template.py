@@ -17,7 +17,6 @@ class Template():
         """Render the documentation as defined in config Object
         """
         template = self.env.get_template(self.input)
-
         output = template.render(sources=sources, config=config["output"])
         if self.output == "stdout":
             os.system('clear')

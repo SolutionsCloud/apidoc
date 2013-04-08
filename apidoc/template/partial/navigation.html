@@ -14,9 +14,9 @@
     <ul class="nav nav-list doc-sidenav">
         <li class="nav-header"><h5>Methods</h5></li>
 {%- for section in sources.sections.values()|sort %}
-        <li class="nav-header"><a href="javascript:navigateTo({section: '{{ section.name }}'}, ['namespace', 'type', 'method'])" data-target="#s-{{ section.name }}"><h6>{{ section.name }}</h6></a></li>
+        <li class="nav-header" data-group="{{ section.name }}"><a href="javascript:navigateTo({section: '{{ section.name }}'}, ['namespace', 'type', 'method'])" data-target="#s-{{ section.name }}"><h6>{{ section.name }}</h6></a></li>
     {%- for method in section.methods.values()|sort %}
-        <li><a href="javascript:navigateTo({section: '{{ section.name }}', method: '{{ method.name }}'}, ['namespace', 'type'])" data-target="#m-{{ section.name }}-{{ method.name }}"><i class="icon-chevron-right"></i>{{ method.name }}</a></li>
+        <li data-group="{{ section.name }}" data-item="{{ method.name }}"><a href="javascript:navigateTo({section: '{{ section.name }}', method: '{{ method.name }}'}, ['namespace', 'type'])" data-target="#m-{{ section.name }}-{{ method.name }}"><i class="icon-chevron-right"></i><span>{{ method.name }}</span></a></li>
     {%- endfor %}
     {%- if not loop.last %}
         <li class="separator"></li>
@@ -26,9 +26,9 @@
     <ul class="nav nav-list doc-sidenav">
         <li class="nav-header"><h5>Types</h5></li>
 {%- for namespace in sources.namespaces.values()|sort %}
-        <li class="nav-header"><a href="javascript:navigateTo({namespace: '{{ namespace.name }}'}, ['section', 'method', 'type'])" data-target="#n-{{ namespace.name }}">{{ namespace.name }}</a></li>
+        <li class="nav-header" data-group="{{ namespace.name }}"><a href="javascript:navigateTo({namespace: '{{ namespace.name }}'}, ['section', 'method', 'type'])" data-target="#n-{{ namespace.name }}">{{ namespace.name }}</a></li>
     {%- for type in namespace.types.values()|sort %}
-        <li><a href="javascript:navigateTo({namespace: '{{ namespace.name }}', type: '{{ type.name }}'}, ['section', 'method'])" data-target="#t-{{ namespace.name }}-{{ type.name }}"><i class="icon-chevron-right"></i>{{ type.name }}</a></li>
+        <li data-group="{{ namespace.name }}"  data-item="{{ type.name }}"><a href="javascript:navigateTo({namespace: '{{ namespace.name }}', type: '{{ type.name }}'}, ['section', 'method'])" data-target="#t-{{ namespace.name }}-{{ type.name }}"><i class="icon-chevron-right"></i><span>{{ type.name }}</span></a></li>
     {%- endfor %}
     {%- if not loop.last %}
         <li class="separator"></li>

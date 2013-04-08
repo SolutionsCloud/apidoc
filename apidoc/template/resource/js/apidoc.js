@@ -24,7 +24,7 @@ function displayScrollHeader() {
     }
 
     var header = $("#item-head");
-    if (element == null) {
+    if (element === null) {
         header.hide();
         return;
     }
@@ -65,7 +65,7 @@ function initScrollHeader() {
 
 function displayVersion() {
     $(".method, .type").find(" > .contents > LI").hide();
-    if (conf.version == null) {
+    if (conf.version === null) {
         $(".method, .type").find(" > .contents > LI:last-child").show();
     } else {
         $("#nav-versions > LI[data-version].active").removeClass("active");
@@ -129,7 +129,7 @@ function onNavigationChange() {
 
 function navigateTo(newParameters, removeParameters) {
     var parameters = hashToParameters(window.location.hash);
-    if (removeParameters != null) {
+    if (removeParameters !== null) {
         for (var j = 0, l = removeParameters.length; j < l; j++) {
             delete parameters[removeParameters[j]];
         }
@@ -196,10 +196,89 @@ function initScrollNavigation() {
     $(window).on('resize', refreshScrollNavigation);
 }
 
+function escapeRegExp(str) {
+    return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+
+
+function initSearch() {
+    var toSearch = 0;
+    var lastSearch = null;
+    var groupsElements = $(".doc-sidenav>LI[data-group]:not([data-item])");
+
+    $("[type=search]").bind('change keyup keypress search', function () {
+        clearTimeout(toSearch);
+        search = $(this).val().toLowerCase().replace(/\s+/g, ' ').replace(/(^\s+|\s+$)/, '');
+        if (search === "") {
+            groupsElements.show();
+            groupsElements.each(function () {
+                groupElement = $(this);
+                groupElement.find('H6').html(groupElement.data("group"));
+            });
+
+            var itemsElements = $(".doc-sidenav>LI[data-group][data-item]");
+            itemsElements.show();
+            itemsElements.each(function (itemElement) {
+                itemElement = $(this);
+                itemElement.find('>A>SPAN').html(itemElement.data("item"));
+            });
+
+            return;
+        }
+        toSearch = setTimeout(function () {
+            if (search === lastSearch) {
+                return;
+            }
+
+            lastSearch = search;
+
+            var words = escapeRegExp(search).split(/\s/);
+            var wordsReg = new RegExp("(" + words.join("|") + ")", 'gi');
+            for (var i=0, l=groupsElements.length; i<l; i++) {
+                var groupElement = $(groupsElements[i]);
+                var groupName = groupElement.data("group");
+                var matchGroup = wordsReg.test(groupName);
+
+                var itemsElements = $(".doc-sidenav>LI[data-group=" + groupName + "][data-item]");
+                var matchOneitem = false;
+                for (var k=0, n=itemsElements.length; k<n; k++) {
+                    var itemElement = $(itemsElements[k]);
+                    var itemName = itemElement.data("item");
+                    var matchItem = wordsReg.test(itemName);
+                    if (matchItem) {
+                        matchOneitem = true;
+                    }
+
+                    if (matchItem) {
+                        itemElement.find('A>SPAN').html(itemName.replace(wordsReg, '<span class="highlight">$1</span>'));
+                        itemElement.show();
+                    } else {
+                        itemElement.find('A>SPAN').html(itemName);
+                        itemElement.hide();
+                    }
+                }
+
+                if (matchGroup || matchOneitem) {
+                    groupElement.find('H6').html(groupName.replace(wordsReg, '<span class="highlight">$1</span>'));
+                    groupElement.show();
+                    if (matchGroup && !matchOneitem) {
+                        itemsElements.show();
+                    }
+                } else {
+                    groupElement.hide();
+                    itemsElements.hide();
+                }
+            }
+
+        }, 20);
+    });
+}
+
 $(document).ready(function () {
     initScrollNavigation();
     initScrollHeader();
     initNavigation();
+    initSearch();
 
     onNavigationChange();
 });

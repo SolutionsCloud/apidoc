@@ -203,9 +203,7 @@ class Source():
         if "method" in datas:
             method.method = self.get_enum("method", Method.Methods, datas)
 
-        print("jj")
         method.request_headers = self.populate_list("request_headers", datas, self.populate_parameter)
-        print("jj")
         method.request_parameters = self.populate_list("request_parameters", datas, self.populate_parameter)
 
         if "response_codes" in datas and datas["response_codes"] is not None and isinstance(datas["response_codes"], list):

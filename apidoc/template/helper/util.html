@@ -3,7 +3,7 @@
 {%- endmacro -%}
 
 {%- macro none_to_default(value, default) -%}
-    {%- if value is not None %}
+    {%- if value != None %}
         {{- value -}}
     {%- else %}
         {{- default -}}
