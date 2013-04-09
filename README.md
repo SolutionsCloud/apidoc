@@ -32,7 +32,8 @@ Installation
 The fastest way to get started is by using the command line tool
 
 ```shell
-python setup.py install
+sudo apt-get install python3 python3-setuptools
+python3 setup.py install
 ```
 
 For fast yaml file parsing, install libyaml (see http://pyyaml.org/wiki/PyYAML)

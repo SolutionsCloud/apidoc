@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import sys
+
+if sys.version_info < (3, 2):
+    print("ApiDoc requires Python 3.2 or later")
+    raise SystemExit(1)
 
 from setuptools import setup, find_packages
 
