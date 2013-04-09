@@ -14,7 +14,6 @@ For core application
 
 * PyYAML==3.10
 * Jinja2==2.6
-* pyinotify==0.9.4
 
 
 For developpers who wants works on apidoc
@@ -35,11 +34,15 @@ The fastest way to get started is by using the command line tool
 	python3 setup.py install
 
 
-For fast yaml file parsing, install libyaml (see http://pyyaml.org/wiki/PyYAML)
+The config parser script depends on PyYAML which links with LibYAML, which brings a performance boost to the PyYAML parser. However, installing LibYAML is optional but recommended. On Mac OS X, you can use homebrew to install LibYAML:
 
-For developpers, it's strongly recommended to use `virtualenv`
+    brew install libyaml
 
-	pip install -r requirements-dev.txt
+On Linux, use your favorite package manager to install LibYAML. Here's how you do it on Debian/Ubuntu:
+
+    sudo apt-get install libyaml-dev
+
+On Windows, please install PyYAML using the binaries they provide
 
 
 

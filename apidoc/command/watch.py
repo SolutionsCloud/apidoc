@@ -6,7 +6,9 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import traceback
-import pyinotify
+
+import time
+import threading
 
 from datetime import datetime
 
@@ -34,25 +36,26 @@ class Watch(Base):
 
         #todo replace print by logs
         print("%s - Start watching" % datetime.now().time().isoformat())
-        changeHandler = ChangeHandler(runner)
 
-        wm = pyinotify.WatchManager()
-        notifier = pyinotify.Notifier(wm, changeHandler)
-        mask = pyinotify.IN_DELETE | pyinotify.IN_CREATE | pyinotify.IN_MODIFY
+        event_handler = EventHandler(runner)
+
+        observer = Observer(event_handler)
+
         template_path = os.path.dirname(configService.get_template_from_config(config))
-        wm.add_watch(template_path, mask, rec=True)
+        observer.watch(template_path)
+        event_handler.types[template_path] = "template"
 
-        changeHandler.types[template_path] = "template"
         if (config["input"]["directories"] is not None):
             for directory in config["input"]["directories"]:
-                wm.add_watch(directory, mask, rec=True)
-                changeHandler.types[directory] = "source"
+                observer.watch(directory)
+                event_handler.types[directory] = "source"
+
         if (config["input"]["files"] is not None):
             for file in config["input"]["files"]:
-                wm.add_watch(file, mask)
-                changeHandler.types[file] = "source"
+                observer.watch(file)
+                event_handler.types[file] = "source"
 
-        notifier.loop()
+        observer.loop()
 
 
 class Runner():
@@ -83,29 +86,21 @@ class Runner():
         template.render(self.sources, self.config)
 
 
-class ChangeHandler(pyinotify.ProcessEvent):
+class EventHandler():
     """Handle FileSystem modifications to refresh documentation
     """
-
     def __init__(self, runner):
-        """Class instantiation
-        """
         self.runner = runner
         self.types = {}
 
-    def process_default(self, event):
+    def on_change(self, path):
         """Default handler
         """
-        if event.dir:
-            return
-        if event.name[0:1] == ".":
-            return
-
         now = datetime.now()
         print("%s - Content changed..." % now.time().isoformat())
         try:
-            if event.path in self.types:
-                if self.types[event.path] == "source":
+            if path in self.types:
+                if self.types[path] == "source":
                     self.runner.refresh_sources()
                     self.runner.refresh_template()
                 else:
@@ -117,6 +112,65 @@ class ChangeHandler(pyinotify.ProcessEvent):
         except:
             print("Failed to render")
             print(traceback.format_exc())
+
+
+class Observer(threading.Thread):
+    """Observe change in file FileSystem
+    """
+    def __init__(self, handler):
+        """Class instantiation
+        """
+        super().__init__()
+        self.paths = {}
+        self.handler = handler
+        self.terminated = False
+
+    def watch(self, path):
+        """Add a path in watch queue
+        """
+        self.paths[path] = self.path_sign(path)
+
+    def path_sign(self, path):
+        """generate a unique signature for file contained in path
+        """
+        if not os.path.exists(path):
+            return None
+        if os.path.isdir(path):
+            merge = {}
+            for root, dirs, files in os.walk(path):
+                for name in files:
+                    full_name = os.path.join(root, name)
+                    merge[full_name] = os.stat(full_name)
+            return merge
+        else:
+            return os.stat(path)
+
+    def loop(self):
+        """Run loop in a new thread
+        """
+        self.start()
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            self.stop()
+        self.join()
+
+    def run(self):
+        """Main loop of observer's thread. looks for changes in one of paths and call on_change of EventHandler
+        """
+        while not self.terminated:
+            for (path, current_sign) in self.paths.items():
+                new_sign = self.path_sign(path)
+                if new_sign != current_sign:
+                    self.paths[path] = new_sign
+                    self.handler.on_change(path)
+            time.sleep(0.2)
+
+    def stop(self):
+        """Stop thread loop
+        """
+        self.terminated = True
 
 
 if __name__ == '__main__':
