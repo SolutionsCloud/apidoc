@@ -28,5 +28,10 @@ class Analyse(Base):
         print(json_repr(sources))
 
 
-if __name__ == '__main__':
+def main():
+    """Main function to run command
+    """
     Analyse().main()
+
+if __name__ == '__main__':
+    main()

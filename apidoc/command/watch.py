@@ -96,5 +96,10 @@ class Watch(Base):
             print(traceback.format_exc())
 
 
-if __name__ == '__main__':
+def main():
+    """Main function to run command
+    """
     Watch().main()
+
+if __name__ == '__main__':
+    main()

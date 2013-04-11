@@ -31,5 +31,10 @@ class Render(Base):
         template.render(sources, config)
 
 
-if __name__ == '__main__':
+def main():
+    """Main function to run command
+    """
     Render().main()
+
+if __name__ == '__main__':
+    main()
