@@ -1,5 +1,6 @@
 class CallbackHandler():
-    """Handle FileSystem modifications to refresh documentation
+
+    """Handle FileSystem msodifications to refresh documentation
     """
     def __init__(self, callback):
         self.callback = callback

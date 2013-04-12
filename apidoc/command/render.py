@@ -12,6 +12,7 @@ from apidoc.service.source import Source as SourceService
 
 
 class Render(Base):
+
     """Build documentation from sources files
     """
 

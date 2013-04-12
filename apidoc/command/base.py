@@ -7,6 +7,7 @@ from apidoc.object.config import Config as ConfigObject
 
 
 class Base():
+
     """Base command-line interface for ApiDoc
     """
 
@@ -14,11 +15,25 @@ class Base():
         """Initialyze the command
         """
         self.parser = argparse.ArgumentParser(description=self.__doc__)
-        self.parser.add_argument("-c", "--config", type=str, metavar="CONFIG", help="configuration file")
-        self.parser.add_argument("-d", "--directories", nargs='+', type=str, metavar="DIRECTORY", help="directories containing documentation\'s source files")
-        self.parser.add_argument("-f", "--files", nargs='+', type=str, metavar="FILE", help="documentation\'s source file")
-        self.parser.add_argument("-o", "--output", type=str, metavar="FILE", help="rendered output file")
-        self.parser.add_argument("-v", "--version", action='version', version='%(prog)s 1.0')
+        self.parser.add_argument(
+            "-c", "--config", type=str, metavar="CONFIG",
+            help="configuration file"
+        )
+        self.parser.add_argument(
+            "-d", "--directories", nargs='+', type=str, metavar="DIRECTORY",
+            help="directories containing documentation\'s source files"
+        )
+        self.parser.add_argument(
+            "-f", "--files", nargs='+', type=str, metavar="FILE",
+            help="documentation\'s source file"
+        )
+        self.parser.add_argument(
+            "-o", "--output", type=str, metavar="FILE",
+            help="rendered output file"
+        )
+        self.parser.add_argument(
+            "-v", "--version", action='version', version='%(prog)s 1.0'
+        )
 
     def get_config(self):
         """return command's configuration from call's arguments

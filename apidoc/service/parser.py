@@ -4,6 +4,7 @@ import yaml
 
 
 class Parser():
+
     """Provide tools to parse files
     """
     def load_from_file(self, file_path, format=None):

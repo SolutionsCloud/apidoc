@@ -8,6 +8,7 @@ from apidoc.lib.util.cast import to_bool
 
 @add_property("merger", Merger)
 class Extender():
+
     """Provide tool to managed extentions
     """
 

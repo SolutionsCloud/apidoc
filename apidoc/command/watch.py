@@ -20,6 +20,7 @@ from apidoc.service.config import Config as ConfigService
 
 
 class Watch(Base):
+
     """Build documentation from sources each time a source or template files is modified
     """
 
@@ -32,7 +33,7 @@ class Watch(Base):
 
         self.refresh_source(None)
 
-        #todo replace print by logs
+        # todo replace print by logs
         print("%s - Start watching" % datetime.now().time().isoformat())
 
         observer = Observer()

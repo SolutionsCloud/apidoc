@@ -2,6 +2,7 @@ from apidoc.lib.util.cast import to_bool
 
 
 class Merger():
+
     """Provide tool to merge elements
     """
 

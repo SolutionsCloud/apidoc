@@ -1,4 +1,5 @@
 class Config(dict):
+
     """Represente a config Object
     """
 

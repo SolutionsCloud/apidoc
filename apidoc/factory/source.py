@@ -23,6 +23,7 @@ from apidoc.lib.util.cast import to_bool
 @add_property("merger", Merger)
 @add_property("extender", Extender)
 class Source():
+
     """Create source objet
     """
 
@@ -39,7 +40,10 @@ class Source():
 
         merged = self.merger.merge_sources(sources)
 
-        extended = self.extender.extends(merged, paths=self.get_extender_paths(), separator="/", extends_key="extends", inherit_key="inherit", removed_key="removed")
+        extended = self.extender.extends(
+            merged, paths=self.get_extender_paths(), separator="/", extends_key="extends",
+            inherit_key="inherit", removed_key="removed"
+        )
 
         root = self.populate(extended)
         self.remove_undisplayed(root)

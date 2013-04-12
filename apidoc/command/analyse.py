@@ -12,6 +12,7 @@ from apidoc.lib.util.serialize import json_repr
 
 
 class Analyse(Base):
+
     """Analyse sources files for ApiDoc and print the formated result
     """
 

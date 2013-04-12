@@ -3,6 +3,7 @@ import shutil
 
 
 class Template():
+
     """Provide tool to managed templates
     """
 

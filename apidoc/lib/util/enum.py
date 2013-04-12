@@ -1,12 +1,12 @@
 
 
 class EnumMeta(type):
+
     """Meta class for Enum
     """
     def __new__(mcls, name, bases, attrs):
         """Class initialization
         """
-        #attrs['__slots__'] = ['_Enum__name']
         cls = type.__new__(mcls, name, bases, attrs)
         cls._Enum__index = _index = {}
         for base in reversed(bases):
@@ -32,6 +32,7 @@ class EnumMeta(type):
 
 
 class Enum(int, metaclass=EnumMeta):
+
     """Class base for Enum
     """
 

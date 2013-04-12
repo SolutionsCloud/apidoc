@@ -3,6 +3,7 @@ from apidoc.object.config import Config as ConfigObject
 
 
 class Config():
+
     """Provide tool to managed config
     """
 

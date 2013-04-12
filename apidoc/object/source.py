@@ -6,6 +6,7 @@ from apidoc.lib.util.tools import merge_dict
 
 
 class Root():
+
     """Root object of sources elements
     """
 
@@ -43,6 +44,7 @@ class Root():
 
 
 class Element():
+
     """Generic element
     """
 
@@ -86,6 +88,7 @@ class Element():
 
 
 class Sampleable():
+
     """Element who can provide samples
     """
 
@@ -110,6 +113,7 @@ class Sampleable():
 
 @total_ordering
 class Sortable():
+
     """Element who can be sorted
     """
 
@@ -132,6 +136,7 @@ class Sortable():
 
 
 class Displayable():
+
     """Element who can be displayed
     """
 
@@ -150,10 +155,12 @@ class Displayable():
 
 
 class Version(Element, Sortable, Displayable):
+
     """Element Version
     """
 
     class Status(Enum):
+
         """List of availables Status for this element
         """
         current = 1
@@ -185,6 +192,7 @@ class Version(Element, Sortable, Displayable):
 
 
 class Section(Element, Sortable, Displayable):
+
     """Element Section
     """
 
@@ -215,10 +223,12 @@ class Section(Element, Sortable, Displayable):
 
 
 class Method(Element, Sortable):
+
     """Element Section
     """
 
     class Methods(Enum):
+
         """List of availables Methods for this element
         """
         get = 1
@@ -306,6 +316,7 @@ class Method(Element, Sortable):
 
 
 class Parameter(Element, Sampleable, Sortable):
+
     """Element Parameter
     """
 
@@ -343,6 +354,7 @@ class Parameter(Element, Sampleable, Sortable):
 
 
 class ResponseCode(Element, Sortable):
+
     """Element ResponseCode
     """
 
@@ -373,6 +385,7 @@ class ResponseCode(Element, Sortable):
 
 
 class Namespace(Element, Sortable):
+
     """Element Namespace
     """
 
@@ -385,10 +398,12 @@ class Namespace(Element, Sortable):
 
 
 class Type(Element, Sortable):
+
     """Element Type
     """
 
     class Primaries(Enum):
+
         """List of availables Primaries for this element
         """
         string = 1
@@ -413,6 +428,7 @@ class Type(Element, Sortable):
 
 
 class TypeFormat(Sampleable):
+
     """Element TypeFormat
     """
 
@@ -441,6 +457,7 @@ class TypeFormat(Sampleable):
 
 
 class EnumType(Type):
+
     """Element EnumType
     """
 
@@ -460,6 +477,7 @@ class EnumType(Type):
 
 
 class EnumTypeValue(Element, Sortable):
+
     """Element EnumTypeValue
     """
 
@@ -467,10 +485,12 @@ class EnumTypeValue(Element, Sortable):
 
 
 class Object(Element, Sampleable):
+
     """Element Object
     """
 
     class Types(Enum):
+
         """List of availables Types for this element
         """
         object = 1
@@ -536,6 +556,7 @@ class Object(Element, Sampleable):
 
 
 class ObjectObject(Object):
+
     """Element ObjectObject
     """
 
@@ -563,6 +584,7 @@ class ObjectObject(Object):
 
 
 class ObjectArray(Object):
+
     """Element ObjectArray
     """
 
@@ -591,6 +613,7 @@ class ObjectArray(Object):
 
 
 class ObjectNumber(Object):
+
     """Element ObjectNumber
     """
 
@@ -607,6 +630,7 @@ class ObjectNumber(Object):
 
 
 class ObjectString(Object):
+
     """Element ObjectString
     """
 
@@ -618,6 +642,7 @@ class ObjectString(Object):
 
 
 class ObjectBool(Object):
+
     """Element ObjectBool
     """
 
@@ -634,6 +659,7 @@ class ObjectBool(Object):
 
 
 class ObjectNone(Object):
+
     """Element ObjectNone
     """
 
@@ -645,6 +671,7 @@ class ObjectNone(Object):
 
 
 class ObjectDynamic(Object):
+
     """Element ObjectDynamic
     """
 
@@ -672,6 +699,7 @@ class ObjectDynamic(Object):
 
 
 class ObjectReference(Object):
+
     """Element ObjectReference
     """
 
@@ -693,14 +721,19 @@ class ObjectReference(Object):
         """Return a reference object from the reference_name defined in sources
         """
         if self.reference_name not in Root.instance().references:
-            raise ValueError("Unable to find reference \"%s\"." % self.reference_name)
+            raise ValueError(
+                "Unable to find reference \"%s\"." % self.reference_name
+            )
         if self.version not in Root.instance().references[self.reference_name].versions:
-            raise ValueError("Unable to find reference \"%s\" at version \"%s\"." % (self.reference_name, self.version))
+            raise ValueError(
+                "Unable to find reference \"%s\" at version \"%s\"." % (self.reference_name, self.version)
+            )
 
         return Root.instance().references[self.reference_name].versions[self.version]
 
 
 class ObjectType(Object):
+
     """Element ObjectType
     """
 
@@ -735,10 +768,12 @@ class ObjectType(Object):
 
 
 class ElementCrossVersion(Element, Sortable):
+
     """Element ElementCrossVersion
     """
 
     class Change(Enum):
+
         """List of availables Change for this element
         """
         none = 1

@@ -5,6 +5,7 @@ from jinja2 import Environment, FileSystemLoader
 
 
 class Template():
+
     """Create template objet
     """
 
