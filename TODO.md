@@ -11,7 +11,6 @@ Features
 Improvements
 ------------
 * ScrollMemory: When user change the displayed version, keep the focus on the same method
-* Logger: Replace print and other stdotu by a proper logger
 * Reduce embedded size
     * Reduce (or eliminate) jquery
     * Reduce images size (amount of icones in the sprite)
@@ -31,4 +30,5 @@ Contributions
 
 DONE
 ====
-* Replace pyinotify because it's not compatible with Mac Os
+* Replace pyinotify because it's not compatible with MacOs
+* Replace prints by a logger

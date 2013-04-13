@@ -7,6 +7,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 
 import traceback
 import time
+import logging
+import logging.config
 
 from datetime import datetime
 
@@ -17,6 +19,7 @@ from apidoc.factory.source import Source as SourceFactory
 from apidoc.factory.template import Template as TemplateFactory
 from apidoc.service.source import Source as SourceService
 from apidoc.service.config import Config as ConfigService
+from apidoc.service.parser import Parser as FileParser
 
 
 class Watch(Base):
@@ -27,14 +30,12 @@ class Watch(Base):
     def main(self):
         """Run the command
         """
+        self.logger = logging.getLogger()
+        self.logger.info("Start watching")
+
         configService = ConfigService()
-
         self.config = self.get_config()
-
         self.refresh_source(None)
-
-        # todo replace print by logs
-        print("%s - Start watching" % datetime.now().time().isoformat())
 
         observer = Observer()
 
@@ -64,7 +65,7 @@ class Watch(Base):
         """Refresh sources then templates
         """
         now = datetime.now()
-        print("%s - Sources changed..." % now.time().isoformat())
+        self.logger.info("Sources changed")
 
         sourceFactory = SourceFactory()
         sourceService = SourceService()
@@ -76,30 +77,34 @@ class Watch(Base):
 
             template = templateFactory.create_from_config(self.config)
             template.render(self.sources, self.config)
-            print("rendered in %s." % (datetime.now() - now))
+            self.logger.debug("Render in %s." % (datetime.now() - now))
         except:
-            print("Failed to render")
-            print(traceback.format_exc())
+            self.logger.warning("Failed to render")
+            self.logger.error(traceback.format_exc())
 
     def refresh_template(self, event):
         """Refresh template's contents
         """
         now = datetime.now()
-        print("%s - Template changed..." % now.time().isoformat())
+        self.logger.info("Template changed...")
         templateFactory = TemplateFactory()
 
         try:
             template = templateFactory.create_from_config(self.config)
             template.render(self.sources, self.config)
-            print("rendered in %s." % (datetime.now() - now))
+            self.logger.debug("Rendered in %s." % (datetime.now() - now))
         except:
-            print("Failed to render")
-            print(traceback.format_exc())
+            self.logger.warning("Failed to render")
+            self.logger.error(traceback.format_exc())
 
 
 def main():
     """Main function to run command
     """
+    configParser = FileParser()
+    logging.config.dictConfig(
+        configParser.load_from_file(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logging.yml'))
+    )
     Watch().main()
 
 if __name__ == '__main__':
