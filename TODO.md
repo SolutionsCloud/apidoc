@@ -12,8 +12,6 @@ Improvements
 ------------
 * ScrollMemory: When user change the displayed version, keep the focus on the same method
 * Logger: Replace print and other stdotu by a proper logger
-* CrossPlateform:
-    * Replace pyinotify by watchdog
 * Reduce embedded size
     * Reduce (or eliminate) jquery
     * Reduce images size (amount of icones in the sprite)
@@ -28,3 +26,9 @@ Contributions
 * Provide a full documentation with all the possible cases (.md to embdded in gitorious wiki ? or .srt to use sphynx ?)
 * Synchronise current "example" folder with documentation (previsous TODO)
 * Upgrade and Implement BDD tests
+
+
+
+DONE
+====
+* Replace pyinotify because it's not compatible with Mac Os
