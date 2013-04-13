@@ -20,15 +20,14 @@ Improvements
 
 Contributions
 -------------
-* Add Glyphicons, Bootstrap, Jquery and other external projet in the README file
 * Provide a full INSTALL file with samples (install git + git clone)
 * Provide a full documentation with all the possible cases (.md to embdded in gitorious wiki ? or .srt to use sphynx ?)
 * Synchronise current "example" folder with documentation (previsous TODO)
 * Upgrade and Implement BDD tests
 
 
-
 DONE
 ====
 * Replace pyinotify because it's not compatible with MacOs
 * Replace prints by a logger
+* Add Glyphicons, Bootstrap, Jquery and other external projet in the README file

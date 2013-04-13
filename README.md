@@ -112,3 +112,15 @@ Mix everything
 TODO
 ----
 [see TODO.md](TODO.md)
+
+
+Reference
+---------
+
+Api doc use the following projects.
+
+[Twitter Bootstrap](http://twitter.github.com/bootstrap)
+
+[Glyphicons](http://glyphicons.com/)
+
+[Jquery](http://jquery.org/)
