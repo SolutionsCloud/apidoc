@@ -72,9 +72,10 @@ function displayVersion() {
     var items = $(".item:not(#item-head)");
     for (var i = 0, l = items.length; i < l; i++) {
         if ($(items[i]).offset().top >= scrollTop) {
-            scrollReferenceElement = items[i];
             break;
         }
+
+        scrollReferenceElement = items[i];
 
     }
 
@@ -97,7 +98,8 @@ function displayVersion() {
     }
 
     if (scrollReferenceElement !== null) {
-        $(window).scrollTop($(scrollReferenceElement).offset().top - offset);
+        $("BODY").scrollTop($(scrollReferenceElement).offset().top - offset);
+        displayScrollHeader();
     }
 
     refreshScrollNavigation();
@@ -132,20 +134,25 @@ function onNavigationChange() {
         displayVersion(parameters.version);
     }
 
+    elementSelector = null;
     if (parameters.section) {
         if (parameters.method) {
-            $("BODY").scrollTop($("#m-" + parameters.section + "-" + parameters.method).offset().top - conf.scrollMargin);
+            elementSelector = "#m-" + parameters.section + "-" + parameters.method;
         } else {
-            $("BODY").scrollTop($("#s-" + parameters.section).offset().top - conf.scrollMargin);
+            elementSelector = "#s-" + parameters.section;
         }
     } else if (parameters.namespace) {
         if (parameters.type) {
-            $("BODY").scrollTop($("#t-" + parameters.type).offset().top - conf.scrollMargin);
+            elementSelector = "#t-" + parameters.type;
         } else {
-            $("BODY").scrollTop($("#n-" + parameters.namespace).offset().top - conf.scrollMargin);
+            elementSelector = "#n-" + parameters.namespace;
         }
     } else if (parameters.type) {
-        $("BODY").scrollTop($("#t-" + parameters.type).offset().top - conf.scrollMargin);
+        elementSelector = "#t-" + parameters.type;
+    }
+
+    if (elementSelector !== null) {
+        $("BODY").scrollTop($(elementSelector).offset().top - conf.scrollMargin);
     }
 }
 
