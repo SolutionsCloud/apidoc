@@ -158,6 +158,13 @@ versions:
     major: 2
     minor: 0
     status: current
+    sections:
+      Section2:
+        methods:
+          MyResource2:
+            uri: /{version}/resource/{resource_id}
+            code: 200
+            method: PUT
     references:
       element:
         properties:

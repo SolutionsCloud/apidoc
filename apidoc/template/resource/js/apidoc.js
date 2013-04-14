@@ -64,6 +64,24 @@ function initScrollHeader() {
 }
 
 function displayVersion() {
+    // remember ScrollPosition
+    var scrollHeight = $(document).height(),
+        scrollTop = $(window).scrollTop();
+
+    var scrollReferenceElement = null;
+    var items = $(".item:not(#item-head)");
+    for (var i = 0, l = items.length; i < l; i++) {
+        if ($(items[i]).offset().top >= scrollTop) {
+            scrollReferenceElement = items[i];
+            break;
+        }
+
+    }
+
+    if (scrollReferenceElement !== null) {
+        var offset = $(scrollReferenceElement).offset().top - scrollTop
+    }
+
     $(".method, .type").find(" > .contents > LI").hide();
     if (conf.version === null) {
         $(".method, .type").find(" > .contents > LI:last-child").show();
@@ -76,6 +94,10 @@ function displayVersion() {
 
         $(".method, .type").find(" > .versions > LI[data-version~=\"" + conf.version + "\"]").addClass("active");
         $(".method, .type").find(" > .contents > LI[data-version~=\"" + conf.version + "\"]").show();
+    }
+
+    if (scrollReferenceElement !== null) {
+        $(window).scrollTop($(scrollReferenceElement).offset().top - offset);
     }
 
     refreshScrollNavigation();
