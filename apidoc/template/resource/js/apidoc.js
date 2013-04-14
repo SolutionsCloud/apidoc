@@ -235,7 +235,10 @@ function initSearch() {
     var lastSearch = null;
     var groupsElements = $(".doc-sidenav>LI[data-group]:not([data-item])");
 
-    $("[type=search]").bind('change keyup keypress search', function () {
+    $("[type=search]").bind('change keyup keypress search', function (event) {
+        if (event.keyCode == 13) {
+            $(this).blur();
+        }
         clearTimeout(toSearch);
         search = $(this).val().toLowerCase().replace(/\s+/g, ' ').replace(/(^\s+|\s+$)/, '');
         if (search === "") {
@@ -303,11 +306,107 @@ function initSearch() {
     });
 }
 
+function shortcutSearch(event, key) {
+    if (event.preventDefault) {
+        event.preventDefault();
+    } else {
+        // internet explorer
+        event.returnValue = false;
+    }
+    console.log(arguments)
+    $("[type=search]").select();
+}
+
+function shortcutGotoNext(event, key) {
+    var current = $(".scroll-spyable>UL>LI.active:visible")
+    if (current.length == 0) {
+        $(".scroll-spyable>UL>LI[data-item]:visible>A").get(0).click()
+    } else {
+        var items = current.nextAll("LI[data-item]:visible").find(">A");
+        if (items.length > 0) {
+            items.get(0).click()
+        } else {
+            var ul = current.closest("UL");
+            var itemsInNextGroup = current.closest("UL").next().find('>LI[data-item]:visible>A')
+            if (itemsInNextGroup.length > 0) {
+                itemsInNextGroup.get(0).click();
+            }
+        }
+    }
+}
+
+function shortcutGotoPrevious(event, key) {
+    var current = $(".scroll-spyable>UL>LI.active:visible")
+    if (current.length == 0) {
+        $(".scroll-spyable>UL>LI[data-item]:visible>A").get(0).click()
+    } else {
+        var items = current.prevAll("LI[data-item]:visible").find(">A");
+        if (items.length > 0) {
+            items.get(items.length - 1).click()
+        } else {
+            var ul = current.closest("UL");
+            var itemsInPrevGroup = current.closest("UL").prev().find('>LI[data-item]:visible>A')
+            if (itemsInPrevGroup.length > 0) {
+                itemsInPrevGroup.get(itemsInPrevGroup.length - 1).click();
+            }
+        }
+    }
+}
+
+function shortcutGotoNextVersion(event, key) {
+    var current = $("#nav-versions>LI.active:visible")
+    if (current.length == 0) {
+        $("#nav-versions>LI[data-version]:visible>A").get(0).click()
+    } else {
+        var items = current.nextAll("LI[data-version]:visible").find(">A");
+        if (items.length > 0) {
+            items.get(0).click()
+        }
+    }
+}
+
+function shortcutGotoPreviousVersion(event, key) {
+    var current = $("#nav-versions>LI.active:visible")
+    if (current.length == 0) {
+        $("#nav-versions>LI[data-version]:visible>A").get(0).click()
+    } else {
+        var items = current.prevAll("LI[data-version]:visible").find(">A");
+        if (items.length > 0) {
+            items.get(0).click()
+        }
+    }
+}
+
+function shortcutHelp(event, key) {
+    $(".help_popup, .help_overlay").show()
+    Mousetrap.bind('esc', shortcutHelpHide)
+}
+
+function shortcutHelpHide(event, key) {
+    $(".help_popup, .help_overlay").hide()
+    Mousetrap.unbind('esc', shortcutHelpHide)
+}
+
+function initShortcuts() {
+    Mousetrap.bind('?', shortcutHelp);
+    Mousetrap.bind('/', shortcutSearch);
+    Mousetrap.bind(['n', 'j'], shortcutGotoNext);
+    Mousetrap.bind(['p', 'k'], shortcutGotoPrevious);
+    Mousetrap.bind(['v'], shortcutGotoNextVersion);
+    Mousetrap.bind(['c'], shortcutGotoPreviousVersion);
+}
+
+function initHelp() {
+    $(".help_overlay").click(shortcutHelpHide)
+}
+
 $(document).ready(function () {
     initScrollNavigation();
     initScrollHeader();
     initNavigation();
     initSearch();
+    initShortcuts();
+    initHelp();
 
     onNavigationChange();
 });

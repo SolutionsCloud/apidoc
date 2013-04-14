@@ -23,7 +23,8 @@ Improvements
 
 Contributions
 -------------
-* Provide a full documentation with all the possible cases (.md to embdded in gitorious wiki ? or .srt to use sphynx ?)
+* Provide a full documentation with all the possible cases (.md to
+ embdded in gitorious wiki ? or .srt to use sphynx ?)
 * Synchronise current "example" folder with documentation (previsous TODO)
 * Provide real examples with paypal, dropbox, or twitter
 * Upgrade and Implement BDD tests
@@ -36,3 +37,4 @@ DONE
 * Add Glyphicons, Bootstrap, Jquery and other external projet in the README file
 * Provide a full description to install ApiDoc (install git + git clone + virtualenv...)
 * When user change the displayed version, keep the focus on the same position relative to the active method
+* Add keyboard's shortcut handler to simplify navigation

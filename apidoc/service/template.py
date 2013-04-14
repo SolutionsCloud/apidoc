@@ -32,6 +32,7 @@ class Template():
                         files = (
                             os.path.join(template_dir, "resource", "js", "apidoc.js"),
                             os.path.join(template_dir, "resource", "js", "jquery.min.js"),
+                            os.path.join(template_dir, "resource", "js", "mousetrap.min.js"),
                             os.path.join(template_dir, "resource", "js", "bootstrap.min.js"),
                             os.path.join(template_dir, "resource", "css", "apidoc.css"),
                             os.path.join(template_dir, "resource", "css", "bootstrap.min.css"),
