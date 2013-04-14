@@ -46,11 +46,29 @@ class Source():
         )
 
         root = self.populate(extended)
+        self.apply_config_filter(root, config["filter"])
         self.remove_undisplayed(root)
         self.fix_versions(root)
         self.refactor_hierarchy(root)
 
         return root
+
+    def apply_config_filter(self, root, config_filter):
+        """Remove filter defined in config
+        """
+        if (config_filter["versions"]["includes"] is not None):
+            for version in (version for version in root.versions.values() if version.name not in config_filter["versions"]["includes"]):
+                version.display = False
+        if (config_filter["versions"]["excludes"] is not None):
+            for version in (version for version in root.versions.values() if version.name in config_filter["versions"]["excludes"]):
+                version.display = False
+        for version in root.versions.values():
+            if (config_filter["sections"]["includes"] is not None):
+                for section in (section for section in version.sections.values() if section.name not in config_filter["sections"]["includes"]):
+                    section.display = False
+            if (config_filter["sections"]["excludes"] is not None):
+                for section in (section for section in version.sections.values() if section.name in config_filter["sections"]["excludes"]):
+                    section.display = False
 
     def remove_undisplayed(self, root):
         """Remove elements marked a not to display

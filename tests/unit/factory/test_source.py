@@ -56,10 +56,11 @@ class TestSource(unittest.TestCase):
     @patch.object(Extender, "extends", return_value={"k": "l"})
     @patch.object(SourceFactory, "populate", return_value="populated")
     @patch.object(SourceFactory, "fix_versions", return_value=None)
+    @patch.object(SourceFactory, "apply_config_filter", return_value=None)
     @patch.object(SourceFactory, "remove_undisplayed", return_value=None)
     @patch.object(SourceFactory, "refactor_hierarchy", return_value=None)
     @patch.object(SourceFactory, "get_extender_paths", return_value=["m", "n"])
-    def test_load_from_config(self, mock_source_extender, mock_refactor, mock_undisplayed, mock_fix, mock_source, mock_extender, mock_merger, mock_parser_directory, mock_parser_file):
+    def test_load_from_config(self, mock_source_extender, mock_refactor, mock_undisplayed, mock_filter, mock_fix, mock_source, mock_extender, mock_merger, mock_parser_directory, mock_parser_file):
         config = ConfigObject()
         config["input"]["directories"] = ["directory1", "directory2"]
         config["input"]["files"] = ["file1", "file2"]
@@ -72,10 +73,132 @@ class TestSource(unittest.TestCase):
         mock_refactor.assert_called_once_with("populated")
         mock_fix.assert_called_once_with("populated")
         mock_undisplayed.assert_called_once_with("populated")
+        mock_filter.assert_called_once_with("populated", config["filter"])
         mock_extender.assert_called_once_with({"i": "j"}, paths=["m", "n"], separator="/", extends_key='extends', inherit_key='inherit', removed_key='removed')
         mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
         mock_parser_directory.assert_has_calls([call('directory1'), call('directory2')])
         mock_parser_file.assert_has_calls([call('file1'), call('file2')])
+
+    def test_apply_config_filter_version(self):
+        root = Root()
+        version1 = Version()
+        version2 = Version()
+        version3 = Version()
+        version1.name = "v1"
+        version2.name = "v2"
+        version3.name = "v3"
+
+        root.versions = {"v1": version1, "v2": version2, "v3": version3}
+
+        config = ConfigObject()
+        self.source.apply_config_filter(root, config["filter"])
+
+        self.assertTrue(version1.display)
+        self.assertTrue(version2.display)
+        self.assertTrue(version3.display)
+
+    def test_apply_config_filter_version_include(self):
+        root = Root()
+        version1 = Version()
+        version2 = Version()
+        version3 = Version()
+        version1.name = "v1"
+        version2.name = "v2"
+        version3.name = "v3"
+
+        root.versions = {"v1": version1, "v2": version2, "v3": version3}
+
+        config = ConfigObject()
+        config["filter"]["versions"]["includes"] = ["v1", "v3"]
+        self.source.apply_config_filter(root, config["filter"])
+
+        self.assertTrue(version1.display)
+        self.assertFalse(version2.display)
+        self.assertTrue(version3.display)
+
+    def test_apply_config_filter_version_exclude(self):
+        root = Root()
+        version1 = Section()
+        version2 = Section()
+        version3 = Section()
+        version1.name = "v1"
+        version2.name = "v2"
+        version3.name = "v3"
+
+        root.versions = {"v1": version1, "v2": version2, "v3": version3}
+
+        config = ConfigObject()
+        config["filter"]["versions"]["excludes"] = ["v1", "v3"]
+        self.source.apply_config_filter(root, config["filter"])
+
+        self.assertFalse(version1.display)
+        self.assertTrue(version2.display)
+        self.assertFalse(version3.display)
+
+    def test_apply_config_filter_section(self):
+        root = Root()
+        version1 = Version()
+
+        section1 = Section()
+        section2 = Section()
+        section3 = Section()
+        section1.name = "v1"
+        section2.name = "v2"
+        section3.name = "v3"
+
+        root.versions = {"v1": version1}
+        version1.sections = {"s1": section1, "s2": section2, "s3": section3}
+
+        config = ConfigObject()
+        self.source.apply_config_filter(root, config["filter"])
+
+        self.assertTrue(section1.display)
+        self.assertTrue(section2.display)
+        self.assertTrue(section3.display)
+
+    def test_apply_config_filter_section_include(self):
+        root = Root()
+        version1 = Version()
+
+        section1 = Section()
+        section2 = Section()
+        section3 = Section()
+        section1.name = "v1"
+        section2.name = "v2"
+        section3.name = "v3"
+
+        root.versions = {"v1": version1}
+        version1.sections = {"s1": section1, "s2": section2, "s3": section3}
+
+        config = ConfigObject()
+        config["filter"]["sections"]["includes"] = ["v1", "v3"]
+        self.source.apply_config_filter(root, config["filter"])
+
+        self.assertTrue(section1.display)
+        self.assertFalse(section2.display)
+        self.assertTrue(section3.display)
+
+    def test_apply_config_filter_section_exclude(self):
+        root = Root()
+        version1 = Version()
+
+        section1 = Version()
+        section2 = Version()
+        section3 = Version()
+        section1.name = "v1"
+        section2.name = "v2"
+        section3.name = "v3"
+
+        root.versions = {"v1": version1}
+        version1.sections = {"s1": section1, "s2": section2, "s3": section3}
+
+        config = ConfigObject()
+        config["filter"]["sections"]["excludes"] = ["v1", "v3"]
+        self.source.apply_config_filter(root, config["filter"])
+
+        self.assertFalse(section1.display)
+        self.assertTrue(section2.display)
+        self.assertFalse(section3.display)
 
     def test_remove_undisplayed(self):
         root = Root()

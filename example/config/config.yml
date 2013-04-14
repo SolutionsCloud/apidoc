@@ -12,19 +12,14 @@ filter: # undefined => all
 #      - v1.0
   sections: # undefined => all
     includes: # undefined => all but excludes
-#      - foo
+#      - Foo
     excludes: # undefined => none
-#      - qux
-  methods: # undefined => all
-    includes: # undefined => all but excludes
-#      - foo.bar
-    excludes: # undefined => none
-#      - foo.baz
+#      - Foo2
 output:
   location: stdout
 #  location: ./output/sample.html
 #  template: default
-  template: ./template/my.html
+#  template: ./template/my.html
   componants: local
 #  componants: embedded
 #  componants: remote

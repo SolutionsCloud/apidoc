@@ -20,10 +20,6 @@ class Config(dict):
                 "includes": None,
                 "excludes": None,
             },
-            "methods": {
-                "includes": None,
-                "excludes": None,
-            }
         }
 
         self["output"] = {

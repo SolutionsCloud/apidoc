@@ -1,4 +1,8 @@
 versions:
+  v2.0:
+    extends: v1.0
+  v3.0:
+    extends: v2.0
   v1.0:
     uri: www.example.com
     status: beta
