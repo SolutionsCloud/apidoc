@@ -31,14 +31,15 @@ function displayScrollHeader() {
 
     element = $(element);
     var elementTop = element.offset().top;
-    if (elementTop > scrollTop || elementTop + element.height() - 5 < scrollTop + header.height()) {
+    if (elementTop > scrollTop || elementTop + element.height() - scrollTop + header.height() - 30 < 0) {
         header.hide();
         return;
     }
 
     if (header.data('element') == element.attr('id')) {
         header.css({
-                width: element.width() + 2
+                width: element.width() + 2,
+                top: Math.min(-1, elementTop + element.height() - scrollTop - header.height() - 30)
             })
             .show();
         return;
@@ -54,7 +55,8 @@ function displayScrollHeader() {
 
     header.data("element", element.attr('id'))
         .css({
-            width: element.width() + 2
+            width: element.width() + 2,
+            top: Math.min(-1, elementTop + element.height() - scrollTop - header.height() - 30)
         })
         .show();
 }
@@ -151,7 +153,7 @@ function onNavigationChange() {
         elementSelector = "#t-" + parameters.type;
     }
 
-    if (elementSelector !== null) {
+    if (elementSelector !== null && $(elementSelector).length) {
         $("BODY").scrollTop($(elementSelector).offset().top - conf.scrollMargin);
     }
 }
