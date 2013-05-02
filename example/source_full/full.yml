@@ -165,11 +165,43 @@ versions:
             uri: /{version}/resource/{resource_id}
             code: 200
             method: PUT
+          Fum:
+            description: changes
+            uri: /changes/{version}/{new_parameter}
+            request_parameters:
+              version:
+                description: Overide V1
+              new_parameter:
+                type: number
+                description: New parameter in this version
+            response_codes:
+              - code: 403
+                message: Something Wrong
+                description: The resource name is not correct
+            request_body:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Resource Name
+                ref:
+                  type: version
+                  description: Resource Name
+                elements:
+                  type: array
+                  description: A list of elements
+                  items:
+                    type: bool
     references:
       element:
         properties:
           name:
             description: foooo
+    types:
+      enumStatus:
+        values:
+          DRAFT2:
+            description: Specifications not freezed
   v3.0:
     display: false
     major: 3

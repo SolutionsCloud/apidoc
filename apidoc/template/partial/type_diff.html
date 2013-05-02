@@ -1,0 +1,34 @@
+{%- import "helper/util.html" as util %}
+{%- import "helper/diff.html" as diff %}
+
+{% if type_versioned.merged.description %}
+<div class="description stack">
+    {% for description in type_versioned.merged.description %}
+    <div class="diff_version" data-version="{{ diff.diff_display_version(description, type_versioned, "description") }}">
+        {{- description -}}
+    </div>
+    {%- endfor -%}
+</div>
+{%- endif -%}
+
+<div class="configuration stack">
+    <h5><i class="icon-ok-circle"></i> Configuration: </h5>
+    <h6>Primary: </h6>
+{% for primary in type_versioned.merged.primary %}
+    <div class="diff_version" data-version="{{ diff.diff_display_version(primary, type_versioned, "primary") }}">
+        <code><span class="typ">{{ primary }}</span></code>
+    </div>
+{%- endfor -%}
+
+{%- if type_versioned.merged.values %}
+        <h6>Values: </h6>
+    {%- call util.render_table([{"width": "200px", "name": "Value"}, {"name": "Description"}]) %}
+        {%- for parameter in type_versioned.merged.values|sort %}
+        <tr class="diff_version" data-version="{{ diff.diff_display_version_signature(parameter.signature, type_versioned, "values") }}">
+            <td><span class="str">{{ util.none_to_empty(parameter.name) }}</span></td>
+            <td><span class="com">{{ util.none_to_empty(parameter.description) }}</span></td>
+        </tr>
+        {%- endfor %}
+    {%- endcall %}
+{%- endif %}
+</div>

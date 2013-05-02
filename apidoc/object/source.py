@@ -344,6 +344,7 @@ class Parameter(Element, Sampleable, Sortable):
         return merge_dict(super().get_signature_struct(), {
             "type": self.type,
             "position": self.position,
+            "description": self.description,
             "optional": self.optional,
         })
 
@@ -545,7 +546,26 @@ class Object(Element, Sampleable):
         self.optional = False
         self.required = True
 
+    _unit_signature = None
+
     def get_signature_struct(self):
+        """Return a uniq signature of the element as dict
+        """
+        return merge_dict(super().get_signature_struct(), {
+            "type": str(self.type),
+            "optional": self.optional,
+            "required": self.required,
+        })
+
+    @property
+    def unit_signature(self):
+        """Return a uniq signature of the element
+        """
+        if self._unit_signature is None:
+            self._unit_signature = hashlib.md5(repr(self.get_unit_signature_struct()).encode("UTF-8")).hexdigest()
+        return self._unit_signature
+
+    def get_unit_signature_struct(self):
         """Return a uniq signature of the element as dict
         """
         return merge_dict(super().get_signature_struct(), {
@@ -582,6 +602,11 @@ class ObjectObject(Object):
             "properties": [x.signature for x in self.properties.values()]
         })
 
+    def get_unit_signature_struct(self):
+        """Return a uniq signature of the element as dict
+        """
+        return super().get_unit_signature_struct()
+
 
 class ObjectArray(Object):
 
@@ -610,6 +635,11 @@ class ObjectArray(Object):
         return merge_dict(super().get_signature_struct(), {
             "items": None if self.items is None else self.items.signature
         })
+
+    def get_unit_signature_struct(self):
+        """Return a uniq signature of the element as dict
+        """
+        return super().get_unit_signature_struct()
 
 
 class ObjectNumber(Object):
@@ -689,6 +719,11 @@ class ObjectDynamic(Object):
             "itemType": self.itemType
         })
 
+    def get_unit_signature_struct(self):
+        """Return a uniq signature of the element as dict
+        """
+        return super().get_unit_signature_struct()
+
     def get_default_sample(self):
         """Return default value for the element
         """
@@ -716,6 +751,11 @@ class ObjectReference(Object):
         return merge_dict(super().get_signature_struct(), {
             "reference": self.get_reference().signature
         })
+
+    def get_unit_signature_struct(self):
+        """Return a uniq signature of the element as dict
+        """
+        return super().get_unit_signature_struct()
 
     def get_reference(self):
         """Return a reference object from the reference_name defined in sources
@@ -751,6 +791,11 @@ class ObjectType(Object):
             "type": self.get_type().signature
         })
 
+    def get_unit_signature_struct(self):
+        """Return a uniq signature of the element as dict
+        """
+        return self.get_signature_struct()
+
     def get_type(self):
         """Return a type object from the type_name defined in sources
         """
@@ -767,19 +812,42 @@ class ObjectType(Object):
         return self.get_type().format.get_sample()
 
 
-class ElementCrossVersion(Element, Sortable):
+class MergedMethod():
 
+    def __init__(self):
+        """Class instantiation
+        """
+        self.description = []
+        self.full_uri = []
+        self.request_parameters = []
+        self.request_headers = []
+        self.request_body = []
+        self.response_body = []
+        self.response_codes = []
+
+class MergedType():
+
+    def __init__(self):
+        """Class instantiation
+        """
+        self.description = []
+        self.primary = []
+        self.values = []
+
+
+class ElementCrossVersion(Element, Sortable):
     """Element ElementCrossVersion
     """
 
     class Change(Enum):
-
         """List of availables Change for this element
         """
         none = 1
         new = 2
         updated = 3
         deleted = 4
+
+    _merged = None
 
     def __init__(self, element):
         """Class instantiation
@@ -812,3 +880,99 @@ class ElementCrossVersion(Element, Sortable):
             return ElementCrossVersion.Change.updated
 
         return ElementCrossVersion.Change.none
+
+
+class TypeCrossVersion(ElementCrossVersion):
+
+    @property
+    def merged(self):
+        """Return a merged reference
+        """
+        if self._merged is None:
+            merged = MergedType()
+            seen_values = []
+            for m in self.versions.values():
+                if m.description is not None and m.description not in merged.description:
+                    merged.description.append(m.description)
+                if m.primary is not None and m.primary not in merged.primary:
+                    merged.primary.append(m.primary)
+                if m.primary == Type.Primaries.enum:
+                    for parameter in m.values.values():
+                        if parameter.signature not in seen_values:
+                            seen_values.append(parameter.signature)
+                            merged.values.append(parameter)
+            self._merged = merged
+        return self._merged
+
+class MethodCrossVersion(ElementCrossVersion):
+
+    @property
+    def merged(self):
+        """Return a merged reference
+        """
+        if self._merged is None:
+            merged = MergedMethod()
+            seen_request_parameters = []
+            seen_request_headers = []
+            seen_response_codes = []
+            for m in self.versions.values():
+                if m.description is not None and m.description not in merged.description:
+                    merged.description.append(m.description)
+                if m.full_uri is not None and m.full_uri not in merged.full_uri:
+                    merged.full_uri.append(m.full_uri)
+                for parameter in m.cleaned_request_parameters.values():
+                    if parameter.signature not in seen_request_parameters:
+                        seen_request_parameters.append(parameter.signature)
+                        merged.request_parameters.append(parameter)
+                for parameter in m.request_headers.values():
+                    if parameter.signature not in seen_request_headers:
+                        seen_request_headers.append(parameter.signature)
+                        merged.request_headers.append(parameter)
+                for parameter in m.response_codes:
+                    if parameter.signature not in seen_response_codes:
+                        seen_response_codes.append(parameter.signature)
+                        merged.response_codes.append(parameter)
+                if m.request_body is not None:
+                    merged.request_body.append(m.request_body)
+                if m.response_body is not None:
+                    merged.response_body.append(m.response_body)
+            self._merged = merged
+        return self._merged
+
+    def objects_by_unit_signature(self, objects):
+        list_objects = {}
+        for object in objects:
+            object.versions = [object.version]
+            if object.unit_signature not in list_objects.keys():
+                list_objects[object.unit_signature] = object
+            else:
+                list_objects[object.unit_signature].versions.append(object.version)
+        return list_objects.values();
+
+    def objects_merge_properties(self, objects):
+        seen_signatures = []
+        list_properties = {}
+        for object in objects:
+            for (property_name, property_value) in object.properties.items():
+                if property_name not in list_properties.keys():
+                    list_properties[property_name] = property_value
+        return list_properties;
+
+    def objects_property_by_property_name(self, objects, property_name):
+        list_objects = []
+        for object in [x for x in objects if x.type is Object.Types.object]:
+            if property_name in object.properties.keys():
+                list_objects.append(object.properties[property_name])
+        return list_objects;
+
+    def objects_items(self, objects):
+        list_objects = []
+        for object in [x for x in objects if x.type is Object.Types.array]:
+            list_objects.append(object.items)
+        return list_objects;
+
+    def objects_reference(self, objects):
+        list_objects = []
+        for object in [x for x in objects if x.type is Object.Types.reference]:
+            list_objects.append(object.get_reference())
+        return list_objects;

@@ -1,0 +1,99 @@
+{%- import "helper/util.html" as util %}
+{%- import "helper/diff.html" as diff %}
+
+{% if method_versioned.merged.description %}
+<div class="description stack">
+    {% for description in method_versioned.merged.description %}
+    <div class="diff_version" data-version="{{ diff.diff_display_version(description, method_versioned, "description") }}">
+        {{- description -}}
+    </div>
+    {%- endfor -%}
+</div>
+{%- endif -%}
+
+<div class="request stack">
+    <h5><i class="icon-upload"></i> Request: </h5>
+    <h6>Resource: </h6>
+{% for full_uri in method_versioned.merged.full_uri %}
+    <div class="diff_version" data-version="{{ diff.diff_display_version(full_uri, method_versioned, "full_uri") }}">
+        <code><span class="hur">{{ full_uri }}</span></code>
+    </div>
+{%- endfor -%}
+
+{%- if method_versioned.merged.request_parameters %}
+    <h6>URI Parameters: </h6>
+    {%- call util.render_table([{"name": "Parameter"},
+        {"width": "160px", "name": "Type"},
+        {"width": "70px", "name": "Optional"},
+        {"width": "50%", "name": "Description"}]) %}
+        {%- for parameter in method_versioned.merged.request_parameters|sort %}
+        <tr class="diff_version" data-version="{{ diff.diff_display_version_signature(parameter.signature, method_versioned, "cleaned_request_parameters") }}">
+            <td><span class="str">{{ util.none_to_empty(parameter.name) }}</span></td>
+            <td><span class="typ type_link">{{ util.none_to_empty(parameter.type) }}</span></td>
+            <td><span class="lit">{% if parameter.optional %}Optional{% endif %}</span></td>
+            <td><span class="com">{{ util.none_to_empty(parameter.description) }}</span></td>
+        </tr>
+        {%- endfor %}
+    {%- endcall %}
+{%- endif %}
+
+{%- if method_versioned.merged.request_headers %}
+    <h6>Headers: </h6>
+    {%- call util.render_table([{"name": "Parameter"},
+        {"width": "160px", "name": "Type"},
+        {"width": "50%", "name": "Description"}]) %}
+        {%- for parameter in method_versioned.merged.request_headers|sort %}
+        <tr class="diff_version" data-version="{{ diff.diff_display_version_signature(parameter.signature, method_versioned, "request_headers") }}">
+            <td><span class="str">{{ util.none_to_empty(parameter.name) }}</span></td>
+            <td><span class="typ type_link">{{ util.none_to_empty(parameter.type) }}</span></td>
+            <td><span class="com">{{ util.none_to_empty(parameter.description) }}</span></td>
+        </tr>
+        {%- endfor %}
+    {%- endcall %}
+{%- endif %}
+
+
+{%- if method_versioned.merged.request_body %}
+    <h6>Body: </h6>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+{{ diff.diff_code_commented(method_versioned, method_versioned.merged.request_body) }}
+        </tbody>
+    </table></div>
+{%- endif %}
+</div>
+
+<div class="response stack">
+    <h5><i class="icon-download"></i> Response: </h5>
+{%- if method_versioned.merged.response_body %}
+    <h6>Body: </h6>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+{{ diff.diff_code_commented(method_versioned, method_versioned.merged.response_body) }}
+        </tbody>
+    </table></div>
+{%- endif %}
+
+{%- if method_versioned.merged.response_codes %}
+    <h6>Codes: </h6>
+{%- call util.render_table([{"width": "50px", "name": "Code"},
+    {"name": "Message"},
+    {"width": "50%", "name": "Description"}]) %}
+    {%- for parameter in method_versioned.merged.response_codes|sort %}
+        <tr class="diff_version" data-version="{{ diff.diff_display_version_signature_list(parameter.signature, method_versioned, "response_codes") }}">
+            <td><span class="lit">{{ util.none_to_empty(parameter.code) }}</span></td>
+            <td><span class="str">{{ util.none_to_empty(parameter.message) }}</span></td>
+            <td><span class="com">{{ util.none_to_empty(parameter.description) }}</span></td>
+        </tr>
+    {%- endfor %}
+{%- endcall %}
+{%- endif %}
+</div>

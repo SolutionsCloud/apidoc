@@ -2,7 +2,7 @@
     <li class="section" id="s-{{ section.name }}">
         <h3>{{ section.name }}</h3>
     {%- if section.description %}
-        <p class="description">{{ section.description }}</p>
+        <div class="description">{{ section.description }}</div>
         {%- endif %}
         <ul class="unstyled">
     {%- for method_versioned in section.methods.values()|sort %}
@@ -33,7 +33,10 @@
                 {%- if version.name not in method_versioned.versions %}{{ version.name }} {% endif %}
             {%- endfor -%}
                     ">
-                        <p class="description stack">no implementation for this version</p>
+                        <div class="description stack">no implementation for this version</div>
+                    </li>
+                    <li class="diff">
+            {%- include "partial/method_diff.html" -%}
                     </li>
         {%- endif %}
         {%- for method in method_versioned.signatures.values() %}
@@ -42,7 +45,7 @@
                 {%- if method_version.signature == method.signature %}{{ method_version_name }} {% endif %}
             {%- endfor -%}
                     ">
-                    {%- include "partial/method.html" %}
+            {%- include "partial/method.html" -%}
                     </li>
         {%- endfor %}
                 </ul>

@@ -14,7 +14,7 @@
             }
         }
 
-        > P.description {
+        > .description {
             font-style: italic;
             margin-bottom: 0;
         }
@@ -35,6 +35,18 @@
             THEAD {
                 background-color: #F5F5F5;
             }
+        }
+
+        .diff_version {
+            &.diff_new {
+                background-color: hsl(120, 100%, 93%);;
+            }
+            &.diff_del {
+                background-color: hsl(0, 100%, 93%);;
+            }
+        }
+        div.diff_new, div.diff_del {
+            padding: 3px;
         }
     }
 }

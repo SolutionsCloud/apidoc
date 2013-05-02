@@ -2,7 +2,7 @@
     <li class="namespace" id="n-{{ namespace.name }}">
         <h3>{{ namespace.name }}</h3>
     {%- if namespace.description %}
-        <p class="description">{{ namespace.description }}</p>
+        <div class="description">{{ namespace.description }}</div>
     {%- endif %}
         <ul class="unstyled">
     {%- for type_versioned in namespace.types.values()|sort %}
@@ -30,7 +30,10 @@
                 {%- if version.name not in type_versioned.versions %}{{ version.name }} {% endif %}
             {%- endfor -%}
                     ">
-                        <p class="description stack">no implementation for this version</p>
+                        <div class="description stack">no implementation for this version</div>
+                    </li>
+                    <li class="diff">
+            {%- include "partial/type_diff.html" -%}
                     </li>
         {%- endif %}
         {%- for type in type_versioned.signatures.values() %}
@@ -39,7 +42,7 @@
                 {%- if type_version.signature == type.signature %}{{ type_version_name }} {% endif %}
             {%- endfor -%}
                     ">
-                    {%- include "partial/type.html" %}
+            {%- include "partial/type.html" %}
                     </li>
         {%- endfor %}
                 </ul>

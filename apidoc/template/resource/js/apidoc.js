@@ -36,29 +36,31 @@ function displayScrollHeader() {
         return;
     }
 
-    if (header.data('element') == element.attr('id')) {
-        header.css({
-                width: element.width() + 2,
-                top: Math.min(-1, elementTop + element.height() - scrollTop - header.height() - 30)
-            })
-            .show();
-        return;
+    if (header.data('element') != element.attr('id')) {
+        $("H4", header).html(element.find("> H4").html());
+        $("> .versions", header).html(element.find("> .versions").html());
+        if (element.data("method") !== undefined) {
+            header.attr("data-method", element.data("method"));
+        } else {
+            header.attr("data-method", null);
+        }
+
+        header.data("element", element.attr('id'))
+        header.find("> .versions>LI").click(function() {
+            item = element;
+            version = $(this).data("version");
+
+            displayDiff(item, version);
+
+        });
     }
 
-    $("H4", header).html(element.find("> H4").html());
-    $("> .versions", header).html(element.find("> .versions").html());
-    if (element.data("method") !== undefined) {
-        header.attr("data-method", element.data("method"));
-    } else {
-        header.attr("data-method", null);
-    }
-
-    header.data("element", element.attr('id'))
-        .css({
+    header.css({
             width: element.width() + 2,
             top: Math.min(-1, elementTop + element.height() - scrollTop - header.height() - 30)
         })
         .show();
+
 }
 
 function initScrollHeader() {
@@ -308,6 +310,41 @@ function initSearch() {
     });
 }
 
+
+function displayDiff(item, version) {
+    if (conf.version == version) {
+        item.find(" > .contents > LI.diff").hide();
+        item.find(" > .contents > LI.version[data-version~=\"" + conf.version + "\"]").show();
+
+        refreshScrollNavigation()
+        return
+    }
+
+    if(!item.find(" > .contents > LI.diff").is(":visible")) {
+        $("BODY").scrollTop(Math.min($("BODY").scrollTop(), $(item).offset().top - conf.scrollMargin));
+    }
+
+    item.find(" > .contents > LI.version").hide();
+    item.find(" > .contents > LI.diff").show();
+    item.find(" > .contents > LI.diff .diff_version").show().removeClass("diff_new diff_del")
+    item.find(" > .contents > LI.diff .diff_version:not([data-version~=\"" + conf.version + "\"]):not([data-version~=\"" + version + "\"])").hide()
+    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + version + "\"]:not([data-version~=\"" + conf.version + "\"])").addClass("diff_new")
+    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + conf.version + "\"]:not([data-version~=\"" + version + "\"])").addClass("diff_del")
+
+    refreshScrollNavigation()
+}
+
+
+function initDiff() {
+    $(".item>.versions>LI").click(function() {
+        item = $(this).closest(".item");
+        version = $(this).data("version");
+
+        displayDiff(item, version);
+
+    });
+}
+
 function shortcutSearch(event, key) {
     if (event.preventDefault) {
         event.preventDefault();
@@ -406,6 +443,7 @@ $(document).ready(function () {
     initScrollNavigation();
     initScrollHeader();
     initNavigation();
+    initDiff();
     initSearch();
     initShortcuts();
     initHelp();

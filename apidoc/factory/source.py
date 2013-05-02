@@ -5,7 +5,7 @@ from copy import deepcopy
 from apidoc.object.source import Root, Sampleable, Displayable
 from apidoc.object.source import Version
 from apidoc.object.source import Section, Method, Namespace
-from apidoc.object.source import ElementCrossVersion
+from apidoc.object.source import MethodCrossVersion, TypeCrossVersion, ElementCrossVersion
 from apidoc.object.source import Parameter, ResponseCode
 from apidoc.object.source import Type, EnumType, EnumTypeValue
 from apidoc.object.source import Object, ObjectObject, ObjectArray
@@ -101,11 +101,11 @@ class Source():
                     root.namespaces[type.namespace] = Namespace(name=type.namespace)
 
                 if type_name not in root.namespaces[type.namespace].types:
-                    root.namespaces[type.namespace].types[type_name] = ElementCrossVersion(element=type)
+                    root.namespaces[type.namespace].types[type_name] = TypeCrossVersion(element=type)
                 root.namespaces[type.namespace].types[type_name].versions[version_name] = type
 
                 if type_name not in root.types:
-                    root.types[type_name] = ElementCrossVersion(element=type)
+                    root.types[type_name] = TypeCrossVersion(element=type)
                 root.types[type_name].versions[version_name] = type
                 if type.signature not in root.namespaces[type.namespace].types[type_name].signatures:
                         root.namespaces[type.namespace].types[type_name].signatures[type.signature] = type
@@ -121,7 +121,7 @@ class Source():
                     root.sections[section_name].methods = {}
                 for (method_name, method) in section.methods.items():
                     if method_name not in root.sections[section_name].methods:
-                        root.sections[section_name].methods[method_name] = ElementCrossVersion(element=method)
+                        root.sections[section_name].methods[method_name] = MethodCrossVersion(element=method)
                     root.sections[section_name].methods[method_name].versions[version_name] = method
                     if method.signature not in root.sections[section_name].methods[method_name].signatures:
                         root.sections[section_name].methods[method_name].signatures[method.signature] = method
