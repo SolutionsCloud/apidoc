@@ -5,6 +5,10 @@
     > .contents > LI {
         display: none;
 
+        &.active {
+            display: block;
+        }
+
         .stack {
             border-bottom: 1px dotted #ddd;
             padding: 10px 15px;
@@ -45,8 +49,47 @@
                 background-color: hsl(0, 100%, 93%);;
             }
         }
-        div.diff_new, div.diff_del {
-            padding: 3px;
+    }
+
+    &.diff-mode > .contents > LI.version.active {
+        display: none;
+    }
+
+    &.diff-mode-side > .contents > LI {
+       &.diff {
+            width: 50%;
+            display: inline-block!important;
+
+            > H5.title {
+                text-align: center;
+            }
+        }
+
+        &.diff-left .diff_new {
+            visibility: hidden;
+        }
+        &.diff-right .diff_del {
+            visibility: hidden;
         }
     }
+
+    &.diff-mode-inline > .contents > LI {
+       &.diff > H5.title {
+            display:none;
+        }
+
+        &.diff-left {
+            display:block;
+        }
+        &.diff-right {
+            display:none;
+        }
+    }
+
+    &.diff-mode-mini > .contents > LI {
+        .diff_version:not(.diff_new):not(.diff_del) {
+            display:none;
+        }
+    }
+
 }

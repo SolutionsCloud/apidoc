@@ -9,7 +9,7 @@
             border-radius: 4px;
     & {
         background-color: #f0f0f0;
-        &, &::before, > .versions, > .versions > LI, > .contents > LI > .stack {
+        &, &::before, > .versions, > .diff-header, > .versions > LI, > .contents > LI > .stack {
             border-color: #ddd;
         }
         &::before {
@@ -39,70 +39,38 @@
 
     &[data-method=GET] {
         background-color: hsl(200, 65%, 90%);
-        &, &::before, > .versions, > .versions > LI, > .contents > LI > .stack {
+        &, &::before, > .versions, > .diff-header, > .versions > LI, > .contents > LI > .stack {
             border-color: hsl(200, 65%, 70%);
         }
         &::before {
             background-color: hsl(200, 100%, 35%);
         }
-        &#item-head::after {
-            background-image: -webkit-gradient(
-              linear, left top, left bottom, from(hsla(200, 65%, 90%, 1)), to(hsla(200, 65%, 90%, 0))
-            );
-            background-image: -moz-linear-gradient(
-              hsla(200, 65%, 90%, 1) 0%, hsla(200, 65%, 90%, 0)100%
-            );
-        }
     }
     &[data-method=POST] {
         background-color: hsl(103, 45%, 90%);
-        &, &::before, > .versions, > .versions > LI, > .contents > LI > .stack {
+        &, &::before, > .versions, > .diff-header, > .versions > LI, > .contents > LI > .stack {
             border-color: hsl(103, 45%, 70%);
         }
         &::before {
             background-color: hsl(103, 90%, 35%);
         }
-        &#item-head::after {
-            background-image: -webkit-gradient(
-              linear, left top, left bottom, from(hsla(103, 45%, 90%, 1)), to(hsla(103, 45%, 90%, 0))
-            );
-            background-image: -moz-linear-gradient(
-              hsla(103, 45%, 90%, 1) 0%, hsla(103, 45%, 90%, 0)100%
-            );
-        }
     }
     &[data-method=PUT] {
         background-color: hsl(38, 80%, 90%);
-        &, &::before, > .versions, > .versions > LI, > .contents > LI > .stack {
+        &, &::before, > .versions, > .diff-header, > .versions > LI, > .contents > LI > .stack {
             border-color: hsl(38, 80%, 70%);
         }
         &::before {
             background-color: hsl(38, 90%, 40%);
         }
-        &#item-head::after {
-            background-image: -webkit-gradient(
-              linear, left top, left bottom, from(hsla(38, 80%, 90%, 1)), to(hsla(38, 80%, 90%, 0))
-            );
-            background-image: -moz-linear-gradient(
-              hsla(38, 80%, 90%, 1) 0%, hsla(38, 80%, 90%, 0)100%
-            );
-        }
     }
     &[data-method=DELETE] {
         background-color: hsl(0, 45%, 90%);
-        &, &::before, > .versions, > .versions > LI, > .contents > LI > .stack {
+        &, &::before, > .versions, > .diff-header, > .versions > LI, > .contents > LI > .stack {
             border-color: hsl(0, 45%, 70%);
         }
         &::before {
             background-color: hsl(0, 90%, 35%);
-        }
-        &#item-head::after {
-            background-image: -webkit-gradient(
-              linear, left top, left bottom, from(hsla(0, 45%, 90%, 1)), to(hsla(0, 45%, 90%, 0))
-            );
-            background-image: -moz-linear-gradient(
-              hsla(0, 45%, 90%, 1) 0%, hsla(0, 45%, 90%, 0)100%
-            );
         }
     }
 
@@ -113,12 +81,6 @@
         width: 100%;
         top: 26px;
 
-        background-image: -webkit-gradient(
-          linear, left top, left bottom, from(hsla(0, 0%, 94%, 1)), to(hsla(0, 0%, 94%, 0))
-        );
-        background-image: -moz-linear-gradient(
-          hsla(0, 0%, 94%, 1) 0%, hsla(0, 0%, 94%, 0) 100%
-        );
     }
 }
 

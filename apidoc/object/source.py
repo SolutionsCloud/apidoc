@@ -940,14 +940,17 @@ class MethodCrossVersion(ElementCrossVersion):
         return self._merged
 
     def objects_by_unit_signature(self, objects):
-        list_objects = {}
+        seen_signatures = []
+        list_objects = []
         for object in objects:
             object.versions = [object.version]
-            if object.unit_signature not in list_objects.keys():
-                list_objects[object.unit_signature] = object
+            if object.unit_signature not in seen_signatures:
+                seen_signatures.append(object.unit_signature)
+                list_objects.append(object)
             else:
-                list_objects[object.unit_signature].versions.append(object.version)
-        return list_objects.values();
+                for x in [x for x in list_objects if x.unit_signature == object.unit_signature]:
+                    x.versions.append(object.version)
+        return list_objects;
 
     def objects_merge_properties(self, objects):
         seen_signatures = []

@@ -12,20 +12,30 @@
             >
                 <h4>{{ method_versioned.name }}</h4>
         {%- if sources.versions|length > 1 %}
-                <ul class="versions inline">
+                <div class="diff-header">
+                    <h5 class="desc"></h5>
+                    <h5 class="diff">
+                        <i class="icon-pause mode-side"></i>
+                        <i class="icon-stop mode-inline"></i>
+                        <i class="icon-plus mode-full"></i>
+                        <i class="icon-minus mode-mini"></i>
+                        <i class="icon-random"></i>
+                         Diff
+                    </h5>
+                    <ul class="versions inline">
             {%- for version in sources.versions.values()|sort %}
-                    <li data-version="{{ version.name }}" data-changed="{{ method_versioned.changed_status(version.name)|lower }}"
+                        <li data-version="{{ version.name }}" data-changed="{{ method_versioned.changed_status(version.name)|lower }}"
                 {%- if version.name not in method_versioned.versions -%}
                     data-exists="no"
                 {%- else -%}
                     data-exists="yes"
                 {%- endif -%}>
-                        <i class="icon-bookmark"></i>
                         {{- version.name -}}
-                    </li>
+                        </li>
             {%- endfor %}
-                </ul>
-        {%- endif %}
+                    </ul>
+                </div>
+        {%- endif -%}
                 <ul class="contents unstyled">
         {%- if sources.versions|length > 1 %}
                     <li class="version" data-version="

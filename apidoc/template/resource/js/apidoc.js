@@ -38,7 +38,22 @@ function displayScrollHeader() {
 
     if (header.data('element') != element.attr('id')) {
         $("H4", header).html(element.find("> H4").html());
-        $("> .versions", header).html(element.find("> .versions").html());
+        $("> .diff-header", header).html(element.find("> .diff-header").html());
+        header.removeClass("diff-mode diff-mode-inline diff-mode-side diff-mode-mini diff-mode-full");
+        if(element.is(".diff-mode")) {
+            header.addClass("diff-mode");
+            if(element.is(".diff-mode-side")) {
+                header.addClass("diff-mode-side");
+            } else {
+                header.addClass("diff-mode-inline");
+            }
+            if(element.is(".diff-mode-full")) {
+                header.addClass("diff-mode-full");
+            } else {
+                header.addClass("diff-mode-mini");
+            }
+        }
+
         if (element.data("method") !== undefined) {
             header.attr("data-method", element.data("method"));
         } else {
@@ -46,12 +61,35 @@ function displayScrollHeader() {
         }
 
         header.data("element", element.attr('id'))
-        header.find("> .versions>LI").click(function() {
-            item = element;
+        header.find("> .diff-header > H5").click(function() {
+            toggleDiffLayout(element);
+        });
+
+        header.find("> .diff-header > .versions > LI").click(function() {
             version = $(this).data("version");
+            displayDiff(element, version)
+        });
 
-            displayDiff(item, version);
+        header.find("> .diff-header > H5 > I.mode-side").click(function(event) {
+            event.stopPropagation();
+            header.removeClass("diff-mode-side").addClass("diff-mode-inline")
+            element.removeClass("diff-mode-side").addClass("diff-mode-inline")
+        });
+        header.find("> .diff-header > H5 > I.mode-inline").click(function(evente) {
+            event.stopPropagation();
+            header.removeClass("diff-mode-inline").addClass("diff-mode-side")
+            element.removeClass("diff-mode-inline").addClass("diff-mode-side")
+        });
 
+        header.find("> .diff-header > H5 > I.mode-full").click(function(event) {
+            event.stopPropagation();
+            header.removeClass("diff-mode-full").addClass("diff-mode-mini")
+            element.removeClass("diff-mode-full").addClass("diff-mode-mini")
+        });
+        header.find("> .diff-header > H5 > I.mode-mini").click(function(evente) {
+            event.stopPropagation();
+            header.removeClass("diff-mode-mini").addClass("diff-mode-full")
+            element.removeClass("diff-mode-mini").addClass("diff-mode-full")
         });
     }
 
@@ -75,7 +113,7 @@ function displayVersion() {
     var scrollReferenceElement = null;
     var items = $(".item:not(#item-head)");
     for (var i = 0, l = items.length; i < l; i++) {
-        if ($(items[i]).offset().top >= scrollTop) {
+        if ($(items[i]).offset().top > scrollTop + conf.scrollMargin) {
             break;
         }
 
@@ -87,22 +125,25 @@ function displayVersion() {
         var offset = $(scrollReferenceElement).offset().top - scrollTop
     }
 
-    $(".method, .type").find(" > .contents > LI").hide();
+    $(".method, .type").find(" > .contents > LI").removeClass("active");
     if (conf.version === null) {
-        $(".method, .type").find(" > .contents > LI:last-child").show();
+        $(".method, .type").find(" > .contents > LI.version:last-child").addClass("active");
     } else {
         $("#nav-versions > LI[data-version].active").removeClass("active");
         $("#nav-versions > LI[data-version=\"" + conf.version + "\"]").addClass("active");
 
-        $(".item").find(" > .versions > LI[data-version].active").removeClass("active");
-        $(".item").find(" > .versions > LI[data-version=\"" + conf.version + "\"]").addClass("active");
+        $(".item > .diff-header > .versions > LI[data-version].active").removeClass("active");
+        $(".item > .diff-header > H5.desc").html('<i class="icon-random"></i>' + conf.version)
+        $(".item > .diff-header > .versions > LI[data-version=\"" + conf.version + "\"]").addClass("active");
+        $(".method, .type").find(" > .contents > LI[data-version~=\"" + conf.version + "\"]").addClass("active");
 
-        $(".method, .type").find(" > .versions > LI[data-version~=\"" + conf.version + "\"]").addClass("active");
-        $(".method, .type").find(" > .contents > LI[data-version~=\"" + conf.version + "\"]").show();
+        $(".diff-mode").each(function() {
+            displayDiff($(this))
+        });
     }
 
     if (scrollReferenceElement !== null) {
-        $("BODY").scrollTop($(scrollReferenceElement).offset().top - offset);
+        $("BODY").scrollTop($(scrollReferenceElement).offset().top - Math.max(offset, 0 - $(scrollReferenceElement).outerHeight() + 60));
         displayScrollHeader();
     }
 
@@ -134,8 +175,10 @@ function onNavigationChange() {
     }
 
     if (parameters.version) {
-        conf.version = parameters.version;
-        displayVersion(parameters.version);
+        if (conf.version != parameters.version) {
+            conf.version = parameters.version;
+            displayVersion(parameters.version);
+        }
     }
 
     elementSelector = null;
@@ -312,20 +355,20 @@ function initSearch() {
 
 
 function displayDiff(item, version) {
-    if (conf.version == version) {
-        item.find(" > .contents > LI.diff").hide();
-        item.find(" > .contents > LI.version[data-version~=\"" + conf.version + "\"]").show();
-
-        refreshScrollNavigation()
-        return
+    if (version==null) {
+        version = $("#nav-versions > LI[data-version]:not([data-version~=\"" + conf.version + "\"])").first().data("version");
+    }
+    item.find(" > .diff-header > .versions > LI").removeClass("diff_left diff_right")
+    item.find(" > .diff-header > .versions > LI[data-version~=\"" + conf.version + "\"]").addClass("diff_left")
+    item.find(" > .diff-header > .versions > LI[data-version~=\"" + version + "\"]").addClass("diff_right")
+    if ($("#item-head").data('element') == item.attr("id")) {
+        $("#item-head > .diff-header > .versions > LI").removeClass("diff_left diff_right")
+        $("#item-head > .diff-header > .versions > LI[data-version~=\"" + conf.version + "\"]").addClass("diff_left")
+        $("#item-head > .diff-header > .versions > LI[data-version~=\"" + version + "\"]").addClass("diff_right")
     }
 
-    if(!item.find(" > .contents > LI.diff").is(":visible")) {
-        $("BODY").scrollTop(Math.min($("BODY").scrollTop(), $(item).offset().top - conf.scrollMargin));
-    }
-
-    item.find(" > .contents > LI.version").hide();
-    item.find(" > .contents > LI.diff").show();
+    item.find(" > .contents > LI.diff-left > H5.title").text(conf.version)
+    item.find(" > .contents > LI.diff-right > H5.title").text(version)
     item.find(" > .contents > LI.diff .diff_version").show().removeClass("diff_new diff_del")
     item.find(" > .contents > LI.diff .diff_version:not([data-version~=\"" + conf.version + "\"]):not([data-version~=\"" + version + "\"])").hide()
     item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + version + "\"]:not([data-version~=\"" + conf.version + "\"])").addClass("diff_new")
@@ -334,15 +377,70 @@ function displayDiff(item, version) {
     refreshScrollNavigation()
 }
 
+function toggleDiffLayout(item) {
+    item.toggleClass("diff-mode");
+    if (item.is(".diff-mode")) {
+        item.addClass("diff-mode-side").removeClass("diff-mode-inline");
+        item.addClass("diff-mode-full").removeClass("diff-mode-mini");
+        if ($("#item-head").data('element') == item.attr("id")) {
+            $("#item-head").addClass("diff-mode diff-mode-side").removeClass("diff-mode-inline");
+            $("#item-head").addClass("diff-mode diff-mode-full").removeClass("diff-mode-mini");
+        }
+
+        displayDiff(item)
+
+        if (item.offset().top + item.outerHeight() - 60 < $("BODY").scrollTop()) {
+            $("BODY").scrollTop(item.offset().top + item.outerHeight() - 60);
+        }
+    } else {
+        item.removeClass("diff-mode diff-mode-side diff-mode-inline diff-mode-full diff-mode-mini");
+        if ($("#item-head").data('element') == item.attr("id")) {
+            $("#item-head").removeClass("diff-mode diff-mode-side diff-mode-inline diff-mode-full diff-mode-mini");
+        }
+
+        item.find(" > .contents > LI.version[data-version~=\"" + conf.version + "\"]").addClass("active");
+
+        refreshScrollNavigation()
+    }
+}
 
 function initDiff() {
-    $(".item>.versions>LI").click(function() {
+    $(".item>.diff-header > H5").click(function() {
         item = $(this).closest(".item");
-        version = $(this).data("version");
-
-        displayDiff(item, version);
+        toggleDiffLayout(item);
 
     });
+    $(".item>.diff-header > H5 > I.mode-side").click(function(event) {
+        event.stopPropagation();
+        item = $(this).closest(".item");
+        item.removeClass("diff-mode-side").addClass("diff-mode-inline")
+    });
+    $(".item>.diff-header > H5 > I.mode-inline").click(function(evente) {
+        event.stopPropagation();
+        item = $(this).closest(".item");
+        item.removeClass("diff-mode-inline").addClass("diff-mode-side")
+    });
+    $(".item>.diff-header > H5 > I.mode-full").click(function(event) {
+        event.stopPropagation();
+        item = $(this).closest(".item");
+        item.removeClass("diff-mode-full").addClass("diff-mode-mini")
+    });
+    $(".item>.diff-header > H5 > I.mode-mini").click(function(evente) {
+        event.stopPropagation();
+        item = $(this).closest(".item");
+        item.removeClass("diff-mode-mini").addClass("diff-mode-full")
+    });
+
+    $(".item>.diff-header > .versions > LI").click(function() {
+        item = $(this).closest(".item");
+        version = $(this).data("version");
+        displayDiff(item, version)
+
+    });
+
+    $(".item > .contents > .diff").each(function() {
+        $(this).addClass("diff-left").clone().insertAfter($(this)).addClass("diff-right").removeClass("diff-left");
+    })
 }
 
 function shortcutSearch(event, key) {
@@ -411,7 +509,7 @@ function shortcutGotoPreviousVersion(event, key) {
     } else {
         var items = current.prevAll("LI[data-version]:visible").find(">A");
         if (items.length > 0) {
-            items.get(0).click()
+            items.get(items.length - 1).click()
         }
     }
 }

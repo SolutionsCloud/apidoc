@@ -203,7 +203,7 @@ versions:
           DRAFT2:
             description: Specifications not freezed
   v3.0:
-    display: false
+    display: true
     major: 3
     minor: 0
     uri: www.example2.com

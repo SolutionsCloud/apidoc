@@ -6,12 +6,14 @@
      &[data-method] > H4 {
         margin-left: 60px;
     }
+}
 
-    > .versions {
+.item, .item-head {
+    > .diff-header {
         position: absolute;
         top: 0px;
         right: 0px;
-        background-color: rgba(245, 245, 245, 0.75);
+        background-color: rgb(245, 245, 245);
         border: 1px solid #ccc;
         border-top: none;
         border-right: none;
@@ -20,69 +22,163 @@
            -moz-border-radius: 0 4px 0 4px;
                 border-radius: 0 4px 0 4px;
         white-space: no-wrap;
-        font-size: 10px;
 
-        > LI {
-            padding: 2px 7px;
-            border-left: 1px solid #CCC;
-            color: #666;
-            line-height: 14px;
-            position: relative;
+        padding:0 3px;
 
-            &[data-exists=no] {
-                color: #CCC;
-            }
+        > H5 {
+            font-size: 13px;
+            font-weight: bold;
+            line-height: 16px;
 
-            &[data-changed]:not(:first-child)::before {
-                display: block;
-                position: absolute;
-                left: -5px;
-                bottom: -7px;
-                padding: 0 3px;
-                color: #333;
-                font-weight: normal;
-                font-size: 9px;
-                line-height: 11px;
-            }
-
-            &[data-changed=new]:first-child::before {
-                display: none;
-            }
-
-            &[data-changed=new]:not(:first-child)::before {
-                content: "new";
-                background-color: hsl(103, 45%, 70%);
-            }
-
-            &[data-changed=updated]:not(:first-child)::before {
-                content: "change";
-                background-color: hsl(38, 80%, 70%);
-            }
-
-            &[data-changed=deleted]:not(:first-child)::before {
-                content: "delete";
-                background-color: hsl(0, 45%, 70%);
-            }
-
-            &:first-child {
-                border-left: none;
-            }
-
-            &.active {
-                font-weight: bold;
-                color: #000;
-                padding-left: 13px;
-                > I {
-                    display: block;
-                    position: absolute;
-                    top: -5px;
-                    margin-left: -14px;
+            cursor: pointer;
+            & {
+                &.diff {
+                    display:none;
+                }
+                &.desc {
+                    display:block;
                 }
             }
 
             > I {
-                display: none;
+                margin-right: 3px;
             }
+        }
+
+        > .versions {
+            display: none;
+            white-space: no-wrap;
+            font-size: 10px;
+            margin: 0;
+
+
+            > LI {
+                padding: 2px 7px;
+                border-left: 1px solid #CCC;
+                color: #666;
+                line-height: 14px;
+                position: relative;
+
+                cursor: pointer;
+
+                &[data-exists=no] {
+                    color: #CCC;
+                }
+
+                &[data-changed]:not(:first-child)::before {
+                    display: block;
+                    position: absolute;
+                    left: -5px;
+                    bottom: -7px;
+                    padding: 0 3px;
+                    color: #333;
+                    font-weight: normal;
+                    font-size: 9px;
+                    line-height: 11px;
+                }
+
+                &[data-changed=new]:first-child::before {
+                    display: none;
+                }
+
+                &[data-changed=new]:not(:first-child)::before {
+                    content: "new";
+                    background-color: hsl(103, 45%, 70%);
+                }
+
+                &[data-changed=updated]:not(:first-child)::before {
+                    content: "change";
+                    background-color: hsl(38, 80%, 70%);
+                }
+
+                &[data-changed=deleted]:not(:first-child)::before {
+                    content: "delete";
+                    background-color: hsl(0, 45%, 70%);
+                }
+
+                &:first-child {
+                    border-left: none;
+                }
+
+                &.active {
+                    font-weight: bold;
+                    color: #000;
+                    padding-left: 13px;
+                    > I {
+                        display: block;
+                        position: absolute;
+                        top: -5px;
+                        margin-left: -14px;
+                    }
+                }
+
+                &.diff_right {
+                    color: hsl(120, 100%, 20%);;
+                }
+                &.diff_left {
+                    color: hsl(0, 100%, 20%);;
+                }
+                &.diff_left.diff_right {
+                    color: hsl(0, 100%, 0%);;
+                }
+
+                > I {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &.diff-mode > .diff-header {
+        > H5 {
+            &.diff {
+                display:block;
+                > I.mode-side, > I.mode-inline, > I.mode-full, > I.mode-mini {
+                    display:none;
+                }
+            }
+            &.desc {
+                display:none;
+            }
+        }
+        > .versions {
+            display: block;
+        }
+    }
+
+    &.diff-mode-side > .diff-header > H5.diff {
+        > I.mode-side {
+            display:inline-block;
+        }
+        > I.mode-inline {
+            display:none;
+        }
+    }
+
+    &.diff-mode-inline > .diff-header > H5.diff {
+        > I.mode-side {
+            display:none;
+        }
+        > I.mode-inline {
+            display:inline-block;
+        }
+    }
+
+    &.diff-mode-full > .diff-header > H5.diff {
+        > I.mode-full {
+            display:inline-block;
+        }
+        > I.mode-mini {
+            display:none;
+        }
+    }
+
+    &.diff-mode-mini > .diff-header > H5.diff {
+        > I.mode-full {
+            display:none;
+        }
+        > I.mode-mini {
+            display:inline-block;
         }
     }
 }

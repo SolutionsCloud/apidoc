@@ -1,10 +1,11 @@
+
 ApiDoc's TODO
 =============
 
 Features
 --------
 * RunMode: The end user can run the methods through his browser
-* Diff: Provide a visual diff between versions
+* display change tag over diff-header and in navigation panel
 * Variable: Some parts of the sources can refered to variables defined in the source file or injected when the document is builded
 * Simplify Sources: When the API have only one version or only one section, The keys version and section could be ommited in sources files
 
