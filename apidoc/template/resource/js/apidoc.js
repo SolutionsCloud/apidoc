@@ -134,6 +134,12 @@ function displayVersion() {
 
         $(".item > .diff-header > .versions > LI[data-version].active").removeClass("active");
         $(".item > .diff-header > H5.desc").html('<i class="icon-random"></i>' + conf.version)
+        $(".item").each(function() {
+            status = $(this).find(" > .diff-header > .versions > LI:not(:first-child)[data-version=\"" + conf.version + "\"]").data("changed")
+            $(this).find(" > .diff-header > H5.desc").attr("data-changed", status)
+            $(".nav-list > LI > A[data-target=\"#" + $(this).attr("id") + "\"]").closest("LI").attr("data-changed", status)
+        });
+
         $(".item > .diff-header > .versions > LI[data-version=\"" + conf.version + "\"]").addClass("active");
         $(".method, .type").find(" > .contents > LI[data-version~=\"" + conf.version + "\"]").addClass("active");
 
@@ -359,20 +365,20 @@ function displayDiff(item, version) {
         version = $("#nav-versions > LI[data-version]:not([data-version~=\"" + conf.version + "\"])").first().data("version");
     }
     item.find(" > .diff-header > .versions > LI").removeClass("diff_left diff_right")
-    item.find(" > .diff-header > .versions > LI[data-version~=\"" + conf.version + "\"]").addClass("diff_left")
-    item.find(" > .diff-header > .versions > LI[data-version~=\"" + version + "\"]").addClass("diff_right")
+    item.find(" > .diff-header > .versions > LI[data-version~=\"" + version + "\"]").addClass("diff_left")
+    item.find(" > .diff-header > .versions > LI[data-version~=\"" + conf.version + "\"]").addClass("diff_right")
     if ($("#item-head").data('element') == item.attr("id")) {
         $("#item-head > .diff-header > .versions > LI").removeClass("diff_left diff_right")
-        $("#item-head > .diff-header > .versions > LI[data-version~=\"" + conf.version + "\"]").addClass("diff_left")
-        $("#item-head > .diff-header > .versions > LI[data-version~=\"" + version + "\"]").addClass("diff_right")
+        $("#item-head > .diff-header > .versions > LI[data-version~=\"" + version + "\"]").addClass("diff_left")
+        $("#item-head > .diff-header > .versions > LI[data-version~=\"" + conf.version + "\"]").addClass("diff_right")
     }
 
-    item.find(" > .contents > LI.diff-left > H5.title").text(conf.version)
-    item.find(" > .contents > LI.diff-right > H5.title").text(version)
+    item.find(" > .contents > LI.diff-left > H5.title").text(version)
+    item.find(" > .contents > LI.diff-right > H5.title").text(conf.version)
     item.find(" > .contents > LI.diff .diff_version").show().removeClass("diff_new diff_del")
-    item.find(" > .contents > LI.diff .diff_version:not([data-version~=\"" + conf.version + "\"]):not([data-version~=\"" + version + "\"])").hide()
-    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + version + "\"]:not([data-version~=\"" + conf.version + "\"])").addClass("diff_new")
-    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + conf.version + "\"]:not([data-version~=\"" + version + "\"])").addClass("diff_del")
+    item.find(" > .contents > LI.diff .diff_version:not([data-version~=\"" + version + "\"]):not([data-version~=\"" + conf.version + "\"])").hide()
+    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + conf.version + "\"]:not([data-version~=\"" + version + "\"])").addClass("diff_new")
+    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + version + "\"]:not([data-version~=\"" + conf.version + "\"])").addClass("diff_del")
 
     refreshScrollNavigation()
 }

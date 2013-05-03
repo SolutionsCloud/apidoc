@@ -65,37 +65,6 @@
                     color: #CCC;
                 }
 
-                &[data-changed]:not(:first-child)::before {
-                    display: block;
-                    position: absolute;
-                    left: -5px;
-                    bottom: -7px;
-                    padding: 0 3px;
-                    color: #333;
-                    font-weight: normal;
-                    font-size: 9px;
-                    line-height: 11px;
-                }
-
-                &[data-changed=new]:first-child::before {
-                    display: none;
-                }
-
-                &[data-changed=new]:not(:first-child)::before {
-                    content: "new";
-                    background-color: hsl(103, 45%, 70%);
-                }
-
-                &[data-changed=updated]:not(:first-child)::before {
-                    content: "change";
-                    background-color: hsl(38, 80%, 70%);
-                }
-
-                &[data-changed=deleted]:not(:first-child)::before {
-                    content: "delete";
-                    background-color: hsl(0, 45%, 70%);
-                }
-
                 &:first-child {
                     border-left: none;
                 }
@@ -180,5 +149,55 @@
         > I.mode-mini {
             display:inline-block;
         }
+    }
+}
+
+
+.item > .diff-header > H5.desc, .item-head > .diff-header > H5.desc {
+    &[data-changed]::before {
+        top: -1px;
+        left: -15px;
+    }
+}
+
+.item > .diff-header > .versions > LI:not(:first-child), .item-head > .diff-header > .versions > LI:not(:first-child) {
+    &[data-changed]::before {
+        bottom: -7px;
+        left: -5px;
+    }
+}
+
+.doc-sidenav > LI {
+    &[data-changed]::before {
+        right: 25px;
+    }
+}
+
+.item > .diff-header > H5.desc, .item > .diff-header > .versions > LI:not(:first-child)
+, .item-head > .diff-header > H5.desc, .item-head > .diff-header > .versions > LI:not(:first-child)
+, .doc-sidenav > LI {
+    &[data-changed]::before {
+        display: block;
+        position: absolute;
+        padding: 0 3px;
+        color: #333;
+        font-weight: normal;
+        font-size: 9px;
+        line-height: 11px;
+    }
+
+    &[data-changed=new]::before {
+        content: "new";
+        background-color: hsl(103, 45%, 70%);
+    }
+
+    &[data-changed=updated]::before {
+        content: "change";
+        background-color: hsl(38, 80%, 70%);
+    }
+
+    &[data-changed=deleted]::before {
+        content: "delete";
+        background-color: hsl(0, 45%, 70%);
     }
 }
