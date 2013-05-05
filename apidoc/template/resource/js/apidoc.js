@@ -15,6 +15,7 @@ function displayScrollHeader() {
 
     var element = null;
     var items = $(".item:not(#item-head)");
+
     for (var i = 0, l = items.length; i < l; i++) {
         if ($(items[i]).offset().top >= scrollTop) {
             break;
@@ -37,22 +38,11 @@ function displayScrollHeader() {
     }
 
     if (header.data('element') != element.attr('id')) {
-        $("H4", header).html(element.find("> H4").html());
-        $("> .diff-header", header).html(element.find("> .diff-header").html());
-        header.removeClass("diff-mode diff-mode-inline diff-mode-side diff-mode-mini diff-mode-full");
-        if(element.is(".diff-mode")) {
-            header.addClass("diff-mode");
-            if(element.is(".diff-mode-side")) {
-                header.addClass("diff-mode-side");
-            } else {
-                header.addClass("diff-mode-inline");
-            }
-            if(element.is(".diff-mode-full")) {
-                header.addClass("diff-mode-full");
-            } else {
-                header.addClass("diff-mode-mini");
-            }
+        if (header.data('element') !== null) {
+            $("#" + header.data('element')).unbind("headerChanged")
         }
+
+        header.data("element", element.attr('id'))
 
         if (element.data("method") !== undefined) {
             header.attr("data-method", element.data("method"));
@@ -60,37 +50,55 @@ function displayScrollHeader() {
             header.attr("data-method", null);
         }
 
-        header.data("element", element.attr('id'))
+        $("H4", header).html(element.find("> H4").html());
+        $("> .diff-header", header).html(element.find("> .diff-header").html());
+
         header.find("> .diff-header > H5").click(function() {
             toggleDiffLayout(element);
         });
-
         header.find("> .diff-header > .versions > LI").click(function() {
-            version = $(this).data("version");
-            displayDiff(element, version)
+            displayDiff(element, $(this).data("version"))
         });
-
         header.find("> .diff-header > H5 > I.mode-side").click(function(event) {
             event.stopPropagation();
-            header.removeClass("diff-mode-side").addClass("diff-mode-inline")
-            element.removeClass("diff-mode-side").addClass("diff-mode-inline")
+            diffActivateModeInline(element);
         });
         header.find("> .diff-header > H5 > I.mode-inline").click(function(evente) {
             event.stopPropagation();
-            header.removeClass("diff-mode-inline").addClass("diff-mode-side")
-            element.removeClass("diff-mode-inline").addClass("diff-mode-side")
+            diffActivateModeSide(element);
         });
-
         header.find("> .diff-header > H5 > I.mode-full").click(function(event) {
             event.stopPropagation();
-            header.removeClass("diff-mode-full").addClass("diff-mode-mini")
-            element.removeClass("diff-mode-full").addClass("diff-mode-mini")
+            diffActivateModeMini(element);
         });
         header.find("> .diff-header > H5 > I.mode-mini").click(function(evente) {
             event.stopPropagation();
-            header.removeClass("diff-mode-mini").addClass("diff-mode-full")
-            element.removeClass("diff-mode-mini").addClass("diff-mode-full")
+            diffActivateModeFull(element);
         });
+
+        element.bind("headerChanged", function() {
+            element = $(this)
+            header.removeClass("diff-mode diff-mode-inline diff-mode-side diff-mode-mini diff-mode-full");
+            header.find(" > .diff-header > .versions > LI").removeClass("diff_left diff_right")
+
+            if(element.is(".diff-mode")) {
+                header.addClass("diff-mode");
+                if(element.is(".diff-mode-side")) {
+                    header.addClass("diff-mode-side");
+                } else {
+                    header.addClass("diff-mode-inline");
+                }
+                if(element.is(".diff-mode-full")) {
+                    header.addClass("diff-mode-full");
+                } else {
+                    header.addClass("diff-mode-mini");
+                }
+            }
+
+            header.find(" > .diff-header > .versions > LI:eq(" + element.find(" > .diff-header > .versions > LI.diff_left").index() + ")").addClass("diff_left");
+            header.find(" > .diff-header > .versions > LI:eq(" + element.find(" > .diff-header > .versions > LI.diff_right").index() + ")").addClass("diff_right");
+        });
+        element.trigger("headerChanged");
     }
 
     header.css({
@@ -362,23 +370,39 @@ function initSearch() {
 
 function displayDiff(item, version) {
     if (version==null) {
-        version = $("#nav-versions > LI[data-version]:not([data-version~=\"" + conf.version + "\"])").first().data("version");
-    }
-    item.find(" > .diff-header > .versions > LI").removeClass("diff_left diff_right")
-    item.find(" > .diff-header > .versions > LI[data-version~=\"" + version + "\"]").addClass("diff_left")
-    item.find(" > .diff-header > .versions > LI[data-version~=\"" + conf.version + "\"]").addClass("diff_right")
-    if ($("#item-head").data('element') == item.attr("id")) {
-        $("#item-head > .diff-header > .versions > LI").removeClass("diff_left diff_right")
-        $("#item-head > .diff-header > .versions > LI[data-version~=\"" + version + "\"]").addClass("diff_left")
-        $("#item-head > .diff-header > .versions > LI[data-version~=\"" + conf.version + "\"]").addClass("diff_right")
+        var lastVersion = item.find(".diff_second");
+        if (lastVersion.length > 0) {
+            version = lastVersion.data("version");
+        } else {
+            version = $("#nav-versions > LI[data-version]:not([data-version~=\"" + conf.version + "\"])").first().data("version");
+        }
     }
 
-    item.find(" > .contents > LI.diff-left > H5.title").text(version)
-    item.find(" > .contents > LI.diff-right > H5.title").text(conf.version)
+    var firstIndex = $("#nav-versions > LI[data-version~=\"" + conf.version + "\"]").index()
+    var secondIndex = $("#nav-versions > LI[data-version~=\"" + version + "\"]").index()
+
+    if (firstIndex < secondIndex) {
+        leftVersion = conf.version
+        rightVersion = version
+    } else {
+        leftVersion = version
+        rightVersion = conf.version
+    }
+
+    item.find(" > .diff-header > .versions > LI").removeClass("diff_second diff_first diff_left diff_right")
+    item.find(" > .diff-header > .versions > LI[data-version~=\"" + conf.version + "\"]").addClass("diff_first")
+    item.find(" > .diff-header > .versions > LI[data-version~=\"" + version + "\"]").addClass("diff_second")
+    item.find(" > .diff-header > .versions > LI[data-version~=\"" + leftVersion + "\"]").addClass("diff_left")
+    item.find(" > .diff-header > .versions > LI[data-version~=\"" + rightVersion + "\"]").addClass("diff_right")
+
+    item.trigger("headerChanged");
+
+    item.find(" > .contents > LI.diff-left > H5.title").text(leftVersion)
+    item.find(" > .contents > LI.diff-right > H5.title").text(rightVersion)
     item.find(" > .contents > LI.diff .diff_version").show().removeClass("diff_new diff_del")
-    item.find(" > .contents > LI.diff .diff_version:not([data-version~=\"" + version + "\"]):not([data-version~=\"" + conf.version + "\"])").hide()
-    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + conf.version + "\"]:not([data-version~=\"" + version + "\"])").addClass("diff_new")
-    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + version + "\"]:not([data-version~=\"" + conf.version + "\"])").addClass("diff_del")
+    item.find(" > .contents > LI.diff .diff_version:not([data-version~=\"" + rightVersion + "\"]):not([data-version~=\"" + leftVersion + "\"])").hide()
+    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + rightVersion + "\"]:not([data-version~=\"" + leftVersion + "\"])").addClass("diff_new")
+    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + leftVersion + "\"]:not([data-version~=\"" + rightVersion + "\"])").addClass("diff_del")
 
     refreshScrollNavigation()
 }
@@ -388,10 +412,6 @@ function toggleDiffLayout(item) {
     if (item.is(".diff-mode")) {
         item.addClass("diff-mode-side").removeClass("diff-mode-inline");
         item.addClass("diff-mode-full").removeClass("diff-mode-mini");
-        if ($("#item-head").data('element') == item.attr("id")) {
-            $("#item-head").addClass("diff-mode diff-mode-side").removeClass("diff-mode-inline");
-            $("#item-head").addClass("diff-mode diff-mode-full").removeClass("diff-mode-mini");
-        }
 
         displayDiff(item)
 
@@ -400,15 +420,34 @@ function toggleDiffLayout(item) {
         }
     } else {
         item.removeClass("diff-mode diff-mode-side diff-mode-inline diff-mode-full diff-mode-mini");
-        if ($("#item-head").data('element') == item.attr("id")) {
-            $("#item-head").removeClass("diff-mode diff-mode-side diff-mode-inline diff-mode-full diff-mode-mini");
-        }
-
         item.find(" > .contents > LI.version[data-version~=\"" + conf.version + "\"]").addClass("active");
+
+        item.trigger("headerChanged");
 
         refreshScrollNavigation()
     }
 }
+
+function diffActivateModeInline(item) {
+    item.removeClass("diff-mode-side").addClass("diff-mode-inline")
+    item.trigger("headerChanged");
+}
+
+function diffActivateModeSide(item) {
+    item.removeClass("diff-mode-inline").addClass("diff-mode-side")
+    item.trigger("headerChanged");
+}
+
+function diffActivateModeFull(item) {
+    item.removeClass("diff-mode-mini").addClass("diff-mode-full")
+    item.trigger("headerChanged");
+}
+
+function diffActivateModeMini(item) {
+    item.removeClass("diff-mode-full").addClass("diff-mode-mini")
+    item.trigger("headerChanged");
+}
+
 
 function initDiff() {
     $(".item>.diff-header > H5").click(function() {
@@ -418,32 +457,23 @@ function initDiff() {
     });
     $(".item>.diff-header > H5 > I.mode-side").click(function(event) {
         event.stopPropagation();
-        item = $(this).closest(".item");
-        item.removeClass("diff-mode-side").addClass("diff-mode-inline")
+        diffActivateModeInline($(this).closest(".item"));
     });
     $(".item>.diff-header > H5 > I.mode-inline").click(function(evente) {
         event.stopPropagation();
-        item = $(this).closest(".item");
-        item.removeClass("diff-mode-inline").addClass("diff-mode-side")
+        diffActivateModeSide($(this).closest(".item"));
     });
     $(".item>.diff-header > H5 > I.mode-full").click(function(event) {
         event.stopPropagation();
-        item = $(this).closest(".item");
-        item.removeClass("diff-mode-full").addClass("diff-mode-mini")
+        diffActivateModeMini($(this).closest(".item"));
     });
     $(".item>.diff-header > H5 > I.mode-mini").click(function(evente) {
         event.stopPropagation();
-        item = $(this).closest(".item");
-        item.removeClass("diff-mode-mini").addClass("diff-mode-full")
+        diffActivateModeFull($(this).closest(".item"));
     });
-
     $(".item>.diff-header > .versions > LI").click(function() {
-        item = $(this).closest(".item");
-        version = $(this).data("version");
-        displayDiff(item, version)
-
+        displayDiff($(this).closest(".item"), $(this).data("version"))
     });
-
     $(".item > .contents > .diff").each(function() {
         $(this).addClass("diff-left").clone().insertAfter($(this)).addClass("diff-right").removeClass("diff-left");
     })
@@ -460,6 +490,29 @@ function shortcutSearch(event, key) {
     $("[type=search]").select();
 }
 
+function shortcutGotoPrevious(event, key) {
+    var current = $(".scroll-spyable>UL>LI.active:visible")
+    if (current.length == 0) {
+        $(".scroll-spyable>UL>LI[data-item]:visible>A").get(0).click()
+    } else {
+        var items = current.prevAll("LI[data-item]:visible").find(">A");
+        if (items.length > 0) {
+            items.sort(function(a, b) {
+                if ($(a).index() < $(b).index()) return 1;
+                if ($(a).index() > $(b).index()) return -1;
+                return 0;
+            });
+            items.get(items.length - 1).click()
+        } else {
+            var ul = current.closest("UL");
+            var itemsInPrevGroup = current.closest("UL").prev().find('>LI[data-item]:visible>A')
+            if (itemsInPrevGroup.length > 0) {
+                itemsInPrevGroup.last().get(0).click();
+            }
+        }
+    }
+}
+
 function shortcutGotoNext(event, key) {
     var current = $(".scroll-spyable>UL>LI.active:visible")
     if (current.length == 0) {
@@ -467,6 +520,11 @@ function shortcutGotoNext(event, key) {
     } else {
         var items = current.nextAll("LI[data-item]:visible").find(">A");
         if (items.length > 0) {
+            items.sort(function(a, b) {
+                if ($(a).index() < $(b).index()) return -1;
+                if ($(a).index() > $(b).index()) return 1;
+                return 0;
+            });
             items.get(0).click()
         } else {
             var ul = current.closest("UL");
@@ -478,20 +536,19 @@ function shortcutGotoNext(event, key) {
     }
 }
 
-function shortcutGotoPrevious(event, key) {
-    var current = $(".scroll-spyable>UL>LI.active:visible")
+function shortcutGotoPreviousVersion(event, key) {
+    var current = $("#nav-versions>LI.active:visible")
     if (current.length == 0) {
-        $(".scroll-spyable>UL>LI[data-item]:visible>A").get(0).click()
+        $("#nav-versions>LI[data-version]:visible>A").get(0).click()
     } else {
-        var items = current.prevAll("LI[data-item]:visible").find(">A");
+        var items = current.prevAll("LI[data-version]:visible");
         if (items.length > 0) {
-            items.get(items.length - 1).click()
-        } else {
-            var ul = current.closest("UL");
-            var itemsInPrevGroup = current.closest("UL").prev().find('>LI[data-item]:visible>A')
-            if (itemsInPrevGroup.length > 0) {
-                itemsInPrevGroup.get(itemsInPrevGroup.length - 1).click();
-            }
+            items.sort(function(a, b) {
+                if ($(a).index() < $(b).index()) return 1;
+                if ($(a).index() > $(b).index()) return -1;
+                return 0;
+            });
+            items.first().find(">A").get(0).click()
         }
     }
 }
@@ -501,21 +558,103 @@ function shortcutGotoNextVersion(event, key) {
     if (current.length == 0) {
         $("#nav-versions>LI[data-version]:visible>A").get(0).click()
     } else {
-        var items = current.nextAll("LI[data-version]:visible").find(">A");
+        var items = current.nextAll("LI[data-version]:visible");
         if (items.length > 0) {
-            items.get(0).click()
+            items.sort(function(a, b) {
+                if ($(a).index() < $(b).index()) return -1;
+                if ($(a).index() > $(b).index()) return 1;
+                return 0;
+            });
+            items.first().find(">A").get(0).click()
         }
     }
 }
 
-function shortcutGotoPreviousVersion(event, key) {
-    var current = $("#nav-versions>LI.active:visible")
-    if (current.length == 0) {
-        $("#nav-versions>LI[data-version]:visible>A").get(0).click()
-    } else {
-        var items = current.prevAll("LI[data-version]:visible").find(">A");
-        if (items.length > 0) {
-            items.get(items.length - 1).click()
+function shortcutToggleDiff(event, key) {
+    var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A")
+    if (current.length > 0) {
+        toggleDiffLayout($(current.data('target')))
+    }
+}
+
+function shortcutToggleSide(event, key) {
+    var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A")
+    if (current.length > 0) {
+        var element = $(current.data('target'))
+        if (!element.is(".diff-mode")) {
+            toggleDiffLayout($(current.data('target')))
+            diffActivateModeInline(element);
+            return;
+        }
+
+        if ($(current.data('target')).is(".diff-mode-side")) {
+            diffActivateModeInline(element);
+        } else {
+            diffActivateModeSide(element);
+        }
+    }
+}
+
+function shortcutToggleFull(event, key) {
+    var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A")
+    if (current.length > 0) {
+        var element = $(current.data('target'))
+        if (!element.is(".diff-mode")) {
+            toggleDiffLayout($(current.data('target')))
+            diffActivateModeMini(element);
+            return;
+        }
+
+        if ($(current.data('target')).is(".diff-mode-mini")) {
+            diffActivateModeFull(element);
+        } else {
+            diffActivateModeMini(element);
+        }
+    }
+}
+
+function shortcutGotoNextDiffVersion(event, key) {
+    var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A")
+    if (current.length > 0) {
+        var element = $(current.data('target'))
+        if (!element.is(".diff-mode")) {
+            toggleDiffLayout($(current.data('target')))
+        }
+
+        var current = element.find(".diff_second");
+        if (current.length > 0) {
+            var items = current.nextAll("LI[data-version]:visible");
+            if (items.length > 0) {
+                items.sort(function(a, b) {
+                    if ($(a).index() < $(b).index()) return -1;
+                    if ($(a).index() > $(b).index()) return 1;
+                    return 0;
+                })
+                items.get(0).click()
+            }
+        }
+    }
+}
+
+function shortcutGotoPreviousDiffVersion(event, key) {
+    var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A")
+    if (current.length > 0) {
+        var element = $(current.data('target'))
+        if (!element.is(".diff-mode")) {
+            toggleDiffLayout($(current.data('target')))
+        }
+
+        var current = element.find(".diff_second");
+        if (current.length > 0) {
+            var items = current.prevAll("LI[data-version]:visible");
+            if (items.length > 0) {
+                items.sort(function(a, b) {
+                    if ($(a).index() < $(b).index()) return 1;
+                    if ($(a).index() > $(b).index()) return -1;
+                    return 0;
+                })
+                items.get(0).click()
+            }
         }
     }
 }
@@ -533,10 +672,15 @@ function shortcutHelpHide(event, key) {
 function initShortcuts() {
     Mousetrap.bind('?', shortcutHelp);
     Mousetrap.bind('/', shortcutSearch);
-    Mousetrap.bind(['n', 'j'], shortcutGotoNext);
     Mousetrap.bind(['p', 'k'], shortcutGotoPrevious);
-    Mousetrap.bind(['v'], shortcutGotoNextVersion);
-    Mousetrap.bind(['c'], shortcutGotoPreviousVersion);
+    Mousetrap.bind(['n', 'j'], shortcutGotoNext);
+    Mousetrap.bind(['v'], shortcutGotoPreviousVersion);
+    Mousetrap.bind(['c'], shortcutGotoNextVersion);
+    Mousetrap.bind(['d'], shortcutToggleDiff);
+    Mousetrap.bind(['s'], shortcutToggleSide);
+    Mousetrap.bind(['f'], shortcutToggleFull);
+    Mousetrap.bind(['r'], shortcutGotoPreviousDiffVersion);
+    Mousetrap.bind(['e'], shortcutGotoNextDiffVersion);
 }
 
 function initHelp() {
