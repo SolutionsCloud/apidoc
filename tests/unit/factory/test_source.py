@@ -5,7 +5,7 @@ from apidoc.factory.source import Source as SourceFactory
 from apidoc.object.config import Config as ConfigObject
 
 from apidoc.object.source import Root, Element, Sampleable, Displayable
-from apidoc.object.source import Version
+from apidoc.object.source import Version, Configuration
 from apidoc.object.source import Section, Method, Namespace
 from apidoc.object.source import Parameter, ResponseCode
 from apidoc.object.source import Type, EnumType, EnumTypeValue, TypeFormat
@@ -423,7 +423,7 @@ class TestSource(unittest.TestCase):
         self.assertEqual(True, element.display)
 
     def test_populate(self):
-        datas = {"versions": {"v1": {}, "v2": {}}}
+        datas = {"versions": {"v1": {}, "v2": {}}, "configuration": {"title": "foo"}}
         response = self.source.populate(datas)
 
         self.assertIsInstance(response, Root)
@@ -432,6 +432,17 @@ class TestSource(unittest.TestCase):
         self.assertIsInstance(response.versions["v1"], Version)
         self.assertIn("v2", response.versions)
         self.assertEqual("v2", response.versions["v2"].name)
+        self.assertIsInstance(response.configuration, Configuration)
+        self.assertEqual("foo", response.configuration.title)
+
+    def test_populate_configuration(self):
+        datas = {"title": "foo", "description": "bar", "uri": "baz"}
+        response = self.source.populate_configuration(datas)
+
+        self.assertIsInstance(response, Configuration)
+        self.assertEqual("foo", response.title)
+        self.assertEqual("bar", response.description)
+        self.assertEqual("baz", response.uri)
 
     def test_populate_version(self):
         datas = {

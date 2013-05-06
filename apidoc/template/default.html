@@ -1,6 +1,13 @@
 {% extends "layout.html" %}
 {% block header %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+    {%- if sources.configuration.title != None -%}
+        {{ sources.configuration.title }}
+    {%- else -%}
+        ApiDoc
+    {%- endif -%}
+</title>
     {% if config["componants"] == "embedded" %}
 <style type="text/css">
 {% include "resource/css/bootstrap.min.css" %}
@@ -37,7 +44,18 @@
 {% block body %}
 <header>
     <div class="container">
-        <h1>ApiDoc</h1>
+        <h1>
+    {%- if sources.configuration.title != None -%}
+        {{ sources.configuration.title }}
+    {%- else -%}
+        ApiDoc
+    {%- endif -%}
+        </h1>
+    {%- if sources.configuration.description != None -%}
+        <p>
+        {{ sources.configuration.description }}
+        </p>
+    {%- endif -%}
     </div>
 </header>
 

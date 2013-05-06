@@ -3,7 +3,7 @@ import collections
 from copy import deepcopy
 
 from apidoc.object.source import Root, Sampleable, Displayable
-from apidoc.object.source import Version
+from apidoc.object.source import Version, Configuration
 from apidoc.object.source import Section, Method, Namespace
 from apidoc.object.source import MethodCrossVersion, TypeCrossVersion, ElementCrossVersion
 from apidoc.object.source import Parameter, ResponseCode
@@ -154,6 +154,8 @@ class Source():
         """
         root = Root.instance()
 
+        if "configuration" in datas and datas["configuration"] is not None:
+            root.configuration = self.populate_configuration(datas["configuration"])
         root.versions = self.populate_list("versions", datas, self.populate_version)
 
         return root
@@ -177,6 +179,20 @@ class Source():
             for key, value in datas[property_name].items():
                 list[key] = callback(key, value)
         return list
+
+    def populate_configuration(self, datas):
+        """Return a populated ObjectSection from dictionnary datas
+        """
+        configuration = Configuration()
+
+        if "uri" in datas:
+            configuration.uri = str(datas["uri"])
+        if "title" in datas:
+            configuration.title = str(datas["title"])
+        if "description" in datas:
+            configuration.description = str(datas["description"])
+
+        return configuration
 
     def populate_version(self, name, datas):
         """Return a populated ObjectVersion from dictionnary datas

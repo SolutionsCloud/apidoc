@@ -8,6 +8,8 @@ from apidoc.object.source import Type, EnumType, EnumTypeValue, TypeFormat
 from apidoc.object.source import Object, ObjectObject, ObjectArray
 from apidoc.object.source import ObjectNumber, ObjectString, ObjectBool, ObjectNone
 from apidoc.object.source import ObjectDynamic, ObjectReference, ObjectType
+from apidoc.object.source import MergedMethod, MergedType
+from apidoc.object.source import TypeCrossVersion, MethodCrossVersion
 
 
 class TestSource(unittest.TestCase):
@@ -79,6 +81,31 @@ class TestSource(unittest.TestCase):
         sortable2.description = "b"
 
         self.assertEqual(sortable1, sorted([sortable2, sortable1])[0])
+
+    def test_version_full_uri(self):
+        Root.instance().configuration.uri = None
+
+        version = Version()
+        version.uri = "bar"
+
+        self.assertEqual("bar", version.full_uri)
+
+    def test_method_full_uri__with_root_uri(self):
+        Root.instance().configuration.uri = "//foo/"
+
+        version = Version()
+        version.uri = "bar"
+
+        self.assertEqual("//foo/bar", version.full_uri)
+
+    def test_method_full_uri__failled_when_no_version_uri(self):
+        Root.instance().configuration.uri = None
+
+        version = Version()
+        version.uri = None
+
+        with self.assertRaises(ValueError):
+            version.full_uri
 
     def test_version_compare__with_major(self):
         version1 = Version()
@@ -222,8 +249,8 @@ class TestSource(unittest.TestCase):
             "code": 200,
             "uri": "baz",
             "method": "get",
-            "request_headers": ['f55ac54465f03343868b89376fa312ac'],
-            "request_parameters": ['f55ac54465f03343868b89376fa312ac'],
+            "request_headers": ['300c4cc6dc22bca7b9e9cb6ba5c7d47c'],
+            "request_parameters": ['300c4cc6dc22bca7b9e9cb6ba5c7d47c'],
             "request_body": 'c570705f2c3228ea10c6bcd485d0c3a7',
             "response_codes": ['198d5b2ef38efed343e6688b1163dd62'],
             "response_body": 'c570705f2c3228ea10c6bcd485d0c3a7',
@@ -311,6 +338,28 @@ class TestSource(unittest.TestCase):
             "optional": False
         }, test.get_signature_struct())
 
+    def test_object_unit_signature(self):
+        test = Object()
+        test.name = "foo"
+        test.description = "bar"
+        test.type = Object.Types.number
+
+        self.assertEqual("927ba098e7ffc866aff215f33346d1a3", test.unit_signature)
+
+    def test_object_get_unit_signature_struct(self):
+        test = Object()
+        test.name = "foo"
+        test.description = "bar"
+        test.type = Object.Types.number
+
+        self.assertEqual({
+            "name": "foo",
+            "description": "bar",
+            "type": "number",
+            "required": True,
+            "optional": False
+        }, test.get_unit_signature_struct())
+
     def test_objectobject_get_signature_struct(self):
         test = ObjectObject()
         test.name = "foo"
@@ -325,6 +374,20 @@ class TestSource(unittest.TestCase):
             "optional": False,
             "properties": ["4077571d745c363dbd55ee168b0bad28"]
         }, test.get_signature_struct())
+
+    def test_objectobject_get_unit_signature_struct(self):
+        test = ObjectObject()
+        test.name = "foo"
+        test.description = "bar"
+        test.properties = {"bar": Object()}
+
+        self.assertEqual({
+            "name": "foo",
+            "description": "bar",
+            "type": "object",
+            "required": True,
+            "optional": False,
+        }, test.get_unit_signature_struct())
 
     def test_objectarray_get_signature_struct(self):
         test = ObjectArray()
@@ -341,6 +404,20 @@ class TestSource(unittest.TestCase):
             "items": "4077571d745c363dbd55ee168b0bad28"
         }, test.get_signature_struct())
 
+    def test_objectarray_get_unit_signature_struct(self):
+        test = ObjectArray()
+        test.name = "foo"
+        test.description = "bar"
+        test.items = Object()
+
+        self.assertEqual({
+            "name": "foo",
+            "description": "bar",
+            "type": "array",
+            "required": True,
+            "optional": False,
+        }, test.get_unit_signature_struct())
+
     def test_objectdynamic_get_signature_struct(self):
         test = ObjectDynamic()
         test.name = "foo"
@@ -355,6 +432,20 @@ class TestSource(unittest.TestCase):
             "optional": False,
             "itemType": "baz"
         }, test.get_signature_struct())
+
+    def test_objectdynamic_get_unit_signature_struct(self):
+        test = ObjectDynamic()
+        test.name = "foo"
+        test.description = "bar"
+        test.itemType = "baz"
+
+        self.assertEqual({
+            "name": "foo",
+            "description": "bar",
+            "type": "dynamic",
+            "required": True,
+            "optional": False,
+        }, test.get_unit_signature_struct())
 
     def test_objectreference_get_signature_struct(self):
         test = ObjectReference()
@@ -375,6 +466,24 @@ class TestSource(unittest.TestCase):
             "reference": "4077571d745c363dbd55ee168b0bad28"
         }, test.get_signature_struct())
 
+    def test_objectreference_get_unit_signature_struct(self):
+        test = ObjectReference()
+        test.name = "foo"
+        test.description = "bar"
+        test.reference_name = "baz"
+        test.version = "v1"
+
+        Root.instance().references["baz"] = ElementCrossVersion(Object())
+        Root.instance().references["baz"].versions["v1"] = Object()
+
+        self.assertEqual({
+            "name": "foo",
+            "description": "bar",
+            "type": "reference",
+            "required": True,
+            "optional": False,
+        }, test.get_unit_signature_struct())
+
     def test_objecttype_get_signature_struct(self):
         test = ObjectType()
         test.name = "foo"
@@ -393,6 +502,25 @@ class TestSource(unittest.TestCase):
             "optional": False,
             "type": "fed6dce5e9bbb016ea8d91120c3e1c95"
         }, test.get_signature_struct())
+
+    def test_objecttype_get_unit_signature_struct(self):
+        test = ObjectType()
+        test.name = "foo"
+        test.description = "bar"
+        test.type_name = "baz"
+        test.version = "v1"
+
+        Root.instance().types["baz"] = ElementCrossVersion(Type())
+        Root.instance().types["baz"].versions["v1"] = Type()
+
+        self.assertEqual({
+            "name": "foo",
+            "description": "bar",
+            "type": "type",
+            "required": True,
+            "optional": False,
+            "type": "fed6dce5e9bbb016ea8d91120c3e1c95"
+        }, test.get_unit_signature_struct())
 
     def test_element_version_setter(self):
         section = Section()
@@ -465,6 +593,19 @@ class TestSource(unittest.TestCase):
         method.version = "v1"
 
         self.assertEqual("foo/bar", method.full_uri)
+
+    def test_method_full_uri__with_root_and_version(self):
+        Root.instance().configuration.uri = "//foo/"
+
+        version = Version()
+        version.uri = "bar/"
+        Root.instance().versions["v1"] = version
+
+        method = Method()
+        method.uri = "baz"
+        method.version = "v1"
+
+        self.assertEqual("//foo/bar/baz", method.full_uri)
 
     def test_method_full_uri__failled_when_no_version_uri(self):
         version = Version()
@@ -654,3 +795,222 @@ class TestSource(unittest.TestCase):
 
         test.versions = {"v1": Method(), "v2": Method()}
         self.assertEqual(ElementCrossVersion.Change.none, test.changed_status("v2"))
+
+    def test_mergedMethod(self):
+        test = MergedMethod();
+
+        self.assertIsInstance(test.description, list)
+        self.assertIsInstance(test.full_uri, list)
+        self.assertIsInstance(test.request_parameters, list)
+        self.assertIsInstance(test.request_headers, list)
+        self.assertIsInstance(test.request_body, list)
+        self.assertIsInstance(test.response_body, list)
+        self.assertIsInstance(test.response_codes, list)
+
+    def test_mergedType(self):
+        test = MergedType();
+
+        self.assertIsInstance(test.description, list)
+        self.assertIsInstance(test.primary, list)
+        self.assertIsInstance(test.values, list)
+
+    def test_typeCrossVersion_merged(self):
+        version1 = Version()
+        version2 = Version()
+        version3 = Version()
+
+        value1 = EnumTypeValue()
+        value1.name = "foo"
+        value2 = EnumTypeValue()
+        value2.name = "bar"
+
+        type1 = Type()
+        type1.description = "foo"
+        type1.primary = Type.Primaries.enum
+        type1.values = {"foo": value1, "bar": value2}
+
+        type2 = Type()
+        type2.description = "foo"
+        type2.primary = Type.Primaries.enum
+        type2.values = {}
+
+        type3 = Type()
+        type3.description = "bar"
+        type3.primary = Type.Primaries.enum
+        type3.values = {"foo": value1}
+
+        test = TypeCrossVersion(type1)
+
+        test.versions = {"v1": type1, "v2": type2, "v3": type3}
+        merged = test.merged
+
+        self.assertIsInstance(merged, MergedType)
+        self.assertEqual(["foo", "bar"], merged.description)
+        self.assertEqual([Type.Primaries.enum], merged.primary)
+        self.assertEqual([value1, value2], merged.values)
+
+    def test_methodCrossVersion_merged(self):
+        version1 = Version()
+        version1.uri = "foo/"
+        version2 = Version()
+        version2.uri = "foo/"
+        version3 = Version()
+        version3.uri = "foo/"
+
+        parameter_test = Parameter()
+        parameter_test.name = "test"
+        parameter_foo = Parameter()
+        parameter_foo.name = "foo"
+
+        response_200 = ResponseCode()
+        response_200.code = 200
+        response_404 = ResponseCode()
+        response_404.code = 404
+        response_404.description = "global"
+        response_404_s = ResponseCode()
+        response_404_s.code = 404
+        response_404_s.description = "specific"
+
+        method1 = Method()
+        method1.version = "v1"
+        method1.description = "foo"
+        method1.uri = "foo{test}"
+        method1.request_parameters = {"test": parameter_test}
+        method1.request_headers = {"test": parameter_test}
+        method1.response_codes = [response_200]
+        method1.request_body = "foo"
+        method1.response_body = "foo"
+
+        method2 = Method()
+        method2.version = "v2"
+        method2.description = "foo"
+        method2.uri = "bar{test}"
+        method2.request_parameters = {"test": parameter_test, "foo": parameter_foo}
+        method2.response_codes = [response_200, response_404]
+        method2.request_body = "bar"
+        method2.request_body = "bar"
+
+        method3 = Method()
+        method3.version = "v3"
+        method3.description = "bar"
+        method3.uri = "baz"
+        method3.request_headers = {"foo": parameter_foo}
+        method3.response_codes = [response_404, response_404_s]
+        method3.response_body = "foo"
+        method3.response_body = "bar"
+
+        Root.instance().versions = {
+            "v1": version1,
+            "v2": version2,
+            "v3": version3
+        }
+
+        test = MethodCrossVersion(method1)
+
+        test.versions = {"v1": method1, "v2": method2, "v3": method3}
+        merged = test.merged
+
+        self.assertIsInstance(merged, MergedMethod)
+        self.assertEqual(["foo", "bar"], merged.description)
+        self.assertEqual(["foo/foo{test}", "foo/bar{test}", "foo/baz"], merged.full_uri)
+        self.assertEqual([parameter_test], merged.request_parameters)
+        self.assertEqual([parameter_test, parameter_foo], merged.request_headers)
+        self.assertEqual([response_200, response_404, response_404_s], merged.response_codes)
+        self.assertEqual(["foo", "bar"], merged.request_body)
+        self.assertEqual(["foo", "bar"], merged.response_body)
+
+    def test_methodCrossVersion_objects_by_unit_signature(self):
+        method = Method()
+        test = MethodCrossVersion(method)
+
+        object1 = Object()
+        object1._unit_signature = "s1"
+        object1.version = "v1"
+
+        object2 = Object()
+        object2._unit_signature = "s2"
+        object2.version = "v2"
+
+        object3 = Object()
+        object3._unit_signature = "s1"
+        object3.version = "v3"
+
+        response = test.objects_by_unit_signature([object1, object2, object3])
+        self.assertEqual(2, len(response))
+        self.assertEqual(["v1", "v3"], response[0].versions)
+        self.assertEqual(["v2"], response[1].versions)
+
+    def test_methodCrossVersion_objects_merge_properties(self):
+        method = Method()
+        test = MethodCrossVersion(method)
+
+        object1 = Object()
+        object1.properties = {"foo": "bar"}
+
+        object2 = Object()
+        object2.properties = {"baz": "qux"}
+
+        object3 = Object()
+        object3.properties = {"foo": "fum"}
+
+        response = test.objects_merge_properties([object1, object2, object3])
+        self.assertEqual({"foo": "bar", "baz": "qux"}, response)
+
+    def test_methodCrossVersion_objects_property_by_property_name(self):
+        method = Method()
+        test = MethodCrossVersion(method)
+
+        object1 = ObjectObject()
+        object1.properties = {"foo": "bar"}
+
+        object2 = ObjectObject()
+        object2.properties = {"baz": "qux"}
+
+        object3 = ObjectObject()
+        object3.properties = {"foo": "fum"}
+
+        response = test.objects_property_by_property_name([object1, object2, object3], "foo")
+        self.assertEqual(["bar", "fum"], response)
+
+    def test_methodCrossVersion_objects_items(self):
+        method = Method()
+        test = MethodCrossVersion(method)
+
+        object1 = ObjectArray()
+        object1.items = "foo"
+
+        object2 = ObjectArray()
+        object2.items = "baz"
+
+        object3 = ObjectArray()
+        object3.items = "foo"
+
+        response = test.objects_items([object1, object2, object3])
+        self.assertEqual(["foo", "baz", "foo"], response)
+
+    def test_methodCrossVersion_objects_reference(self):
+        method = Method()
+        test = MethodCrossVersion(method)
+
+        object1 = ObjectReference()
+        object1.version = "v1"
+        object1.reference_name = "foo"
+
+        object2 = ObjectReference()
+        object2.version = "v1"
+        object2.reference_name = "baz"
+
+        object3 = ObjectReference()
+        object3.version = "v1"
+        object3.reference_name = "foo"
+
+        Root.instance().references = {
+            "foo": ElementCrossVersion(Type()),
+            "baz": ElementCrossVersion(Type())
+        }
+        Root.instance().references["foo"].versions = {"v1": "foo"}
+        Root.instance().references["baz"].versions = {"v1": "baz"}
+
+        response = test.objects_reference([object1, object2, object3])
+        self.assertEqual(["foo", "baz", "foo"], response)
+

@@ -674,8 +674,8 @@ function initShortcuts() {
     Mousetrap.bind('/', shortcutSearch);
     Mousetrap.bind(['p', 'k'], shortcutGotoPrevious);
     Mousetrap.bind(['n', 'j'], shortcutGotoNext);
-    Mousetrap.bind(['v'], shortcutGotoPreviousVersion);
-    Mousetrap.bind(['c'], shortcutGotoNextVersion);
+    Mousetrap.bind(['b'], shortcutGotoPreviousVersion);
+    Mousetrap.bind(['v'], shortcutGotoNextVersion);
     Mousetrap.bind(['d'], shortcutToggleDiff);
     Mousetrap.bind(['s'], shortcutToggleSide);
     Mousetrap.bind(['f'], shortcutToggleFull);

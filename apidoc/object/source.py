@@ -24,6 +24,7 @@ class Root():
         """Class instantiation
         """
         super().__init__()
+        self.configuration = Configuration()
         self.versions = {}
         self.sections = {}
         self.namespaces = {}
@@ -154,6 +155,20 @@ class Displayable():
         }
 
 
+class Configuration(Element):
+
+    """Element Configuration
+    """
+
+    def __init__(self):
+        """Class instantiation
+        """
+        super().__init__()
+        self.uri = None
+        self.title = None
+        self.description = None
+
+
 class Version(Element, Sortable, Displayable):
 
     """Element Version
@@ -167,6 +182,8 @@ class Version(Element, Sortable, Displayable):
         beta = 2
         deprecated = 3
         draft = 4
+
+    _full_uri = None
 
     def __init__(self):
         """Class instantiation
@@ -189,6 +206,21 @@ class Version(Element, Sortable, Displayable):
         """Return true if self is equals to other
         """
         return (self.major, self.minor, self.name) == (other.major, other.minor, self.name)
+
+
+    @property
+    def full_uri(self):
+        """Return full uri for the method
+        """
+        if self._full_uri is None:
+            if Root.instance().configuration.uri is not None:
+                self._full_uri = Root.instance().configuration.uri
+                self._full_uri = "%s%s" % (Root.instance().configuration.uri, self.uri)
+            elif self.uri is None:
+                raise ValueError("No uri defined in version \"%s\"." % self.name)
+            else:
+                self._full_uri = self.uri
+        return self._full_uri
 
 
 class Section(Element, Sortable, Displayable):
@@ -288,9 +320,7 @@ class Method(Element, Sortable):
         """Return full uri for the method
         """
         if self._full_uri is None:
-            if Root.instance().versions[self.version].uri is None:
-                raise ValueError("No uri defined in version \"%s\"." % self.version)
-            self._full_uri = "%s%s" % (Root.instance().versions[self.version].uri, self.uri)
+            self._full_uri = "%s%s" % (Root.instance().versions[self.version].full_uri, self.uri)
         return self._full_uri
 
     def __init__(self):

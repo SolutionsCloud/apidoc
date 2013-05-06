@@ -1,10 +1,14 @@
+configurastion:
+  title: Full Sample
+  description: A full sample using ApiDoc
+  uri: www.example.com
 versions:
   v1.0:
     description: First release of the API
     status: beta
     major: 1
     minor: 0
-    uri: www.example.com
+    uri: /v1
     sections:
       SectionOne:
         description: First Section
