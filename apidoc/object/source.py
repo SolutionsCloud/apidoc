@@ -215,7 +215,10 @@ class Version(Element, Sortable, Displayable):
         if self._full_uri is None:
             if Root.instance().configuration.uri is not None:
                 self._full_uri = Root.instance().configuration.uri
-                self._full_uri = "%s%s" % (Root.instance().configuration.uri, self.uri)
+                if self.uri is not None:
+                    self._full_uri = "%s%s" % (Root.instance().configuration.uri, self.uri)
+                else:
+                    self._full_uri = Root.instance().configuration.uri
             elif self.uri is None:
                 raise ValueError("No uri defined in version \"%s\"." % self.name)
             else:
@@ -296,7 +299,7 @@ class Method(Element, Sortable):
             "uri": self.uri,
             "method": str(self.method),
             "request_headers": sorted([x.signature for x in self.request_headers.values()]),
-            "request_parameters": sorted([x.signature for x in self.request_parameters.values()]),
+            "request_parameters": sorted([x.signature for x in self.cleaned_request_parameters.values()]),
             "request_body": None if self.request_body is None else self.request_body.signature,
             "response_codes": sorted([x.signature for x in self.response_codes]),
             "response_body": None if self.response_body is None else self.response_body.signature,
@@ -503,7 +506,7 @@ class EnumType(Type):
         """Return a uniq signature of the element as dict
         """
         return merge_dict(super().get_signature_struct(), {
-            "values": [x.signature for x in self.values.values()]
+            "values": sorted([x.signature for x in self.values.values()])
         })
 
 
@@ -598,11 +601,12 @@ class Object(Element, Sampleable):
     def get_unit_signature_struct(self):
         """Return a uniq signature of the element as dict
         """
-        return merge_dict(super().get_signature_struct(), {
+        return {
+            "description": str(self.description),
             "type": str(self.type),
             "optional": self.optional,
             "required": self.required,
-        })
+        }
 
 
 class ObjectObject(Object):
@@ -629,7 +633,7 @@ class ObjectObject(Object):
         """Return a uniq signature of the element as dict
         """
         return merge_dict(super().get_signature_struct(), {
-            "properties": [x.signature for x in self.properties.values()]
+            "properties": sorted([x.signature for x in self.properties.values()])
         })
 
     def get_unit_signature_struct(self):
@@ -969,10 +973,18 @@ class MethodCrossVersion(ElementCrossVersion):
             self._merged = merged
         return self._merged
 
+    def objects_without_reference(self, objects):
+        list_objects = []
+        for object in objects:
+            while object.type == Object.Types.reference:
+                object = object.get_reference()
+            list_objects.append(object)
+        return list_objects
+
     def objects_by_unit_signature(self, objects):
         seen_signatures = []
         list_objects = []
-        for object in objects:
+        for object in self.objects_without_reference(objects):
             object.versions = [object.version]
             if object.unit_signature not in seen_signatures:
                 seen_signatures.append(object.unit_signature)
@@ -985,27 +997,28 @@ class MethodCrossVersion(ElementCrossVersion):
     def objects_merge_properties(self, objects):
         seen_signatures = []
         list_properties = {}
-        for object in objects:
-            for (property_name, property_value) in object.properties.items():
-                if property_name not in list_properties.keys():
-                    list_properties[property_name] = property_value
+        for object in self.objects_without_reference(objects):
+            if object.type == Object.Types.object:
+                for (property_name, property_value) in object.properties.items():
+                    if property_name not in list_properties.keys():
+                        list_properties[property_name] = property_value
         return list_properties;
 
     def objects_property_by_property_name(self, objects, property_name):
         list_objects = []
-        for object in [x for x in objects if x.type is Object.Types.object]:
+        for object in [x for x in self.objects_without_reference(objects) if x.type is Object.Types.object]:
             if property_name in object.properties.keys():
                 list_objects.append(object.properties[property_name])
         return list_objects;
 
     def objects_items(self, objects):
         list_objects = []
-        for object in [x for x in objects if x.type is Object.Types.array]:
+        for object in [x for x in self.objects_without_reference(objects) if x.type is Object.Types.array]:
             list_objects.append(object.items)
         return list_objects;
 
     def objects_reference(self, objects):
         list_objects = []
-        for object in [x for x in objects if x.type is Object.Types.reference]:
+        for object in [x for x in self.objects_without_reference(objects) if x.type is Object.Types.reference]:
             list_objects.append(object.get_reference())
         return list_objects;

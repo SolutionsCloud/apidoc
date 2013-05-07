@@ -140,17 +140,18 @@ function displayVersion() {
         $("#nav-versions > LI[data-version].active").removeClass("active");
         $("#nav-versions > LI[data-version=\"" + conf.version + "\"]").addClass("active");
 
-        $(".item > .diff-header > .versions > LI[data-version].active").removeClass("active");
         $(".item > .diff-header > H5.desc").html('<i class="icon-random"></i>' + conf.version)
-        $(".item").each(function() {
-            status = $(this).find(" > .diff-header > .versions > LI:not(:first-child)[data-version=\"" + conf.version + "\"]").data("changed")
-            $(this).find(" > .diff-header > H5.desc").attr("data-changed", status)
-            $(".nav-list > LI > A[data-target=\"#" + $(this).attr("id") + "\"]").closest("LI").attr("data-changed", status)
-        });
+        $(".item > .diff-header > H5.desc, .nav-list > LI").attr("data-changed", null)
 
-        $(".item > .diff-header > .versions > LI[data-version=\"" + conf.version + "\"]").addClass("active");
+        setTimeout(function() {
+            $(".item > .diff-header > .versions > LI:not(:first-child):not([data-changed=none])[data-version=\"" + conf.version + "\"]").each(function() {
+                var item = $(this).closest(".item");
+                item.find("> .diff-header > H5.desc").attr("data-changed", $(this).data("changed"))
+                $(".nav-list > LI > A[data-target=\"#" + item.attr("id") + "\"]").closest("LI").attr("data-changed", $(this).data("changed"))
+            })
+            }, 10)
+
         $(".method, .type").find(" > .contents > LI[data-version~=\"" + conf.version + "\"]").addClass("active");
-
         $(".diff-mode").each(function() {
             displayDiff($(this))
         });
@@ -486,7 +487,6 @@ function shortcutSearch(event, key) {
         // internet explorer
         event.returnValue = false;
     }
-    console.log(arguments)
     $("[type=search]").select();
 }
 

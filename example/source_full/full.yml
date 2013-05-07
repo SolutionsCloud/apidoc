@@ -14,6 +14,14 @@ versions:
         description: First Section
         order: 2
         methods:
+          TestDiff:
+            response_body:
+              type: object
+              properties:
+                a:
+                  type: string
+                b:
+                  type: string
           MyResource:
             uri: /{version}/resource/{resource_id}
             code: 200
@@ -163,6 +171,12 @@ versions:
     minor: 0
     status: current
     sections:
+      SectionOne:
+        methods:
+          TestDiff:
+            response_body:
+              type: reference
+              reference: ref_test
       Section2:
         methods:
           MyResource2:
@@ -197,6 +211,13 @@ versions:
                   items:
                     type: bool
     references:
+      ref_test:
+        type: object
+        properties:
+          a:
+            type: string
+          c:
+            type: string
       element:
         properties:
           name:
@@ -207,7 +228,7 @@ versions:
           DRAFT2:
             description: Specifications not freezed
   v3.0:
-    display: ${v3}
+    display: True
     major: 3
     minor: 0
     uri: www.example2.com

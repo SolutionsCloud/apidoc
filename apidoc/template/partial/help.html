@@ -35,6 +35,7 @@
             <dd>Move to previous version</dd>
         </dl>
     </div>
+    {% if sources.versions|length > 1 %}
     <div class="help_row">
         <h3>Diff</h3>
         <dl class="keyboard-mappings">
@@ -58,4 +59,5 @@
             <dd>Move to previous version to diff</dd>
         </dl>
     </div>
+    {% endif %}
 </div>

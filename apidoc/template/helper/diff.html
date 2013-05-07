@@ -34,7 +34,7 @@
         <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="pun">{</span></td>
         <td class="com">{{ code.comment(object) }}</td>
     </tr>
-            {%- for property_name in method_versioned.objects_merge_properties(object_signed).keys()|sort %}
+            {%- for property_name in method_versioned.objects_merge_properties(objects).keys()|sort %}
                 {%- if loop.last %}
                     {{- diff_code_commented(method_versioned, method_versioned.objects_property_by_property_name(objects, property_name), code.property_name_decorator(property_name), "", pad_length + 1) }}
                 {%- else %}

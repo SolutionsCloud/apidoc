@@ -49,7 +49,7 @@
 .item>.diff-header>H5>I,.item-head>.diff-header>H5>I{margin-right:3px;}
 .item>.diff-header>.versions,.item-head>.diff-header>.versions{display:none;white-space:no-wrap;font-size:10px;margin:0;}.item>.diff-header>.versions>LI,.item-head>.diff-header>.versions>LI{padding:2px 7px;border-left:1px solid #CCC;color:#666;line-height:14px;position:relative;cursor:pointer;}.item>.diff-header>.versions>LI[data-exists=no],.item-head>.diff-header>.versions>LI[data-exists=no]{color:#CCC;}
 .item>.diff-header>.versions>LI:first-child,.item-head>.diff-header>.versions>LI:first-child{border-left:none;}
-.item>.diff-header>.versions>LI.active,.item-head>.diff-header>.versions>LI.active{font-weight:bold;color:#000;padding-left:13px;}.item>.diff-header>.versions>LI.active>I,.item-head>.diff-header>.versions>LI.active>I{display:block;position:absolute;top:-5px;margin-left:-14px;}
+.item>.diff-header>.versions>LI.diff_first,.item-head>.diff-header>.versions>LI.diff_first{font-weight:bold;color:#000;}
 .item>.diff-header>.versions>LI.diff_right,.item-head>.diff-header>.versions>LI.diff_right{color:#006600;}
 .item>.diff-header>.versions>LI.diff_left,.item-head>.diff-header>.versions>LI.diff_left{color:#660000;}
 .item>.diff-header>.versions>LI.diff_left.diff_right,.item-head>.diff-header>.versions>LI.diff_left.diff_right{color:#000000;}
