@@ -344,7 +344,7 @@ class Method(Element, Sortable):
         """Remove parameter who are not definied in uri
         """
         for parameter in self.request_parameters.values():
-                parameter.position = self.uri.find("{%s}" % parameter.name)
+            parameter.position = self.uri.find("{%s}" % parameter.name)
         return dict((x, y) for x, y in self.request_parameters.items() if y.position >= 0)
 
 
@@ -1019,6 +1019,6 @@ class MethodCrossVersion(ElementCrossVersion):
 
     def objects_reference(self, objects):
         list_objects = []
-        for object in [x for x in self.objects_without_reference(objects) if x.type is Object.Types.reference]:
+        for object in [x for x in objects if x.type is Object.Types.reference]:
             list_objects.append(object.get_reference())
         return list_objects;

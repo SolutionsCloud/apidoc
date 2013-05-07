@@ -98,6 +98,14 @@ class TestSource(unittest.TestCase):
 
         self.assertEqual("//foo/bar", version.full_uri)
 
+    def test_method_full_uri__without_version_uri(self):
+        Root.instance().configuration.uri = "//foo/"
+
+        version = Version()
+        version.uri = None
+
+        self.assertEqual("//foo/", version.full_uri)
+
     def test_method_full_uri__failled_when_no_version_uri(self):
         Root.instance().configuration.uri = None
 
@@ -230,14 +238,17 @@ class TestSource(unittest.TestCase):
         test.name = "foo"
         test.description = "bar"
         test.code = 200
-        test.uri = "baz"
+        test.uri = "baz/{h1}"
         test.method = Method.Methods("get")
         test.request_headers = {
             "h1": Parameter()
         }
         test.request_parameters = {
-            "h1": Parameter()
+            "h1": Parameter(),
+            "h2": Parameter()
         }
+        test.request_parameters["h1"].name="h1"
+        test.request_parameters["h2"].name="h2"
         test.request_body = ObjectNumber()
         test.response_codes = [
             ResponseCode()
@@ -247,10 +258,10 @@ class TestSource(unittest.TestCase):
             "name": "foo",
             "description": "bar",
             "code": 200,
-            "uri": "baz",
+            "uri": "baz/{h1}",
             "method": "get",
             "request_headers": ['300c4cc6dc22bca7b9e9cb6ba5c7d47c'],
-            "request_parameters": ['300c4cc6dc22bca7b9e9cb6ba5c7d47c'],
+            "request_parameters": ['6987b76282443b02d0ba0154a6a5d3cd'],
             "request_body": 'c570705f2c3228ea10c6bcd485d0c3a7',
             "response_codes": ['198d5b2ef38efed343e6688b1163dd62'],
             "response_body": 'c570705f2c3228ea10c6bcd485d0c3a7',
@@ -344,7 +355,7 @@ class TestSource(unittest.TestCase):
         test.description = "bar"
         test.type = Object.Types.number
 
-        self.assertEqual("927ba098e7ffc866aff215f33346d1a3", test.unit_signature)
+        self.assertEqual("3ce5d9bec0ee76b99df9d60a5c8841c5", test.unit_signature)
 
     def test_object_get_unit_signature_struct(self):
         test = Object()
@@ -353,7 +364,6 @@ class TestSource(unittest.TestCase):
         test.type = Object.Types.number
 
         self.assertEqual({
-            "name": "foo",
             "description": "bar",
             "type": "number",
             "required": True,
@@ -382,7 +392,6 @@ class TestSource(unittest.TestCase):
         test.properties = {"bar": Object()}
 
         self.assertEqual({
-            "name": "foo",
             "description": "bar",
             "type": "object",
             "required": True,
@@ -411,7 +420,6 @@ class TestSource(unittest.TestCase):
         test.items = Object()
 
         self.assertEqual({
-            "name": "foo",
             "description": "bar",
             "type": "array",
             "required": True,
@@ -440,7 +448,6 @@ class TestSource(unittest.TestCase):
         test.itemType = "baz"
 
         self.assertEqual({
-            "name": "foo",
             "description": "bar",
             "type": "dynamic",
             "required": True,
@@ -477,7 +484,6 @@ class TestSource(unittest.TestCase):
         Root.instance().references["baz"].versions["v1"] = Object()
 
         self.assertEqual({
-            "name": "foo",
             "description": "bar",
             "type": "reference",
             "required": True,
@@ -919,6 +925,26 @@ class TestSource(unittest.TestCase):
         self.assertEqual(["foo", "bar"], merged.request_body)
         self.assertEqual(["foo", "bar"], merged.response_body)
 
+    def test_methodCrossVersion_objects_without_reference(self):
+        method = Method()
+        test = MethodCrossVersion(method)
+
+        object1 = ObjectObject()
+
+        object2 = ObjectReference()
+        object2.version = "v1"
+        object2.reference_name = "baz"
+
+        reference1 = ObjectObject()
+
+        Root.instance().references = {
+            "baz": ElementCrossVersion(Type())
+        }
+        Root.instance().references["baz"].versions = {"v1": reference1}
+
+        response = test.objects_without_reference([object1, object2])
+        self.assertEqual([object1, reference1], response)
+
     def test_methodCrossVersion_objects_by_unit_signature(self):
         method = Method()
         test = MethodCrossVersion(method)
@@ -944,13 +970,13 @@ class TestSource(unittest.TestCase):
         method = Method()
         test = MethodCrossVersion(method)
 
-        object1 = Object()
+        object1 = ObjectObject()
         object1.properties = {"foo": "bar"}
 
-        object2 = Object()
+        object2 = ObjectObject()
         object2.properties = {"baz": "qux"}
 
-        object3 = Object()
+        object3 = ObjectObject()
         object3.properties = {"foo": "fum"}
 
         response = test.objects_merge_properties([object1, object2, object3])
@@ -1004,13 +1030,16 @@ class TestSource(unittest.TestCase):
         object3.version = "v1"
         object3.reference_name = "foo"
 
+        reference1 = ObjectObject()
+        reference2 = ObjectObject()
+
         Root.instance().references = {
             "foo": ElementCrossVersion(Type()),
             "baz": ElementCrossVersion(Type())
         }
-        Root.instance().references["foo"].versions = {"v1": "foo"}
-        Root.instance().references["baz"].versions = {"v1": "baz"}
+        Root.instance().references["foo"].versions = {"v1": reference1}
+        Root.instance().references["baz"].versions = {"v1": reference2}
 
         response = test.objects_reference([object1, object2, object3])
-        self.assertEqual(["foo", "baz", "foo"], response)
+        self.assertEqual([reference1, reference2, reference1], response)
 
