@@ -160,7 +160,7 @@ function displayVersion() {
     }
 
     if (scrollReferenceElement !== null) {
-        $("BODY").scrollTop($(scrollReferenceElement).offset().top - Math.max(offset, 0 - $(scrollReferenceElement).outerHeight() + 60));
+        $(window).scrollTop($(scrollReferenceElement).offset().top - Math.max(offset, 0 - $(scrollReferenceElement).outerHeight() + 60));
         displayScrollHeader();
     }
 
@@ -216,7 +216,7 @@ function onNavigationChange() {
     }
 
     if (elementSelector !== null && $(elementSelector).length) {
-        $("BODY").scrollTop($(elementSelector).offset().top - conf.scrollMargin);
+        $(window).scrollTop($(elementSelector).offset().top - conf.scrollMargin);
     }
 }
 
@@ -418,8 +418,8 @@ function toggleDiffLayout(item) {
 
         displayDiff(item)
 
-        if (item.offset().top + item.outerHeight() - 60 < $("BODY").scrollTop()) {
-            $("BODY").scrollTop(item.offset().top + item.outerHeight() - 60);
+        if (item.offset().top + item.outerHeight() - 60 < $(window).scrollTop()) {
+            $(window).scrollTop(item.offset().top + item.outerHeight() - 60);
         }
     } else {
         item.removeClass("diff-mode diff-mode-side diff-mode-inline diff-mode-full diff-mode-mini");
