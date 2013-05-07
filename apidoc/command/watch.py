@@ -31,10 +31,11 @@ class Watch(Base):
         """Run the command
         """
         self.logger = logging.getLogger()
-        self.logger.info("Start watching")
 
         configService = ConfigService()
         self.config = self.get_config()
+
+        self.logger.info("Start watching")
         self.refresh_source(None)
 
         observer = Observer()

@@ -34,6 +34,12 @@ class Config():
                     % ("s" if len(unknown_files) > 1 else "", ("\" and \"").join(unknown_files))
                 )
 
+        if config["input"]["arguments"] is not None:
+            if not isinstance(config["input"]["arguments"], dict):
+                raise Exception(
+                    "Sources arguments \"%s\" are not a dict" % config["input"]["arguments"]
+                )
+
     def get_template_from_config(self, config):
         """Retrieve a template path from the config object
         """

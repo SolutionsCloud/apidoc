@@ -276,7 +276,7 @@ function initScrollNavigation() {
     $(window).scrollspy({target: '.scroll-spyable'});
     $('.doc-sidebar').affix({
         offset: {
-            top: 40
+            top: $(".container").outerHeight()
         }
     });
 
@@ -520,11 +520,6 @@ function shortcutGotoNext(event, key) {
     } else {
         var items = current.nextAll("LI[data-item]:visible").find(">A");
         if (items.length > 0) {
-            items.sort(function(a, b) {
-                if ($(a).index() < $(b).index()) return -1;
-                if ($(a).index() > $(b).index()) return 1;
-                return 0;
-            });
             items.get(0).click()
         } else {
             var ul = current.closest("UL");

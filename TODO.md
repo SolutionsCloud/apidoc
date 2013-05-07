@@ -5,7 +5,6 @@ ApiDoc's TODO
 Features
 --------
 * RunMode: The end user can run the methods through his browser
-* Variable: Some parts of the sources can refered to variables defined in the source file or injected when the document is builded
 * Simplify Sources: When the API have only one version or only one section, The keys version and section could be ommited in sources files
 
 
@@ -38,3 +37,4 @@ DONE
 * Add keyboard's shortcut handler to simplify navigation
 * Define filters in config files to choose the sections and/or the versions who should not be displayed
 * Implement a diff mode
+* Sources files refere to variables inject in command arguments or in config file

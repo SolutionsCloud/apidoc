@@ -1,7 +1,7 @@
-configurastion:
+configuration:
   title: Full Sample
   description: A full sample using ApiDoc
-  uri: www.example.com
+  uri: ${base_url}
 versions:
   v1.0:
     description: First release of the API
@@ -207,7 +207,7 @@ versions:
           DRAFT2:
             description: Specifications not freezed
   v3.0:
-    display: true
+    display: ${v3}
     major: 3
     minor: 0
     uri: www.example2.com

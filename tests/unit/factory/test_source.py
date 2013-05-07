@@ -64,6 +64,7 @@ class TestSource(unittest.TestCase):
         config = ConfigObject()
         config["input"]["directories"] = ["directory1", "directory2"]
         config["input"]["files"] = ["file1", "file2"]
+        config["input"]["arguments"] = {"var": "value"}
 
         response = self.source.load_from_config(config)
 
@@ -78,6 +79,35 @@ class TestSource(unittest.TestCase):
         mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
         mock_parser_directory.assert_has_calls([call('directory1'), call('directory2')])
         mock_parser_file.assert_has_calls([call('file1'), call('file2')])
+
+    def test_replace_argument(self):
+        root = {
+            "a": "${a1}",
+            "b": [
+                "c",
+                "${a1}",
+                {
+                    "d": "${a1}",
+                    "e": "f",
+                    "g": 123,
+                }
+            ],
+        }
+
+        response = self.source.replace_argument(root, "a1", "v")
+        self.assertEqual({
+            "a": "v",
+            "b": [
+                "c",
+                "v",
+                {
+                    "d": "v",
+                    "e": "f",
+                    "g": 123,
+                }
+            ],
+        }, response)
+
 
     def test_apply_config_filter_version(self):
         root = Root()

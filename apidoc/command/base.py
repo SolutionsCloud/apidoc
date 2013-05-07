@@ -34,6 +34,10 @@ class Base():
         self.parser.add_argument(
             "-v", "--version", action='version', version='%(prog)s 1.0'
         )
+        self.parser.add_argument(
+            "-a", "--arguments", nargs='+', type=str, metavar="ARGUMENT",
+            help="documentation\'s arguments arg1=value1 arg2=value2"
+        )
 
     def get_config(self):
         """return command's configuration from call's arguments
@@ -55,6 +59,9 @@ class Base():
 
         if options.files is not None:
             config["input"]["files"] = [str(x) for x in options.files]
+
+        if options.arguments is not None:
+            config["input"]["arguments"] = dict((x.partition("=")[0], x.partition("=")[2]) for x in options.arguments)
 
         if options.output is not None:
             config["output"]["location"] = options.output

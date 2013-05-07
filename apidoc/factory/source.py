@@ -39,6 +39,9 @@ class Source():
                 sources.append(self.parser.load_from_file(file))
 
         merged = self.merger.merge_sources(sources)
+        if config["input"]["arguments"] is not None:
+            for (argument, value) in config["input"]["arguments"].items():
+                merged = self.replace_argument(merged, argument, value)
 
         extended = self.extender.extends(
             merged, paths=self.get_extender_paths(), separator="/", extends_key="extends",
@@ -52,6 +55,18 @@ class Source():
         self.refactor_hierarchy(root)
 
         return root
+
+    def replace_argument(self, element, argument, value):
+        """Replace sources arguments by value injected in config
+        """
+        if isinstance(element, list):
+            return [self.replace_argument(x, argument, value) for x in element]
+        elif isinstance(element, dict):
+            return dict((x, self.replace_argument(y, argument, value)) for (x, y) in element.items())
+        elif isinstance(element, str):
+            return element.replace("${%s}" % argument, value)
+        else:
+            return element
 
     def apply_config_filter(self, root, config_filter):
         """Remove filter defined in config

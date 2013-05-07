@@ -4,6 +4,8 @@ input:
   files:
 #    - ./sources/one.yml
 #    - ./sources/two.yml
+  arguments:
+    url: www.apidoc.com
 filter: # undefined => all
   versions: # undefined => all
     includes: # undefined => all but excludes
@@ -16,11 +18,11 @@ filter: # undefined => all
     excludes: # undefined => none
 #      - Foo2
 output:
-  location: stdout
-#  location: ./output/sample.html
+#  location: stdout
+  location: ./output/sample.html
 #  template: default
 #  template: ./template/my.html
-  componants: local
-#  componants: embedded
+#  componants: local
+  componants: embedded
 #  componants: remote
 #

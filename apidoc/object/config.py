@@ -8,7 +8,8 @@ class Config(dict):
         """
         self["input"] = {
             "directories": None,
-            "files": None
+            "files": None,
+            "arguments": None
         }
 
         self["filter"] = {
