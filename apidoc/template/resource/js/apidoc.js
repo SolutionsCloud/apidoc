@@ -4,9 +4,11 @@ var conf = {
 };
 
 function refreshScrollNavigation() {
-    $(window).each(function () {
-        $(this).scrollspy('refresh');
-    });
+    setTimeout(function() {
+        $(window).each(function () {
+            $(this).scrollspy('refresh');
+        });
+    }, 100);
 }
 
 function displayScrollHeader() {
@@ -133,9 +135,9 @@ function displayVersion() {
         var offset = $(scrollReferenceElement).offset().top - scrollTop
     }
 
-    $(".method, .type").find(" > .contents > LI").removeClass("active");
+    $(".item > .contents > LI.active:not([data-version~=\"" + conf.version + "\"])").removeClass("active");
     if (conf.version === null) {
-        $(".method, .type").find(" > .contents > LI.version:last-child").addClass("active");
+        $(".item > .contents > LI.version:last-child").addClass("active");
     } else {
         $("#nav-versions > LI[data-version].active").removeClass("active");
         $("#nav-versions > LI[data-version=\"" + conf.version + "\"]").addClass("active");
@@ -149,9 +151,9 @@ function displayVersion() {
                 item.find("> .diff-header > H5.desc").attr("data-changed", $(this).data("changed"))
                 $(".nav-list > LI > A[data-target=\"#" + item.attr("id") + "\"]").closest("LI").attr("data-changed", $(this).data("changed"))
             })
-            }, 10)
+        }, 10)
 
-        $(".method, .type").find(" > .contents > LI[data-version~=\"" + conf.version + "\"]").addClass("active");
+        $(".item > .contents > LI:not(.active)[data-version~=\"" + conf.version + "\"]").addClass("active");
         $(".diff-mode").each(function() {
             displayDiff($(this))
         });
