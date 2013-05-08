@@ -2,6 +2,19 @@
 @import "item-header.less";
 
 .item {
+    > .nocontents {
+        padding: 10px 15px;
+        display: none;
+    }
+
+    &:not(.diff-mode)[data-changed=deleted] {
+        > .nocontents {
+            display: block;
+        }
+        > .contents.content-left {
+            display: none;
+        }
+    }
     > .contents {
          > .title {
                 display: none;

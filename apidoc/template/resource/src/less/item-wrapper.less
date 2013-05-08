@@ -9,17 +9,17 @@
             border-radius: 4px;
     & {
         background-color: #f0f0f0;
-        &, &::before, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
+        &, &::after, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
             border-color: #ddd;
         }
-        &::before {
+        &::after {
             background-color: #666;
         }
     }
 }
 
 .method, #item-head {
-    &[data-method]::before {
+    &[data-method]::after {
         content: attr(data-method);
         position: absolute;
         top: -1px;
@@ -39,48 +39,39 @@
 
     &[data-method=GET] {
         background-color: hsl(200, 65%, 90%);
-        &, &::before, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
+        &, &::after, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
             border-color: hsl(200, 65%, 70%);
         }
-        &::before {
+        &::after {
             background-color: hsl(200, 100%, 35%);
         }
     }
     &[data-method=POST] {
         background-color: hsl(103, 45%, 90%);
-        &, &::before, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
+        &, &::after, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
             border-color: hsl(103, 45%, 70%);
         }
-        &::before {
+        &::after {
             background-color: hsl(103, 90%, 35%);
         }
     }
     &[data-method=PUT] {
         background-color: hsl(38, 80%, 90%);
-        &, &::before, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
+        &, &::after, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
             border-color: hsl(38, 80%, 70%);
         }
-        &::before {
+        &::after {
             background-color: hsl(38, 90%, 40%);
         }
     }
     &[data-method=DELETE] {
         background-color: hsl(0, 45%, 90%);
-        &, &::before, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
+        &, &::after, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
             border-color: hsl(0, 45%, 70%);
         }
-        &::before {
+        &::after {
             background-color: hsl(0, 90%, 35%);
         }
-    }
-
-    &#item-head::after {
-        content: "";
-        position: absolute;
-        height: 15px;
-        width: 100%;
-        top: 26px;
-
     }
 }
 
@@ -97,7 +88,7 @@
        -moz-border-radius: 0;
             border-radius: 0;
 
-        &::before {
+        &::after {
             -webkit-border-radius: 0 0 4px 0;
                -moz-border-radius: 0 0 4px 0;
                     border-radius: 0 0 4px 0;

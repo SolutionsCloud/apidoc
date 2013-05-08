@@ -141,15 +141,14 @@ function displayVersion() {
         $("#nav-versions > LI[data-version=\"" + conf.version + "\"]").addClass("active");
 
         $(".item > .diff-header > H5.desc").html('<i class="icon-random"></i>' + conf.version)
-        $(".item > .diff-header > H5.desc, .nav-list > LI").attr("data-changed", null)
+        $(".item, .nav-list > LI").attr("data-changed", null)
 
-        setTimeout(function() {
-            $(".item > .diff-header > .versions > LI:not(:first-child):not([data-changed=none])[data-version=\"" + conf.version + "\"]").each(function() {
-                var item = $(this).closest(".item");
-                item.find("> .diff-header > H5.desc").attr("data-changed", $(this).data("changed"))
-                $(".nav-list > LI > A[data-target=\"#" + item.attr("id") + "\"]").closest("LI").attr("data-changed", $(this).data("changed"))
-            })
-        }, 10)
+        $(".item > .diff-header > .versions > LI:not(:first-child):not([data-changed=none])[data-version=\"" + conf.version + "\"]").each(function() {
+            var item = $(this).closest(".item");
+            var status = $(this).data("changed");
+            item.attr("data-changed", status)
+            $(".nav-list > LI > A[data-target=\"#" + item.attr("id") + "\"]").closest("LI").attr("data-changed", status)
+        })
 
         $(".item > .contents > .sample > [data-version~=\"" + conf.version + "\"]").show();
         $(".item > .contents .diff_version").removeClass("diff_new diff_del diff_none");
