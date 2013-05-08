@@ -33,29 +33,20 @@
                     </ul>
                 </div>
         {%- endif -%}
-                <ul class="contents unstyled">
-        {%- if sources.versions|length > 1 %}
-                    <li class="version" data-version="
-            {%- for version in sources.versions.values()|sort %}
-                {%- if version.name not in type_versioned.versions %}{{ version.name }} {% endif %}
-            {%- endfor -%}
-                    ">
-                        <div class="description stack">no implementation for this version</div>
-                    </li>
-                    <li class="diff">
-            {%- include "partial/type_diff.html" -%}
-                    </li>
-        {%- endif %}
+                <div class="contents">
+        {%- include "partial/type_diff.html" -%}
+                    <div class="stack sample">
         {%- for type in type_versioned.signatures.values() %}
-                    <li class="version" data-version="
+                        <div data-version="
             {%- for (type_version_name, type_version) in type_versioned.versions.items() %}
                 {%- if type_version.signature == type.signature %}{{ type_version_name }} {% endif %}
             {%- endfor -%}
                     ">
-            {%- include "partial/type.html" %}
-                    </li>
+            {%- include "partial/type_sample.html" -%}
+                        </div>
         {%- endfor %}
-                </ul>
+                    </div>
+                </div>
             </li>
     {%- endfor %}
         </ul>

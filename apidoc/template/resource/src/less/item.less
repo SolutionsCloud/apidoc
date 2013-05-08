@@ -2,20 +2,22 @@
 @import "item-header.less";
 
 .item {
-    > .contents > LI {
-        display: none;
-
-        &.active {
-            display: block;
+    > .contents {
+         > .title {
+                display: none;
         }
 
-        .stack {
+        > .stack {
             border-bottom: 1px dotted #ddd;
             padding: 10px 15px;
 
             &:last-child {
                 border-bottom: none;
             }
+        }
+
+        > .sample > DIV {
+            display: none;
         }
 
         > .description {
@@ -41,6 +43,22 @@
             }
         }
 
+        &.content-left  {
+            display: block;
+        }
+        &.content-right {
+            display: none;
+        }
+    }
+
+    &:not(.diff-mode) > .contents {
+        .diff_version:not(.diff_new) {
+            display:none;
+        }
+    }
+
+    &.diff-mode {
+
         .diff_version {
             &.diff_new {
                 background-color: hsl(120, 100%, 93%);;
@@ -49,44 +67,54 @@
                 background-color: hsl(0, 100%, 93%);;
             }
         }
+
+        .diff_version.diff_none {
+            display: none;
+        }
+
+        > .contents {
+            > .title {
+                display: block;
+            }
+
+            > .sample {
+                display: none;
+            }
+        }
     }
 
-    &.diff-mode > .contents > LI.version.active {
-        display: none;
-    }
-
-    &.diff-mode-side > .contents > LI {
-       &.diff {
+    &.diff-mode-side > .contents {
+        & {
             width: 50%;
-            display: inline-block!important;
+            display: inline-block;
 
             > H5.title {
                 text-align: center;
             }
         }
 
-        &.diff-left .diff_new {
+        &.content-left .diff_new {
             visibility: hidden;
         }
-        &.diff-right .diff_del {
+        &.content-right .diff_del {
             visibility: hidden;
         }
     }
 
-    &.diff-mode-inline > .contents > LI {
-       &.diff > H5.title {
+    &.diff-mode-inline > .contents {
+        &.diff > H5.title {
             display:none;
         }
 
-        &.diff-left {
-            display:block;
+        &.content-left {
+            display: block;
         }
-        &.diff-right {
-            display:none;
+        &.content-right {
+            display: none;
         }
     }
 
-    &.diff-mode-mini > .contents > LI {
+    &.diff-mode-mini > .contents {
         .diff_version:not(.diff_new):not(.diff_del) {
             display:none;
         }

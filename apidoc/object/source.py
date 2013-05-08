@@ -653,7 +653,7 @@ class ObjectArray(Object):
         super().__init__()
         self.type = Object.Types("array")
         self.items = None
-        self.sample_count = 3
+        self.sample_count = 2
 
     @Element.version.setter
     def version(self, value):

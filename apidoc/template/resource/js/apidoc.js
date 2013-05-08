@@ -135,10 +135,8 @@ function displayVersion() {
         var offset = $(scrollReferenceElement).offset().top - scrollTop
     }
 
-    $(".item > .contents > LI.active:not([data-version~=\"" + conf.version + "\"])").removeClass("active");
-    if (conf.version === null) {
-        $(".item > .contents > LI.version:last-child").addClass("active");
-    } else {
+    $(".item > .contents > .sample > :not([data-version~=\"" + conf.version + "\"])").hide();
+    if (conf.version !== null) {
         $("#nav-versions > LI[data-version].active").removeClass("active");
         $("#nav-versions > LI[data-version=\"" + conf.version + "\"]").addClass("active");
 
@@ -153,7 +151,10 @@ function displayVersion() {
             })
         }, 10)
 
-        $(".item > .contents > LI:not(.active)[data-version~=\"" + conf.version + "\"]").addClass("active");
+        $(".item > .contents > .sample > [data-version~=\"" + conf.version + "\"]").show();
+        $(".item > .contents .diff_version").removeClass("diff_new diff_del diff_none");
+        $(".item > .contents .diff_version[data-version~=\"" + conf.version + "\"]").addClass("diff_new")
+
         $(".diff-mode").each(function() {
             displayDiff($(this))
         });
@@ -400,12 +401,12 @@ function displayDiff(item, version) {
 
     item.trigger("headerChanged");
 
-    item.find(" > .contents > LI.diff-left > H5.title").text(leftVersion)
-    item.find(" > .contents > LI.diff-right > H5.title").text(rightVersion)
-    item.find(" > .contents > LI.diff .diff_version").show().removeClass("diff_new diff_del")
-    item.find(" > .contents > LI.diff .diff_version:not([data-version~=\"" + rightVersion + "\"]):not([data-version~=\"" + leftVersion + "\"])").hide()
-    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + rightVersion + "\"]:not([data-version~=\"" + leftVersion + "\"])").addClass("diff_new")
-    item.find(" > .contents > LI.diff .diff_version[data-version~=\"" + leftVersion + "\"]:not([data-version~=\"" + rightVersion + "\"])").addClass("diff_del")
+    item.find(" > .contents.content-left > H5.title").text(leftVersion)
+    item.find(" > .contents.content-right > H5.title").text(rightVersion)
+    item.find(" > .contents .diff_version").removeClass("diff_new diff_del diff_none")
+    item.find(" > .contents .diff_version:not([data-version~=\"" + rightVersion + "\"]):not([data-version~=\"" + leftVersion + "\"])").addClass("diff_none")
+    item.find(" > .contents .diff_version[data-version~=\"" + rightVersion + "\"]:not([data-version~=\"" + leftVersion + "\"])").addClass("diff_new")
+    item.find(" > .contents .diff_version[data-version~=\"" + leftVersion + "\"]:not([data-version~=\"" + rightVersion + "\"])").addClass("diff_del")
 
     refreshScrollNavigation()
 }
@@ -423,7 +424,9 @@ function toggleDiffLayout(item) {
         }
     } else {
         item.removeClass("diff-mode diff-mode-side diff-mode-inline diff-mode-full diff-mode-mini");
-        item.find(" > .contents > LI.version[data-version~=\"" + conf.version + "\"]").addClass("active");
+
+        item.find(" > .contents .diff_version").removeClass("diff_new diff_del diff_none")
+        item.find(" > .contents .diff_version[data-version~=\"" + conf.version + "\"]").addClass("diff_new")
 
         item.trigger("headerChanged");
 
@@ -477,8 +480,8 @@ function initDiff() {
     $(".item>.diff-header > .versions > LI").click(function() {
         displayDiff($(this).closest(".item"), $(this).data("version"))
     });
-    $(".item > .contents > .diff").each(function() {
-        $(this).addClass("diff-left").clone().insertAfter($(this)).addClass("diff-right").removeClass("diff-left");
+    $(".item > .contents").each(function() {
+        $(this).addClass("content-left").clone().insertAfter($(this)).addClass("content-right").removeClass("content-left").find("> .sample").remove();
     })
 }
 

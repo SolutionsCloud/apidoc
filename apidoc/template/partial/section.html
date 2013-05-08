@@ -36,29 +36,20 @@
                     </ul>
                 </div>
         {%- endif -%}
-                <ul class="contents unstyled">
-        {%- if sources.versions|length > 1 %}
-                    <li class="version" data-version="
-            {%- for version in sources.versions.values()|sort %}
-                {%- if version.name not in method_versioned.versions %}{{ version.name }} {% endif %}
-            {%- endfor -%}
-                    ">
-                        <div class="description stack">no implementation for this version</div>
-                    </li>
-                    <li class="diff">
-            {%- include "partial/method_diff.html" -%}
-                    </li>
-        {%- endif %}
+                <div class="contents">
+        {%- include "partial/method_diff.html" -%}
+                    <div class="stack sample">
         {%- for method in method_versioned.signatures.values() %}
-                    <li class="version" data-version="
+                        <div data-version="
             {%- for (method_version_name, method_version) in method_versioned.versions.items() %}
                 {%- if method_version.signature == method.signature %}{{ method_version_name }} {% endif %}
             {%- endfor -%}
                     ">
-            {%- include "partial/method.html" -%}
-                    </li>
+            {%- include "partial/method_sample.html" -%}
+                        </div>
         {%- endfor %}
-                </ul>
+                    </div>
+                </div>
             </li>
     {%- endfor %}
         </ul>

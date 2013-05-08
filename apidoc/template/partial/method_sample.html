@@ -1,0 +1,33 @@
+{%- import "helper/code.html" as code %}
+{%- import "helper/util.html" as util %}
+
+<h5><i class="icon-play-circle"></i> Sample: </h5>
+<h6>Request: </h6>
+<div class="code">
+{{- "" -}}
+<span class="hme">
+{%- if method.method|lower == 'http' -%}
+    GET
+{%- else -%}
+    {{ method.method|upper }}
+{%- endif -%}
+        </span> <span class="hur">
+{{- code.uri_sampled(method.uri, method.request_parameters) -}}
+        </span> <span class="hpr">HTTP/1.1</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+{%- for parameter in method.request_headers.values()|sort %}
+<span class="hat">{{ parameter.name }}</span><span class="pun">: </span><span class="hva">{{ util.none_to_empty(parameter.sample) }}</span>
+{%- endfor %}
+{% if method.request_body -%}
+{{ code.code_sampled(method.request_body) -}}
+{%- endif -%}
+        </div>
+        <h6>Response: </h6>
+        <div class="code">
+{{- "" -}}
+<span class="hpr">HTTP/1.1</span> <span class="lit">{{ method.code }}</span> <span class="str">{{ method.message }}</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+{% if method.response_body -%}
+{{ code.code_sampled(method.response_body) -}}
+{%- endif -%}
+</div>
