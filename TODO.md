@@ -6,7 +6,6 @@ Features
 --------
 * RunMode: The end user can run the methods through his browser
 * Simplify Sources: When the API have only one version or only one section, The keys version and section could be ommited in sources files
-* Link the type in method (and parameters) to the Type section
 
 
 Improvements

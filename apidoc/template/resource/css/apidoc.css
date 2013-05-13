@@ -88,8 +88,8 @@
 .item.diff-mode .diff_version.diff_new{background-color:#dbffdb;}
 .item.diff-mode .diff_version.diff_del{background-color:#ffdbdb;}
 .item.diff-mode .diff_version.diff_none{display:none;}
-.item.diff-mode>.contents>.title{display:block;}
 .item.diff-mode>.contents>.sample{display:none;}
+.item.diff-mode-side>.contents>.title{display:block;}
 .item.diff-mode-side>.contents{width:50%;display:inline-block;}.item.diff-mode-side>.contents>H5.title{text-align:center;}
 .item.diff-mode-side>.contents.content-left .diff_new{visibility:hidden;}
 .item.diff-mode-side>.contents.content-right .diff_del{visibility:hidden;}

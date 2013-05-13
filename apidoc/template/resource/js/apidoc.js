@@ -569,15 +569,37 @@ function shortcutGotoNextVersion(event, key) {
     }
 }
 
-function shortcutToggleDiff(event, key) {
+function getCurrentItem() {
     var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A")
+    if (current.length == 0) {
+        var currentActive = $(".scroll-spyable>UL>LI.active:visible")
+        if (currentActive.length == 0) {
+            current = $(".scroll-spyable>UL>LI[data-item]:visible>A");
+        } else {
+            current = currentActive.nextAll("LI[data-item]:visible").find(">A");
+            if (current.length == 0) {
+                var ul = current.closest("UL");
+                var current = current.closest("UL").next().find('>LI[data-item]:visible>A')
+            }
+        }
+
+        if (current.length > 0) {
+            current.get(0).click()
+        }
+    }
+    return current.first();
+}
+function shortcutToggleDiff(event, key) {
+    current = getCurrentItem();
+
     if (current.length > 0) {
         toggleDiffLayout($(current.data('target')))
     }
 }
 
 function shortcutToggleSide(event, key) {
-    var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A")
+    var current = getCurrentItem();
+
     if (current.length > 0) {
         var element = $(current.data('target'))
         if (!element.is(".diff-mode")) {
@@ -595,7 +617,8 @@ function shortcutToggleSide(event, key) {
 }
 
 function shortcutToggleFull(event, key) {
-    var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A")
+    var current = getCurrentItem();
+
     if (current.length > 0) {
         var element = $(current.data('target'))
         if (!element.is(".diff-mode")) {
@@ -613,7 +636,8 @@ function shortcutToggleFull(event, key) {
 }
 
 function shortcutGotoNextDiffVersion(event, key) {
-    var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A")
+    var current = getCurrentItem();
+
     if (current.length > 0) {
         var element = $(current.data('target'))
         if (!element.is(".diff-mode")) {
@@ -636,7 +660,8 @@ function shortcutGotoNextDiffVersion(event, key) {
 }
 
 function shortcutGotoPreviousDiffVersion(event, key) {
-    var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A")
+    var current = getCurrentItem();
+
     if (current.length > 0) {
         var element = $(current.data('target'))
         if (!element.is(".diff-mode")) {
