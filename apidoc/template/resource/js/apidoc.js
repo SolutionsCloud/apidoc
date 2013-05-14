@@ -11,19 +11,42 @@ function refreshScrollNavigation() {
     }, 100);
 }
 
+function findCurrentItem() {
+    var scrollTop = $(window).scrollTop();
+
+    var items = $(".item:not(#item-head)");
+
+    var dic = function(inf, sup) {
+        if (sup < 0) {
+            return null;
+        }
+
+        if (sup <= inf) {
+            return items[sup];
+        }
+
+        var index = inf + Math.round((sup - inf)/2);
+        var item = $(items[index]);
+        if (item.offset().top >= scrollTop) {
+            return dic(inf, index - 1);
+        }
+
+        if (item.offset().top + item.outerHeight() >= scrollTop) {
+            return items[index];
+        }
+
+        return dic(index + 1, sup)
+    }
+
+    return dic(0, items.length - 1);
+
+}
+
 function displayScrollHeader() {
     var scrollHeight = $(document).height(),
         scrollTop = $(window).scrollTop();
 
-    var element = null;
-    var items = $(".item:not(#item-head)");
-    for (var i = 0, l = items.length; i < l; i++) {
-        if ($(items[i]).offset().top >= scrollTop) {
-            break;
-        }
-
-        element = items[i];
-    }
+    var element = findCurrentItem();
 
     var header = $("#item-head");
     if (element === null) {
