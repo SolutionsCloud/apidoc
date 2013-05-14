@@ -17,7 +17,6 @@ function displayScrollHeader() {
 
     var element = null;
     var items = $(".item:not(#item-head)");
-
     for (var i = 0, l = items.length; i < l; i++) {
         if ($(items[i]).offset().top >= scrollTop) {
             break;
@@ -33,6 +32,38 @@ function displayScrollHeader() {
     }
 
     element = $(element);
+
+    var subElement = null;
+    var items = $(".stack H5:visible", element);
+    items.sort(function(a, b) {
+        var at = $(a).offset().top;
+        var bt = $(b).offset().top;
+        if (at < bt) return -1;
+        if (at > bt) return 1;
+        return 0;
+    });
+
+    header.find(".stack").hide()
+    var subScrollTop = scrollTop + header.outerHeight();
+    for (var i = 0, l = items.length; i < l; i++) {
+        var pos = $(items[i]).offset().top - subScrollTop
+        if (pos > 0) {
+            if (pos < 30) {
+                subElement = null;
+            }
+
+            break;
+        }
+
+        subElement = items[i];
+    }
+
+    if (subElement === null) {
+    } else {
+        header.find(".stack").html("<h5>" + $(subElement).html() + "</h5>").show()
+    }
+
+
     var elementTop = element.offset().top;
     if (elementTop > scrollTop || elementTop + element.height() - scrollTop + header.height() - 30 < 0) {
         header.hide();

@@ -43,35 +43,36 @@
 #item-head.item>.versions{-webkit-border-radius:0 0 0 4px;-moz-border-radius:0 0 0 4px;border-radius:0 0 0 4px;}
 .item>H4{margin:3px 0 0 15px;}
 .item[data-method]>H4{margin-left:60px;}
-.item>.diff-header,.item-head>.diff-header{position:absolute;top:0px;right:0px;background-color:#f5f5f5;border:1px solid #ccc;border-top:none;border-right:none;color:#000;-webkit-border-radius:0 4px 0 4px;-moz-border-radius:0 4px 0 4px;border-radius:0 4px 0 4px;white-space:no-wrap;padding:0 3px;}.item>.diff-header>H5,.item-head>.diff-header>H5{font-size:13px;font-weight:bold;line-height:16px;cursor:pointer;}.item>.diff-header>H5.diff,.item-head>.diff-header>H5.diff{display:none;}
-.item>.diff-header>H5.desc,.item-head>.diff-header>H5.desc{display:block;}
-.item>.diff-header>H5>I,.item-head>.diff-header>H5>I{margin-right:3px;}
-.item>.diff-header>.versions,.item-head>.diff-header>.versions{display:none;white-space:no-wrap;font-size:10px;margin:0;}.item>.diff-header>.versions>LI,.item-head>.diff-header>.versions>LI{padding:2px 7px;border-left:1px solid #CCC;color:#666;line-height:14px;position:relative;cursor:pointer;}.item>.diff-header>.versions>LI[data-exists=no],.item-head>.diff-header>.versions>LI[data-exists=no]{color:#CCC;}
-.item>.diff-header>.versions>LI:first-child,.item-head>.diff-header>.versions>LI:first-child{border-left:none;}
-.item>.diff-header>.versions>LI.diff_first,.item-head>.diff-header>.versions>LI.diff_first{font-weight:bold;color:#000;}
-.item>.diff-header>.versions>LI.diff_right,.item-head>.diff-header>.versions>LI.diff_right{color:#006600;}
-.item>.diff-header>.versions>LI.diff_left,.item-head>.diff-header>.versions>LI.diff_left{color:#660000;}
-.item>.diff-header>.versions>LI.diff_left.diff_right,.item-head>.diff-header>.versions>LI.diff_left.diff_right{color:#000000;}
-.item>.diff-header>.versions>LI>I,.item-head>.diff-header>.versions>LI>I{display:none;}
-.item.diff-mode>.diff-header>H5.diff,.item-head.diff-mode>.diff-header>H5.diff{display:block;}.item.diff-mode>.diff-header>H5.diff>I.mode-side,.item-head.diff-mode>.diff-header>H5.diff>I.mode-side,.item.diff-mode>.diff-header>H5.diff>I.mode-inline,.item-head.diff-mode>.diff-header>H5.diff>I.mode-inline,.item.diff-mode>.diff-header>H5.diff>I.mode-full,.item-head.diff-mode>.diff-header>H5.diff>I.mode-full,.item.diff-mode>.diff-header>H5.diff>I.mode-mini,.item-head.diff-mode>.diff-header>H5.diff>I.mode-mini{display:none;}
-.item.diff-mode>.diff-header>H5.desc,.item-head.diff-mode>.diff-header>H5.desc{display:none;}
-.item.diff-mode>.diff-header>.versions,.item-head.diff-mode>.diff-header>.versions{display:block;}
-.item.diff-mode-side>.diff-header>H5.diff>I.mode-side,.item-head.diff-mode-side>.diff-header>H5.diff>I.mode-side{display:inline-block;}
-.item.diff-mode-side>.diff-header>H5.diff>I.mode-inline,.item-head.diff-mode-side>.diff-header>H5.diff>I.mode-inline{display:none;}
-.item.diff-mode-inline>.diff-header>H5.diff>I.mode-side,.item-head.diff-mode-inline>.diff-header>H5.diff>I.mode-side{display:none;}
-.item.diff-mode-inline>.diff-header>H5.diff>I.mode-inline,.item-head.diff-mode-inline>.diff-header>H5.diff>I.mode-inline{display:inline-block;}
-.item.diff-mode-full>.diff-header>H5.diff>I.mode-full,.item-head.diff-mode-full>.diff-header>H5.diff>I.mode-full{display:inline-block;}
-.item.diff-mode-full>.diff-header>H5.diff>I.mode-mini,.item-head.diff-mode-full>.diff-header>H5.diff>I.mode-mini{display:none;}
-.item.diff-mode-mini>.diff-header>H5.diff>I.mode-full,.item-head.diff-mode-mini>.diff-header>H5.diff>I.mode-full{display:none;}
-.item.diff-mode-mini>.diff-header>H5.diff>I.mode-mini,.item-head.diff-mode-mini>.diff-header>H5.diff>I.mode-mini{display:inline-block;}
-.item-head>.diff-header>H5.desc[data-changed]::before{top:-1px;left:-15px;}
+.item>.diff-header,#item-head>.diff-header{position:absolute;top:0px;right:0px;background-color:#f5f5f5;border:1px solid #ccc;border-top:none;border-right:none;color:#000;-webkit-border-radius:0 4px 0 4px;-moz-border-radius:0 4px 0 4px;border-radius:0 4px 0 4px;white-space:no-wrap;padding:0 3px;}.item>.diff-header>H5,#item-head>.diff-header>H5{font-size:13px;font-weight:bold;line-height:16px;cursor:pointer;}.item>.diff-header>H5.diff,#item-head>.diff-header>H5.diff{display:none;}
+.item>.diff-header>H5.desc,#item-head>.diff-header>H5.desc{display:block;}
+.item>.diff-header>H5>I,#item-head>.diff-header>H5>I{margin-right:3px;}
+.item>.diff-header>.versions,#item-head>.diff-header>.versions{display:none;white-space:no-wrap;font-size:10px;margin:0;}.item>.diff-header>.versions>LI,#item-head>.diff-header>.versions>LI{padding:2px 7px;border-left:1px solid #CCC;color:#666;line-height:14px;position:relative;cursor:pointer;}.item>.diff-header>.versions>LI[data-exists=no],#item-head>.diff-header>.versions>LI[data-exists=no]{color:#CCC;}
+.item>.diff-header>.versions>LI:first-child,#item-head>.diff-header>.versions>LI:first-child{border-left:none;}
+.item>.diff-header>.versions>LI.diff_first,#item-head>.diff-header>.versions>LI.diff_first{font-weight:bold;color:#000;}
+.item>.diff-header>.versions>LI.diff_right,#item-head>.diff-header>.versions>LI.diff_right{color:#006600;}
+.item>.diff-header>.versions>LI.diff_left,#item-head>.diff-header>.versions>LI.diff_left{color:#660000;}
+.item>.diff-header>.versions>LI.diff_left.diff_right,#item-head>.diff-header>.versions>LI.diff_left.diff_right{color:#000000;}
+.item>.diff-header>.versions>LI>I,#item-head>.diff-header>.versions>LI>I{display:none;}
+.item.diff-mode>.diff-header>H5.diff,#item-head.diff-mode>.diff-header>H5.diff{display:block;}.item.diff-mode>.diff-header>H5.diff>I.mode-side,#item-head.diff-mode>.diff-header>H5.diff>I.mode-side,.item.diff-mode>.diff-header>H5.diff>I.mode-inline,#item-head.diff-mode>.diff-header>H5.diff>I.mode-inline,.item.diff-mode>.diff-header>H5.diff>I.mode-full,#item-head.diff-mode>.diff-header>H5.diff>I.mode-full,.item.diff-mode>.diff-header>H5.diff>I.mode-mini,#item-head.diff-mode>.diff-header>H5.diff>I.mode-mini{display:none;}
+.item.diff-mode>.diff-header>H5.desc,#item-head.diff-mode>.diff-header>H5.desc{display:none;}
+.item.diff-mode>.diff-header>.versions,#item-head.diff-mode>.diff-header>.versions{display:block;}
+.item.diff-mode-side>.diff-header>H5.diff>I.mode-side,#item-head.diff-mode-side>.diff-header>H5.diff>I.mode-side{display:inline-block;}
+.item.diff-mode-side>.diff-header>H5.diff>I.mode-inline,#item-head.diff-mode-side>.diff-header>H5.diff>I.mode-inline{display:none;}
+.item.diff-mode-inline>.diff-header>H5.diff>I.mode-side,#item-head.diff-mode-inline>.diff-header>H5.diff>I.mode-side{display:none;}
+.item.diff-mode-inline>.diff-header>H5.diff>I.mode-inline,#item-head.diff-mode-inline>.diff-header>H5.diff>I.mode-inline{display:inline-block;}
+.item.diff-mode-full>.diff-header>H5.diff>I.mode-full,#item-head.diff-mode-full>.diff-header>H5.diff>I.mode-full{display:inline-block;}
+.item.diff-mode-full>.diff-header>H5.diff>I.mode-mini,#item-head.diff-mode-full>.diff-header>H5.diff>I.mode-mini{display:none;}
+.item.diff-mode-mini>.diff-header>H5.diff>I.mode-full,#item-head.diff-mode-mini>.diff-header>H5.diff>I.mode-full{display:none;}
+.item.diff-mode-mini>.diff-header>H5.diff>I.mode-mini,#item-head.diff-mode-mini>.diff-header>H5.diff>I.mode-mini{display:inline-block;}
+#item-head>.diff-header>H5.desc[data-changed]::before{top:-1px;left:-15px;}
+#item-head>.stack{padding:5px 15px;}#item-head>.stack>H5{margin:0;}
 .item[data-changed]::before{top:-5px;right:15px;z-index:1;}
-.item>.diff-header>.versions>LI:not(:first-child)[data-changed]::before,.item-head>.diff-header>.versions>LI:not(:first-child)[data-changed]::before{bottom:-7px;left:-5px;}
+.item>.diff-header>.versions>LI:not(:first-child)[data-changed]::before,#item-head>.diff-header>.versions>LI:not(:first-child)[data-changed]::before{bottom:-7px;left:-5px;}
 .doc-sidenav>LI[data-changed]::before{right:25px;}
-.item[data-changed]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed]::before,.item-head>.diff-header>H5.desc[data-changed]::before,.item-head>.diff-header>.versions>LI:not(:first-child)[data-changed]::before,.doc-sidenav>LI[data-changed]::before{display:block;position:absolute;padding:0 3px;color:#333;font-weight:normal;font-size:9px;line-height:11px;}
-.item[data-changed=new]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed=new]::before,.item-head>.diff-header>H5.desc[data-changed=new]::before,.item-head>.diff-header>.versions>LI:not(:first-child)[data-changed=new]::before,.doc-sidenav>LI[data-changed=new]::before{content:"new";background-color:#a4d590;}
-.item[data-changed=updated]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed=updated]::before,.item-head>.diff-header>H5.desc[data-changed=updated]::before,.item-head>.diff-header>.versions>LI:not(:first-child)[data-changed=updated]::before,.doc-sidenav>LI[data-changed=updated]::before{content:"change";background-color:#f0c375;}
-.item[data-changed=deleted]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed=deleted]::before,.item-head>.diff-header>H5.desc[data-changed=deleted]::before,.item-head>.diff-header>.versions>LI:not(:first-child)[data-changed=deleted]::before,.doc-sidenav>LI[data-changed=deleted]::before{content:"delete";background-color:#d59090;}
+.item[data-changed]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed]::before,#item-head>.diff-header>H5.desc[data-changed]::before,#item-head>.diff-header>.versions>LI:not(:first-child)[data-changed]::before,.doc-sidenav>LI[data-changed]::before{display:block;position:absolute;padding:0 3px;color:#333;font-weight:normal;font-size:9px;line-height:11px;}
+.item[data-changed=new]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed=new]::before,#item-head>.diff-header>H5.desc[data-changed=new]::before,#item-head>.diff-header>.versions>LI:not(:first-child)[data-changed=new]::before,.doc-sidenav>LI[data-changed=new]::before{content:"new";background-color:#a4d590;}
+.item[data-changed=updated]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed=updated]::before,#item-head>.diff-header>H5.desc[data-changed=updated]::before,#item-head>.diff-header>.versions>LI:not(:first-child)[data-changed=updated]::before,.doc-sidenav>LI[data-changed=updated]::before{content:"change";background-color:#f0c375;}
+.item[data-changed=deleted]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed=deleted]::before,#item-head>.diff-header>H5.desc[data-changed=deleted]::before,#item-head>.diff-header>.versions>LI:not(:first-child)[data-changed=deleted]::before,.doc-sidenav>LI[data-changed=deleted]::before{content:"delete";background-color:#d59090;}
 .item .request>CODE{overflow:auto;display:block;}
 .item>.nocontents{padding:10px 15px;display:none;}
 .item:not(.diff-mode)[data-changed=deleted]>.nocontents{display:block;}
