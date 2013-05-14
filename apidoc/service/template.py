@@ -35,9 +35,13 @@ class Template():
                             os.path.join(template_dir, "resource", "js", "mousetrap.min.js"),
                             os.path.join(template_dir, "resource", "js", "bootstrap.min.js"),
                             os.path.join(template_dir, "resource", "css", "apidoc.css"),
+                            os.path.join(template_dir, "resource", "css", "font.css"),
                             os.path.join(template_dir, "resource", "css", "bootstrap.min.css"),
-                            os.path.join(template_dir, "resource", "img", "glyphicons-halflings.png"),
-                            os.path.join(template_dir, "resource", "img", "glyphicons-halflings-white.png")
+                            os.path.join(template_dir, "resource", "font", "apidoc.eot"),
+                            os.path.join(template_dir, "resource", "font", "apidoc.eot"),
+                            os.path.join(template_dir, "resource", "font", "apidoc.woff"),
+                            os.path.join(template_dir, "resource", "font", "apidoc.ttf"),
+                            os.path.join(template_dir, "resource", "font", "apidoc.svg"),
                         )
 
                         for file in files:

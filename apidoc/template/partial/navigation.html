@@ -16,7 +16,7 @@
 {%- for section in sources.sections.values()|sort %}
         <li class="nav-header" data-group="{{ section.name }}"><a href="javascript:navigateTo({section: '{{ section.name }}'}, ['namespace', 'type', 'method'])" data-target="#s-{{ section.name }}"><h6>{{ section.name }}</h6></a></li>
     {%- for method in section.methods.values()|sort %}
-        <li data-group="{{ section.name }}" data-item="{{ method.name }}"><a href="javascript:navigateTo({section: '{{ section.name }}', method: '{{ method.name }}'}, ['namespace', 'type'])" data-target="#m-{{ section.name }}-{{ method.name }}"><i class="icon-chevron-right"></i><span>{{ method.name }}</span></a></li>
+        <li data-group="{{ section.name }}" data-item="{{ method.name }}"><a href="javascript:navigateTo({section: '{{ section.name }}', method: '{{ method.name }}'}, ['namespace', 'type'])" data-target="#m-{{ section.name }}-{{ method.name }}"><i class="i-chevron"></i><span>{{ method.name }}</span></a></li>
     {%- endfor %}
     {%- if not loop.last %}
         <li class="separator"></li>
@@ -28,7 +28,7 @@
 {%- for namespace in sources.get_used_namespaces()|sort %}
         <li class="nav-header" data-group="{{ namespace.name }}"><a href="javascript:navigateTo({namespace: '{{ namespace.name }}'}, ['section', 'method', 'type'])" data-target="#n-{{ namespace.name }}"><h6>{{ namespace.name }}</h6></a></li>
     {%- for type in namespace.get_used_types()|sort %}
-        <li data-group="{{ namespace.name }}"  data-item="{{ type.name }}"><a href="javascript:navigateTo({namespace: '{{ namespace.name }}', type: '{{ type.name }}'}, ['section', 'method'])" data-target="#t-{{ type.name }}"><i class="icon-chevron-right"></i><span>{{ type.name }}</span></a></li>
+        <li data-group="{{ namespace.name }}"  data-item="{{ type.name }}"><a href="javascript:navigateTo({namespace: '{{ namespace.name }}', type: '{{ type.name }}'}, ['section', 'method'])" data-target="#t-{{ type.name }}"><i class="i-chevron"></i><span>{{ type.name }}</span></a></li>
     {%- endfor %}
     {%- if not loop.last %}
         <li class="separator"></li>

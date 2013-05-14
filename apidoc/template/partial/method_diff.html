@@ -13,7 +13,7 @@
 {%- endif -%}
 
 <div class="request stack">
-    <h5><i class="icon-upload"></i> Request: </h5>
+    <h5><i class="i-request"></i> Request: </h5>
     <h6>Resource: </h6>
 {% for full_uri in method_versioned.merged.full_uri %}
     <code  class="diff_version" data-version="{{ diff.diff_display_version(full_uri, method_versioned, "full_uri") }}"><span class="hur">{{ full_uri }}</span></code>
@@ -67,7 +67,7 @@
 </div>
 
 <div class="response stack">
-    <h5><i class="icon-download"></i> Response: </h5>
+    <h5><i class="i-response"></i> Response: </h5>
 {%- if method_versioned.merged.response_body %}
     <h6>Body: </h6>
     <div class="code"><table class="table-hover">

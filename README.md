@@ -124,3 +124,9 @@ Api doc use the following projects.
 [Glyphicons](http://glyphicons.com/)
 
 [Jquery](http://jquery.org/)
+
+[Icon Minia](http://dribbble.com/shots/598215-Icon-Minia-139-Vector-Icons)
+
+[Entypo](http://www.entypo.com/)
+
+[IcoMoon](http://keyamoon.com/icomoon/)

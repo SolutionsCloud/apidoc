@@ -38,3 +38,4 @@ DONE
 * Sources files refere to variables inject in command arguments or in config file
 * Add a default message in responses codes
 * Unused types and namespace are no longer displayed
+* Replace icons by font

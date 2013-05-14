@@ -11,7 +11,7 @@ function refreshScrollNavigation() {
     }, 100);
 }
 
-function findCurrentItem() {
+function getCurrentItem() {
     var scrollTop = $(window).scrollTop();
 
     var items = $(".item:not(#item-head)");
@@ -46,7 +46,7 @@ function displayScrollHeader() {
     var scrollHeight = $(document).height(),
         scrollTop = $(window).scrollTop();
 
-    var element = findCurrentItem();
+    var element = getCurrentItem();
 
     var header = $("#item-head");
     if (element === null) {
@@ -197,7 +197,7 @@ function displayVersion() {
         $("#nav-versions > LI[data-version].active").removeClass("active");
         $("#nav-versions > LI[data-version=\"" + conf.version + "\"]").addClass("active");
 
-        $(".item > .diff-header > H5.desc").html('<i class="icon-random"></i>' + conf.version)
+        $(".item > .diff-header > H5.desc").html('<i class="i-diff"></i>' + conf.version)
         $(".item, .nav-list > LI").attr("data-changed", null)
 
         $(".item > .diff-header > .versions > LI:not(:first-child):not([data-changed=none])[data-version=\"" + conf.version + "\"]").each(function() {
@@ -486,9 +486,7 @@ function toggleDiffLayout(item) {
 
         displayDiff(item)
 
-        if (item.offset().top + item.outerHeight() - 60 < $(window).scrollTop()) {
-            $(window).scrollTop(item.offset().top + item.outerHeight() - 60);
-        }
+        keepFocusOnItem(item);
     } else {
         item.removeClass("diff-mode diff-mode-side diff-mode-inline diff-mode-full diff-mode-mini");
 
@@ -504,23 +502,36 @@ function toggleDiffLayout(item) {
 function diffActivateModeInline(item) {
     item.removeClass("diff-mode-side").addClass("diff-mode-inline")
     item.trigger("headerChanged");
+
+    keepFocusOnItem(item);
 }
 
 function diffActivateModeSide(item) {
     item.removeClass("diff-mode-inline").addClass("diff-mode-side")
     item.trigger("headerChanged");
+
+    keepFocusOnItem(item);
 }
 
 function diffActivateModeFull(item) {
     item.removeClass("diff-mode-mini").addClass("diff-mode-full")
     item.trigger("headerChanged");
+
+    keepFocusOnItem(item);
 }
 
 function diffActivateModeMini(item) {
     item.removeClass("diff-mode-full").addClass("diff-mode-mini")
     item.trigger("headerChanged");
+
+    keepFocusOnItem(item);
 }
 
+function keepFocusOnItem(item) {
+    if (item.offset().top + item.outerHeight() - 60 < $(window).scrollTop()) {
+        $(window).scrollTop(item.offset().top + item.outerHeight() - 100);
+    }
+}
 
 function initDiff() {
     $(".item>.diff-header > H5").click(function() {
@@ -640,7 +651,7 @@ function shortcutGotoNextVersion(event, key) {
     }
 }
 
-function getCurrentItem() {
+function getActiveItem() {
     var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A")
     if (current.length == 0) {
         var currentActive = $(".scroll-spyable>UL>LI.active:visible")
@@ -661,7 +672,7 @@ function getCurrentItem() {
     return current.first();
 }
 function shortcutToggleDiff(event, key) {
-    current = getCurrentItem();
+    current = getActiveItem();
 
     if (current.length > 0) {
         toggleDiffLayout($(current.data('target')))
@@ -669,7 +680,7 @@ function shortcutToggleDiff(event, key) {
 }
 
 function shortcutToggleSide(event, key) {
-    var current = getCurrentItem();
+    var current = getActiveItem();
 
     if (current.length > 0) {
         var element = $(current.data('target'))
@@ -688,7 +699,7 @@ function shortcutToggleSide(event, key) {
 }
 
 function shortcutToggleFull(event, key) {
-    var current = getCurrentItem();
+    var current = getActiveItem();
 
     if (current.length > 0) {
         var element = $(current.data('target'))
@@ -707,7 +718,7 @@ function shortcutToggleFull(event, key) {
 }
 
 function shortcutGotoNextDiffVersion(event, key) {
-    var current = getCurrentItem();
+    var current = getActiveItem();
 
     if (current.length > 0) {
         var element = $(current.data('target'))
@@ -731,7 +742,7 @@ function shortcutGotoNextDiffVersion(event, key) {
 }
 
 function shortcutGotoPreviousDiffVersion(event, key) {
-    var current = getCurrentItem();
+    var current = getActiveItem();
 
     if (current.length > 0) {
         var element = $(current.data('target'))
