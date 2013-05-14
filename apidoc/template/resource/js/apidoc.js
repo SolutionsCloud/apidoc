@@ -86,6 +86,9 @@ function displayScrollHeader() {
         $("H4", header).html(element.find("> H4").html());
         $("> .diff-header", header).html(element.find("> .diff-header").html());
 
+        $(".mode-side, .mode-inline", header).attr("title", "Toggle side by side / inline mode").tooltip({placement:"bottom"})
+        $(".mode-full, .mode-mini", header).attr("title", "Toggle full / strict diff").tooltip({placement:"bottom"})
+
         header.find("> .diff-header > H5").click(function() {
             toggleDiffLayout(element);
         });
@@ -525,8 +528,8 @@ function initDiff() {
         $(this).addClass("content-left").clone().insertAfter($(this)).addClass("content-right").removeClass("content-left").find("> .sample").remove();
     });
 
-    $(".mode-side, .mode-inline").attr("title", "Toggle side by side / inline mode").tooltip()
-    $(".mode-full, .mode-mini").attr("title", "Toggle full / strict diff").tooltip()
+    $(".mode-side, .mode-inline").attr("title", "Toggle side by side / inline mode").tooltip({placement:"bottom"})
+    $(".mode-full, .mode-mini").attr("title", "Toggle full / strict diff").tooltip({placement:"bottom"})
 }
 
 function shortcutSearch(event, key) {

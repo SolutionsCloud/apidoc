@@ -36,7 +36,6 @@ class Template():
                             os.path.join(template_dir, "resource", "js", "bootstrap.min.js"),
                             os.path.join(template_dir, "resource", "css", "apidoc.css"),
                             os.path.join(template_dir, "resource", "css", "bootstrap.min.css"),
-                            os.path.join(template_dir, "resource", "css", "bootstrap-responsive.min.css"),
                             os.path.join(template_dir, "resource", "img", "glyphicons-halflings.png"),
                             os.path.join(template_dir, "resource", "img", "glyphicons-halflings-white.png")
                         )

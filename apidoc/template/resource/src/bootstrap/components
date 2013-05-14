@@ -1,0 +1,58 @@
+Scaffolding
+    ✔ Normalize and reset
+    ✔ Body type and links
+    ✔ Grid system
+    ✔ Layouts
+Base CSS
+    ✔ Headings, body, etc
+    ✔ Code and pre
+      Labels and badges
+    ✔ Tables
+    ✔ Forms
+      Buttons
+    ✔ Icons
+Components
+      Button groups and dropdowns
+    ✔ Navs, tabs, and pills
+    ✔ Navbar
+      Breadcrumbs
+      Pagination
+      Pager
+      Thumbnails
+      Alerts
+      Progress bars
+      Hero unit
+      Media component
+JS Components
+    ✔ Tooltips
+      Popovers
+      Modals
+      Dropdowns
+      Collapse
+      Carousel
+Miscellaneous
+    ✔ Wells
+      Close icon
+    ✔ Utilities
+      Component animations
+Responsive
+    ✔ Visible/hidden classes
+    ✔ Narrow tablets and below (<767px)
+    ✔ Tablets to desktops (767-979px)
+    ✔ Large desktops (>1200px)
+    ✔ Responsive navbar
+
+jQuery plugins
+      Transitions (required for any animation)
+      Modals
+      Dropdowns
+    ✔ Scrollspy
+      Togglable tabs
+    ✔ Tooltips
+      Popovers (requires Tooltips)
+    ✔ Affix
+      Alert messages
+      Buttons
+      Collapse
+      Carousel
+      Typeahead
