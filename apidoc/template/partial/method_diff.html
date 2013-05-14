@@ -16,9 +16,7 @@
     <h5><i class="icon-upload"></i> Request: </h5>
     <h6>Resource: </h6>
 {% for full_uri in method_versioned.merged.full_uri %}
-    <div class="diff_version" data-version="{{ diff.diff_display_version(full_uri, method_versioned, "full_uri") }}">
-        <code><span class="hur">{{ full_uri }}</span></code>
-    </div>
+    <code  class="diff_version" data-version="{{ diff.diff_display_version(full_uri, method_versioned, "full_uri") }}"><span class="hur">{{ full_uri }}</span></code>
 {%- endfor -%}
 
 {%- if method_versioned.merged.request_parameters %}

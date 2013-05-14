@@ -264,6 +264,10 @@ function initNavigation() {
 
 function focusNavigation() {
     if (!window.matchMedia('(max-width: 767px)').matches) {
+        // pas de focus si la souris est sur la navigation
+        if ($(".doc-sidebar").data('hover')) {
+            return;
+        }
         var target = $(".scroll-spyable .active");
         var container = $(".doc-sidebar");
         var relativeTop = target.offset().top - container.offset().top;
@@ -287,6 +291,13 @@ function initScrollNavigation() {
         focusNavigation();
     });
     $(window).on('resize', refreshScrollNavigation);
+    $(".doc-sidebar").hover(
+        function() { $.data(this, 'hover', true); },
+        function() { $.data(this, 'hover', false); }
+    ).data('hover', false);
+
+    // On peut, du coup, vérifier à chaque fois si la souris est sur l'élément
+
 }
 
 function escapeRegExp(str) {

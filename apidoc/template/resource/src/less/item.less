@@ -2,6 +2,11 @@
 @import "item-header.less";
 
 .item {
+    .request > CODE {
+        overflow: auto;
+        display: block;
+    }
+
     > .nocontents {
         padding: 10px 15px;
         display: none;
@@ -16,6 +21,8 @@
         }
     }
     > .contents {
+        overflow-x: auto;
+
          > .title {
                 display: none;
         }
@@ -71,7 +78,6 @@
     }
 
     &.diff-mode {
-
         .diff_version {
             &.diff_new {
                 background-color: hsl(120, 100%, 93%);;
@@ -133,4 +139,12 @@
         }
     }
 
+}
+
+@media (max-width: 1199px) {
+    .item.diff-mode {
+        .code TD:last-child {
+            display: none;
+        }
+    }
 }

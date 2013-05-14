@@ -72,10 +72,11 @@
 .item[data-changed=new]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed=new]::before,.item-head>.diff-header>H5.desc[data-changed=new]::before,.item-head>.diff-header>.versions>LI:not(:first-child)[data-changed=new]::before,.doc-sidenav>LI[data-changed=new]::before{content:"new";background-color:#a4d590;}
 .item[data-changed=updated]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed=updated]::before,.item-head>.diff-header>H5.desc[data-changed=updated]::before,.item-head>.diff-header>.versions>LI:not(:first-child)[data-changed=updated]::before,.doc-sidenav>LI[data-changed=updated]::before{content:"change";background-color:#f0c375;}
 .item[data-changed=deleted]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed=deleted]::before,.item-head>.diff-header>H5.desc[data-changed=deleted]::before,.item-head>.diff-header>.versions>LI:not(:first-child)[data-changed=deleted]::before,.doc-sidenav>LI[data-changed=deleted]::before{content:"delete";background-color:#d59090;}
+.item .request>CODE{overflow:auto;display:block;}
 .item>.nocontents{padding:10px 15px;display:none;}
 .item:not(.diff-mode)[data-changed=deleted]>.nocontents{display:block;}
 .item:not(.diff-mode)[data-changed=deleted]>.contents.content-left{display:none;}
-.item>.contents>.title{display:none;}
+.item>.contents{overflow-x:auto;}.item>.contents>.title{display:none;}
 .item>.contents>.stack{border-bottom:1px dotted #ddd;padding:10px 15px;}.item>.contents>.stack:last-child{border-bottom:none;}
 .item>.contents>.sample>DIV{display:none;}
 .item>.contents>.description{font-style:italic;margin-bottom:0;}
@@ -97,7 +98,7 @@
 .item.diff-mode-inline>.contents.content-left{display:block;}
 .item.diff-mode-inline>.contents.content-right{display:none;}
 .item.diff-mode-mini>.contents .diff_version:not(.diff_new):not(.diff_del){display:none;}
-.help_overlay{position:fixed;top:0px;left:0px;height:100%;width:100%;background-color:#000;z-index:99;display:block;opacity:0.2;}
+@media (max-width:1199px){.item.diff-mode .code TD:last-child{display:none;}}.help_overlay{position:fixed;top:0px;left:0px;height:100%;width:100%;background-color:#000;z-index:99;display:block;opacity:0.2;}
 .help_popup{position:fixed;top:50px;left:50%;width:400px;margin-left:-203px;z-index:100;text-align:left;outline:6px solid rgba(255, 255, 255, 0.6);background-color:#FFF;}.help_popup h2{padding:5px;}
 .help_popup .help_row{border-top:1px solid #ddd;padding:5px;padding-bottom:10px;}
 .help_popup dl{margin:5px 0;font-size:12px;}.help_popup dl dt{display:inline-block;margin:0;padding:3px 6px;min-width:10px;text-align:center;background:#333;color:#EEE;border-radius:2px;text-shadow:1px 1px 0 #000;font-family:'Source Code Pro',monospace;}.help_popup dl dt em{padding:0 4px;color:#999;font-style:normal;font-weight:normal;font-size:10px;text-shadow:none;}
