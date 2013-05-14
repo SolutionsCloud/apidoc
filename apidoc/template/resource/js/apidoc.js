@@ -523,7 +523,10 @@ function initDiff() {
     });
     $(".item > .contents").each(function() {
         $(this).addClass("content-left").clone().insertAfter($(this)).addClass("content-right").removeClass("content-left").find("> .sample").remove();
-    })
+    });
+
+    $(".mode-side, .mode-inline").attr("title", "Toggle side by side / inline mode").tooltip()
+    $(".mode-full, .mode-mini").attr("title", "Toggle full / strict diff").tooltip()
 }
 
 function shortcutSearch(event, key) {
