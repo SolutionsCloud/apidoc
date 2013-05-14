@@ -150,6 +150,14 @@ versions:
           pretty: VN.N
           sample: V0.1
           advanced: V\d+\.\d+
+      notUsed:
+        primary: string
+        namespace: global
+        description: A unused type
+        format:
+          pretty: VN.N
+          sample: V0.1
+          advanced: V\d+\.\d+
       enumStatus:
         namespace: Lists
         primary: enum

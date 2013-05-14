@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.object.source import Root, Element, Sampleable, Displayable, Sortable, ElementCrossVersion
 from apidoc.object.source import Version
-from apidoc.object.source import Section, Method
+from apidoc.object.source import Section, Method, Namespace
 from apidoc.object.source import Parameter, ResponseCode
 from apidoc.object.source import Type, EnumType, EnumTypeValue, TypeFormat
 from apidoc.object.source import Object, ObjectObject, ObjectArray
@@ -50,6 +50,72 @@ class TestSource(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             root.previous_version("baz")
+
+    def test_root_get_used_namespaces(self):
+        root = Root.instance()
+
+        namespace1 = Namespace("n1")
+        namespace2 = Namespace("n2")
+
+        type1 = Type()
+        type2 = Type()
+
+        namespace1.types = {"t1": type1, "t2": type2}
+        namespace2.types = {"t2": type2}
+
+        root.namespaces = {"n1": namespace1, "n2": namespace2}
+
+        section = Section()
+        method = Method()
+
+        parameter1 = Parameter()
+        parameter1.type = "t1"
+
+        method.request_headers = {
+            "t1": parameter1
+        }
+
+        methodCrossVersion1 = MethodCrossVersion(method)
+        methodCrossVersion1.signatures = {"s1" : method}
+        section.methods = {"m1": methodCrossVersion1}
+
+        root.sections = {"s1": section}
+
+        response = root.get_used_namespaces()
+
+        self.assertEqual([namespace1], response)
+
+    def test_root_get_used_types(self):
+        root = Root.instance()
+
+        namespace1 = Namespace("n1")
+
+        type1 = Type()
+        type2 = Type()
+
+        namespace1.types = {"t1": type1, "t2": type2}
+
+        root.namespaces = {"n1": namespace1}
+
+        section = Section()
+        method = Method()
+
+        parameter1 = Parameter()
+        parameter1.type = "t1"
+
+        method.request_headers = {
+            "t1": parameter1
+        }
+
+        methodCrossVersion1 = MethodCrossVersion(method)
+        methodCrossVersion1.signatures = {"s1" : method}
+        section.methods = {"m1": methodCrossVersion1}
+
+        root.sections = {"s1": section}
+
+        response = root.get_used_types()
+
+        self.assertEqual(["t1"], response)
 
     def test_sampleable_get_sample(self):
         sampleable = Sampleable()
@@ -398,6 +464,15 @@ class TestSource(unittest.TestCase):
             "optional": False,
         }, test.get_unit_signature_struct())
 
+    def test_objectobject_get_used_types(self):
+        object1 = ObjectType()
+        object1.type_name = "t1"
+
+        test = ObjectObject()
+        test.properties = {"o1": ObjectString(), "o2": object1}
+
+        self.assertEqual(["t1"], test.get_used_types())
+
     def test_objectarray_get_signature_struct(self):
         test = ObjectArray()
         test.name = "foo"
@@ -426,11 +501,26 @@ class TestSource(unittest.TestCase):
             "optional": False,
         }, test.get_unit_signature_struct())
 
+    def test_objectarray_get_used_types(self):
+        object1 = ObjectType()
+        object1.type_name = "t1"
+
+        test = ObjectArray()
+        test.items = object1
+
+        self.assertEqual(["t1"], test.get_used_types())
+
+    def test_objectarray_get_used_types__when_item_is_none(self):
+        test = ObjectArray()
+        test.items = None
+
+        self.assertEqual([], test.get_used_types())
+
     def test_objectdynamic_get_signature_struct(self):
         test = ObjectDynamic()
         test.name = "foo"
         test.description = "bar"
-        test.itemType = "baz"
+        test.item_type = "baz"
 
         self.assertEqual({
             "name": "foo",
@@ -438,14 +528,14 @@ class TestSource(unittest.TestCase):
             "type": "dynamic",
             "required": True,
             "optional": False,
-            "itemType": "baz"
+            "item_type": "baz"
         }, test.get_signature_struct())
 
     def test_objectdynamic_get_unit_signature_struct(self):
         test = ObjectDynamic()
         test.name = "foo"
         test.description = "bar"
-        test.itemType = "baz"
+        test.item_type = "baz"
 
         self.assertEqual({
             "description": "bar",
@@ -454,6 +544,11 @@ class TestSource(unittest.TestCase):
             "optional": False,
         }, test.get_unit_signature_struct())
 
+    def test_objectdynamic_get_used_types(self):
+        test = ObjectDynamic()
+        test.item_type = "t1"
+
+        self.assertEqual(["t1"], test.get_used_types())
     def test_objectreference_get_signature_struct(self):
         test = ObjectReference()
         test.name = "foo"
@@ -489,6 +584,19 @@ class TestSource(unittest.TestCase):
             "required": True,
             "optional": False,
         }, test.get_unit_signature_struct())
+
+    def test_objectreference_get_used_types(self):
+        object1 = ObjectType()
+        object1.type_name = "t1"
+
+        test = ObjectReference()
+        test.reference_name = "baz"
+        test.version = "v1"
+
+        Root.instance().references["baz"] = ElementCrossVersion(Object())
+        Root.instance().references["baz"].versions["v1"] = object1
+
+        self.assertEqual(["t1"], test.get_used_types())
 
     def test_objecttype_get_signature_struct(self):
         test = ObjectType()
@@ -636,6 +744,33 @@ class TestSource(unittest.TestCase):
         parameter2.name = "p2"
 
         self.assertEqual({"p1": parameter1}, method.cleaned_request_parameters)
+
+    def test_method_get_used_types(self):
+        method = Method()
+        parameter1 = Parameter()
+        parameter1.name = "p1"
+        parameter1.type = "t1"
+
+        parameter1_bad = Parameter()
+        parameter1_bad.name = "p1_bad"
+        parameter1_bad.type = "t1_bad"
+
+        parameter2 = Parameter()
+        parameter2.type = "t2"
+
+        object1 = ObjectType()
+        object1.type_name = "t3"
+
+        object2 = ObjectType()
+        object2.type_name = "t4"
+
+        method.uri = "bar/{p1}"
+        method.request_parameters = {"p1": parameter1, "p1_bad": parameter1_bad}
+        method.request_headers = {"p2": parameter2}
+        method.request_body = object1
+        method.response_body = object2
+
+        self.assertEqual(sorted(["t1", "t2", "t3", "t4"]), sorted(method.get_used_types()))
 
     def test_sampleable_get_default_sample(self):
         test = Sampleable()

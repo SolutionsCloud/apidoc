@@ -1,4 +1,5 @@
 import hashlib
+import logging
 
 from functools import total_ordering, lru_cache
 from apidoc.lib.util.enum import Enum
@@ -42,6 +43,25 @@ class Root():
             last_version = v.name
 
         raise ValueError("Unknown version \"%s\"" % version)
+
+    @lru_cache()
+    def get_used_namespaces(self):
+        """return list of used namespaces
+        """
+        for namespace in [x for x in self.namespaces.values() if len(x.get_used_types()) == 0]:
+            logging.getLogger().warn("Unused namespace %s" % namespace.name)
+        return [x for x in self.namespaces.values() if len(x.get_used_types()) > 0]
+
+    @lru_cache()
+    def get_used_types(self):
+        """return list of types used in a method
+        """
+        types = []
+        for section in self.sections.values():
+            for method_versioned in section.methods.values():
+                for method in method_versioned.signatures.values():
+                    types += method.get_used_types()
+        return list({}.fromkeys(types).keys())
 
 
 class Element():
@@ -347,6 +367,21 @@ class Method(Element, Sortable):
             parameter.position = self.uri.find("{%s}" % parameter.name)
         return dict((x, y) for x, y in self.request_parameters.items() if y.position >= 0)
 
+    def get_used_types(self):
+        """Return list of types used in the method
+        """
+        types = []
+        for param in self.request_headers.values():
+            types += param.get_used_types()
+        for param in self.cleaned_request_parameters.values():
+            types += param.get_used_types()
+        if self.request_body is not None:
+            types += self.request_body.get_used_types()
+        if self.response_body is not None:
+            types += self.response_body.get_used_types()
+
+        return list({}.fromkeys(types).keys())
+
 
 class Parameter(Element, Sampleable, Sortable):
 
@@ -385,6 +420,11 @@ class Parameter(Element, Sampleable, Sortable):
         """Return default value for the element
         """
         return Object.factory(self.type, self.version).get_sample()
+
+    def get_used_types(self):
+        """Return list of types used in the parameter
+        """
+        return [self.type]
 
 
 class ResponseCode(Element, Sortable):
@@ -429,6 +469,14 @@ class Namespace(Element, Sortable):
         super().__init__()
         self.name = name
         self.types = {}
+
+    def get_used_types(self):
+        """Return list of types of the namspace used
+        """
+        used_types = Root.instance().get_used_types();
+        for type in [y for (x, y) in self.types.items() if x not in used_types]:
+            logging.getLogger().warn("Unused type %s" % type.name)
+        return [y for (x, y) in self.types.items() if x in used_types]
 
 
 class Type(Element, Sortable):
@@ -608,6 +656,11 @@ class Object(Element, Sampleable):
             "required": self.required,
         }
 
+    def get_used_types(self):
+        """Return list of types used in the object
+        """
+        return []
+
 
 class ObjectObject(Object):
 
@@ -640,6 +693,14 @@ class ObjectObject(Object):
         """Return a uniq signature of the element as dict
         """
         return super().get_unit_signature_struct()
+
+    def get_used_types(self):
+        """Return list of types used in the object
+        """
+        types = []
+        for element in self.properties.values():
+            types += element.get_used_types()
+        return types
 
 
 class ObjectArray(Object):
@@ -674,6 +735,13 @@ class ObjectArray(Object):
         """Return a uniq signature of the element as dict
         """
         return super().get_unit_signature_struct()
+
+    def get_used_types(self):
+        """Return list of types used in the object
+        """
+        if self.items is not None:
+            return self.items.get_used_types()
+        return []
 
 
 class ObjectNumber(Object):
@@ -744,13 +812,13 @@ class ObjectDynamic(Object):
         """
         super().__init__()
         self.type = Object.Types("dynamic")
-        self.itemType = None
+        self.item_type = None
 
     def get_signature_struct(self):
         """Return a uniq signature of the element as dict
         """
         return merge_dict(super().get_signature_struct(), {
-            "itemType": self.itemType
+            "item_type": self.item_type
         })
 
     def get_unit_signature_struct(self):
@@ -765,6 +833,11 @@ class ObjectDynamic(Object):
             "key1": "my_%s" % self.name,
             "key2": "sample"
         }
+
+    def get_used_types(self):
+        """Return list of types used in the object
+        """
+        return [self.item_type]
 
 
 class ObjectReference(Object):
@@ -805,6 +878,11 @@ class ObjectReference(Object):
 
         return Root.instance().references[self.reference_name].versions[self.version]
 
+    def get_used_types(self):
+        """Return list of types used in the object
+        """
+        return self.get_reference().get_used_types()
+
 
 class ObjectType(Object):
 
@@ -844,6 +922,11 @@ class ObjectType(Object):
         """Return default value for the element
         """
         return self.get_type().format.get_sample()
+
+    def get_used_types(self):
+        """Return list of types used in the object
+        """
+        return [self.type_name]
 
 
 class MergedMethod():

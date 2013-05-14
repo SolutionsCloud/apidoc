@@ -25,9 +25,9 @@
     </ul>
     <ul class="nav nav-list doc-sidenav">
         <li class="nav-header"><h5>Types</h5></li>
-{%- for namespace in sources.namespaces.values()|sort %}
+{%- for namespace in sources.get_used_namespaces()|sort %}
         <li class="nav-header" data-group="{{ namespace.name }}"><a href="javascript:navigateTo({namespace: '{{ namespace.name }}'}, ['section', 'method', 'type'])" data-target="#n-{{ namespace.name }}"><h6>{{ namespace.name }}</h6></a></li>
-    {%- for type in namespace.types.values()|sort %}
+    {%- for type in namespace.get_used_types()|sort %}
         <li data-group="{{ namespace.name }}"  data-item="{{ type.name }}"><a href="javascript:navigateTo({namespace: '{{ namespace.name }}', type: '{{ type.name }}'}, ['section', 'method'])" data-target="#t-{{ type.name }}"><i class="icon-chevron-right"></i><span>{{ type.name }}</span></a></li>
     {%- endfor %}
     {%- if not loop.last %}

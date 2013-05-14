@@ -10,13 +10,11 @@ Features
 
 Improvements
 ------------
-* Remove types/namespace who are not used in displayed methods
 * Check the maximum of potentiel problems in analyse part. Actualy, some verifications are asserted in rendering stage.
 * Reduce embedded size
     * Reduce (or eliminate) jquery
     * Reduce images size (amount of icones in the sprite)
     * Minimize CSS and javascripts files
-    * Reduce HTML ouput (tab, class's names length)
 
 
 Contributions
@@ -39,3 +37,4 @@ DONE
 * Implement a diff mode
 * Sources files refere to variables inject in command arguments or in config file
 * Add a default message in responses codes
+* Unused types and namespace are no longer displayed
