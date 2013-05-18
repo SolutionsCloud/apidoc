@@ -186,7 +186,6 @@ class Configuration(Element):
         super().__init__()
         self.uri = None
         self.title = None
-        self.description = None
 
 
 class Version(Element, Sortable, Displayable):
@@ -416,10 +415,15 @@ class Parameter(Element, Sampleable, Sortable):
             "optional": self.optional,
         })
 
+    def get_object(self):
+        object =  Object.factory(self.type, self.version)
+        object.name = self.name
+        return object
+
     def get_default_sample(self):
         """Return default value for the element
         """
-        return Object.factory(self.type, self.version).get_sample()
+        return self.get_object().get_sample()
 
     def get_used_types(self):
         """Return list of types used in the parameter
@@ -812,13 +816,13 @@ class ObjectDynamic(Object):
         """
         super().__init__()
         self.type = Object.Types("dynamic")
-        self.item_type = None
+        self.items = None
 
     def get_signature_struct(self):
         """Return a uniq signature of the element as dict
         """
         return merge_dict(super().get_signature_struct(), {
-            "item_type": self.item_type
+            "items": self.items
         })
 
     def get_unit_signature_struct(self):
@@ -837,7 +841,7 @@ class ObjectDynamic(Object):
     def get_used_types(self):
         """Return list of types used in the object
         """
-        return [self.item_type]
+        return [self.items]
 
 
 class ObjectReference(Object):

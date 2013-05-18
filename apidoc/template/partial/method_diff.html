@@ -28,7 +28,14 @@
         {%- for parameter in method_versioned.merged.request_parameters|sort %}
         <tr class="diff_version" data-version="{{ diff.diff_display_version_signature(parameter.signature, method_versioned, "cleaned_request_parameters") }}">
             <td><span class="str">{{ util.none_to_empty(parameter.name) }}</span></td>
-            <td><span class="typ type_link">{{ util.none_to_empty(parameter.type) }}</span></td>
+            <td><span class="typ">
+            {%- if parameter.type != None %}
+                {%- if parameter.get_object().type|lower == "type" %}
+                    <a href="javascript:navigateTo({type: '{{parameter.type}}'}, ['section', 'method'])">{{parameter.type}}</a>
+                {%- else -%}
+                    {{- parameter.type -}}
+                {%- endif -%}
+            {%- endif -%}
             <td><span class="lit">{% if parameter.optional %}Optional{% endif %}</span></td>
             <td><span class="com">{{ util.none_to_empty(parameter.description) }}</span></td>
         </tr>
@@ -44,7 +51,14 @@
         {%- for parameter in method_versioned.merged.request_headers|sort %}
         <tr class="diff_version" data-version="{{ diff.diff_display_version_signature(parameter.signature, method_versioned, "request_headers") }}">
             <td><span class="str">{{ util.none_to_empty(parameter.name) }}</span></td>
-            <td><span class="typ type_link">{{ util.none_to_empty(parameter.type) }}</span></td>
+            <td><span class="typ">
+            {%- if parameter.type != None %}
+                {%- if parameter.get_object().type|lower == "type" %}
+                    <a href="javascript:navigateTo({type: '{{parameter.type}}'}, ['section', 'method'])">{{parameter.type}}</a>
+                {%- else -%}
+                    {{- parameter.type -}}
+                {%- endif -%}
+            {%- endif -%}</span></td>
             <td><span class="com">{{ util.none_to_empty(parameter.description) }}</span></td>
         </tr>
         {%- endfor %}

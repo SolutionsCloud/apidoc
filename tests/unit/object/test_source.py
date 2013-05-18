@@ -520,7 +520,7 @@ class TestSource(unittest.TestCase):
         test = ObjectDynamic()
         test.name = "foo"
         test.description = "bar"
-        test.item_type = "baz"
+        test.items = "baz"
 
         self.assertEqual({
             "name": "foo",
@@ -528,14 +528,14 @@ class TestSource(unittest.TestCase):
             "type": "dynamic",
             "required": True,
             "optional": False,
-            "item_type": "baz"
+            "items": "baz"
         }, test.get_signature_struct())
 
     def test_objectdynamic_get_unit_signature_struct(self):
         test = ObjectDynamic()
         test.name = "foo"
         test.description = "bar"
-        test.item_type = "baz"
+        test.items = "baz"
 
         self.assertEqual({
             "description": "bar",
@@ -546,7 +546,7 @@ class TestSource(unittest.TestCase):
 
     def test_objectdynamic_get_used_types(self):
         test = ObjectDynamic()
-        test.item_type = "t1"
+        test.items = "t1"
 
         self.assertEqual(["t1"], test.get_used_types())
     def test_objectreference_get_signature_struct(self):

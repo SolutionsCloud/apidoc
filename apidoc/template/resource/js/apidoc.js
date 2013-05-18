@@ -214,6 +214,10 @@ function displayVersion() {
         $(".diff-mode").each(function() {
             displayDiff($(this))
         });
+    } else {
+        $(".item > .contents > .sample > [data-version]").show();
+        $(".item > .contents .diff_version").removeClass("diff_new diff_del diff_none");
+        $(".item > .contents .diff_version").addClass("diff_new")
     }
 
     if (scrollReferenceElement !== null) {

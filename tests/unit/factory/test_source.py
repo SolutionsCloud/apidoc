@@ -681,7 +681,7 @@ class TestSource(unittest.TestCase):
                 "foofoo": {
                     "type": "dynamic",
                     "description": "c_foofoo",
-                    "item_type": "t_foofoo",
+                    "items": "t_foofoo",
                     "sample": {
                         "a": "b",
                         "c": "d"
@@ -754,7 +754,7 @@ class TestSource(unittest.TestCase):
         self.assertIsInstance(response.properties["foofoo"], ObjectDynamic)
         self.assertEqual("c_foofoo", response.properties["foofoo"].description)
         self.assertEqual("foofoo", response.properties["foofoo"].name)
-        self.assertEqual("t_foofoo", response.properties["foofoo"].item_type)
+        self.assertEqual("t_foofoo", response.properties["foofoo"].items)
         self.assertEqual({"a": "b", "c": "d"}, response.properties["foofoo"].sample)
 
         self.assertIn("foobar", response.properties)

@@ -427,8 +427,8 @@ class Source():
             object = ObjectNone()
         elif type is Object.Types.dynamic:
             object = ObjectDynamic()
-            if "item_type" in datas:
-                object.item_type = str(datas["item_type"])
+            if "items" in datas:
+                object.items = str(datas["items"])
             if "sample" in datas:
                 if isinstance(datas["sample"], dict):
                     object.sample = {}
