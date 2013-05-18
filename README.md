@@ -76,57 +76,50 @@ Using the Application
 
 The application analyse provide a way to check configuration files
 
-    $ bin/analyse -h
+    $ apidoc-analyse -h
 
 
-The application analyse build the full documentation
+The application build the full documentation
 
-    $ bin/build -h
+    $ apidoc-render -h
+
+
+The application build the full documentation each time a source file or a template file is modificated
+
+    $ apidoc-watch -h
 
 
 Generate documentation from a source file
 
-    $ bin/build -f ./example/source_simple/simple.yml
+    $ apidoc-render -f ./example/source_simple/simple.yml
 
 
 Split sources in multiple files
 
-    $ bin/build -f ./example/source_multiple/one.yml ./example/source_multiple/two.yml
+    $ apidoc-render -f ./example/source_multiple/one.yml ./example/source_multiple/two.yml
 
 
 Generate documentation from files contained in a directory
 
-    $ bin/build -d ./example/source_multiple/
+    $ apidoc-render -d ./example/source_multiple/
 
 
 Generate documentation with options definied in a config file
 
-    $ bin/build -c ./example/config/config.yaml
+    $ apidoc-render -c ./example/config/config.yaml
 
 
 Mix everything
 
-    $ bin/build -c ./config.yaml -d ./folder1/ ./folder2/ -f /folder3/file.yaml /folder3/file.json
+    $ apidoc-render -c ./config.yaml -d ./folder1/ ./folder2/ -f /folder3/file.yaml /folder3/file.json
 
 
-TODO
+Todo
 ----
-[see TODO.md](TODO.md)
+[see Gotorious](https://gitorious.jmsp.prod/apidoc/pages/Todo)
 
 
-Reference
----------
+Licenses
+--------
 
-Api doc use the following projects.
-
-[Twitter Bootstrap](http://twitter.github.com/bootstrap)
-
-[Glyphicons](http://glyphicons.com/)
-
-[Jquery](http://jquery.org/)
-
-[Icon Minia](http://dribbble.com/shots/598215-Icon-Minia-139-Vector-Icons)
-
-[Entypo](http://www.entypo.com/)
-
-[IcoMoon](http://keyamoon.com/icomoon/)
+[see Gotorious](https://gitorious.jmsp.prod/apidoc/pages/Licenses)
