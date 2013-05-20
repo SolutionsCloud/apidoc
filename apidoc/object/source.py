@@ -880,7 +880,12 @@ class ObjectReference(Object):
                 "Unable to find reference \"%s\" at version \"%s\"." % (self.reference_name, self.version)
             )
 
-        return Root.instance().references[self.reference_name].versions[self.version]
+        reference = Root.instance().references[self.reference_name].versions[self.version]
+        if self.optional:
+            reference.optional = self.optional
+        if self.description is not None:
+            reference.description = self.description
+        return reference
 
     def get_used_types(self):
         """Return list of types used in the object
