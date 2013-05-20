@@ -3,4 +3,4 @@ input:
     - ./sources
 output:
   location: ./output/index.html
-  componants: local
+  componants: embedded
