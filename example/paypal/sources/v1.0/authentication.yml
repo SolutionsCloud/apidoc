@@ -1,0 +1,49 @@
+versions:
+    v1.0:
+        sections:
+            Authentication:
+                description: Timelines are collections of Tweets, ordered with the most recent first.
+                methods:
+                    OAuth:
+                        uri: /oauth2/token
+                        description: |
+                            Use the OAuth request to retrieve an access token for use with your payments calls.
+                            For authentication and authorization related to Identiy, learn how to obtain a user’s consent
+                        request_body:
+                            type: object
+                            properties:
+                                grant_type:
+                                    type: listGrantType
+                                    description: Token grant type
+                        response_body:
+                            type: object
+                            properties:
+                                scope:
+                                    type: string
+                                    description: Scopes expressed in the form of resource URL endpoints
+                                    sample: >
+                                        https://api.paypal.com/v1/payments/.* https://api.paypal.com/v1/vault/credit-card https://api.paypal.com/v1/vault/credit-card/.*
+                                access_token:
+                                    type: string
+                                    description: The access token issued by PayPal.
+                                    sample: EEwJ6tF9x5WCIZDYzyZGaz6Khbw7raYRIBV_WxVvgmsG
+                                token_type:
+                                    type: string
+                                    description: The type of the token issued as described in OAuth2.0 RFC6749
+                                    sample: Bearer
+                                app_id:
+                                    type: string
+                                    description:
+                                    sample: APP-6XR95014SS315863X
+                                expires_in:
+                                    type: number
+                                    description: The lifetime in seconds of the access token. Assigned in response.
+                                    sample: 900
+        types:
+            listGrantType:
+                primary: enum
+                values:
+                    client_credentials:
+                        description: client credentials
+                format:
+                    sample: client_credentials

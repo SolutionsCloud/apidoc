@@ -1,0 +1,75 @@
+versions:
+  v1.0:
+    sections:
+      Vault:
+        description: >
+          PayPal offers merchants a /vault API to store sensitive details like credit card related details.
+          You can currently use the /vault API to store credit card details with PayPal instead of storing them on your own server. After storing a credit card, you can then pass the credit card id instead of the related credit card details to complete a payment.
+          For more information, learn about using the /vault API to store a credit card.
+        methods:
+          StoreCreditCard:
+            extends: common/authentificated
+            uri: /payments/vault/credit-card
+            method: post
+            request_body:
+              type: object
+              properties:
+                number:
+                  type: string
+                  description: Credit card number.
+                  sample: 4417119669820331
+                type:
+                  type: listTypeCreditCard
+                  description: Credit card type.
+                expire_month:
+                  type: number
+                  description: Expiration month with no leading zero.
+                  sample: 11
+                expire_year:
+                  type: number
+                  description: 4-digit expiration year.
+                  sample: 2012
+                cvv2:
+                  type: string
+                  optional: true
+                  description: 3-4 digit card validation code.
+                  sample: 123
+                first_name:
+                  type: string
+                  optional: true
+                  description: Cardholder’s first name.
+                  sample: John
+                last_name:
+                  type: string
+                  optional: true
+                  description: Cardholder’s last name.
+                  sample: Doe
+                billing_address:
+                  type: reference
+                  reference: address
+                  optional: true
+                  description: Billing address associated with card. 25 characters max.
+            response_body:
+              type: reference
+              reference: created_credit_card
+          LookupCreditCard:
+            extends: common/authentificated
+            uri: /payments/vault/credit-card/{id}
+            request_parameters:
+              id:
+                type: string
+                description: Credit card Id
+                sample: 36C38912MN9658832
+            response_body:
+              type: reference
+              reference: created_credit_card
+    references:
+      created_credit_card:
+        extends: credit_card
+        properties:
+          links:
+            type: array
+            items:
+              type: reference
+              reference: links
+            description: HATEOAS links related to this call. Assigned in response.

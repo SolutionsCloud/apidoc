@@ -1,0 +1,77 @@
+versions:
+  v1.0:
+    sections:
+      Identity:
+        description: >
+          Log In with PayPal (formerly PayPal Access) is a commerce identity solution that enables your customers to sign in to your web site quickly and securely using their PayPal login credentials. Log In with PayPal utilizes the latest security standards, and you don’t have to worry about storing user data on your system.
+          For more information, learn about Log In with PayPal.
+        methods:
+          LookupUser:
+            extends: common/authentificated
+            uri: /identity/openidconnect/userinfo/?schema={schema}
+            request_parameters:
+              schema:
+                type: string
+                description: Schema that is used to return as per openidconnect protocol.
+                sample: openid
+            response_body:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  description: Identifier for the end-user at the issuer.
+                sub:
+                  type: string
+                  description: Identifier for the end-user at the issuer.
+                name:
+                  type: string
+                  description: End-User’s full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the end-user’s locale and preferences.
+                given_name:
+                  type: string
+                  description: Given name(s) or first name(s) of the end-user.
+                family_name:
+                  type: string
+                  description: Surname(s) or last name(s) of the end-user.
+                middle_name:
+                  type: string
+                  description: Middle name(s) of the end-user.
+                picture:
+                  type: string
+                  description: URL of the End-User’s profile picture.
+                email:
+                  type: string
+                  description: End-user’s preferred email address.
+                email_verified:
+                  type: bool
+                  description: True if the End-User’s e-mail address has been verified; otherwise false.
+                gender:
+                  type: string
+                  description: End-user’s gender.
+                birthdate:
+                  type: string
+                  description: End-user’s birthday, represented as an YYYY-MM-DD format. They year MAY be 0000, indicating it is omited. To represent only the year, YYYY format would be used.
+                zoneinfo:
+                  type: string
+                  description: Time zone database representing the End-User’s time zone.
+                locale:
+                  type: string
+                  description: End-user’s locale.
+                phone_number:
+                  type: string
+                  description: End-user’s preferred telephone number.
+                address:
+                  type: reference
+                  reference: address
+                  description: End-user’s preferred address.
+                verified_account:
+                  type: bool
+                  description: Verified account status.
+                account_type:
+                  type: string
+                  description: Account type, either personal or business.
+                age_range:
+                  type: string
+                  description: Account holder age range.
+                payer_id:
+                  type: string
+                  description: Account payer identifier.

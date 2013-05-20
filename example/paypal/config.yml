@@ -1,0 +1,6 @@
+input:
+  directories:
+    - ./sources
+output:
+  location: ./output/index.html
+  componants: local

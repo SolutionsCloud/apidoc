@@ -1,0 +1,29 @@
+configuration:
+    title: Paypal REST API
+    uri: https://api.paypal.com
+    description: Non official documentation based on https://developer.paypal.com/webapps/developer/docs/api/
+versions:
+    v1.0:
+        status: deprecated
+        major: 1
+        minor: 0
+        uri: /v1
+        sections:
+            common:
+                display: false
+                methods:
+                    authentificated:
+                        request_headers:
+                            Content-Type:
+                                type: string
+                                sample: application/json
+                            Authorization:
+                                type: string
+                                description: Send the value as the OAuth 2.0 access token with the authentication type set as Bearer
+                                sample: Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP
+        types:
+            dateTime:
+                primary: string
+                format:
+                    pretty: yyyy-mm-ddThh:mm:ss(.sss)?Z
+                    sample: 2013-01-31T04:12:04Z

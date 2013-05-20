@@ -1,0 +1,577 @@
+versions:
+  v1.0:
+    sections:
+      Payments:
+        description: Timelines are collections of Tweets, ordered with the most recent first.
+        methods:
+          CreateAPayment:
+            extends: common/authentificated
+            uri: /payments/payment
+            method: post
+            request_body:
+              type: object
+              properties:
+                intent:
+                  type: listIntent
+                  description: Payment intent
+                payer:
+                  type: reference
+                  reference: payer
+                  description: Source of the funds for this payment represented by a PayPal account or a credit card.
+                transactions:
+                  type: array
+                  items:
+                    type: reference
+                    reference: transaction
+                  description: Transactional details including the amount and item details..
+                redirect_urls:
+                  type: reference
+                  reference: redirect_urls
+                  description: Set of redirect URLs you provide only for PayPal-based payments. Required for PayPal payments.
+            response_body:
+              type: object
+              properties:
+                intent:
+                  type: listIntent
+                  description: Payment intent; Must be set to sale currently.
+                payer:
+                  type: reference
+                  reference: payer
+                  description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
+                transactions:
+                  type: reference
+                  reference: response_transaction
+                  description: Transactional details including the amount and item details.
+                redirect_urls:
+                  type: reference
+                  reference: redirect_urls
+                  description: Set of redirect URLs you provide only for PayPal-based payments.
+                id:
+                  type: string
+                  description: ID of the created payment Assigned in response.
+                  sample: PAY-17S8410768582940NKEE66EQ
+                create_time:
+                  type: dateTime
+                  description: Payment creation time as defined in RFC 3339 Section 5.6 Assigned in response.
+                state:
+                  type: listStatePayment
+                  description: Payment state.
+                  sample: approved
+                update_time:
+                  type: dateTime
+                  description: Time the resource was last updated. Assigned in response.
+                links:
+                  type: array
+                  items:
+                    type: reference
+                    reference: links
+                  description: HATEOAS links related to this call. Assigned in response.
+          ExecutePayment:
+            extends: common/authentificated
+            uri: payments/payment/{id}/execute
+            method: post
+            request_parameters:
+              id:
+                type: string
+                description: Payment Id
+                sample: PAY-34629814WL663112AKEE3AWQ
+            request_body:
+              type: object
+              properties:
+                payer_id:
+                  type: string
+                  description: The ID of the Payer, passed in the return_url by PayPal. Required.
+                transactions:
+                  type: array
+                  description: Transactional details if updating a payment.
+                  items:
+                    type: reference
+                    reference: transaction
+            response_body:
+              type: object
+              properties:
+                intent:
+                  type: listIntent
+                  description: Payment intent; Must be set to sale currently.
+                payer:
+                  type: reference
+                  reference: payer
+                  description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
+                transactions:
+                  type: reference
+                  reference: response_transaction
+                  description: Transactional details including the amount and item details.
+                links:
+                  type: array
+                  items:
+                    type: reference
+                    reference: links
+                  description: of links objects  HATEOAS links related to this call. Assigned in response.
+          LookupPayment:
+            extends: common/authentificated
+            uri: payments/payment/{id}
+            request_parameters:
+              id:
+                type: string
+                description: Payment Id
+                sample: PAY-34629814WL663112AKEE3AWQ
+            response_body:
+              type: object
+              properties:
+                intent:
+                  type: listIntent
+                  description: Payment intent; currently only sale is a valid value.
+                payer:
+                  type: reference
+                  reference: payer
+                  description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
+                transactions:
+                  type: reference
+                  reference: response_transaction
+                  description: Transactional details including the amount and item details.
+                redirect_urls:
+                  type: reference
+                  reference: redirect_urls
+                  description: Set of redirect URLs you provide only for PayPal-based payments. Required for PayPal payments.
+                id:
+                  type: string
+                  description: ID of the created payment Assigned in response.
+                create_time:
+                  type: dateTime
+                  description: Payment creation time as defined in RFC 3339 Section 5.6. Assigned in response.
+                state:
+                  type: listStatePayment
+                  description: payment state.
+                update_time:
+                  type: dateTime
+                  description: Time that the resource was last updated. Assigned in response.
+          ListPayments:
+            extends: common/authentificated
+            uri: payments/payment/
+            response_body:
+              type: array
+              items:
+                type: object
+                properties:
+                  intent:
+                    type: listIntent
+                    description: Payment intent; Must be set to sale currently.
+                  payer:
+                    type: reference
+                    reference: payer
+                    description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
+                  transactions:
+                    type: reference
+                    reference: transaction
+                    description: Transactional details including the amount and item details.
+                  redirect_urls:
+                    type: reference
+                    reference: redirect_urls
+                    description: Set of redirect URLs you provide only for PayPal-based payments.
+                  id:
+                    type: string
+                    description: ID of the created payment Assigned in response.
+                  create_time:
+                    type: dateTime
+                    description: Payment creation time as defined in RFC 3339 Section 5.6 Assigned in response.
+                  state:
+                    type: listStatePayment
+                    description: Payment state.
+                  update_time:
+                    type: dateTime
+                    description: Time that the resource was last updated. Assigned in response.
+                  links:
+                    type: array
+                    items:
+                      type: reference
+                      reference: links
+                    description: HATEOAS links related to this call. Assigned in response.
+    references:
+      credit_card:
+        type: object
+        properties:
+          id:
+            type: string
+            description: ID of the credit card.
+          number:
+            type: string
+            description: Credit card number.
+            sample: 4417119669820331
+          type:
+            type: listTypeCreditCard
+            description: Credit card type.
+          expire_month:
+            type: number
+            description: Expiration month with no leading zero.
+            sample: 11
+          expire_year:
+            type: number
+            description: 4-digit expiration year.
+            sample: 2012
+          cvv2:
+            type: string
+            optional: true
+            description: 3-4 digit card validation code.
+            sample: 123
+          first_name:
+            type: string
+            optional: true
+            description: Cardholder’s first name.
+            sample: John
+          last_name:
+            type: string
+            optional: true
+            description: Cardholder’s last name.
+            sample: Doe
+          billing_address:
+            type: reference
+            reference: address
+            optional: true
+            description: Billing address associated with card.
+          state:
+            type: string
+            optional: true
+            description: "State of the credit card funding instrument: expired or ok. Assigned in response."
+          valid_until:
+            type: string
+            optional: true
+            description: Funding instrument expiration date. Assigned in response.
+      payer:
+        type: object
+        properties:
+          payment_method:
+            type: listPaymentMethod
+            description: Payment method used.
+          funding_instruments:
+            type: array
+            items:
+              type: reference
+              reference: funding_instrument
+            description: A list of funding instruments for the current payment
+          payer_info:
+            type: reference
+            reference: payer_info
+            description: Information related to the payer.
+            optional: true
+      funding_instrument:
+        type: object
+        properties:
+          credit_card:
+            type: reference
+            reference: credit_card
+            description: Credit card details. Required if creating a funding instrument.
+          credit_card_token:
+            type: reference
+            reference: credit_card_token
+            description: Token for credit card details stored with PayPal.
+      credit_card_token:
+        type: object
+        properties:
+          credit_card_id:
+            type: string
+            description: ID of credit card previously stored using /vault/credit-card.
+      payer_info:
+        type: object
+        properties:
+          email:
+            type: string
+            optional: true
+            description: Email address representing the payer. 127 characters max.
+            sample: john@doe.com
+          first_name:
+            type: string
+            optional: true
+            description: First name of the payer. Assigned in response.
+            sample: John
+          last_name:
+            type: string
+            optional: true
+            description: Last name of the payer. Assigned in response.
+            sample: Doe
+          payer_id:
+            type: string
+            optional: true
+            description: PayPal assigned Payer ID. Assigned in response.
+            sample: 12345
+          phone:
+            type: string
+            optional: true
+            description: Phone number representing the payer. 20 characters max.
+          shipping_address:
+            type: reference
+            reference: shipping_address
+            optional: true
+            description: Shipping address of payer PayPal account. Assigned in response.
+      address:
+        type: object
+        properties:
+          line1:
+            type: string
+            description: Line 1 of the address.
+            sample: 52 N Main ST
+          line2:
+            type: string
+            description: Line 2 of the address.
+            optional: true
+          city:
+            type: string
+            description: City name. 50 characters max.
+            sample: Johnstown
+          country_code:
+            type: string
+            description: 2 letter country code. 2 characters max.
+            sample: US
+          postal_code:
+            type: string
+            description: Zip code or equivalent.
+            sample: 43210
+          state:
+            type: string
+            description: 2 letter code for US states,
+            sample: OH
+          phone:
+            type: string
+            description: Phone number in e.123 format.
+            optional: true
+      shipping_address:
+        type: object
+        extends: address
+        properties:
+          recipient_name:
+            type: string
+            description: Name of the recipient at this address. 50 characters max.
+          type:
+            type: listShippingAddressType
+            description: Address type.
+            optional: true
+      redirect_urls:
+        type: object
+        properties:
+          return_url:
+            type: string
+            description: The payer is redirected to this URL after approving the payment.
+          cancel_url:
+            type: string
+            description: The payer is redirected to this URL after canceling the payment.
+      transaction:
+        type: object
+        properties:
+          amount:
+            type: reference
+            reference: amount
+            description: Amount being collected.
+          description:
+            type: string
+            description: Description of transaction.
+            optional: true
+            sample: This is the payment transaction description.
+          item_list:
+            type: reference
+            reference: item_list
+            description: Items within a transaction.
+            optional: true
+      response_transaction:
+        extends: transaction
+        properties:
+          related_resources:
+            type: array
+            items:
+              type: object
+              properties:
+                sale:
+                  type: reference
+                  reference: sale
+      amount:
+        type: object
+        properties:
+          currency:
+            type: string
+            description: ISO 4217 3-letter currency code. PayPal currently supports USD only.
+            sample: USD
+          total:
+            type: string
+            description: Total amount charged from the payer to the payee.
+            sample: 7.47
+          details:
+            type: reference
+            reference: details
+            description: Additional details related to a payment amount.
+            optional: true
+      details:
+        type: object
+        properties:
+          shipping:
+            type: string
+            description: Amount charged for shipping. 10 characters max with support for 2 decimal places.
+            optional: true
+            sample: 0.03
+          subtotal:
+            type: string
+            description: Sub-total (amount) of items being paid for. 10 characters max with support for 2 decimal places.
+            optional: true
+            sample: 7.41
+          tax:
+            type: string
+            description: Amount charged for tax. 10 characters max with support for 2 decimal places.
+            optional: true
+            sample: 0.03
+          fee:
+            type: string
+            description: Fee charged by PayPal.
+            optional: true
+      item:
+        type: object
+        properties:
+          quantity:
+            type: string
+            description: Number of a particular item. 10 characters max.
+          name:
+            type: string
+            description: Item name. 127 characters max.
+          price:
+            type: string
+            description: Item cost. 10 characters max.
+          currency:
+            type: string
+            description: 3-letter currency code. Currently only USD (US dollars) is supported.
+          sku:
+            type: string
+            description: Stock keeping unit corresponding (SKU) to item. 50 characters max.
+      item_list:
+        type: object
+        properties:
+          items:
+            type: array
+            items:
+              type: reference
+              reference: item
+            description: List of items.
+          shipping_address:
+            type: reference
+            reference: shipping_address
+            optional: true
+            description: Shipping address, if different than the payer address.
+      links:
+        type: object
+        properties:
+          href:
+            type: string
+            description: URL of the related HATEOAS link you can use for subsequent calls.
+            sample: https://api.paypal.com/v1/payments/payment/PAY-17S8410768582940NKEE66EQ
+          rel:
+            type: listRelLink
+            description: Link relation that describes how this link relates to the previous call.
+          method:
+            type: string
+            description: The HTTP method required for the related call.
+            sample: GET
+      sale:
+        type: object
+        properties:
+          id:
+            type: string
+            description: ID of the sale transaction.
+          amount:
+            type: reference
+            reference: amount
+            description: Details about the collected amount.
+          description:
+            type: string
+            description: Description of sale.
+          create_time:
+            type: dateTime
+            description: Time of sale as defined in RFC 3339 Section 5.6 Assigned in response.
+          state:
+            type: listStateSale
+            description: State of the sale.
+          sale_id:
+            type: string
+            description: ID of the sale transaction being refunded. Assigned in response.
+          parent_payment:
+            type: string
+            description: ID of the payment resource on which this transaction is based. Assigned in response.
+          update_time:
+            type: dateTime
+            description: Time the resource was last updated. Assigned in response.
+    types:
+      listPaymentMethod:
+        primary: enum
+        values:
+          credit_card:
+            description: Credit card
+          paypal:
+            description: Paypal
+        format:
+          sample: credit_card
+      listStatePayment:
+        primary: enum
+        values:
+          created:
+            description: Created
+          approved:
+            description: Approved
+          failed:
+            description: Failed
+          canceled:
+            description: Canceled
+          expired:
+            description: Expired
+        format:
+          sample: created
+      listStateSale:
+        primary: enum
+        values:
+          pending:
+            description: Pending
+          completed:
+            description: Completed
+          refunded:
+            description: Refunded
+          partially_refunded:
+            description: Partially_refunded
+        format:
+          sample: pending
+      listTypeCreditCard:
+        primary: enum
+        values:
+          visa:
+            description: Visa
+          mastercard:
+            description: Mastercard
+          discover:
+            description: Discover
+          amex:
+            description: Amex
+        format:
+          sample: visa
+      listShippingAddressType:
+        primary: enum
+        values:
+          residential:
+            description: Residential
+          business:
+            description: Business
+          mailbox:
+            description: Mailbox
+        format:
+          sample: Residential
+      listIntent:
+        primary: enum
+        values:
+          sale:
+            description: Sale
+        format:
+          sample: sale
+      listRelLink:
+        primary: enum
+        values:
+          self:
+            description: Self
+          parent_payment:
+            description: Parent_payment
+          execute:
+            description: Execute
+          refund:
+            description: Refund
+        format:
+          sample: self
