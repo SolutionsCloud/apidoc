@@ -44,7 +44,6 @@ class Root():
 
         raise ValueError("Unknown version \"%s\"" % version)
 
-    @lru_cache()
     def get_used_namespaces(self):
         """return list of used namespaces
         """
@@ -52,7 +51,6 @@ class Root():
             logging.getLogger().warn("Unused namespace %s" % namespace.name)
         return [x for x in self.namespaces.values() if len(x.get_used_types()) > 0]
 
-    @lru_cache()
     def get_used_types(self):
         """return list of types used in a method
         """

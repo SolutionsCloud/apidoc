@@ -26,6 +26,7 @@
             <dt>k <em>or</em> p</dt>
             <dd>Move to previous method or type</dd>
         </dl>
+    {% if sources.versions|length > 1 %}
         <dl class="keyboard-mappings">
             <dt>v</dt>
             <dd>Move to next version</dd>
@@ -34,6 +35,7 @@
             <dt>b</dt>
             <dd>Move to previous version</dd>
         </dl>
+    {% endif %}
     </div>
     {% if sources.versions|length > 1 %}
     <div class="help_row">

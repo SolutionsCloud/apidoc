@@ -1,5 +1,6 @@
 var conf = {
     version: null,
+    multiVersion: false,
     scrollMargin: 5
 };
 
@@ -314,8 +315,10 @@ function initNavigation() {
 
     if (firstVersion.length === 0) {
         conf.version = null;
+        conf.multiVersion = false;
     } else {
         conf.version = firstVersion.first().data("version");
+        conf.multiVersion = true;
     }
 
     $(window).bind("hashchange", onNavigationChange);
@@ -784,13 +787,16 @@ function initShortcuts() {
     Mousetrap.bind('/', shortcutSearch);
     Mousetrap.bind(['p', 'k'], shortcutGotoPrevious);
     Mousetrap.bind(['n', 'j'], shortcutGotoNext);
-    Mousetrap.bind(['b'], shortcutGotoPreviousVersion);
-    Mousetrap.bind(['v'], shortcutGotoNextVersion);
-    Mousetrap.bind(['d'], shortcutToggleDiff);
-    Mousetrap.bind(['s'], shortcutToggleSide);
-    Mousetrap.bind(['f'], shortcutToggleFull);
-    Mousetrap.bind(['r'], shortcutGotoPreviousDiffVersion);
-    Mousetrap.bind(['e'], shortcutGotoNextDiffVersion);
+
+    if (conf.multiVersion) {
+        Mousetrap.bind(['b'], shortcutGotoPreviousVersion);
+        Mousetrap.bind(['v'], shortcutGotoNextVersion);
+        Mousetrap.bind(['d'], shortcutToggleDiff);
+        Mousetrap.bind(['s'], shortcutToggleSide);
+        Mousetrap.bind(['f'], shortcutToggleFull);
+        Mousetrap.bind(['r'], shortcutGotoPreviousDiffVersion);
+        Mousetrap.bind(['e'], shortcutGotoNextDiffVersion);
+    }
 }
 
 function initHelp() {
