@@ -10,7 +10,7 @@ class Merger():
         """Merge extended dicts
         """
         if isinstance(target, dict):
-            if inherit_key in target and not to_bool(target[inherit_key]):
+            if inherit and inherit_key in target and not to_bool(target[inherit_key]):
                 return
             if not isinstance(extends, dict):
                 raise ValueError("Unable to merge: Dictionnary expected")
