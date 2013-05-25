@@ -4,7 +4,7 @@ from copy import deepcopy
 
 from apidoc.object.source import Root, Sampleable, Displayable
 from apidoc.object.source import Version, Configuration
-from apidoc.object.source import Section, Method, Namespace
+from apidoc.object.source import Method, Type, MethodCategory, TypeCategory, Category
 from apidoc.object.source import MethodCrossVersion, TypeCrossVersion, ElementCrossVersion
 from apidoc.object.source import Parameter, ResponseCode
 from apidoc.object.source import Type, EnumType, EnumTypeValue
@@ -77,20 +77,20 @@ class Source():
         if (config_filter["versions"]["excludes"] is not None):
             for version in (version for version in root.versions.values() if version.name in config_filter["versions"]["excludes"]):
                 version.display = False
-        for version in root.versions.values():
-            if (config_filter["sections"]["includes"] is not None):
-                for section in (section for section in version.sections.values() if section.name not in config_filter["sections"]["includes"]):
-                    section.display = False
-            if (config_filter["sections"]["excludes"] is not None):
-                for section in (section for section in version.sections.values() if section.name in config_filter["sections"]["excludes"]):
-                    section.display = False
+        if (config_filter["categories"]["includes"] is not None):
+            for category in (category for category in root.categories.values() if category.name not in config_filter["categories"]["includes"]):
+                category.display = False
+        if (config_filter["categories"]["excludes"] is not None):
+            for category in (category for category in root.categories.values() if category.name in config_filter["categories"]["excludes"]):
+                category.display = False
 
     def remove_undisplayed(self, root):
         """Remove elements marked a not to display
         """
         root.versions = dict((x, y) for x, y in root.versions.items() if y.display)
+        displayed_categories = [category.name for category in root.categories.values() if category.display]
         for version in root.versions.values():
-            version.sections = dict((x, y) for x, y in version.sections.items() if y.display)
+            version.methods = dict((x, y) for x, y in version.methods.items() if y.display and (y.category is None or y.category in displayed_categories))
 
     def fix_versions(self, root):
         """Set the version of elements
@@ -100,48 +100,61 @@ class Source():
                 type.version = version_name
             for (reference_name, reference) in version.references.items():
                 reference.version = version_name
-            for (section_name, section) in version.sections.items():
-                section.version = version_name
+            for (method_name, method) in version.methods.items():
+                method.version = version_name
 
     def refactor_hierarchy(self, root):
         """Modify elements structure (root/version/elements/) to (root/elementByVersion/element)
+            Todo: This method is not solid
         """
-        root.sections = {}
+        root.methods = {}
+        root.method_categories = {}
         root.types = {}
-        root.namespaces = {}
+        root.type_categories = {}
         root.references = {}
         for (version_name, version) in root.versions.items():
-            for (type_name, type) in version.types.items():
-                if type.namespace not in root.namespaces:
-                    root.namespaces[type.namespace] = Namespace(name=type.namespace)
-
-                if type_name not in root.namespaces[type.namespace].types:
-                    root.namespaces[type.namespace].types[type_name] = TypeCrossVersion(element=type)
-                root.namespaces[type.namespace].types[type_name].versions[version_name] = type
-
-                if type_name not in root.types:
-                    root.types[type_name] = TypeCrossVersion(element=type)
-                root.types[type_name].versions[version_name] = type
-                if type.signature not in root.namespaces[type.namespace].types[type_name].signatures:
-                        root.namespaces[type.namespace].types[type_name].signatures[type.signature] = type
-
             for (reference_name, reference) in version.references.items():
                 if reference_name not in root.references:
                     root.references[reference_name] = ElementCrossVersion(element=reference)
                 root.references[reference_name].versions[version_name] = reference
 
-            for (section_name, section) in version.sections.items():
-                if section_name not in root.sections:
-                    root.sections[section_name] = deepcopy(section)
-                    root.sections[section_name].methods = {}
-                for (method_name, method) in section.methods.items():
-                    if method_name not in root.sections[section_name].methods:
-                        root.sections[section_name].methods[method_name] = MethodCrossVersion(element=method)
-                    root.sections[section_name].methods[method_name].versions[version_name] = method
-                    if method.signature not in root.sections[section_name].methods[method_name].signatures:
-                        root.sections[section_name].methods[method_name].signatures[method.signature] = method
+            for (type_name, type) in version.types.items():
+                if type.category not in root.type_categories:
+                    root.type_categories[type.category] = TypeCategory(name=type.category)
+                    if type.category in root.categories:
+                        root.type_categories[type.category].order = root.categories[type.category].order
+                        root.type_categories[type.category].description = root.categories[type.category].description
 
-            del(version.sections)
+                if type_name not in root.type_categories[type.category].types:
+                    root.type_categories[type.category].types[type_name] = TypeCrossVersion(element=type)
+                root.type_categories[type.category].types[type_name].versions[version_name] = type
+
+                if type.signature not in root.type_categories[type.category].types[type_name].signatures:
+                    root.type_categories[type.category].types[type_name].signatures[type.signature] = type
+
+                if type_name not in root.types:
+                    root.types[type_name] = TypeCrossVersion(element=type)
+                root.types[type_name].versions[version_name] = type
+
+            for (method_name, method) in version.methods.items():
+                if method.category not in root.method_categories:
+                    root.method_categories[method.category] = MethodCategory(name=method.category)
+                    if method.category in root.categories:
+                        root.method_categories[method.category].order = root.categories[method.category].order
+                        root.method_categories[method.category].description = root.categories[method.category].description
+
+                if method_name not in root.method_categories[method.category].methods:
+                    root.method_categories[method.category].methods[method_name] = MethodCrossVersion(element=method)
+                root.method_categories[method.category].methods[method_name].versions[version_name] = method
+
+                if method.signature not in root.method_categories[method.category].methods[method_name].signatures:
+                    root.method_categories[method.category].methods[method_name].signatures[method.signature] = method
+
+                if method_name not in root.methods:
+                    root.methods[method_name] = MethodCrossVersion(element=method)
+                root.methods[method_name].versions[version_name] = method
+
+            del(version.methods)
             del(version.types)
             del(version.references)
 
@@ -149,9 +162,9 @@ class Source():
         """Retrieve extension lookup path
         """
         return (
+            "categories/?",
             "versions/?",
-            "versions/?/sections/?",
-            "versions/?/sections/?/methods/?",
+            "versions/?/methods/?",
             "versions/?/types/?",
             "versions/?/references/?",
         )
@@ -171,6 +184,8 @@ class Source():
 
         if "configuration" in datas and datas["configuration"] is not None:
             root.configuration = self.populate_configuration(datas["configuration"])
+        if "categories" in datas and datas["categories"] is not None:
+            root.categories = self.populate_list("categories", datas, self.populate_category)
         root.versions = self.populate_list("versions", datas, self.populate_version)
 
         return root
@@ -196,7 +211,7 @@ class Source():
         return list
 
     def populate_configuration(self, datas):
-        """Return a populated ObjectSection from dictionnary datas
+        """Return a populated ObjectConfiguration from dictionnary datas
         """
         configuration = Configuration()
 
@@ -224,30 +239,32 @@ class Source():
         if "status" in datas:
             version.status = self.get_enum("status", Version.Status, datas)
 
-        version.sections = self.populate_list("sections", datas, self.populate_section)
+        version.methods = self.populate_list("methods", datas, self.populate_method)
         version.types = self.populate_list("types", datas, self.populate_type)
         version.references = self.populate_list("references", datas, self.populate_object)
 
         return version
 
-    def populate_section(self, name, datas):
-        """Return a populated ObjectSection from dictionnary datas
+    def populate_category(self, name, datas):
+        """Return a populated ObjectCategory from dictionnary datas
         """
-        section = Section()
-        self.populate_element(section, name, datas)
+        category = Category(name)
+        self.populate_element(category, name, datas)
 
         if "order" in datas:
-            section.order = int(datas["order"])
+            category.order = int(datas["order"])
 
-        section.methods = self.populate_list("methods", datas, self.populate_method)
-
-        return section
+        return category
 
     def populate_method(self, name, datas):
         """Return a populated ObjectMethod from dictionnary datas
         """
         method = Method()
         self.populate_element(method, name, datas)
+        if "category" in datas:
+            method.category = str(datas["category"])
+        else:
+            method.category = None
 
         if "code" in datas:
             method.code = int(datas["code"])
@@ -361,10 +378,10 @@ class Source():
         type.primary = primary
         self.populate_element(type, name, datas)
 
-        if "namespace" in datas:
-            type.namespace = str(datas["namespace"])
+        if "category" in datas:
+            type.category = str(datas["category"])
         else:
-            type.namespace = "default"
+            type.category = None
 
         if "format" in datas and datas["format"] is not None:
             if "sample" in datas["format"]:

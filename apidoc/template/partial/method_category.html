@@ -1,13 +1,17 @@
-{%- for namespace in sources.get_used_namespaces()|sort %}
-    <li class="namespace" id="n-{{ namespace.name }}">
-        <h3>{{ namespace.name }}</h3>
-    {%- if namespace.description %}
-        <div class="description">{{ namespace.description }}</div>
+{%- for category in sources.method_categories.values()|sort %}
+    <li class="category" id="c-{{ category.name }}">
+    {%- if category.name != None -%}
+        <h3>{{ category.name }}</h3>
+        {%- if category.description %}
+        <div class="description">{{ category.description }}</div>
+        {%- endif %}
     {%- endif %}
         <ul class="unstyled">
-    {%- for type_versioned in namespace.get_used_types()|sort %}
-            <li class="type item" id="t-{{ type_versioned.name }}">
-                <h4>{{ type_versioned.name }}</h4>
+    {%- for method_versioned in category.methods.values()|sort %}
+            <li class="method item" id="m-{{ method_versioned.name }}"
+                data-method="{{ method_versioned.reference.method|upper }}"
+            >
+                <h4>{{ method_versioned.name }}</h4>
         {%- if sources.versions|length > 1 %}
                 <div class="diff-header">
                     <h5 class="desc"></h5>
@@ -21,8 +25,8 @@
                     </h5>
                     <ul class="versions inline">
             {%- for version in sources.versions.values()|sort %}
-                        <li data-version="{{ version.name }}" data-changed="{{ type_versioned.changed_status(version.name)|lower }}"
-                {%- if version.name not in type_versioned.versions -%}
+                        <li data-version="{{ version.name }}" data-changed="{{ method_versioned.changed_status(version.name)|lower }}"
+                {%- if version.name not in method_versioned.versions -%}
                     data-exists="no"
                 {%- else -%}
                     data-exists="yes"
@@ -33,16 +37,17 @@
                     </ul>
                 </div>
         {%- endif -%}
+                <div class="nocontents">no implementation for this version</div>
                 <div class="contents">
-        {%- include "partial/type_diff.html" -%}
+        {%- include "partial/method_diff.html" -%}
                     <div class="stack sample">
-        {%- for type in type_versioned.signatures.values() %}
+        {%- for method in method_versioned.signatures.values() %}
                         <div data-version="
-            {%- for (type_version_name, type_version) in type_versioned.versions.items() %}
-                {%- if type_version.signature == type.signature %}{{ type_version_name }} {% endif %}
+            {%- for (method_version_name, method_version) in method_versioned.versions.items() %}
+                {%- if method_version.signature == method.signature %}{{ method_version_name }} {% endif %}
             {%- endfor -%}
                     ">
-            {%- include "partial/type_sample.html" -%}
+            {%- include "partial/method_sample.html" -%}
                         </div>
         {%- endfor %}
                     </div>

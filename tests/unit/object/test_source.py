@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.object.source import Root, Element, Sampleable, Displayable, Sortable, ElementCrossVersion
 from apidoc.object.source import Version
-from apidoc.object.source import Section, Method, Namespace
+from apidoc.object.source import MethodCategory, Method, Category, TypeCategory
 from apidoc.object.source import Parameter, ResponseCode
 from apidoc.object.source import Type, EnumType, EnumTypeValue, TypeFormat
 from apidoc.object.source import Object, ObjectObject, ObjectArray
@@ -51,21 +51,20 @@ class TestSource(unittest.TestCase):
         with self.assertRaises(ValueError):
             root.previous_version("baz")
 
-    def test_root_get_used_namespaces(self):
+    def test_root_get_used_type_categories(self):
         root = Root.instance()
 
-        namespace1 = Namespace("n1")
-        namespace2 = Namespace("n2")
+        category1 = TypeCategory("n1")
+        category2 = TypeCategory("n2")
+
+        methodCategory = MethodCategory("n1")
 
         type1 = Type()
         type2 = Type()
 
-        namespace1.types = {"t1": type1, "t2": type2}
-        namespace2.types = {"t2": type2}
+        category1.types = {"t1": type1, "t2": type2}
+        category2.types = {"t2": type2}
 
-        root.namespaces = {"n1": namespace1, "n2": namespace2}
-
-        section = Section()
         method = Method()
 
         parameter1 = Parameter()
@@ -75,30 +74,29 @@ class TestSource(unittest.TestCase):
             "t1": parameter1
         }
 
+        root.type_categories = {"n1": category1, "n2": category2}
+        root.method_categories = {"n1": methodCategory}
+
         methodCrossVersion1 = MethodCrossVersion(method)
         methodCrossVersion1.signatures = {"s1" : method}
-        section.methods = {"m1": methodCrossVersion1}
 
-        root.sections = {"s1": section}
+        methodCategory.methods = {"m1": methodCrossVersion1}
 
-        response = root.get_used_namespaces()
+        response = root.get_used_type_categories()
 
-        self.assertEqual([namespace1], response)
+        self.assertEqual([category1], response)
 
     def test_root_get_used_types(self):
         root = Root.instance()
 
-        namespace1 = Namespace("n1")
+        typeCategory = TypeCategory("n1")
+        methodCategory = MethodCategory("n1")
 
         type1 = Type()
         type2 = Type()
 
-        namespace1.types = {"t1": type1, "t2": type2}
-
-        root.namespaces = {"n1": namespace1}
-
-        section = Section()
         method = Method()
+        method.Category = "n1"
 
         parameter1 = Parameter()
         parameter1.type = "t1"
@@ -109,9 +107,12 @@ class TestSource(unittest.TestCase):
 
         methodCrossVersion1 = MethodCrossVersion(method)
         methodCrossVersion1.signatures = {"s1" : method}
-        section.methods = {"m1": methodCrossVersion1}
 
-        root.sections = {"s1": section}
+        methodCategory.methods = {"m1": methodCrossVersion1}
+        typeCategory.types = {"t1": type1, "t2": type2}
+
+        root.type_categories = {"n1": typeCategory}
+        root.method_categories = {"n1": methodCategory}
 
         response = root.get_used_types()
 
@@ -211,23 +212,21 @@ class TestSource(unittest.TestCase):
 
         self.assertEqual(version1, sorted([version2, version1])[0])
 
-    def test_section_compare__with_order(self):
-        section1 = Section()
-        section2 = Section()
-        section1.order = 1
-        section2.order = 2
+    def test_category_compare__with_order(self):
+        category1 = Category("c")
+        category2 = Category("c")
+        category1.order = 1
+        category2.order = 2
 
-        self.assertEqual(section1, sorted([section2, section1])[0])
+        self.assertEqual(category1, sorted([category2, category1])[0])
 
-    def test_section_compare__with_name(self):
-        section1 = Section()
-        section2 = Section()
-        section1.order = 1
-        section1.name = "a"
-        section2.order = 1
-        section2.name = "b"
+    def test_category_compare__with_name(self):
+        category1 = Category("a")
+        category2 = Category("b")
+        category1.order = 1
+        category2.order = 1
 
-        self.assertEqual(section1, sorted([section2, section1])[0])
+        self.assertEqual(category1, sorted([category2, category1])[0])
 
     def test_parameter_compare__with_position(self):
         parameter1 = Parameter()
@@ -565,7 +564,7 @@ class TestSource(unittest.TestCase):
             "type": "reference",
             "required": True,
             "optional": False,
-            "reference": "4077571d745c363dbd55ee168b0bad28"
+            "reference": "76528e2b26bab0a99a7439bdf5185252"
         }, test.get_signature_struct())
 
     def test_objectreference_get_unit_signature_struct(self):
@@ -637,7 +636,6 @@ class TestSource(unittest.TestCase):
         }, test.get_unit_signature_struct())
 
     def test_element_version_setter(self):
-        section = Section()
         method = Method()
         parameter = Parameter()
         header = Parameter()
@@ -647,7 +645,6 @@ class TestSource(unittest.TestCase):
         sub_object = Object()
         sub_array = Object()
 
-        section.methods["m"] = method
         method.request_parameters["p"] = parameter
         method.request_headers["h"] = header
         method.response_codes = [code]
@@ -656,7 +653,7 @@ class TestSource(unittest.TestCase):
         response_body.properties["s"] = sub_object
         request_body.items = sub_array
 
-        section.version = "v1"
+        method.version = "v1"
 
         self.assertEqual("v1", method.version)
         self.assertEqual("v1", parameter.version)
@@ -845,6 +842,25 @@ class TestSource(unittest.TestCase):
 
         self.assertIsInstance(response, ObjectType)
         self.assertEqual("foo", response.type_name)
+
+    def test_objectreference_get_reference__populate_parameters(self):
+        object = ObjectObject()
+        test = ObjectReference()
+        test.name = "foo"
+        test.description = "bar"
+        test.optional = True
+        test.version = "v1"
+        test.reference_name = "bar"
+
+        ecv = ElementCrossVersion(object)
+        ecv.versions["v1"] = object
+        Root.instance().references = {
+            "bar": ecv
+        }
+
+        response = test.get_reference()
+        self.assertEqual(True, response.optional)
+        self.assertEqual("bar", response.description)
 
     def test_objectreference_get_reference__failed_when_does_not_exists(self):
         test = ObjectReference()

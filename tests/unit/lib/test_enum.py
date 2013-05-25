@@ -16,6 +16,9 @@ class TestEnum(unittest.TestCase):
     def test_contains_other(self):
         self.assertFalse(object() in Foo)
 
+    def test_instance(self):
+        self.assertEquals(Foo(1), Foo.bar)
+        self.assertEquals(Foo("bar"), Foo.bar)
 
 class Foo(Enum):
     bar = 1

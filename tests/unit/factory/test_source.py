@@ -6,7 +6,7 @@ from apidoc.object.config import Config as ConfigObject
 
 from apidoc.object.source import Root, Element, Sampleable, Displayable
 from apidoc.object.source import Version, Configuration
-from apidoc.object.source import Section, Method, Namespace
+from apidoc.object.source import MethodCategory, Method, Category, TypeCategory
 from apidoc.object.source import Parameter, ResponseCode
 from apidoc.object.source import Type, EnumType, EnumTypeValue, TypeFormat
 from apidoc.object.source import Object, ObjectObject, ObjectArray
@@ -148,9 +148,9 @@ class TestSource(unittest.TestCase):
 
     def test_apply_config_filter_version_exclude(self):
         root = Root()
-        version1 = Section()
-        version2 = Section()
-        version3 = Section()
+        version1 = Version()
+        version2 = Version()
+        version3 = Version()
         version1.name = "v1"
         version2.name = "v2"
         version3.name = "v3"
@@ -165,118 +165,107 @@ class TestSource(unittest.TestCase):
         self.assertTrue(version2.display)
         self.assertFalse(version3.display)
 
-    def test_apply_config_filter_section(self):
+    def test_apply_config_filter_category(self):
         root = Root()
         version1 = Version()
 
-        section1 = Section()
-        section2 = Section()
-        section3 = Section()
-        section1.name = "v1"
-        section2.name = "v2"
-        section3.name = "v3"
+        category1 = Category("c")
+        category2 = Category("c")
+        category3 = Category("c")
+        category1.name = "v1"
+        category2.name = "v2"
+        category3.name = "v3"
 
         root.versions = {"v1": version1}
-        version1.sections = {"s1": section1, "s2": section2, "s3": section3}
+        version1.categories = {"s1": category1, "s2": category2, "s3": category3}
 
         config = ConfigObject()
         self.source.apply_config_filter(root, config["filter"])
 
-        self.assertTrue(section1.display)
-        self.assertTrue(section2.display)
-        self.assertTrue(section3.display)
+        self.assertTrue(category1.display)
+        self.assertTrue(category2.display)
+        self.assertTrue(category3.display)
 
-    def test_apply_config_filter_section_include(self):
+    def test_apply_config_filter_category_include(self):
         root = Root()
-        version1 = Version()
 
-        section1 = Section()
-        section2 = Section()
-        section3 = Section()
-        section1.name = "v1"
-        section2.name = "v2"
-        section3.name = "v3"
+        category1 = Category("c")
+        category2 = Category("c")
+        category3 = Category("c")
+        category1.name = "v1"
+        category2.name = "v2"
+        category3.name = "v3"
 
-        root.versions = {"v1": version1}
-        version1.sections = {"s1": section1, "s2": section2, "s3": section3}
+        root.categories = {"s1": category1, "s2": category2, "s3": category3}
 
         config = ConfigObject()
-        config["filter"]["sections"]["includes"] = ["v1", "v3"]
+        config["filter"]["categories"]["includes"] = ["v1", "v3"]
         self.source.apply_config_filter(root, config["filter"])
 
-        self.assertTrue(section1.display)
-        self.assertFalse(section2.display)
-        self.assertTrue(section3.display)
+        self.assertTrue(category1.display)
+        self.assertFalse(category2.display)
+        self.assertTrue(category3.display)
 
-    def test_apply_config_filter_section_exclude(self):
+    def test_apply_config_filter_category_exclude(self):
         root = Root()
-        version1 = Version()
 
-        section1 = Version()
-        section2 = Version()
-        section3 = Version()
-        section1.name = "v1"
-        section2.name = "v2"
-        section3.name = "v3"
+        category1 = Category("c1")
+        category2 = Category("c2")
+        category3 = Category("c3")
 
-        root.versions = {"v1": version1}
-        version1.sections = {"s1": section1, "s2": section2, "s3": section3}
+        root.categories = {"c1": category1, "c2": category2, "c3": category3}
 
         config = ConfigObject()
-        config["filter"]["sections"]["excludes"] = ["v1", "v3"]
+        config["filter"]["categories"]["excludes"] = ["c1", "c3"]
         self.source.apply_config_filter(root, config["filter"])
 
-        self.assertFalse(section1.display)
-        self.assertTrue(section2.display)
-        self.assertFalse(section3.display)
+        self.assertFalse(category1.display)
+        self.assertTrue(category2.display)
+        self.assertFalse(category3.display)
 
     def test_remove_undisplayed(self):
         root = Root()
         version1 = Version()
         version2 = Version()
-        section11 = Section()
-        section12 = Section()
-        section21 = Section()
-        section22 = Section()
-        version1.display = False
-        section22.display = False
+        category1 = Category("c1")
+        category2 = Category("c2")
+        method1 = Method()
+        method2 = Method()
 
         root.versions = {"v1": version1, "v2": version2}
+        root.categories = {"c1": category1, "c2": category2}
 
-        version1.sections = {"s1": section11, "s2": section12}
-        version2.sections = {"s1": section21, "s2": section22}
+        version1.methods = {"m1": method1, "m2": method2}
+        version2.methods = {"m1": method1, "m2": method2}
+
+        method1.category = "c1"
+        method2.category = "c2"
+
+        version1.display = False
+        category2.display = False
 
         self.source.remove_undisplayed(root)
 
         self.assertEqual(1, len(root.versions))
         self.assertEqual(version2, root.versions["v2"])
-        self.assertEqual(1, len(root.versions["v2"].sections))
-        self.assertEqual(section21, root.versions["v2"].sections["s1"])
+        self.assertEqual(1, len(root.versions["v2"].methods))
+        self.assertEqual(method1, root.versions["v2"].methods["m1"])
 
     def test_fix_version(self):
         root = Root()
         version1 = Version()
         version2 = Version()
-        section11 = Section()
-        section12 = Section()
-        section21 = Section()
-        section22 = Section()
-        method111 = Method()
-        method112 = Method()
-        method121 = Method()
-        method122 = Method()
-        method211 = Method()
-        method212 = Method()
-        method221 = Method()
-        method222 = Method()
+
+        method11 = Method()
+        method12 = Method()
+        method21 = Method()
+        method22 = Method()
+
         type11 = Type()
-        type11.namespace = "n1"
         type12 = Type()
-        type12.namespace = "n2"
         type21 = Type()
-        type21.namespace = "default"
         type22 = Type()
-        type22.namespace = "default"
+
         reference11 = ObjectObject()
         reference12 = ObjectObject()
         reference21 = ObjectObject()
@@ -284,80 +273,80 @@ class TestSource(unittest.TestCase):
 
         root.versions = {"v1": version1, "v2": version2}
 
-        version1.sections = {"s1": section11, "s2": section12}
-        version2.sections = {"s1": section21, "s2": section22}
+        version1.methods = {"m1": method11, "m2": method12}
+        version2.methods = {"m1": method21, "m2": method22}
         version1.types = {"t1": type11, "t2": type12}
         version2.types = {"t1": type21, "t2": type22}
         version1.references = {"r1": reference11, "r2": reference12}
         version2.references = {"r1": reference21, "r2": reference22}
 
-        section11.methods = {"m1": method111, "m2": method112}
-        section12.methods = {"m1": method121, "m2": method122}
-        section21.methods = {"m1": method211, "m2": method212}
-        section22.methods = {"m1": method221, "m3": method222}
-
         self.source.fix_versions(root)
-        self.assertEqual("v1", method111.version)
+        self.assertEqual("v1", method11.version)
         self.assertEqual("v2", type21.version)
+        self.assertEqual("v2", reference21.version)
 
     def test_refactor_hierarchy(self):
         root = Root()
         version1 = Version()
         version2 = Version()
-        section11 = Section()
-        section12 = Section()
-        section21 = Section()
-        section22 = Section()
-        method111 = Method()
-        method112 = Method()
-        method121 = Method()
-        method122 = Method()
-        method211 = Method()
-        method212 = Method()
-        method221 = Method()
-        method222 = Method()
+
+        category1 = Category("c")
+        category2 = Category("c")
+
+        method11 = Method()
+        method11.category = "n1"
+        method12 = Method()
+        method12.category = "n2"
+        method21 = Method()
+        method21.category = "default"
+        method22 = Method()
+        method22.category = "default"
+
         type11 = Type()
-        type11.namespace = "n1"
+        type11.category = "n1"
         type12 = Type()
-        type12.namespace = "n2"
+        type12.category = "n2"
         type21 = Type()
-        type21.namespace = "default"
+        type21.category = "default"
         type22 = Type()
-        type22.namespace = "default"
+        type22.category = "default"
+
         reference11 = ObjectObject()
         reference12 = ObjectObject()
         reference21 = ObjectObject()
         reference22 = ObjectObject()
 
+        root.categories = {"n1": category1, "n2": category2}
         root.versions = {"v1": version1, "v2": version2}
 
-        version1.sections = {"s1": section11, "s2": section12}
-        version2.sections = {"s1": section21, "s2": section22}
+        version1.methods = {"m1": method11, "m2": method12}
+        version2.methods = {"m1": method21, "m2": method22}
         version1.types = {"t1": type11, "t2": type12}
         version2.types = {"t1": type21, "t2": type22}
         version1.references = {"r1": reference11, "r2": reference12}
         version2.references = {"r1": reference21, "r2": reference22}
 
-        section11.methods = {"m1": method111, "m2": method112}
-        section12.methods = {"m1": method121, "m2": method122}
-        section21.methods = {"m1": method211, "m2": method212}
-        section22.methods = {"m1": method221, "m3": method222}
-
         self.source.refactor_hierarchy(root)
-        self.assertEqual(2, len(root.sections))
-        self.assertEqual(2, len(root.sections["s1"].methods))
-        self.assertEqual(2, len(root.sections["s1"].methods["m1"].versions))
-        self.assertEqual(method121, root.sections["s2"].methods["m1"].versions["v1"])
-        self.assertEqual(method211, root.sections["s1"].methods["m1"].versions["v2"])
+
+        self.assertEqual(2, len(root.methods))
+        self.assertEqual(2, len(root.methods["m1"].versions))
+        self.assertEqual(method12, root.methods["m2"].versions["v1"])
+
+        self.assertEqual(3, len(root.method_categories))
+        self.assertEqual(2, len(root.method_categories["default"].methods))
+        self.assertEqual(method21, root.method_categories["default"].methods["m1"].versions["v2"])
+
         self.assertEqual(2, len(root.types))
         self.assertEqual(2, len(root.types["t1"].versions))
         self.assertEqual(type12, root.types["t2"].versions["v1"])
+
         self.assertEqual(2, len(root.references))
         self.assertEqual(2, len(root.references["r1"].versions))
         self.assertEqual(reference21, root.references["r1"].versions["v2"])
-        self.assertEqual(3, len(root.namespaces))
-        self.assertEqual(2, len(root.namespaces["default"].types))
-        self.assertEqual(type21, root.namespaces["default"].types["t1"].versions["v2"])
+
+        self.assertEqual(3, len(root.type_categories))
+        self.assertEqual(2, len(root.type_categories["default"].types))
+        self.assertEqual(type21, root.type_categories["default"].types["t1"].versions["v2"])
 
     def test_sort_version_equals(self):
         v1 = Version()
@@ -377,20 +366,23 @@ class TestSource(unittest.TestCase):
         v2.minor = 3
         self.assertLess(v1, v2)
 
-    def test_sort_section_equals(self):
-        v1 = Section()
+    def test_sort_category_equals(self):
+        v1 = Category("a")
         v1.order = 1
-        v1.name = "a"
-        v2 = Section()
+        v2 = Category("a")
         v2.order = 1
-        v2.name = "a"
         self.assertEqual(v1, v2)
 
-    def test_sort_section_lt(self):
-        v1 = Section()
-        v1.name = "a"
-        v2 = Section()
-        v2.name = "b"
+    def test_sort_category_lt(self):
+        v1 = Category("a")
+        v2 = Category("b")
+        self.assertLess(v1, v2)
+
+    def test_sort_category_lt__on_order(self):
+        v1 = Category("a")
+        v1.order = 1
+        v2 = Category("a")
+        v2.order = 2
         self.assertLess(v1, v2)
 
     def test_sort_method_equals(self):
@@ -405,16 +397,6 @@ class TestSource(unittest.TestCase):
         v1.name = "a"
         v2 = Method()
         v2.name = "b"
-        self.assertLess(v1, v2)
-
-    def test_sort_namespace_equals(self):
-        v1 = Namespace("a")
-        v2 = Namespace("a")
-        self.assertEqual(v1, v2)
-
-    def test_sort_namespace_lt(self):
-        v1 = Namespace("a")
-        v2 = Namespace("b")
         self.assertLess(v1, v2)
 
     def test_get_extender_paths(self):
@@ -453,7 +435,7 @@ class TestSource(unittest.TestCase):
         self.assertEqual(True, element.display)
 
     def test_populate(self):
-        datas = {"versions": {"v1": {}, "v2": {}}, "configuration": {"title": "foo"}}
+        datas = {"versions": {"v1": {}, "v2": {}}, "configuration": {"title": "foo"}, "categories": {"c1": {}}}
         response = self.source.populate(datas)
 
         self.assertIsInstance(response, Root)
@@ -464,6 +446,9 @@ class TestSource(unittest.TestCase):
         self.assertEqual("v2", response.versions["v2"].name)
         self.assertIsInstance(response.configuration, Configuration)
         self.assertEqual("foo", response.configuration.title)
+        self.assertEqual(1, len(response.categories))
+        self.assertIn("c1", response.categories)
+        self.assertIsInstance(response.categories["c1"], Category)
 
     def test_populate_configuration(self):
         datas = {"title": "foo", "description": "bar", "uri": "baz"}
@@ -479,7 +464,7 @@ class TestSource(unittest.TestCase):
             "uri": "a", "major": 1, "minor": 2, "status": "beta",
             "description": "c",
             "extends": ["v1", "v2"],
-            "sections": {"s_name": {}},
+            "methods": {"m_name": {"uri": "/"}},
             "references": {"r_name": {"type": "string"}},
             "types": {"t_name": {"primary": "string"}}
         }
@@ -493,9 +478,9 @@ class TestSource(unittest.TestCase):
         self.assertEqual("beta", str(response.status))
         self.assertEqual("o_name", response.name)
         self.assertEqual("c", response.description)
-        self.assertIn("s_name", response.sections)
-        self.assertIsInstance(response.sections["s_name"], Section)
-        self.assertEqual("s_name", response.sections["s_name"].name)
+        self.assertIn("m_name", response.methods)
+        self.assertIsInstance(response.methods["m_name"], Method)
+        self.assertEqual("m_name", response.methods["m_name"].name)
         self.assertIn("r_name", response.references)
         self.assertIsInstance(response.references["r_name"], ObjectString)
         self.assertEqual("r_name", response.references["r_name"].name)
@@ -507,25 +492,22 @@ class TestSource(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.source.populate_version("o_name", {"status": "foo"})
 
-    def test_populate_section(self):
+    def test_populate_category(self):
         datas = {
             "description": "c",
-            "methods": {"m_name": {}},
             "order": "10"
         }
-        response = self.source.populate_section("o_name", datas)
+        response = self.source.populate_category("o_name", datas)
 
-        self.assertIsInstance(response, Section)
+        self.assertIsInstance(response, Category)
         self.assertEqual("o_name", response.name)
         self.assertEqual("c", response.description)
-        self.assertIn("m_name", response.methods)
-        self.assertIsInstance(response.methods["m_name"], Method)
-        self.assertEqual("m_name", response.methods["m_name"].name)
 
     def test_populate_method(self):
         datas = {
             "description": "c",
             "code": "302",
+            "category": "y",
             "uri": "a",
             "method": "put",
             "request_headers": {"h_name": {}},
@@ -538,6 +520,7 @@ class TestSource(unittest.TestCase):
 
         self.assertIsInstance(response, Method)
         self.assertEqual("o_name", response.name)
+        self.assertEqual("y", response.category)
         self.assertEqual("c", response.description)
         self.assertEqual(302, response.code)
         self.assertEqual("a", response.uri)
@@ -596,7 +579,7 @@ class TestSource(unittest.TestCase):
         datas = {
             "primary": "string",
             "description": "c",
-            "namespace": "a",
+            "category": "a",
             "format": {
                 "pretty": "p",
                 "sample": "s",

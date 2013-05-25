@@ -17,7 +17,7 @@ class Config(dict):
                 "includes": None,
                 "excludes": None,
             },
-            "sections": {
+            "categories": {
                 "includes": None,
                 "excludes": None,
             },

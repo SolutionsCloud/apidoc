@@ -2,6 +2,16 @@ configuration:
   title: Full Sample
   description: A full sample using ApiDoc
   uri: ${base_url}
+categories:
+  CategoryOne:
+    description: First Category
+    order: 2
+  Category2:
+    description: Another Category
+    order: 1
+  Category3:
+    description: Another Category
+    order: 1
 versions:
   v1.0:
     description: First release of the API
@@ -9,101 +19,95 @@ versions:
     major: 1
     minor: 0
     uri: /v1
-    sections:
-      SectionOne:
-        description: First Section
-        order: 2
-        methods:
-          TestDiff:
-            response_body:
-              type: object
-              properties:
-                a:
-                  type: string
-                b:
-                  type: string
-          MyResource:
-            uri: /{version}/resource/{resource_id}
-            code: 200
-            method: PUT
-            description: >
-              Update the resource
-            request_headers:
-              X-Auth-Token:
-                type: string
-                description: Authentification token
-                sample: 1234567890abcdefghij
-            request_parameters:
-              version:
-                type: version
-                description: Api version
-              resource_id:
-                type: number
-                description: Resource identifier
-                optional: true
-              does_not_exists:
-                type: number
-                description: Should not be displayed
-            request_body:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: Resource Name
-                ref:
-                  type: version
-                elements:
-                  type: array
-                  description: A list of elements
-                  items:
-                    type: reference
-                    reference: element
-            response_body:
-              type: object
-              properties:
-                id:
-                  type: number
-                  description: Resource identifier
-                name:
-                  type: string
-                  description: Resource Name
-                elements:
-                  type: array
-                  description: A list of elements
-                  items:
-                    type: reference
-                    reference: full_element
-            response_codes:
-              - code: 400
-                message: Bad name format
-                description: The resource name is not correct
-              - code: 400
-                message: Bad element Syntaxe
-                description: The resource element is not correct
-              - code: 404
-                message: Resource not found
-      Section2:
-        description: Another Section
-        order: 1
-        methods:
-          Bar:
-            uri: /endpoint
-            method: delete
-            description: A simple method
-          Baz:
-            extends: Bar
-            uri: /endpoint
-          Fum:
-            extends: SectionOne/MyResource
-          Qux:
-            extends: v3.0/Hello/World
-      Section3:
-        extends: Section2
-        description: Another Section
-        order: 1
-        methods:
-          Bar:
-            uri: /endpoint
+    methods:
+      TestDiff:
+        category: CategoryOne
+        response_body:
+          type: object
+          properties:
+            a:
+              type: string
+            b:
+              type: string
+      MyResource:
+        category: CategoryOne
+        uri: /{version}/resource/{resource_id}
+        code: 200
+        method: PUT
+        description: >
+          Update the resource
+        request_headers:
+          X-Auth-Token:
+            type: string
+            description: Authentification token
+            sample: 1234567890abcdefghij
+        request_parameters:
+          version:
+            type: version
+            description: Api version
+          resource_id:
+            type: number
+            description: Resource identifier
+            optional: true
+          does_not_exists:
+            type: number
+            description: Should not be displayed
+        request_body:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Resource Name
+            ref:
+              type: version
+            elements:
+              type: array
+              description: A list of elements
+              items:
+                type: reference
+                reference: element
+        response_body:
+          type: object
+          properties:
+            id:
+              type: number
+              description: Resource identifier
+            name:
+              type: string
+              description: Resource Name
+            elements:
+              type: array
+              description: A list of elements
+              items:
+                type: reference
+                reference: full_element
+        response_codes:
+          - code: 400
+            message: Bad name format
+            description: The resource name is not correct
+          - code: 400
+            message: Bad element Syntaxe
+            description: The resource element is not correct
+          - code: 404
+            message: Resource not found
+      Bar:
+        category: Category2
+        uri: /endpoint
+        method: delete
+        description: A simple method
+      Baz:
+        category: Category2
+        extends: Bar
+        uri: /endpoint
+      Fum:
+        category: Category2
+        extends: MyResource
+      Qux:
+        category: Category2
+        extends: v3.0/World
+      Bar3:
+        category: Category3
+        uri: /endpoint
     references:
       element:
         type: object
@@ -178,46 +182,45 @@ versions:
     major: 2
     minor: 0
     status: current
-    sections:
-      SectionOne:
-        methods:
-          TestDiff:
-            response_body:
-              type: reference
-              reference: ref_test
-      Section2:
-        methods:
-          MyResource2:
-            uri: /{version}/resource/{resource_id}
-            code: 200
-            method: PUT
-          Fum:
-            description: changes
-            uri: /changes/{version}/{new_parameter}
-            request_parameters:
-              version:
-                description: Overide V1
-              new_parameter:
-                type: number
-                description: New parameter in this version
-            response_codes:
-              - code: 403
-                message: Something Wrong
-                description: The resource name is not correct
-            request_body:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: Resource Name
-                ref:
-                  type: version
-                  description: Resource Name
-                elements:
-                  type: array
-                  description: A list of elements
-                  items:
-                    type: bool
+    methods:
+      TestDiff:
+        category: CategoryOne
+        response_body:
+          type: reference
+          reference: ref_test
+      MyResource2:
+        category: Category2
+        uri: /{version}/resource/{resource_id}
+        code: 200
+        method: PUT
+      Fum:
+        category: Category2
+        description: changes
+        uri: /changes/{version}/{new_parameter}
+        request_parameters:
+          version:
+            description: Overide V1
+          new_parameter:
+            type: number
+            description: New parameter in this version
+        response_codes:
+          - code: 403
+            message: Something Wrong
+            description: The resource name is not correct
+        request_body:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Resource Name
+            ref:
+              type: version
+              description: Resource Name
+            elements:
+              type: array
+              description: A list of elements
+              items:
+                type: bool
     references:
       ref_test:
         type: object
@@ -240,18 +243,14 @@ versions:
     major: 3
     minor: 0
     uri: www.example2.com
-    sections:
-      Hello:
-        methods:
-          World:
-            uri: /hello
-      SectionOne:
-        description: First Section
-        order: 2
-        methods:
-          Theresource:
-            uri: /{version}/resource/{resource_id}
-            code: 200
-            method: PUT
-            description: >
-              Update the resource
+    methods:
+      World:
+        category: Hello
+        uri: /hello
+      Theresource:
+        category: CategoryOne
+        uri: /{version}/resource/{resource_id}
+        code: 200
+        method: PUT
+        description: >
+          Update the resource

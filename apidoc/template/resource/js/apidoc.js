@@ -261,20 +261,12 @@ function onNavigationChange() {
     }
 
     elementSelector = null;
-    if (parameters.section) {
-        if (parameters.method) {
-            elementSelector = "#m-" + parameters.section + "-" + parameters.method;
-        } else {
-            elementSelector = "#s-" + parameters.section;
-        }
-    } else if (parameters.namespace) {
-        if (parameters.type) {
-            elementSelector = "#t-" + parameters.type;
-        } else {
-            elementSelector = "#n-" + parameters.namespace;
-        }
+    if (parameters.method) {
+        elementSelector = "#m-" + parameters.method;
     } else if (parameters.type) {
         elementSelector = "#t-" + parameters.type;
+    } else if (parameters.category) {
+        elementSelector = "#c-" + parameters.category;
     }
 
     if (elementSelector !== null && $(elementSelector).length) {

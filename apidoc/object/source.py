@@ -27,8 +27,10 @@ class Root():
         super().__init__()
         self.configuration = Configuration()
         self.versions = {}
-        self.sections = {}
-        self.namespaces = {}
+        self.categories = {}
+        self.method_categories = {}
+        self.methods = {}
+        self.type_categories = {}
         self.types = {}
         self.references = {}
 
@@ -44,19 +46,19 @@ class Root():
 
         raise ValueError("Unknown version \"%s\"" % version)
 
-    def get_used_namespaces(self):
-        """return list of used namespaces
+    def get_used_type_categories(self):
+        """return list of used type_categories
         """
-        for namespace in [x for x in self.namespaces.values() if len(x.get_used_types()) == 0]:
-            logging.getLogger().warn("Unused namespace %s" % namespace.name)
-        return [x for x in self.namespaces.values() if len(x.get_used_types()) > 0]
+        for category in [x for x in self.type_categories.values() if len(x.get_used_types()) == 0]:
+            logging.getLogger().warn("Unused type category %s" % category.name)
+        return [x for x in self.type_categories.values() if len(x.get_used_types()) > 0]
 
     def get_used_types(self):
         """return list of types used in a method
         """
         types = []
-        for section in self.sections.values():
-            for method_versioned in section.methods.values():
+        for category in self.method_categories.values():
+            for method_versioned in category.methods.values():
                 for method in method_versioned.signatures.values():
                     types += method.get_used_types()
         return list({}.fromkeys(types).keys())
@@ -210,7 +212,7 @@ class Version(Element, Sortable, Displayable):
         self.major = 1
         self.minor = 0
         self.status = Version.Status("current")
-        self.sections = {}
+        self.methods = {}
         self.types = {}
         self.references = {}
 
@@ -243,25 +245,17 @@ class Version(Element, Sortable, Displayable):
         return self._full_uri
 
 
-class Section(Element, Sortable, Displayable):
+class Category(Element, Sortable, Displayable):
 
-    """Element Section
+    """Element Category
     """
 
-    def __init__(self):
+    def __init__(self, name):
         """Class instantiation
         """
         super().__init__()
-        self.methods = {}
+        self.name = name
         self.order = 99
-
-    @Element.version.setter
-    def version(self, value):
-        """Set the version and propagate it to is subelements
-        """
-        self._version = value
-        for method in self.methods.values():
-            method.version = value
 
     def __lt__(self, other):
         """Return true if self is lower than other
@@ -274,9 +268,41 @@ class Section(Element, Sortable, Displayable):
         return (self.order, self.name) == (other.order, other.name)
 
 
-class Method(Element, Sortable):
+class TypeCategory(Category):
 
-    """Element Section
+    """Element TypeCategory
+    """
+
+    def __init__(self, name):
+        """Class instantiation
+        """
+        super().__init__(name)
+        self.types = {}
+
+    def get_used_types(self):
+        """Return list of types of the namspace used
+        """
+        used_types = Root.instance().get_used_types();
+        for type in [y for (x, y) in self.types.items() if x not in used_types]:
+            logging.getLogger().warn("Unused type %s" % type.name)
+        return [y for (x, y) in self.types.items() if x in used_types]
+
+
+class MethodCategory(Category):
+
+    """Element TypeCategory
+    """
+
+    def __init__(self, name):
+        """Class instantiation
+        """
+        super().__init__(name)
+        self.methods = {}
+
+
+class Method(Element, Sortable, Displayable):
+
+    """Element Method
     """
 
     class Methods(Enum):
@@ -460,27 +486,6 @@ class ResponseCode(Element, Sortable):
         })
 
 
-class Namespace(Element, Sortable):
-
-    """Element Namespace
-    """
-
-    def __init__(self, name):
-        """Class instantiation
-        """
-        super().__init__()
-        self.name = name
-        self.types = {}
-
-    def get_used_types(self):
-        """Return list of types of the namspace used
-        """
-        used_types = Root.instance().get_used_types();
-        for type in [y for (x, y) in self.types.items() if x not in used_types]:
-            logging.getLogger().warn("Unused type %s" % type.name)
-        return [y for (x, y) in self.types.items() if x in used_types]
-
-
 class Type(Element, Sortable):
 
     """Element Type
@@ -500,7 +505,7 @@ class Type(Element, Sortable):
         super().__init__()
         self.primary = Type.Primaries.string
         self.format = TypeFormat()
-        self.namespace = None
+        self.category = None
 
     def get_signature_struct(self):
         """Return a uniq signature of the element as dict
@@ -870,6 +875,7 @@ class ObjectReference(Object):
         """Return a reference object from the reference_name defined in sources
         """
         if self.reference_name not in Root.instance().references:
+            print(Root.instance().references.keys())
             raise ValueError(
                 "Unable to find reference \"%s\"." % self.reference_name
             )

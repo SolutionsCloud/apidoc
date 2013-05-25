@@ -10,8 +10,8 @@ Feature: Config file parsing
           and the object_config returned contains "None" for the attribute "input.files"
           and the object_config returned contains "None" for the attribute "filter.versions.includes"
           and the object_config returned contains "None" for the attribute "filter.versions.excludes"
-          and the object_config returned contains "None" for the attribute "filter.sections.includes"
-          and the object_config returned contains "None" for the attribute "filter.sections.excludes"
+          and the object_config returned contains "None" for the attribute "filter.categories.includes"
+          and the object_config returned contains "None" for the attribute "filter.categories.excludes"
           and the object_config returned contains "None" for the attribute "filter.methods.includes"
           and the object_config returned contains "None" for the attribute "filter.methods.excludes"
           and the object_config returned contains "stdout" for the attribute "output.location"
@@ -31,8 +31,8 @@ Feature: Config file parsing
           and the object_config returned contains the files "['sources/one.yml']" for the attribute "input.files"
           and the object_config returned contains "None" for the attribute "filter.versions.includes"
           and the object_config returned contains "None" for the attribute "filter.versions.excludes"
-          and the object_config returned contains "None" for the attribute "filter.sections.includes"
-          and the object_config returned contains "None" for the attribute "filter.sections.excludes"
+          and the object_config returned contains "None" for the attribute "filter.categories.includes"
+          and the object_config returned contains "None" for the attribute "filter.categories.excludes"
           and the object_config returned contains "None" for the attribute "filter.methods.includes"
           and the object_config returned contains "None" for the attribute "filter.methods.excludes"
           and the object_config returned contains "stdout" for the attribute "output.location"
@@ -76,8 +76,8 @@ Feature: Config file parsing
           and the object_config returned contains "None" for the attribute "input.files"
           and the object_config returned contains "None" for the attribute "filter.versions.includes"
           and the object_config returned contains "None" for the attribute "filter.versions.excludes"
-          and the object_config returned contains "None" for the attribute "filter.sections.includes"
-          and the object_config returned contains "None" for the attribute "filter.sections.excludes"
+          and the object_config returned contains "None" for the attribute "filter.categories.includes"
+          and the object_config returned contains "None" for the attribute "filter.categories.excludes"
           and the object_config returned contains "None" for the attribute "filter.methods.includes"
           and the object_config returned contains "None" for the attribute "filter.methods.excludes"
           and the object_config returned contains "stdout" for the attribute "output.location"
@@ -103,7 +103,7 @@ Feature: Config file parsing
                 excludes:
                   - v2.0
                   - v2.1
-              sections:
+              categories:
                 includes:
                   - s1
                   - s2
@@ -127,8 +127,8 @@ Feature: Config file parsing
           and the object_config returned contains the files "['sources/one.yml', 'sources/two.yml']" for the attribute "input.files"
           and the object_config returned contains "['v1.0', 'v1.1']" for the attribute "filter.versions.includes"
           and the object_config returned contains "['v2.0', 'v2.1']" for the attribute "filter.versions.excludes"
-          and the object_config returned contains "['s1', 's2']" for the attribute "filter.sections.includes"
-          and the object_config returned contains "['s3', 's4']" for the attribute "filter.sections.excludes"
+          and the object_config returned contains "['s1', 's2']" for the attribute "filter.categories.includes"
+          and the object_config returned contains "['s3', 's4']" for the attribute "filter.categories.excludes"
           and the object_config returned contains "['m1', 'm2']" for the attribute "filter.methods.includes"
           and the object_config returned contains "['m3', 'm4']" for the attribute "filter.methods.excludes"
           and the object_config returned contains the file "sample.html" for the attribute "output.location"

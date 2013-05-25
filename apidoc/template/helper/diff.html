@@ -82,7 +82,7 @@
             {{- diff_code_commented(method_versioned, method_versioned.objects_reference(objects), prefix, suffix, pad_length) }}
         {%- else %}
     <tr class="diff_version" data-version="{{ diff_display_version_objects(object) }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ"><a href="javascript:navigateTo({type: '{{object.type_name}}'}, ['section', 'method'])">{{ object.type_name }}</a></span>{{ suffix }}</td>
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ"><a href="javascript:navigateTo({type: '{{object.type_name}}'}, ['category', 'method'])">{{ object.type_name }}</a></span>{{ suffix }}</td>
         <td class="com">{{ code.comment(object) }}</td>
     </tr>
         {%- endif %}

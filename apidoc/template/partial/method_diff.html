@@ -31,7 +31,7 @@
             <td><span class="typ">
             {%- if parameter.type != None %}
                 {%- if parameter.get_object().type|lower == "type" %}
-                    <a href="javascript:navigateTo({type: '{{parameter.type}}'}, ['section', 'method'])">{{parameter.type}}</a>
+                    <a href="javascript:navigateTo({type: '{{parameter.type}}'}, ['category', 'method'])">{{parameter.type}}</a>
                 {%- else -%}
                     {{- parameter.type -}}
                 {%- endif -%}
@@ -54,7 +54,7 @@
             <td><span class="typ">
             {%- if parameter.type != None %}
                 {%- if parameter.get_object().type|lower == "type" %}
-                    <a href="javascript:navigateTo({type: '{{parameter.type}}'}, ['section', 'method'])">{{parameter.type}}</a>
+                    <a href="javascript:navigateTo({type: '{{parameter.type}}'}, ['category', 'method'])">{{parameter.type}}</a>
                 {%- else -%}
                     {{- parameter.type -}}
                 {%- endif -%}
