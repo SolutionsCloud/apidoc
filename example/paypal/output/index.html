@@ -902,20 +902,12 @@ function onNavigationChange() {
     }
 
     elementSelector = null;
-    if (parameters.section) {
-        if (parameters.method) {
-            elementSelector = "#m-" + parameters.section + "-" + parameters.method;
-        } else {
-            elementSelector = "#s-" + parameters.section;
-        }
-    } else if (parameters.namespace) {
-        if (parameters.type) {
-            elementSelector = "#t-" + parameters.type;
-        } else {
-            elementSelector = "#n-" + parameters.namespace;
-        }
+    if (parameters.method) {
+        elementSelector = "#m-" + parameters.method;
     } else if (parameters.type) {
         elementSelector = "#t-" + parameters.type;
+    } else if (parameters.category) {
+        elementSelector = "#c-" + parameters.category;
     }
 
     if (elementSelector !== null && $(elementSelector).length) {
@@ -1503,43 +1495,35 @@ $(document).ready(function () {
             <div class="doc-sidebar span3"><input type="search" placeholder="search" class="span12">
 <div class="scroll-spyable">
     <ul class="nav nav-list doc-sidenav">
-        <li class="nav-header"><h5>Methods</h5></li>
-        <li class="nav-header" data-group="Authentication"><a href="javascript:navigateTo({section: 'Authentication'}, ['namespace', 'type', 'method'])" data-target="#s-Authentication"><h6>Authentication</h6></a></li>
-        <li data-group="Authentication" data-item="OAuth"><a href="javascript:navigateTo({section: 'Authentication', method: 'OAuth'}, ['namespace', 'type'])" data-target="#m-Authentication-OAuth"><i class="i-chevron"></i><span>OAuth</span></a></li>
+        <li class="nav-header"><h5>Methods</h5></li><li class="nav-header" data-group="Authentication"><a href="javascript:navigateTo({category: 'Authentication'}, ['category', 'method', 'type'])" data-target="#c-Authentication"><h6>Authentication</h6></a></li>
+        <li data-group="Authentication"  data-item="OAuth"><a href="javascript:navigateTo({category: 'Authentication', method: 'OAuth'}, ['category', 'method'])" data-target="#m-OAuth"><i class="i-chevron"></i><span>OAuth</span></a></li>
+        <li class="separator"></li><li class="nav-header" data-group="Identity"><a href="javascript:navigateTo({category: 'Identity'}, ['category', 'method', 'type'])" data-target="#c-Identity"><h6>Identity</h6></a></li>
+        <li data-group="Identity"  data-item="LookupUser"><a href="javascript:navigateTo({category: 'Identity', method: 'LookupUser'}, ['category', 'method'])" data-target="#m-LookupUser"><i class="i-chevron"></i><span>LookupUser</span></a></li>
         <li class="separator"></li>
-        <li class="nav-header" data-group="Identity"><a href="javascript:navigateTo({section: 'Identity'}, ['namespace', 'type', 'method'])" data-target="#s-Identity"><h6>Identity</h6></a></li>
-        <li data-group="Identity" data-item="LookupUser"><a href="javascript:navigateTo({section: 'Identity', method: 'LookupUser'}, ['namespace', 'type'])" data-target="#m-Identity-LookupUser"><i class="i-chevron"></i><span>LookupUser</span></a></li>
-        <li class="separator"></li>
-        <li class="nav-header" data-group="Payments"><a href="javascript:navigateTo({section: 'Payments'}, ['namespace', 'type', 'method'])" data-target="#s-Payments"><h6>Payments</h6></a></li>
-        <li data-group="Payments" data-item="CreateAPayment"><a href="javascript:navigateTo({section: 'Payments', method: 'CreateAPayment'}, ['namespace', 'type'])" data-target="#m-Payments-CreateAPayment"><i class="i-chevron"></i><span>CreateAPayment</span></a></li>
-        <li data-group="Payments" data-item="ExecutePayment"><a href="javascript:navigateTo({section: 'Payments', method: 'ExecutePayment'}, ['namespace', 'type'])" data-target="#m-Payments-ExecutePayment"><i class="i-chevron"></i><span>ExecutePayment</span></a></li>
-        <li data-group="Payments" data-item="ListPayments"><a href="javascript:navigateTo({section: 'Payments', method: 'ListPayments'}, ['namespace', 'type'])" data-target="#m-Payments-ListPayments"><i class="i-chevron"></i><span>ListPayments</span></a></li>
-        <li data-group="Payments" data-item="LookupPayment"><a href="javascript:navigateTo({section: 'Payments', method: 'LookupPayment'}, ['namespace', 'type'])" data-target="#m-Payments-LookupPayment"><i class="i-chevron"></i><span>LookupPayment</span></a></li>
-        <li class="separator"></li>
-        <li class="nav-header" data-group="Refund"><a href="javascript:navigateTo({section: 'Refund'}, ['namespace', 'type', 'method'])" data-target="#s-Refund"><h6>Refund</h6></a></li>
-        <li data-group="Refund" data-item="LookupRefund"><a href="javascript:navigateTo({section: 'Refund', method: 'LookupRefund'}, ['namespace', 'type'])" data-target="#m-Refund-LookupRefund"><i class="i-chevron"></i><span>LookupRefund</span></a></li>
-        <li class="separator"></li>
-        <li class="nav-header" data-group="Sales"><a href="javascript:navigateTo({section: 'Sales'}, ['namespace', 'type', 'method'])" data-target="#s-Sales"><h6>Sales</h6></a></li>
-        <li data-group="Sales" data-item="LookupSale"><a href="javascript:navigateTo({section: 'Sales', method: 'LookupSale'}, ['namespace', 'type'])" data-target="#m-Sales-LookupSale"><i class="i-chevron"></i><span>LookupSale</span></a></li>
-        <li data-group="Sales" data-item="refoundSale"><a href="javascript:navigateTo({section: 'Sales', method: 'refoundSale'}, ['namespace', 'type'])" data-target="#m-Sales-refoundSale"><i class="i-chevron"></i><span>refoundSale</span></a></li>
-        <li class="separator"></li>
-        <li class="nav-header" data-group="Vault"><a href="javascript:navigateTo({section: 'Vault'}, ['namespace', 'type', 'method'])" data-target="#s-Vault"><h6>Vault</h6></a></li>
-        <li data-group="Vault" data-item="LookupCreditCard"><a href="javascript:navigateTo({section: 'Vault', method: 'LookupCreditCard'}, ['namespace', 'type'])" data-target="#m-Vault-LookupCreditCard"><i class="i-chevron"></i><span>LookupCreditCard</span></a></li>
-        <li data-group="Vault" data-item="StoreCreditCard"><a href="javascript:navigateTo({section: 'Vault', method: 'StoreCreditCard'}, ['namespace', 'type'])" data-target="#m-Vault-StoreCreditCard"><i class="i-chevron"></i><span>StoreCreditCard</span></a></li>
+        <li data-group="None"  data-item="authentificated"><a href="javascript:navigateTo({category: 'None', method: 'authentificated'}, ['category', 'method'])" data-target="#m-authentificated"><i class="i-chevron"></i><span>authentificated</span></a></li>
+        <li class="separator"></li><li class="nav-header" data-group="Payments"><a href="javascript:navigateTo({category: 'Payments'}, ['category', 'method', 'type'])" data-target="#c-Payments"><h6>Payments</h6></a></li>
+        <li data-group="Payments"  data-item="CreateAPayment"><a href="javascript:navigateTo({category: 'Payments', method: 'CreateAPayment'}, ['category', 'method'])" data-target="#m-CreateAPayment"><i class="i-chevron"></i><span>CreateAPayment</span></a></li>
+        <li data-group="Payments"  data-item="ExecutePayment"><a href="javascript:navigateTo({category: 'Payments', method: 'ExecutePayment'}, ['category', 'method'])" data-target="#m-ExecutePayment"><i class="i-chevron"></i><span>ExecutePayment</span></a></li>
+        <li data-group="Payments"  data-item="ListPayments"><a href="javascript:navigateTo({category: 'Payments', method: 'ListPayments'}, ['category', 'method'])" data-target="#m-ListPayments"><i class="i-chevron"></i><span>ListPayments</span></a></li>
+        <li data-group="Payments"  data-item="LookupPayment"><a href="javascript:navigateTo({category: 'Payments', method: 'LookupPayment'}, ['category', 'method'])" data-target="#m-LookupPayment"><i class="i-chevron"></i><span>LookupPayment</span></a></li>
+        <li class="separator"></li><li class="nav-header" data-group="Refund"><a href="javascript:navigateTo({category: 'Refund'}, ['category', 'method', 'type'])" data-target="#c-Refund"><h6>Refund</h6></a></li>
+        <li data-group="Refund"  data-item="LookupRefund"><a href="javascript:navigateTo({category: 'Refund', method: 'LookupRefund'}, ['category', 'method'])" data-target="#m-LookupRefund"><i class="i-chevron"></i><span>LookupRefund</span></a></li>
+        <li class="separator"></li><li class="nav-header" data-group="Vault"><a href="javascript:navigateTo({category: 'Vault'}, ['category', 'method', 'type'])" data-target="#c-Vault"><h6>Vault</h6></a></li>
+        <li data-group="Vault"  data-item="LookupCreditCard"><a href="javascript:navigateTo({category: 'Vault', method: 'LookupCreditCard'}, ['category', 'method'])" data-target="#m-LookupCreditCard"><i class="i-chevron"></i><span>LookupCreditCard</span></a></li>
+        <li data-group="Vault"  data-item="StoreCreditCard"><a href="javascript:navigateTo({category: 'Vault', method: 'StoreCreditCard'}, ['category', 'method'])" data-target="#m-StoreCreditCard"><i class="i-chevron"></i><span>StoreCreditCard</span></a></li>
     </ul>
     <ul class="nav nav-list doc-sidenav">
         <li class="nav-header"><h5>Types</h5></li>
-        <li class="nav-header" data-group="default"><a href="javascript:navigateTo({namespace: 'default'}, ['section', 'method', 'type'])" data-target="#n-default"><h6>default</h6></a></li>
-        <li data-group="default"  data-item="dateTime"><a href="javascript:navigateTo({namespace: 'default', type: 'dateTime'}, ['section', 'method'])" data-target="#t-dateTime"><i class="i-chevron"></i><span>dateTime</span></a></li>
-        <li data-group="default"  data-item="listGrantType"><a href="javascript:navigateTo({namespace: 'default', type: 'listGrantType'}, ['section', 'method'])" data-target="#t-listGrantType"><i class="i-chevron"></i><span>listGrantType</span></a></li>
-        <li data-group="default"  data-item="listIntent"><a href="javascript:navigateTo({namespace: 'default', type: 'listIntent'}, ['section', 'method'])" data-target="#t-listIntent"><i class="i-chevron"></i><span>listIntent</span></a></li>
-        <li data-group="default"  data-item="listPaymentMethod"><a href="javascript:navigateTo({namespace: 'default', type: 'listPaymentMethod'}, ['section', 'method'])" data-target="#t-listPaymentMethod"><i class="i-chevron"></i><span>listPaymentMethod</span></a></li>
-        <li data-group="default"  data-item="listRelLink"><a href="javascript:navigateTo({namespace: 'default', type: 'listRelLink'}, ['section', 'method'])" data-target="#t-listRelLink"><i class="i-chevron"></i><span>listRelLink</span></a></li>
-        <li data-group="default"  data-item="listShippingAddressType"><a href="javascript:navigateTo({namespace: 'default', type: 'listShippingAddressType'}, ['section', 'method'])" data-target="#t-listShippingAddressType"><i class="i-chevron"></i><span>listShippingAddressType</span></a></li>
-        <li data-group="default"  data-item="listStatePayment"><a href="javascript:navigateTo({namespace: 'default', type: 'listStatePayment'}, ['section', 'method'])" data-target="#t-listStatePayment"><i class="i-chevron"></i><span>listStatePayment</span></a></li>
-        <li data-group="default"  data-item="listStateRefund"><a href="javascript:navigateTo({namespace: 'default', type: 'listStateRefund'}, ['section', 'method'])" data-target="#t-listStateRefund"><i class="i-chevron"></i><span>listStateRefund</span></a></li>
-        <li data-group="default"  data-item="listStateSale"><a href="javascript:navigateTo({namespace: 'default', type: 'listStateSale'}, ['section', 'method'])" data-target="#t-listStateSale"><i class="i-chevron"></i><span>listStateSale</span></a></li>
-        <li data-group="default"  data-item="listTypeCreditCard"><a href="javascript:navigateTo({namespace: 'default', type: 'listTypeCreditCard'}, ['section', 'method'])" data-target="#t-listTypeCreditCard"><i class="i-chevron"></i><span>listTypeCreditCard</span></a></li>
+        <li data-group="None"  data-item="dateTime"><a href="javascript:navigateTo({category: 'None', type: 'dateTime'}, ['category', 'method'])" data-target="#t-dateTime"><i class="i-chevron"></i><span>dateTime</span></a></li>
+        <li data-group="None"  data-item="listGrantType"><a href="javascript:navigateTo({category: 'None', type: 'listGrantType'}, ['category', 'method'])" data-target="#t-listGrantType"><i class="i-chevron"></i><span>listGrantType</span></a></li>
+        <li data-group="None"  data-item="listIntent"><a href="javascript:navigateTo({category: 'None', type: 'listIntent'}, ['category', 'method'])" data-target="#t-listIntent"><i class="i-chevron"></i><span>listIntent</span></a></li>
+        <li data-group="None"  data-item="listPaymentMethod"><a href="javascript:navigateTo({category: 'None', type: 'listPaymentMethod'}, ['category', 'method'])" data-target="#t-listPaymentMethod"><i class="i-chevron"></i><span>listPaymentMethod</span></a></li>
+        <li data-group="None"  data-item="listRelLink"><a href="javascript:navigateTo({category: 'None', type: 'listRelLink'}, ['category', 'method'])" data-target="#t-listRelLink"><i class="i-chevron"></i><span>listRelLink</span></a></li>
+        <li data-group="None"  data-item="listShippingAddressType"><a href="javascript:navigateTo({category: 'None', type: 'listShippingAddressType'}, ['category', 'method'])" data-target="#t-listShippingAddressType"><i class="i-chevron"></i><span>listShippingAddressType</span></a></li>
+        <li data-group="None"  data-item="listStatePayment"><a href="javascript:navigateTo({category: 'None', type: 'listStatePayment'}, ['category', 'method'])" data-target="#t-listStatePayment"><i class="i-chevron"></i><span>listStatePayment</span></a></li>
+        <li data-group="None"  data-item="listStateRefund"><a href="javascript:navigateTo({category: 'None', type: 'listStateRefund'}, ['category', 'method'])" data-target="#t-listStateRefund"><i class="i-chevron"></i><span>listStateRefund</span></a></li>
+        <li data-group="None"  data-item="listStateSale"><a href="javascript:navigateTo({category: 'None', type: 'listStateSale'}, ['category', 'method'])" data-target="#t-listStateSale"><i class="i-chevron"></i><span>listStateSale</span></a></li>
+        <li data-group="None"  data-item="listTypeCreditCard"><a href="javascript:navigateTo({category: 'None', type: 'listTypeCreditCard'}, ['category', 'method'])" data-target="#t-listTypeCreditCard"><i class="i-chevron"></i><span>listTypeCreditCard</span></a></li>
     </ul>
 </div>
             </div>
@@ -1556,12 +1540,10 @@ $(document).ready(function () {
                 <h2>Methods</h2>
             </div>
             <ul class="unstyled">
-    <li class="section" id="s-Authentication">
-        <h3>Authentication</h3>
+    <li class="category" id="c-Authentication"><h3>Authentication</h3>
         <div class="description">Timelines are collections of Tweets, ordered with the most recent first.</div>
         <ul class="unstyled">
-            <li class="method item"
-                id="m-Authentication-OAuth"
+            <li class="method item" id="m-OAuth"
                 data-method="GET"
             >
                 <h4>OAuth</h4><div class="nocontents">no implementation for this version</div>
@@ -1590,7 +1572,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"grant_type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listGrantType'}, ['section', 'method'])">listGrantType</a></span></td>
+        <td>  <span class="str">"grant_type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listGrantType'}, ['category', 'method'])">listGrantType</a></span></td>
         <td class="com">Token grant type(client_credentials)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -1668,12 +1650,10 @@ For authentication and authorization related to Identiy, learn how to obtain a u
             </li>
         </ul>
     </li>
-    <li class="section" id="s-Identity">
-        <h3>Identity</h3>
+    <li class="category" id="c-Identity"><h3>Identity</h3>
         <div class="description">Log In with PayPal (formerly PayPal Access) is a commerce identity solution that enables your customers to sign in to your web site quickly and securely using their PayPal login credentials. Log In with PayPal utilizes the latest security standards, and you don’t have to worry about storing user data on your system. For more information, learn about Log In with PayPal.</div>
         <ul class="unstyled">
-            <li class="method item"
-                id="m-Identity-LookupUser"
+            <li class="method item" id="m-LookupUser"
                 data-method="GET"
             >
                 <h4>LookupUser</h4><div class="nocontents">no implementation for this version</div>
@@ -1921,12 +1901,77 @@ For authentication and authorization related to Identiy, learn how to obtain a u
             </li>
         </ul>
     </li>
-    <li class="section" id="s-Payments">
-        <h3>Payments</h3>
+    <li class="category" id="c-None">
+        <ul class="unstyled">
+            <li class="method item" id="m-authentificated"
+                data-method="GET"
+            >
+                <h4>authentificated</h4><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
+
+<h5 class="stack title"></h5>
+<div class="request stack">
+    <h5><i class="i-request"></i> Request: </h5>
+    <h6>Resource: </h6>
+
+    <code  class="diff_version" data-version="v1.0 "><span class="hur">https://api.paypal.com/v1None</span></code>
+    <h6>Headers: </h6><table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <col></col>
+            <col width="160px"></col>
+            <col width="50%"></col>
+        </colgroup>
+        <thead>
+            <tr>
+            <th><span
+            >Parameter</span></th>
+            <th><span
+            >Type</span></th>
+            <th><span
+            >Description</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="diff_version" data-version="v1.0 ">
+            <td><span class="str">Authorization</span></td>
+            <td><span class="typ">string</span></td>
+            <td><span class="com">Send the value as the OAuth 2.0 access token with the authentication type set as Bearer</span></td>
+        </tr>
+        <tr class="diff_version" data-version="v1.0 ">
+            <td><span class="str">Content-Type</span></td>
+            <td><span class="typ">string</span></td>
+            <td><span class="com"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="response stack">
+    <h5><i class="i-response"></i> Response: </h5>
+</div><div class="stack sample">
+                        <div data-version="v1.0 ">
+
+<h5><i class="i-sample"></i> Sample: </h5>
+<h6>Request: </h6>
+<div class="code"><span class="hme">GET</span> <span class="hur">None</span> <span class="hpr">HTTP/1.1</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+<span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
+</div>
+        <h6>Response: </h6>
+        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+</div></div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <li class="category" id="c-Payments"><h3>Payments</h3>
         <div class="description">Timelines are collections of Tweets, ordered with the most recent first.</div>
         <ul class="unstyled">
-            <li class="method item"
-                id="m-Payments-CreateAPayment"
+            <li class="method item" id="m-CreateAPayment"
                 data-method="POST"
             >
                 <h4>CreateAPayment</h4><div class="nocontents">no implementation for this version</div>
@@ -1981,7 +2026,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"intent"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listIntent'}, ['section', 'method'])">listIntent</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"intent"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listIntent'}, ['category', 'method'])">listIntent</a></span><span class="pun">,</span></td>
         <td class="com">Payment intent(sale)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2069,7 +2114,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"><span class="optional lit">Optional</span>State of the credit card funding instrument: expired or ok. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['section', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
+        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['category', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
         <td class="com">Credit card type.(amex, visa, discover, mastercard)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2161,7 +2206,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">2 letter code for US states,</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['section', 'method'])">listShippingAddressType</a></span></td>
+        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['category', 'method'])">listShippingAddressType</a></span></td>
         <td class="com"><span class="optional lit">Optional</span>Address type.(residential, business, mailbox)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2173,7 +2218,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"payment_method"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listPaymentMethod'}, ['section', 'method'])">listPaymentMethod</a></span></td>
+        <td>    <span class="str">"payment_method"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listPaymentMethod'}, ['category', 'method'])">listPaymentMethod</a></span></td>
         <td class="com">Payment method used.(paypal, credit_card)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2206,7 +2251,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>      <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount being collected.</td>
+        <td class="com">Amount being collected.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>        <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
@@ -2325,7 +2370,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">2 letter code for US states,</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['section', 'method'])">listShippingAddressType</a></span></td>
+        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['category', 'method'])">listShippingAddressType</a></span></td>
         <td class="com"><span class="optional lit">Optional</span>Address type.(residential, business, mailbox)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2367,7 +2412,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span><span class="pun">,</span></td>
         <td class="com">Payment creation time as defined in RFC 3339 Section 5.6 Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2375,7 +2420,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">ID of the created payment Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"intent"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listIntent'}, ['section', 'method'])">listIntent</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"intent"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listIntent'}, ['category', 'method'])">listIntent</a></span><span class="pun">,</span></td>
         <td class="com">Payment intent; Must be set to sale currently.(sale)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2395,7 +2440,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">The HTTP method required for the related call.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['section', 'method'])">listRelLink</a></span></td>
+        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['category', 'method'])">listRelLink</a></span></td>
         <td class="com">Link relation that describes how this link relates to the previous call.(refund, self, execute, parent_payment)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2491,7 +2536,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"><span class="optional lit">Optional</span>State of the credit card funding instrument: expired or ok. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['section', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
+        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['category', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
         <td class="com">Credit card type.(amex, visa, discover, mastercard)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2583,7 +2628,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">2 letter code for US states,</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['section', 'method'])">listShippingAddressType</a></span></td>
+        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['category', 'method'])">listShippingAddressType</a></span></td>
         <td class="com"><span class="optional lit">Optional</span>Address type.(residential, business, mailbox)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2595,7 +2640,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"payment_method"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listPaymentMethod'}, ['section', 'method'])">listPaymentMethod</a></span></td>
+        <td>    <span class="str">"payment_method"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listPaymentMethod'}, ['category', 'method'])">listPaymentMethod</a></span></td>
         <td class="com">Payment method used.(paypal, credit_card)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2619,7 +2664,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStatePayment'}, ['section', 'method'])">listStatePayment</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStatePayment'}, ['category', 'method'])">listStatePayment</a></span><span class="pun">,</span></td>
         <td class="com">Payment state.(canceled, expired, approved, failed, created)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2628,7 +2673,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>    <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount being collected.</td>
+        <td class="com">Amount being collected.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>      <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
@@ -2747,7 +2792,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">2 letter code for US states,</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['section', 'method'])">listShippingAddressType</a></span></td>
+        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['category', 'method'])">listShippingAddressType</a></span></td>
         <td class="com"><span class="optional lit">Optional</span>Address type.(residential, business, mailbox)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2772,7 +2817,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>          <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Details about the collected amount.</td>
+        <td class="com">Details about the collected amount.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>            <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
@@ -2811,7 +2856,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span><span class="pun">,</span></td>
+        <td>          <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span><span class="pun">,</span></td>
         <td class="com">Time of sale as defined in RFC 3339 Section 5.6 Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2831,11 +2876,11 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">ID of the sale transaction being refunded. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStateSale'}, ['section', 'method'])">listStateSale</a></span><span class="pun">,</span></td>
+        <td>          <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStateSale'}, ['category', 'method'])">listStateSale</a></span><span class="pun">,</span></td>
         <td class="com">State of the sale.(refunded, completed, partially_refunded, pending)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span></td>
+        <td>          <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span></td>
         <td class="com">Time the resource was last updated. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -2855,7 +2900,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span></td>
+        <td>  <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span></td>
         <td class="com">Time the resource was last updated. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -3233,8 +3278,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                     </div>
                 </div>
             </li>
-            <li class="method item"
-                id="m-Payments-ExecutePayment"
+            <li class="method item" id="m-ExecutePayment"
                 data-method="POST"
             >
                 <h4>ExecutePayment</h4><div class="nocontents">no implementation for this version</div>
@@ -3330,7 +3374,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>      <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount being collected.</td>
+        <td class="com">Amount being collected.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>        <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
@@ -3449,7 +3493,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">2 letter code for US states,</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['section', 'method'])">listShippingAddressType</a></span></td>
+        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['category', 'method'])">listShippingAddressType</a></span></td>
         <td class="com"><span class="optional lit">Optional</span>Address type.(residential, business, mailbox)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -3491,7 +3535,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"intent"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listIntent'}, ['section', 'method'])">listIntent</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"intent"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listIntent'}, ['category', 'method'])">listIntent</a></span><span class="pun">,</span></td>
         <td class="com">Payment intent; Must be set to sale currently.(sale)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -3511,7 +3555,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">The HTTP method required for the related call.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['section', 'method'])">listRelLink</a></span></td>
+        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['category', 'method'])">listRelLink</a></span></td>
         <td class="com">Link relation that describes how this link relates to the previous call.(refund, self, execute, parent_payment)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -3607,7 +3651,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"><span class="optional lit">Optional</span>State of the credit card funding instrument: expired or ok. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['section', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
+        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['category', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
         <td class="com">Credit card type.(amex, visa, discover, mastercard)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -3699,7 +3743,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">2 letter code for US states,</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['section', 'method'])">listShippingAddressType</a></span></td>
+        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['category', 'method'])">listShippingAddressType</a></span></td>
         <td class="com"><span class="optional lit">Optional</span>Address type.(residential, business, mailbox)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -3711,7 +3755,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"payment_method"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listPaymentMethod'}, ['section', 'method'])">listPaymentMethod</a></span></td>
+        <td>    <span class="str">"payment_method"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listPaymentMethod'}, ['category', 'method'])">listPaymentMethod</a></span></td>
         <td class="com">Payment method used.(paypal, credit_card)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -3724,7 +3768,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>    <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount being collected.</td>
+        <td class="com">Amount being collected.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>      <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
@@ -3843,7 +3887,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">2 letter code for US states,</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['section', 'method'])">listShippingAddressType</a></span></td>
+        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['category', 'method'])">listShippingAddressType</a></span></td>
         <td class="com"><span class="optional lit">Optional</span>Address type.(residential, business, mailbox)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -3868,7 +3912,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>          <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Details about the collected amount.</td>
+        <td class="com">Details about the collected amount.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>            <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
@@ -3907,7 +3951,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span><span class="pun">,</span></td>
+        <td>          <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span><span class="pun">,</span></td>
         <td class="com">Time of sale as defined in RFC 3339 Section 5.6 Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -3927,11 +3971,11 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">ID of the sale transaction being refunded. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStateSale'}, ['section', 'method'])">listStateSale</a></span><span class="pun">,</span></td>
+        <td>          <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStateSale'}, ['category', 'method'])">listStateSale</a></span><span class="pun">,</span></td>
         <td class="com">State of the sale.(refunded, completed, partially_refunded, pending)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span></td>
+        <td>          <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span></td>
         <td class="com">Time the resource was last updated. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -4238,8 +4282,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                     </div>
                 </div>
             </li>
-            <li class="method item"
-                id="m-Payments-ListPayments"
+            <li class="method item" id="m-ListPayments"
                 data-method="GET"
             >
                 <h4>ListPayments</h4><div class="nocontents">no implementation for this version</div>
@@ -4302,7 +4345,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span><span class="pun">,</span></td>
+        <td>    <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span><span class="pun">,</span></td>
         <td class="com">Payment creation time as defined in RFC 3339 Section 5.6 Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -4310,7 +4353,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">ID of the created payment Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"intent"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listIntent'}, ['section', 'method'])">listIntent</a></span><span class="pun">,</span></td>
+        <td>    <span class="str">"intent"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listIntent'}, ['category', 'method'])">listIntent</a></span><span class="pun">,</span></td>
         <td class="com">Payment intent; Must be set to sale currently.(sale)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -4330,7 +4373,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">The HTTP method required for the related call.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>        <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['section', 'method'])">listRelLink</a></span></td>
+        <td>        <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['category', 'method'])">listRelLink</a></span></td>
         <td class="com">Link relation that describes how this link relates to the previous call.(refund, self, execute, parent_payment)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -4426,7 +4469,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"><span class="optional lit">Optional</span>State of the credit card funding instrument: expired or ok. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>            <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['section', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
+        <td>            <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['category', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
         <td class="com">Credit card type.(amex, visa, discover, mastercard)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -4518,7 +4561,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">2 letter code for US states,</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['section', 'method'])">listShippingAddressType</a></span></td>
+        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['category', 'method'])">listShippingAddressType</a></span></td>
         <td class="com"><span class="optional lit">Optional</span>Address type.(residential, business, mailbox)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -4530,7 +4573,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"payment_method"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listPaymentMethod'}, ['section', 'method'])">listPaymentMethod</a></span></td>
+        <td>      <span class="str">"payment_method"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listPaymentMethod'}, ['category', 'method'])">listPaymentMethod</a></span></td>
         <td class="com">Payment method used.(paypal, credit_card)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -4554,7 +4597,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStatePayment'}, ['section', 'method'])">listStatePayment</a></span><span class="pun">,</span></td>
+        <td>    <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStatePayment'}, ['category', 'method'])">listStatePayment</a></span><span class="pun">,</span></td>
         <td class="com">Payment state.(canceled, expired, approved, failed, created)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -4563,7 +4606,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>      <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount being collected.</td>
+        <td class="com">Amount being collected.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>        <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
@@ -4682,7 +4725,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">2 letter code for US states,</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['section', 'method'])">listShippingAddressType</a></span></td>
+        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['category', 'method'])">listShippingAddressType</a></span></td>
         <td class="com"><span class="optional lit">Optional</span>Address type.(residential, business, mailbox)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -4698,7 +4741,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span></td>
+        <td>    <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span></td>
         <td class="com">Time that the resource was last updated. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5010,8 +5053,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                     </div>
                 </div>
             </li>
-            <li class="method item"
-                id="m-Payments-LookupPayment"
+            <li class="method item" id="m-LookupPayment"
                 data-method="GET"
             >
                 <h4>LookupPayment</h4><div class="nocontents">no implementation for this version</div>
@@ -5098,7 +5140,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span><span class="pun">,</span></td>
         <td class="com">Payment creation time as defined in RFC 3339 Section 5.6. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5106,7 +5148,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">ID of the created payment Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"intent"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listIntent'}, ['section', 'method'])">listIntent</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"intent"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listIntent'}, ['category', 'method'])">listIntent</a></span><span class="pun">,</span></td>
         <td class="com">Payment intent; currently only sale is a valid value.(sale)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5194,7 +5236,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"><span class="optional lit">Optional</span>State of the credit card funding instrument: expired or ok. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['section', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
+        <td>          <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['category', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
         <td class="com">Credit card type.(amex, visa, discover, mastercard)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5286,7 +5328,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">2 letter code for US states,</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['section', 'method'])">listShippingAddressType</a></span></td>
+        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['category', 'method'])">listShippingAddressType</a></span></td>
         <td class="com"><span class="optional lit">Optional</span>Address type.(residential, business, mailbox)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5298,7 +5340,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"payment_method"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listPaymentMethod'}, ['section', 'method'])">listPaymentMethod</a></span></td>
+        <td>    <span class="str">"payment_method"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listPaymentMethod'}, ['category', 'method'])">listPaymentMethod</a></span></td>
         <td class="com">Payment method used.(paypal, credit_card)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5322,7 +5364,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStatePayment'}, ['section', 'method'])">listStatePayment</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStatePayment'}, ['category', 'method'])">listStatePayment</a></span><span class="pun">,</span></td>
         <td class="com">payment state.(canceled, expired, approved, failed, created)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5331,7 +5373,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>    <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount being collected.</td>
+        <td class="com">Amount being collected.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>      <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
@@ -5450,7 +5492,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">2 letter code for US states,</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['section', 'method'])">listShippingAddressType</a></span></td>
+        <td>        <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listShippingAddressType'}, ['category', 'method'])">listShippingAddressType</a></span></td>
         <td class="com"><span class="optional lit">Optional</span>Address type.(residential, business, mailbox)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5475,7 +5517,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>          <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Details about the collected amount.</td>
+        <td class="com">Details about the collected amount.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>            <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
@@ -5514,7 +5556,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span><span class="pun">,</span></td>
+        <td>          <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span><span class="pun">,</span></td>
         <td class="com">Time of sale as defined in RFC 3339 Section 5.6 Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5534,11 +5576,11 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">ID of the sale transaction being refunded. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStateSale'}, ['section', 'method'])">listStateSale</a></span><span class="pun">,</span></td>
+        <td>          <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStateSale'}, ['category', 'method'])">listStateSale</a></span><span class="pun">,</span></td>
         <td class="com">State of the sale.(refunded, completed, partially_refunded, pending)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>          <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span></td>
+        <td>          <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span></td>
         <td class="com">Time the resource was last updated. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5558,7 +5600,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span></td>
+        <td>  <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span></td>
         <td class="com">Time that the resource was last updated. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5758,12 +5800,10 @@ For authentication and authorization related to Identiy, learn how to obtain a u
             </li>
         </ul>
     </li>
-    <li class="section" id="s-Refund">
-        <h3>Refund</h3>
+    <li class="category" id="c-Refund"><h3>Refund</h3>
         <div class="description">Use the /refund resource to look up details of a specific refund. See Refund a sale in the API reference and Refund a completed payment (sale) for more information about refunding payments.</div>
         <ul class="unstyled">
-            <li class="method item"
-                id="m-Refund-LookupRefund"
+            <li class="method item" id="m-LookupRefund"
                 data-method="GET"
             >
                 <h4>LookupRefund</h4><div class="nocontents">no implementation for this version</div>
@@ -5851,7 +5891,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>  <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Details including both refunded amount (to payer) and refunded fee (to payee). If not specified, a full refund is assumed.</td>
+        <td class="com">Details including both refunded amount (to payer) and refunded fee (to payee). If not specified, a full refund is assumed.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
         <td>    <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
@@ -5890,7 +5930,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span><span class="pun">,</span></td>
         <td class="com">Time of refund as defined in RFC 3339 Section 5.6. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5918,7 +5958,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">The HTTP method required for the related call.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['section', 'method'])">listRelLink</a></span></td>
+        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['category', 'method'])">listRelLink</a></span></td>
         <td class="com">Link relation that describes how this link relates to the previous call.(refund, self, execute, parent_payment)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -5938,11 +5978,11 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">ID of the sale transaction. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStateRefund'}, ['section', 'method'])">listStateRefund</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStateRefund'}, ['category', 'method'])">listStateRefund</a></span><span class="pun">,</span></td>
         <td class="com">State of the refund.(failed, completed, pending)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span></td>
+        <td>  <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['category', 'method'])">dateTime</a></span></td>
         <td class="com">Time that the resource was last updated. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -6001,562 +6041,10 @@ For authentication and authorization related to Identiy, learn how to obtain a u
             </li>
         </ul>
     </li>
-    <li class="section" id="s-Sales">
-        <h3>Sales</h3>
-        <div class="description">To get details about completed payments (sale transaction) created by a payment request or to refund a sale transaction, PayPal provides the /sale resource and related sub-resources. You can find the sale transactions in the payment resource within related_resources.</div>
-        <ul class="unstyled">
-            <li class="method item"
-                id="m-Sales-LookupSale"
-                data-method="GET"
-            >
-                <h4>LookupSale</h4><div class="nocontents">no implementation for this version</div>
-                <div class="contents">
-
-<h5 class="stack title"></h5>
-<div class="request stack">
-    <h5><i class="i-request"></i> Request: </h5>
-    <h6>Resource: </h6>
-
-    <code  class="diff_version" data-version="v1.0 "><span class="hur">https://api.paypal.com/v1/payments/sale/{id}</span></code>
-    <h6>URI Parameters: </h6><table class="table table-bordered table-hover table-condensed">
-        <colgroup>
-            <col></col>
-            <col width="160px"></col>
-            <col width="70px"></col>
-            <col width="50%"></col>
-        </colgroup>
-        <thead>
-            <tr>
-            <th><span
-            >Parameter</span></th>
-            <th><span
-            >Type</span></th>
-            <th><span
-            >Optional</span></th>
-            <th><span
-            >Description</span></th>
-            </tr>
-        </thead>
-        <tbody>
-            
-        <tr class="diff_version" data-version="v1.0 ">
-            <td><span class="str">id</span></td>
-            <td><span class="typ">string<td><span class="lit"></span></td>
-            <td><span class="com">Sale Id</span></td>
-        </tr>
-        </tbody>
-    </table>
-    <h6>Headers: </h6><table class="table table-bordered table-hover table-condensed">
-        <colgroup>
-            <col></col>
-            <col width="160px"></col>
-            <col width="50%"></col>
-        </colgroup>
-        <thead>
-            <tr>
-            <th><span
-            >Parameter</span></th>
-            <th><span
-            >Type</span></th>
-            <th><span
-            >Description</span></th>
-            </tr>
-        </thead>
-        <tbody>
-            
-        <tr class="diff_version" data-version="v1.0 ">
-            <td><span class="str">Authorization</span></td>
-            <td><span class="typ">string</span></td>
-            <td><span class="com">Send the value as the OAuth 2.0 access token with the authentication type set as Bearer</span></td>
-        </tr>
-        <tr class="diff_version" data-version="v1.0 ">
-            <td><span class="str">Content-Type</span></td>
-            <td><span class="typ">string</span></td>
-            <td><span class="com"></span></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="response stack">
-    <h5><i class="i-response"></i> Response: </h5>
-    <h6>Body: </h6>
-    <div class="code"><table class="table-hover">
-        <colgroup>
-            <col width="50%%"></col>
-            <col width="50%%"></col>
-        </colgroup>
-        <tbody>
-
-    <tr class="diff_version" data-version="v1.0 ">
-        <td><span class="pun">{</span></td>
-        <td class="com"></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Details about the collected amount.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">ISO 4217 3-letter currency code. PayPal currently supports USD only.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"details"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Additional details related to a payment amount.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"fee"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Fee charged by PayPal.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"shipping"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount charged for shipping. 10 characters max with support for 2 decimal places.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"subtotal"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Sub-total (amount) of items being paid for. 10 characters max with support for 2 decimal places.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"tax"</span><span class="pun">: </span><span class="typ">string</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount charged for tax. 10 characters max with support for 2 decimal places.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="pun">}</span><span class="pun">,</span></td>
-        <td></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"total"</span><span class="pun">: </span><span class="typ">string</span></td>
-        <td class="com">Total amount charged from the payer to the payee.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="pun">}</span><span class="pun">,</span></td>
-        <td></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span><span class="pun">,</span></td>
-        <td class="com">Time of sale as defined in RFC 3339 Section 5.6 Assigned in response.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"description"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">Description of sale.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"id"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">ID of the sale transaction.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"links"</span><span class="pun">: </span><span class="pun">[</span></td>
-        <td class="com">HATEOAS links related to this call. Assigned in response.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="pun">{</span></td>
-        <td class="com"></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"href"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">URL of the related HATEOAS link you can use for subsequent calls.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"method"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">The HTTP method required for the related call.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['section', 'method'])">listRelLink</a></span></td>
-        <td class="com">Link relation that describes how this link relates to the previous call.(refund, self, execute, parent_payment)</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="pun">}</span></td>
-        <td></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="pun">]</span><span class="pun">,</span></td>
-        <td></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"parent_payment"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">ID of the payment resource on which this transaction is based. Assigned in response.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"sale_id"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">ID of the sale transaction. Assigned in response.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStateSale'}, ['section', 'method'])">listStateSale</a></span><span class="pun">,</span></td>
-        <td class="com">State of the sale.(refunded, completed, partially_refunded, pending)</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span></td>
-        <td class="com">Time that the resource was last updated. Assigned in response.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td><span class="pun">}</span></td>
-        <td></td>
-    </tr>
-        </tbody>
-    </table></div>
-</div><div class="stack sample">
-                        <div data-version="v1.0 ">
-
-<h5><i class="i-sample"></i> Sample: </h5>
-<h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/payments/sale/36C38912MN9658832</span> <span class="hpr">HTTP/1.1</span>
-<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
-<span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
-<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
-</div>
-        <h6>Response: </h6>
-        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
-<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
-
-<span class="pun">{</span>
-  <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span>
-    <span class="str">"currency"</span><span class="pun">: </span><span class="str">"USD"</span><span class="pun">,</span>
-    <span class="str">"details"</span><span class="pun">: </span><span class="pun">{</span>
-      <span class="str">"fee"</span><span class="pun">: </span><span class="str">"my_fee"</span><span class="pun">,</span>
-      <span class="str">"shipping"</span><span class="pun">: </span><span class="str">"0.03"</span><span class="pun">,</span>
-      <span class="str">"subtotal"</span><span class="pun">: </span><span class="str">"7.41"</span><span class="pun">,</span>
-      <span class="str">"tax"</span><span class="pun">: </span><span class="str">"0.03"</span>
-    <span class="pun">}</span><span class="pun">,</span>
-    <span class="str">"total"</span><span class="pun">: </span><span class="str">"7.47"</span>
-  <span class="pun">}</span><span class="pun">,</span>
-  <span class="str">"create_time"</span><span class="pun">: </span><span class="str">"2013-01-31 04:12:04"</span><span class="pun">,</span>
-  <span class="str">"description"</span><span class="pun">: </span><span class="str">"my_description"</span><span class="pun">,</span>
-  <span class="str">"id"</span><span class="pun">: </span><span class="str">"my_id"</span><span class="pun">,</span>
-  <span class="str">"links"</span><span class="pun">: </span><span class="pun">[</span>
-    <span class="pun">{</span>
-      <span class="str">"href"</span><span class="pun">: </span><span class="str">"https://api.paypal.com/v1/payments/payment/PAY-17S8410768582940NKEE66EQ"</span><span class="pun">,</span>
-      <span class="str">"method"</span><span class="pun">: </span><span class="str">"GET"</span><span class="pun">,</span>
-      <span class="str">"rel"</span><span class="pun">: </span><span class="str">"self"</span>
-    <span class="pun">}</span><span class="pun">,</span>
-    <span class="pun">{</span>
-      <span class="str">"href"</span><span class="pun">: </span><span class="str">"https://api.paypal.com/v1/payments/payment/PAY-17S8410768582940NKEE66EQ"</span><span class="pun">,</span>
-      <span class="str">"method"</span><span class="pun">: </span><span class="str">"GET"</span><span class="pun">,</span>
-      <span class="str">"rel"</span><span class="pun">: </span><span class="str">"self"</span>
-    <span class="pun">}</span>
-  <span class="pun">]</span><span class="pun">,</span>
-  <span class="str">"parent_payment"</span><span class="pun">: </span><span class="str">"my_parent_payment"</span><span class="pun">,</span>
-  <span class="str">"sale_id"</span><span class="pun">: </span><span class="str">"my_sale_id"</span><span class="pun">,</span>
-  <span class="str">"state"</span><span class="pun">: </span><span class="str">"pending"</span><span class="pun">,</span>
-  <span class="str">"update_time"</span><span class="pun">: </span><span class="str">"2013-01-31 04:12:04"</span>
-<span class="pun">}</span></div></div>
-                    </div>
-                </div>
-            </li>
-            <li class="method item"
-                id="m-Sales-refoundSale"
-                data-method="POST"
-            >
-                <h4>refoundSale</h4><div class="nocontents">no implementation for this version</div>
-                <div class="contents">
-
-<h5 class="stack title"></h5>
-<div class="request stack">
-    <h5><i class="i-request"></i> Request: </h5>
-    <h6>Resource: </h6>
-
-    <code  class="diff_version" data-version="v1.0 "><span class="hur">https://api.paypal.com/v1/payments/sale/{id}/refund</span></code>
-    <h6>URI Parameters: </h6><table class="table table-bordered table-hover table-condensed">
-        <colgroup>
-            <col></col>
-            <col width="160px"></col>
-            <col width="70px"></col>
-            <col width="50%"></col>
-        </colgroup>
-        <thead>
-            <tr>
-            <th><span
-            >Parameter</span></th>
-            <th><span
-            >Type</span></th>
-            <th><span
-            >Optional</span></th>
-            <th><span
-            >Description</span></th>
-            </tr>
-        </thead>
-        <tbody>
-            
-        <tr class="diff_version" data-version="v1.0 ">
-            <td><span class="str">id</span></td>
-            <td><span class="typ">string<td><span class="lit"></span></td>
-            <td><span class="com">Sale Id</span></td>
-        </tr>
-        </tbody>
-    </table>
-    <h6>Headers: </h6><table class="table table-bordered table-hover table-condensed">
-        <colgroup>
-            <col></col>
-            <col width="160px"></col>
-            <col width="50%"></col>
-        </colgroup>
-        <thead>
-            <tr>
-            <th><span
-            >Parameter</span></th>
-            <th><span
-            >Type</span></th>
-            <th><span
-            >Description</span></th>
-            </tr>
-        </thead>
-        <tbody>
-            
-        <tr class="diff_version" data-version="v1.0 ">
-            <td><span class="str">Authorization</span></td>
-            <td><span class="typ">string</span></td>
-            <td><span class="com">Send the value as the OAuth 2.0 access token with the authentication type set as Bearer</span></td>
-        </tr>
-        <tr class="diff_version" data-version="v1.0 ">
-            <td><span class="str">Content-Type</span></td>
-            <td><span class="typ">string</span></td>
-            <td><span class="com"></span></td>
-        </tr>
-        </tbody>
-    </table>
-    <h6>Body: </h6>
-    <div class="code"><table class="table-hover">
-        <colgroup>
-            <col width="50%%"></col>
-            <col width="50%%"></col>
-        </colgroup>
-        <tbody>
-
-    <tr class="diff_version" data-version="v1.0 ">
-        <td><span class="pun">{</span></td>
-        <td class="com"></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>object Refund details including both refunded amount (to Payer) and refunded fee (to Payee).</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">ISO 4217 3-letter currency code. PayPal currently supports USD only.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"details"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Additional details related to a payment amount.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"fee"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Fee charged by PayPal.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"shipping"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount charged for shipping. 10 characters max with support for 2 decimal places.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"subtotal"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Sub-total (amount) of items being paid for. 10 characters max with support for 2 decimal places.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"tax"</span><span class="pun">: </span><span class="typ">string</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount charged for tax. 10 characters max with support for 2 decimal places.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="pun">}</span><span class="pun">,</span></td>
-        <td></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"total"</span><span class="pun">: </span><span class="typ">string</span></td>
-        <td class="com">Total amount charged from the payer to the payee.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="pun">}</span></td>
-        <td></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td><span class="pun">}</span></td>
-        <td></td>
-    </tr>
-        </tbody>
-    </table></div>
-</div>
-
-<div class="response stack">
-    <h5><i class="i-response"></i> Response: </h5>
-    <h6>Body: </h6>
-    <div class="code"><table class="table-hover">
-        <colgroup>
-            <col width="50%%"></col>
-            <col width="50%%"></col>
-        </colgroup>
-        <tbody>
-
-    <tr class="diff_version" data-version="v1.0 ">
-        <td><span class="pun">{</span></td>
-        <td class="com"></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Details including both refunded amount (to payer) and refunded fee (to payee). If not specified, a full refund is assumed.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"currency"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">ISO 4217 3-letter currency code. PayPal currently supports USD only.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"details"</span><span class="pun">: </span><span class="pun">{</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Additional details related to a payment amount.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"fee"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Fee charged by PayPal.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"shipping"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount charged for shipping. 10 characters max with support for 2 decimal places.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"subtotal"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Sub-total (amount) of items being paid for. 10 characters max with support for 2 decimal places.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"tax"</span><span class="pun">: </span><span class="typ">string</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Amount charged for tax. 10 characters max with support for 2 decimal places.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="pun">}</span><span class="pun">,</span></td>
-        <td></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="str">"total"</span><span class="pun">: </span><span class="typ">string</span></td>
-        <td class="com">Total amount charged from the payer to the payee.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="pun">}</span><span class="pun">,</span></td>
-        <td></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"create_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span><span class="pun">,</span></td>
-        <td class="com">Time of refund as defined in RFC 3339 Section 5.6. Assigned in response.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"description"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">Description of sale.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"id"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">ID of the sale transaction.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"links"</span><span class="pun">: </span><span class="pun">[</span></td>
-        <td class="com">HATEOAS links related to this call. Assigned in response.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="pun">{</span></td>
-        <td class="com"></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"href"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">URL of the related HATEOAS link you can use for subsequent calls.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"method"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">The HTTP method required for the related call.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['section', 'method'])">listRelLink</a></span></td>
-        <td class="com">Link relation that describes how this link relates to the previous call.(refund, self, execute, parent_payment)</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>    <span class="pun">}</span></td>
-        <td></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="pun">]</span><span class="pun">,</span></td>
-        <td></td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"parent_payment"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">ID of the payment resource on which this transaction is based. Assigned in response.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"sale_id"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com">ID of the sale transaction. Assigned in response.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"state"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listStateRefund'}, ['section', 'method'])">listStateRefund</a></span><span class="pun">,</span></td>
-        <td class="com">State of the refund.(failed, completed, pending)</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"update_time"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'dateTime'}, ['section', 'method'])">dateTime</a></span></td>
-        <td class="com">Time that the resource was last updated. Assigned in response.</td>
-    </tr>
-    <tr class="diff_version" data-version="v1.0 ">
-        <td><span class="pun">}</span></td>
-        <td></td>
-    </tr>
-        </tbody>
-    </table></div>
-</div><div class="stack sample">
-                        <div data-version="v1.0 ">
-
-<h5><i class="i-sample"></i> Sample: </h5>
-<h6>Request: </h6>
-<div class="code"><span class="hme">POST</span> <span class="hur">/payments/sale/36C38912MN9658832/refund</span> <span class="hpr">HTTP/1.1</span>
-<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
-<span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
-<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
-
-<span class="pun">{</span>
-  <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span>
-    <span class="str">"currency"</span><span class="pun">: </span><span class="str">"USD"</span><span class="pun">,</span>
-    <span class="str">"details"</span><span class="pun">: </span><span class="pun">{</span>
-      <span class="str">"fee"</span><span class="pun">: </span><span class="str">"my_fee"</span><span class="pun">,</span>
-      <span class="str">"shipping"</span><span class="pun">: </span><span class="str">"0.03"</span><span class="pun">,</span>
-      <span class="str">"subtotal"</span><span class="pun">: </span><span class="str">"7.41"</span><span class="pun">,</span>
-      <span class="str">"tax"</span><span class="pun">: </span><span class="str">"0.03"</span>
-    <span class="pun">}</span><span class="pun">,</span>
-    <span class="str">"total"</span><span class="pun">: </span><span class="str">"7.47"</span>
-  <span class="pun">}</span>
-<span class="pun">}</span></div>
-        <h6>Response: </h6>
-        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
-<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
-
-<span class="pun">{</span>
-  <span class="str">"amount"</span><span class="pun">: </span><span class="pun">{</span>
-    <span class="str">"currency"</span><span class="pun">: </span><span class="str">"USD"</span><span class="pun">,</span>
-    <span class="str">"details"</span><span class="pun">: </span><span class="pun">{</span>
-      <span class="str">"fee"</span><span class="pun">: </span><span class="str">"my_fee"</span><span class="pun">,</span>
-      <span class="str">"shipping"</span><span class="pun">: </span><span class="str">"0.03"</span><span class="pun">,</span>
-      <span class="str">"subtotal"</span><span class="pun">: </span><span class="str">"7.41"</span><span class="pun">,</span>
-      <span class="str">"tax"</span><span class="pun">: </span><span class="str">"0.03"</span>
-    <span class="pun">}</span><span class="pun">,</span>
-    <span class="str">"total"</span><span class="pun">: </span><span class="str">"7.47"</span>
-  <span class="pun">}</span><span class="pun">,</span>
-  <span class="str">"create_time"</span><span class="pun">: </span><span class="str">"2013-01-31 04:12:04"</span><span class="pun">,</span>
-  <span class="str">"description"</span><span class="pun">: </span><span class="str">"my_description"</span><span class="pun">,</span>
-  <span class="str">"id"</span><span class="pun">: </span><span class="str">"my_id"</span><span class="pun">,</span>
-  <span class="str">"links"</span><span class="pun">: </span><span class="pun">[</span>
-    <span class="pun">{</span>
-      <span class="str">"href"</span><span class="pun">: </span><span class="str">"https://api.paypal.com/v1/payments/payment/PAY-17S8410768582940NKEE66EQ"</span><span class="pun">,</span>
-      <span class="str">"method"</span><span class="pun">: </span><span class="str">"GET"</span><span class="pun">,</span>
-      <span class="str">"rel"</span><span class="pun">: </span><span class="str">"self"</span>
-    <span class="pun">}</span><span class="pun">,</span>
-    <span class="pun">{</span>
-      <span class="str">"href"</span><span class="pun">: </span><span class="str">"https://api.paypal.com/v1/payments/payment/PAY-17S8410768582940NKEE66EQ"</span><span class="pun">,</span>
-      <span class="str">"method"</span><span class="pun">: </span><span class="str">"GET"</span><span class="pun">,</span>
-      <span class="str">"rel"</span><span class="pun">: </span><span class="str">"self"</span>
-    <span class="pun">}</span>
-  <span class="pun">]</span><span class="pun">,</span>
-  <span class="str">"parent_payment"</span><span class="pun">: </span><span class="str">"my_parent_payment"</span><span class="pun">,</span>
-  <span class="str">"sale_id"</span><span class="pun">: </span><span class="str">"my_sale_id"</span><span class="pun">,</span>
-  <span class="str">"state"</span><span class="pun">: </span><span class="str">"pending"</span><span class="pun">,</span>
-  <span class="str">"update_time"</span><span class="pun">: </span><span class="str">"2013-01-31 04:12:04"</span>
-<span class="pun">}</span></div></div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </li>
-    <li class="section" id="s-Vault">
-        <h3>Vault</h3>
+    <li class="category" id="c-Vault"><h3>Vault</h3>
         <div class="description">PayPal offers merchants a /vault API to store sensitive details like credit card related details. You can currently use the /vault API to store credit card details with PayPal instead of storing them on your own server. After storing a credit card, you can then pass the credit card id instead of the related credit card details to complete a payment. For more information, learn about using the /vault API to store a credit card.</div>
         <ul class="unstyled">
-            <li class="method item"
-                id="m-Vault-LookupCreditCard"
+            <li class="method item" id="m-LookupCreditCard"
                 data-method="GET"
             >
                 <h4>LookupCreditCard</h4><div class="nocontents">no implementation for this version</div>
@@ -6719,7 +6207,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">The HTTP method required for the related call.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['section', 'method'])">listRelLink</a></span></td>
+        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['category', 'method'])">listRelLink</a></span></td>
         <td class="com">Link relation that describes how this link relates to the previous call.(refund, self, execute, parent_payment)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -6739,7 +6227,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"><span class="optional lit">Optional</span>State of the credit card funding instrument: expired or ok. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['section', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['category', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
         <td class="com">Credit card type.(amex, visa, discover, mastercard)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -6802,8 +6290,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                     </div>
                 </div>
             </li>
-            <li class="method item"
-                id="m-Vault-StoreCreditCard"
+            <li class="method item" id="m-StoreCreditCard"
                 data-method="POST"
             >
                 <h4>StoreCreditCard</h4><div class="nocontents">no implementation for this version</div>
@@ -6918,7 +6405,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">Credit card number.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['section', 'method'])">listTypeCreditCard</a></span></td>
+        <td>  <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['category', 'method'])">listTypeCreditCard</a></span></td>
         <td class="com">Credit card type.(amex, visa, discover, mastercard)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -7020,7 +6507,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com">The HTTP method required for the related call.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['section', 'method'])">listRelLink</a></span></td>
+        <td>      <span class="str">"rel"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listRelLink'}, ['category', 'method'])">listRelLink</a></span></td>
         <td class="com">Link relation that describes how this link relates to the previous call.(refund, self, execute, parent_payment)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -7040,7 +6527,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
         <td class="com"><span class="optional lit">Optional</span>State of the credit card funding instrument: expired or ok. Assigned in response.</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
-        <td>  <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['section', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
+        <td>  <span class="str">"type"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'listTypeCreditCard'}, ['category', 'method'])">listTypeCreditCard</a></span><span class="pun">,</span></td>
         <td class="com">Credit card type.(amex, visa, discover, mastercard)</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 ">
@@ -7128,11 +6615,11 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                 <h2>Types</h2>
             </div>
             <ul class="unstyled">
-    <li class="namespace" id="n-default">
-        <h3>default</h3>
+    <li class="category" id="c-None">
         <ul class="unstyled">
             <li class="type item" id="t-dateTime">
-                <h4>dateTime</h4><div class="contents">
+                <h4>dateTime</h4><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
 
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>
@@ -7153,7 +6640,8 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                 </div>
             </li>
             <li class="type item" id="t-listGrantType">
-                <h4>listGrantType</h4><div class="contents">
+                <h4>listGrantType</h4><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
 
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>
@@ -7193,7 +6681,8 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                 </div>
             </li>
             <li class="type item" id="t-listIntent">
-                <h4>listIntent</h4><div class="contents">
+                <h4>listIntent</h4><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
 
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>
@@ -7233,7 +6722,8 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                 </div>
             </li>
             <li class="type item" id="t-listPaymentMethod">
-                <h4>listPaymentMethod</h4><div class="contents">
+                <h4>listPaymentMethod</h4><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
 
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>
@@ -7277,7 +6767,8 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                 </div>
             </li>
             <li class="type item" id="t-listRelLink">
-                <h4>listRelLink</h4><div class="contents">
+                <h4>listRelLink</h4><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
 
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>
@@ -7329,7 +6820,8 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                 </div>
             </li>
             <li class="type item" id="t-listShippingAddressType">
-                <h4>listShippingAddressType</h4><div class="contents">
+                <h4>listShippingAddressType</h4><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
 
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>
@@ -7377,7 +6869,8 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                 </div>
             </li>
             <li class="type item" id="t-listStatePayment">
-                <h4>listStatePayment</h4><div class="contents">
+                <h4>listStatePayment</h4><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
 
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>
@@ -7433,7 +6926,8 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                 </div>
             </li>
             <li class="type item" id="t-listStateRefund">
-                <h4>listStateRefund</h4><div class="contents">
+                <h4>listStateRefund</h4><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
 
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>
@@ -7481,7 +6975,8 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                 </div>
             </li>
             <li class="type item" id="t-listStateSale">
-                <h4>listStateSale</h4><div class="contents">
+                <h4>listStateSale</h4><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
 
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>
@@ -7533,7 +7028,8 @@ For authentication and authorization related to Identiy, learn how to obtain a u
                 </div>
             </li>
             <li class="type item" id="t-listTypeCreditCard">
-                <h4>listTypeCreditCard</h4><div class="contents">
+                <h4>listTypeCreditCard</h4><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
 
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>

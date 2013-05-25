@@ -1,102 +1,101 @@
 versions:
   v1.0:
-    sections:
-      Sales:
-        description: To get details about completed payments (sale transaction) created by a payment request or to refund a sale transaction, PayPal provides the /sale resource and related sub-resources. You can find the sale transactions in the payment resource within related_resources.
-        methods:
-          LookupSale:
-            extends: common/authentificated
-            uri: /payments/sale/{id}
-            request_parameters:
-              id:
-                type: string
-                description: Sale Id
-                sample: 36C38912MN9658832
-            response_body:
-              type: object
-              properties:
-                id:
-                  type: string
-                  description: ID of the sale transaction.
-                amount:
-                  type: reference
-                  reference: amount
-                  description: Details about the collected amount.
-                description:
-                  type: string
-                  description: Description of sale.
-                create_time:
-                  type: dateTime
-                  description: Time of sale as defined in RFC 3339 Section 5.6 Assigned in response.
-                state:
-                  type: listStateSale
-                  description: State of the sale.
-                sale_id:
-                  type: string
-                  description: ID of the sale transaction. Assigned in response.
-                parent_payment:
-                  type: string
-                  description: ID of the payment resource on which this transaction is based. Assigned in response.
-                update_time:
-                  type: dateTime
-                  description: Time that the resource was last updated. Assigned in response.
-                links:
-                  type: array
-                  items:
-                    type: reference
-                    reference: links
-                  description: HATEOAS links related to this call. Assigned in response.
-          refoundSale:
-            extends: common/authentificated
-            uri: /payments/sale/{id}/refund
-            method: post
-            request_parameters:
-              id:
-                type: string
-                description: Sale Id
-                sample: 36C38912MN9658832
-            request_body:
-              type: object
-              properties:
-                amount:
-                  type: reference
-                  reference: amount
-                  description: object Refund details including both refunded amount (to Payer) and refunded fee (to Payee).
-                  optional: true
-            response_body:
-              type: object
-              properties:
-                id:
-                  type: string
-                  description: ID of the sale transaction.
-                amount:
-                  type: reference
-                  reference: amount
-                  description: Details including both refunded amount (to payer) and refunded fee (to payee). If not specified, a full refund is assumed.
-                description:
-                  type: string
-                  description: Description of sale.
-                create_time:
-                  type: dateTime
-                  description: Time of refund as defined in RFC 3339 Section 5.6. Assigned in response.
-                state:
-                  type: listStateRefund
-                  description: State of the refund.
-                sale_id:
-                  type: string
-                  description: ID of the sale transaction. Assigned in response.
-                parent_payment:
-                  type: string
-                  description: ID of the payment resource on which this transaction is based. Assigned in response.
-                update_time:
-                  type: dateTime
-                  description: Time that the resource was last updated. Assigned in response.
-                links:
-                  type: array
-                  items:
-                    type: reference
-                    reference: links
-                  description: HATEOAS links related to this call. Assigned in response.
+    methods:
+      LookupSale:
+        category: Sale
+        extends: authentificated
+        uri: /payments/sale/{id}
+        request_parameters:
+          id:
+            type: string
+            description: Sale Id
+            sample: 36C38912MN9658832
+        response_body:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the sale transaction.
+            amount:
+              type: reference
+              reference: amount
+              description: Details about the collected amount.
+            description:
+              type: string
+              description: Description of sale.
+            create_time:
+              type: dateTime
+              description: Time of sale as defined in RFC 3339 Section 5.6 Assigned in response.
+            state:
+              type: listStateSale
+              description: State of the sale.
+            sale_id:
+              type: string
+              description: ID of the sale transaction. Assigned in response.
+            parent_payment:
+              type: string
+              description: ID of the payment resource on which this transaction is based. Assigned in response.
+            update_time:
+              type: dateTime
+              description: Time that the resource was last updated. Assigned in response.
+            links:
+              type: array
+              items:
+                type: reference
+                reference: links
+              description: HATEOAS links related to this call. Assigned in response.
+      refoundSale:
+        category: Sale
+        extends: authentificated
+        uri: /payments/sale/{id}/refund
+        method: post
+        request_parameters:
+          id:
+            type: string
+            description: Sale Id
+            sample: 36C38912MN9658832
+        request_body:
+          type: object
+          properties:
+            amount:
+              type: reference
+              reference: amount
+              description: object Refund details including both refunded amount (to Payer) and refunded fee (to Payee).
+              optional: true
+        response_body:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the sale transaction.
+            amount:
+              type: reference
+              reference: amount
+              description: Details including both refunded amount (to payer) and refunded fee (to payee). If not specified, a full refund is assumed.
+            description:
+              type: string
+              description: Description of sale.
+            create_time:
+              type: dateTime
+              description: Time of refund as defined in RFC 3339 Section 5.6. Assigned in response.
+            state:
+              type: listStateRefund
+              description: State of the refund.
+            sale_id:
+              type: string
+              description: ID of the sale transaction. Assigned in response.
+            parent_payment:
+              type: string
+              description: ID of the payment resource on which this transaction is based. Assigned in response.
+            update_time:
+              type: dateTime
+              description: Time that the resource was last updated. Assigned in response.
+            links:
+              type: array
+              items:
+                type: reference
+                reference: links
+              description: HATEOAS links related to this call. Assigned in response.
     types:
       listStateRefund:
         primary: enum

@@ -1,48 +1,46 @@
 versions:
   v1.0:
-    sections:
-      Refund:
-        description: Use the /refund resource to look up details of a specific refund. See Refund a sale in the API reference and Refund a completed payment (sale) for more information about refunding payments.
-        methods:
-          LookupRefund:
-            extends: common/authentificated
-            uri: /payments/refund/{id}
-            request_parameters:
-              id:
-                type: string
-                description: Refund Id
-                sample: 36C38912MN9658832
-            response_body:
-              type: object
-              properties:
-                id:
-                  type: string
-                  description: ID of the refund transaction.
-                amount:
-                  type: reference
-                  reference: amount
-                  description: Details including both refunded amount (to payer) and refunded fee (to payee). If not specified, a full refund is assumed.
-                description:
-                  type: string
-                  description: Description of refund.
-                create_time:
-                  type: dateTime
-                  description: Time of refund as defined in RFC 3339 Section 5.6. Assigned in response.
-                state:
-                  type: listStateRefund
-                  description: State of the refund.
-                sale_id:
-                  type: string
-                  description: ID of the sale transaction. Assigned in response.
-                parent_payment:
-                  type: string
-                  description: ID of the payment resource on which this transaction is based. Assigned in response.
-                update_time:
-                  type: dateTime
-                  description: Time that the resource was last updated. Assigned in response.
-                links:
-                  type: array
-                  items:
-                    type: reference
-                    reference: links
-                  description: HATEOAS links related to this call. Assigned in response.
+    methods:
+      LookupRefund:
+        category: Refund
+        extends: authentificated
+        uri: /payments/refund/{id}
+        request_parameters:
+          id:
+            type: string
+            description: Refund Id
+            sample: 36C38912MN9658832
+        response_body:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the refund transaction.
+            amount:
+              type: reference
+              reference: amount
+              description: Details including both refunded amount (to payer) and refunded fee (to payee). If not specified, a full refund is assumed.
+            description:
+              type: string
+              description: Description of refund.
+            create_time:
+              type: dateTime
+              description: Time of refund as defined in RFC 3339 Section 5.6. Assigned in response.
+            state:
+              type: listStateRefund
+              description: State of the refund.
+            sale_id:
+              type: string
+              description: ID of the sale transaction. Assigned in response.
+            parent_payment:
+              type: string
+              description: ID of the payment resource on which this transaction is based. Assigned in response.
+            update_time:
+              type: dateTime
+              description: Time that the resource was last updated. Assigned in response.
+            links:
+              type: array
+              items:
+                type: reference
+                reference: links
+              description: HATEOAS links related to this call. Assigned in response.

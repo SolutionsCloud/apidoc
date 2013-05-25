@@ -12,7 +12,7 @@ filter: # undefined => all
 #      - v1.0
     excludes: # undefined => none
 #      - v1.0
-  sections: # undefined => all
+  categories: # undefined => all
     includes: # undefined => all but excludes
 #      - Foo
     excludes: # undefined => none

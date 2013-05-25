@@ -6,8 +6,11 @@ Versions :
 {%- endfor %}
 
 Methods :
-{%- for section in sources.sections.values()|sort -%}
-    {%- for method in section.methods.values()|sort %}
-    {{ section.name }}.{{ method.name }}()
-    {%- endfor -%}
+{%- for method in sources.methods.values()|sort -%}
+    {{ method.name }}()
+{%- endfor %}
+
+Types :
+{%- for type in sources.types.values()|sort -%}
+    {{ type.name }}()
 {%- endfor %}

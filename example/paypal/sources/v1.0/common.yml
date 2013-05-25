@@ -2,25 +2,43 @@ configuration:
     title: Paypal REST API
     uri: https://api.paypal.com
     description: Non official documentation based on https://developer.paypal.com/webapps/developer/docs/api/
+categories:
+    common:
+        display: false
+    Authentication:
+        description: Timelines are collections of Tweets, ordered with the most recent first.
+    Identity:
+        description: >
+          Log In with PayPal (formerly PayPal Access) is a commerce identity solution that enables your customers to sign in to your web site quickly and securely using their PayPal login credentials. Log In with PayPal utilizes the latest security standards, and you don’t have to worry about storing user data on your system.
+          For more information, learn about Log In with PayPal.
+    Payments:
+        description: Timelines are collections of Tweets, ordered with the most recent first.
+    Refund:
+        description: Use the /refund resource to look up details of a specific refund. See Refund a sale in the API reference and Refund a completed payment (sale) for more information about refunding payments.
+    Sales:
+        description: To get details about completed payments (sale transaction) created by a payment request or to refund a sale transaction, PayPal provides the /sale resource and related sub-resources. You can find the sale transactions in the payment resource within related_resources.
+    Vault:
+        description: >
+          PayPal offers merchants a /vault API to store sensitive details like credit card related details.
+          You can currently use the /vault API to store credit card details with PayPal instead of storing them on your own server. After storing a credit card, you can then pass the credit card id instead of the related credit card details to complete a payment.
+          For more information, learn about using the /vault API to store a credit card.
+
 versions:
     v1.0:
         status: deprecated
         major: 1
         minor: 0
         uri: /v1
-        sections:
-            common:
-                display: false
-                methods:
-                    authentificated:
-                        request_headers:
-                            Content-Type:
-                                type: string
-                                sample: application/json
-                            Authorization:
-                                type: string
-                                description: Send the value as the OAuth 2.0 access token with the authentication type set as Bearer
-                                sample: Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP
+        methods:
+            authentificated:
+                request_headers:
+                    Content-Type:
+                        type: string
+                        sample: application/json
+                    Authorization:
+                        type: string
+                        description: Send the value as the OAuth 2.0 access token with the authentication type set as Bearer
+                        sample: Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP
         types:
             dateTime:
                 primary: string

@@ -1,191 +1,192 @@
 versions:
   v1.0:
-    sections:
-      Payments:
-        description: Timelines are collections of Tweets, ordered with the most recent first.
-        methods:
-          CreateAPayment:
-            extends: common/authentificated
-            uri: /payments/payment
-            method: post
-            request_body:
-              type: object
-              properties:
-                intent:
-                  type: listIntent
-                  description: Payment intent
-                payer:
-                  type: reference
-                  reference: payer
-                  description: Source of the funds for this payment represented by a PayPal account or a credit card.
-                transactions:
-                  type: array
-                  items:
-                    type: reference
-                    reference: transaction
-                  description: Transactional details including the amount and item details..
-                redirect_urls:
-                  type: reference
-                  reference: redirect_urls
-                  description: Set of redirect URLs you provide only for PayPal-based payments. Required for PayPal payments.
-            response_body:
-              type: object
-              properties:
-                intent:
-                  type: listIntent
-                  description: Payment intent; Must be set to sale currently.
-                payer:
-                  type: reference
-                  reference: payer
-                  description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
-                transactions:
-                  type: reference
-                  reference: response_transaction
-                  description: Transactional details including the amount and item details.
-                redirect_urls:
-                  type: reference
-                  reference: redirect_urls
-                  description: Set of redirect URLs you provide only for PayPal-based payments.
-                id:
-                  type: string
-                  description: ID of the created payment Assigned in response.
-                  sample: PAY-17S8410768582940NKEE66EQ
-                create_time:
-                  type: dateTime
-                  description: Payment creation time as defined in RFC 3339 Section 5.6 Assigned in response.
-                state:
-                  type: listStatePayment
-                  description: Payment state.
-                  sample: approved
-                update_time:
-                  type: dateTime
-                  description: Time the resource was last updated. Assigned in response.
-                links:
-                  type: array
-                  items:
-                    type: reference
-                    reference: links
-                  description: HATEOAS links related to this call. Assigned in response.
-          ExecutePayment:
-            extends: common/authentificated
-            uri: payments/payment/{id}/execute
-            method: post
-            request_parameters:
-              id:
-                type: string
-                description: Payment Id
-                sample: PAY-34629814WL663112AKEE3AWQ
-            request_body:
-              type: object
-              properties:
-                payer_id:
-                  type: string
-                  description: The ID of the Payer, passed in the return_url by PayPal. Required.
-                transactions:
-                  type: array
-                  description: Transactional details if updating a payment.
-                  items:
-                    type: reference
-                    reference: transaction
-            response_body:
-              type: object
-              properties:
-                intent:
-                  type: listIntent
-                  description: Payment intent; Must be set to sale currently.
-                payer:
-                  type: reference
-                  reference: payer
-                  description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
-                transactions:
-                  type: reference
-                  reference: response_transaction
-                  description: Transactional details including the amount and item details.
-                links:
-                  type: array
-                  items:
-                    type: reference
-                    reference: links
-                  description: of links objects  HATEOAS links related to this call. Assigned in response.
-          LookupPayment:
-            extends: common/authentificated
-            uri: payments/payment/{id}
-            request_parameters:
-              id:
-                type: string
-                description: Payment Id
-                sample: PAY-34629814WL663112AKEE3AWQ
-            response_body:
-              type: object
-              properties:
-                intent:
-                  type: listIntent
-                  description: Payment intent; currently only sale is a valid value.
-                payer:
-                  type: reference
-                  reference: payer
-                  description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
-                transactions:
-                  type: reference
-                  reference: response_transaction
-                  description: Transactional details including the amount and item details.
-                redirect_urls:
-                  type: reference
-                  reference: redirect_urls
-                  description: Set of redirect URLs you provide only for PayPal-based payments. Required for PayPal payments.
-                id:
-                  type: string
-                  description: ID of the created payment Assigned in response.
-                create_time:
-                  type: dateTime
-                  description: Payment creation time as defined in RFC 3339 Section 5.6. Assigned in response.
-                state:
-                  type: listStatePayment
-                  description: payment state.
-                update_time:
-                  type: dateTime
-                  description: Time that the resource was last updated. Assigned in response.
-          ListPayments:
-            extends: common/authentificated
-            uri: payments/payment/
-            response_body:
+    methods:
+      CreateAPayment:
+        category: Payments
+        extends: authentificated
+        uri: /payments/payment
+        method: post
+        request_body:
+          type: object
+          properties:
+            intent:
+              type: listIntent
+              description: Payment intent
+            payer:
+              type: reference
+              reference: payer
+              description: Source of the funds for this payment represented by a PayPal account or a credit card.
+            transactions:
               type: array
               items:
-                type: object
-                properties:
-                  intent:
-                    type: listIntent
-                    description: Payment intent; Must be set to sale currently.
-                  payer:
-                    type: reference
-                    reference: payer
-                    description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
-                  transactions:
-                    type: reference
-                    reference: transaction
-                    description: Transactional details including the amount and item details.
-                  redirect_urls:
-                    type: reference
-                    reference: redirect_urls
-                    description: Set of redirect URLs you provide only for PayPal-based payments.
-                  id:
-                    type: string
-                    description: ID of the created payment Assigned in response.
-                  create_time:
-                    type: dateTime
-                    description: Payment creation time as defined in RFC 3339 Section 5.6 Assigned in response.
-                  state:
-                    type: listStatePayment
-                    description: Payment state.
-                  update_time:
-                    type: dateTime
-                    description: Time that the resource was last updated. Assigned in response.
-                  links:
-                    type: array
-                    items:
-                      type: reference
-                      reference: links
-                    description: HATEOAS links related to this call. Assigned in response.
+                type: reference
+                reference: transaction
+              description: Transactional details including the amount and item details..
+            redirect_urls:
+              type: reference
+              reference: redirect_urls
+              description: Set of redirect URLs you provide only for PayPal-based payments. Required for PayPal payments.
+        response_body:
+          type: object
+          properties:
+            intent:
+              type: listIntent
+              description: Payment intent; Must be set to sale currently.
+            payer:
+              type: reference
+              reference: payer
+              description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
+            transactions:
+              type: reference
+              reference: response_transaction
+              description: Transactional details including the amount and item details.
+            redirect_urls:
+              type: reference
+              reference: redirect_urls
+              description: Set of redirect URLs you provide only for PayPal-based payments.
+            id:
+              type: string
+              description: ID of the created payment Assigned in response.
+              sample: PAY-17S8410768582940NKEE66EQ
+            create_time:
+              type: dateTime
+              description: Payment creation time as defined in RFC 3339 Section 5.6 Assigned in response.
+            state:
+              type: listStatePayment
+              description: Payment state.
+              sample: approved
+            update_time:
+              type: dateTime
+              description: Time the resource was last updated. Assigned in response.
+            links:
+              type: array
+              items:
+                type: reference
+                reference: links
+              description: HATEOAS links related to this call. Assigned in response.
+      ExecutePayment:
+        category: Payments
+        extends: authentificated
+        uri: payments/payment/{id}/execute
+        method: post
+        request_parameters:
+          id:
+            type: string
+            description: Payment Id
+            sample: PAY-34629814WL663112AKEE3AWQ
+        request_body:
+          type: object
+          properties:
+            payer_id:
+              type: string
+              description: The ID of the Payer, passed in the return_url by PayPal. Required.
+            transactions:
+              type: array
+              description: Transactional details if updating a payment.
+              items:
+                type: reference
+                reference: transaction
+        response_body:
+          type: object
+          properties:
+            intent:
+              type: listIntent
+              description: Payment intent; Must be set to sale currently.
+            payer:
+              type: reference
+              reference: payer
+              description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
+            transactions:
+              type: reference
+              reference: response_transaction
+              description: Transactional details including the amount and item details.
+            links:
+              type: array
+              items:
+                type: reference
+                reference: links
+              description: of links objects  HATEOAS links related to this call. Assigned in response.
+      LookupPayment:
+        category: Payments
+        extends: authentificated
+        uri: payments/payment/{id}
+        request_parameters:
+          id:
+            type: string
+            description: Payment Id
+            sample: PAY-34629814WL663112AKEE3AWQ
+        response_body:
+          type: object
+          properties:
+            intent:
+              type: listIntent
+              description: Payment intent; currently only sale is a valid value.
+            payer:
+              type: reference
+              reference: payer
+              description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
+            transactions:
+              type: reference
+              reference: response_transaction
+              description: Transactional details including the amount and item details.
+            redirect_urls:
+              type: reference
+              reference: redirect_urls
+              description: Set of redirect URLs you provide only for PayPal-based payments. Required for PayPal payments.
+            id:
+              type: string
+              description: ID of the created payment Assigned in response.
+            create_time:
+              type: dateTime
+              description: Payment creation time as defined in RFC 3339 Section 5.6. Assigned in response.
+            state:
+              type: listStatePayment
+              description: payment state.
+            update_time:
+              type: dateTime
+              description: Time that the resource was last updated. Assigned in response.
+      ListPayments:
+        category: Payments
+        extends: authentificated
+        uri: payments/payment/
+        response_body:
+          type: array
+          items:
+            type: object
+            properties:
+              intent:
+                type: listIntent
+                description: Payment intent; Must be set to sale currently.
+              payer:
+                type: reference
+                reference: payer
+                description: Source of the funds for this payment represented by a PayPal account or a direct credit card.
+              transactions:
+                type: reference
+                reference: transaction
+                description: Transactional details including the amount and item details.
+              redirect_urls:
+                type: reference
+                reference: redirect_urls
+                description: Set of redirect URLs you provide only for PayPal-based payments.
+              id:
+                type: string
+                description: ID of the created payment Assigned in response.
+              create_time:
+                type: dateTime
+                description: Payment creation time as defined in RFC 3339 Section 5.6 Assigned in response.
+              state:
+                type: listStatePayment
+                description: Payment state.
+              update_time:
+                type: dateTime
+                description: Time that the resource was last updated. Assigned in response.
+              links:
+                type: array
+                items:
+                  type: reference
+                  reference: links
+                description: HATEOAS links related to this call. Assigned in response.
     references:
       credit_card:
         type: object

@@ -6,24 +6,24 @@ versions:
   v1.0:
     uri: ${url}
     status: beta
-    sections:
+    methods:
       Foo:
-        methods:
-          Bar:
-            uri: /endpoint
-            description: >
-              Sample request
-          Baz:
-            uri: /endpoint
-            description: >
-              Sample request
-      Foo2:
-        methods:
-          Bar:
-            uri: /endpoint
-            description: >
-              Sample request
-          Baz:
-            uri: /endpoint
-            description: >
-              Sample request
+        category: Foo
+        uri: /endpoint
+        description: >
+          Sample request
+      Bar:
+        category: Foo
+        uri: /endpoint
+        description: >
+          Sample request
+      Baz:
+        category: Foo2
+        uri: /endpoint
+        description: >
+          Sample request
+      Qux:
+        category: Foo2
+        uri: /endpoint
+        description: >
+          Sample request

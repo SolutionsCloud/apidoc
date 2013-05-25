@@ -1,9 +1,7 @@
 versions:
   v1.0:
-    sections:
-      Foo:
-        methods:
-          Baz:
-            uri: /endpoint2
-            description: >
-              Sample request
+    methods:
+      Baz:
+        uri: /endpoint2
+        description: >
+          Sample request

@@ -1,11 +1,8 @@
 versions:
   v1.0:
-    sections:
+    methods:
       A:
-        description: A
-        methods:
-          A:
-            description: null
+        description: null
       B:
         description: B
         extends: A
@@ -19,6 +16,3 @@ versions:
         extends: E
       E:
         description: E
-        methods:
-          E:
-            description: null

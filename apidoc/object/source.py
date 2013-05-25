@@ -260,7 +260,7 @@ class Category(Element, Sortable, Displayable):
     def __lt__(self, other):
         """Return true if self is lower than other
         """
-        return (self.order, self.name) < (other.order, other.name)
+        return (self.order, str(self.name)) < (other.order, str(other.name))
 
     def __eq__(self, other):
         """Return true if self is equals to other

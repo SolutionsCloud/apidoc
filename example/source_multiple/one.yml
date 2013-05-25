@@ -1,10 +1,8 @@
 versions:
   v1.0:
     uri: www.example.com
-    sections:
-      Foo:
-        methods:
-          Bar:
-            uri: /endpoint1
-            description: >
-              Sample request
+    methods:
+      Bar:
+        uri: /endpoint1
+        description: >
+          Sample request
