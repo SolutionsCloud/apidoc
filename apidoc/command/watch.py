@@ -73,7 +73,7 @@ class Watch(Base):
         templateFactory = TemplateFactory()
 
         try:
-            self.sources = sourceFactory.load_from_config(self.config)
+            self.sources = sourceFactory.create_from_config(self.config)
             sourceService.validate(self.sources)
 
             template = templateFactory.create_from_config(self.config)

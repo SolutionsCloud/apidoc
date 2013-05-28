@@ -375,6 +375,7 @@ class Method(Element, Sortable, Displayable):
         super().__init__()
         self.code = 200
         self.uri = None
+        self.category = None
         self.method = Method.Methods("get")
         self.request_headers = {}
         self.request_parameters = {}
@@ -515,6 +516,18 @@ class Type(Element, Sortable):
             "format": self.format.get_signature_struct(),
         })
 
+    def get_sample(self):
+        """Return the a sample for the element
+        """
+        if self.format.sample is None:
+            return self.get_default_sample()
+        return self.format.sample
+
+    def get_default_sample(self):
+        """Return default value for the element
+        """
+        return "my_%s" % self.name
+
 
 class TypeFormat(Sampleable):
 
@@ -542,7 +555,7 @@ class TypeFormat(Sampleable):
         if self.pretty is not None:
             return self.pretty
 
-        return super().get_default_sample()
+        return None
 
 
 class EnumType(Type):
@@ -564,6 +577,12 @@ class EnumType(Type):
             "values": sorted([x.signature for x in self.values.values()])
         })
 
+    def get_default_sample(self):
+        """Return default value for the element
+        """
+        if len(self.values) > 0:
+            return self.values.keys[0]
+        return super.get_default_sample()
 
 class EnumTypeValue(Element, Sortable):
 

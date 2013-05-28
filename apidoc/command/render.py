@@ -25,7 +25,7 @@ class Render(Base):
 
         config = self.get_config()
 
-        sources = sourceFactory.load_from_config(config)
+        sources = sourceFactory.create_from_config(config)
         sourceService.validate(sources)
 
         template = templateFactory.create_from_config(config)

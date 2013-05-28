@@ -23,7 +23,7 @@ class Analyse(Base):
         sourceFactory = SourceFactory()
 
         config = self.get_config()
-        sources = sourceFactory.load_from_config(config)
+        sources = sourceFactory.create_from_config(config)
         sourceService.validate(sources)
 
         print(json_repr(sources))

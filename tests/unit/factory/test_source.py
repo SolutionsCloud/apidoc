@@ -60,13 +60,13 @@ class TestSource(unittest.TestCase):
     @patch.object(SourceFactory, "remove_undisplayed", return_value=None)
     @patch.object(SourceFactory, "refactor_hierarchy", return_value=None)
     @patch.object(SourceFactory, "get_extender_paths", return_value=["m", "n"])
-    def test_load_from_config(self, mock_source_extender, mock_refactor, mock_undisplayed, mock_filter, mock_fix, mock_source, mock_extender, mock_merger, mock_parser_directory, mock_parser_file):
+    def test_create_from_config(self, mock_source_extender, mock_refactor, mock_undisplayed, mock_filter, mock_fix, mock_source, mock_extender, mock_merger, mock_parser_directory, mock_parser_file):
         config = ConfigObject()
         config["input"]["directories"] = ["directory1", "directory2"]
         config["input"]["files"] = ["file1", "file2"]
         config["input"]["arguments"] = {"var": "value"}
 
-        response = self.source.load_from_config(config)
+        response = self.source.create_from_config(config)
 
         self.assertEqual("populated", response)
 
