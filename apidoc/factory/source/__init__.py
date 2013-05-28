@@ -33,7 +33,25 @@ class Source():
     """
 
     def create_from_config(self, config):
-        """Load a set of source's file defined in the config object and returned a populated ObjectRoot
+        """ Create a well populated Root object
+        """
+        raw_sources = self.get_sources_from_config(config)
+        merged_source = self.merger.merge_sources(raw_sources)
+        self.inject_arguments_in_sources_from_config(merged_source, config)
+        extended_sources = self.extender.extends(merged_source, paths=self.get_extender_paths())
+
+        root = self.root_factory.create_from_dictionary(extended_sources)
+
+        self.apply_config_filter(root, config["filter"])
+        self.remove_undisplayed(root)
+        self.fix_versions(root)
+        self.refactor_hierarchy(root)
+
+        return root
+
+
+    def get_sources_from_config(self, config):
+        """Load a set of source's file defined in the config
         """
         sources = []
         if (config["input"]["directories"] is not None):
@@ -42,25 +60,15 @@ class Source():
         if (config["input"]["files"] is not None):
             for file in config["input"]["files"]:
                 sources.append(self.parser.load_from_file(file))
+        return sources
 
-        merged = self.merger.merge_sources(sources)
+    def inject_arguments_in_sources_from_config(self, sources, config):
+        """ replace arguments in sources
+        """
         if config["input"]["arguments"] is not None:
             for (argument, value) in config["input"]["arguments"].items():
-                merged = self.replace_argument(merged, argument, value)
+                sources = self.replace_argument(sources, argument, value)
 
-        extended = self.extender.extends(
-            merged, paths=self.get_extender_paths(), separator="/", extends_key="extends",
-            inherit_key="inherit", removed_key="removed"
-        )
-
-        root = self.root_factory.create_from_dictionary(extended)
-
-        self.apply_config_filter(root, config["filter"])
-        self.remove_undisplayed(root)
-        self.fix_versions(root)
-        self.refactor_hierarchy(root)
-
-        return root
 
     def replace_argument(self, element, argument, value):
         """Replace sources arguments by value injected in config

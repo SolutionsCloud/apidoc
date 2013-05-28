@@ -581,8 +581,8 @@ class EnumType(Type):
         """Return default value for the element
         """
         if len(self.values) > 0:
-            return self.values.keys[0]
-        return super.get_default_sample()
+            return [x for x in self.values.keys()][0]
+        return super().get_default_sample()
 
 class EnumTypeValue(Element, Sortable):
 

@@ -131,6 +131,42 @@ class TestSource(unittest.TestCase):
 
         self.assertEqual("my_bar", sampleable.get_sample())
 
+    def test_type_get_sample(self):
+        type = Type()
+        type.format.sample = "foo"
+
+        self.assertEqual("foo", type.get_sample())
+
+    def test_type_get_sample__return_default_sample(self):
+        type = Type()
+        type.format.sample = None
+        type.name = "bar"
+
+        self.assertEqual("my_bar", type.get_sample())
+
+    def test_enum_type_get_sample__return_first_value(self):
+        type = EnumType()
+        type.format.sample = None
+
+        value1 = EnumTypeValue()
+        value1.name = "foo"
+        value2 = EnumTypeValue()
+        value2.name = "bar"
+
+        type.values = {"foo": value1, "bar": value2}
+        type.name = "bar"
+
+        self.assertEqual("foo", type.get_sample())
+
+    def test_enum_type_get_sample__return_default_sample(self):
+        type = EnumType()
+        type.format.sample = None
+
+        type.values = {}
+        type.name = "bar"
+
+        self.assertEqual("my_bar", type.get_sample())
+
     def test_sortable_compare__with_position(self):
         sortable1 = Sortable()
         sortable2 = Sortable()
@@ -789,9 +825,8 @@ class TestSource(unittest.TestCase):
 
     def test_typeformat_get_default_sample__pretty_undefined(self):
         test = TypeFormat()
-        test.name = "foo"
 
-        self.assertEqual("my_foo", test.get_default_sample())
+        self.assertEqual(None, test.get_default_sample())
 
     def test_objectnumber_get_default_sample(self):
         test = ObjectNumber()
