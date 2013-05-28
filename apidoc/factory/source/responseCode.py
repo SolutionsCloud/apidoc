@@ -2,8 +2,6 @@ from apidoc.object.source import ResponseCode as ObjectResponseCode
 
 from apidoc.factory.source.element import Element as ElementFactory
 
-from apidoc.lib.util.decorator import add_property
-
 
 class ResponseCode(ElementFactory):
     """ ResponseCode Factory

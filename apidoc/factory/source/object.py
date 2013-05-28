@@ -2,7 +2,6 @@ from apidoc.object.source import ObjectObject, ObjectArray, ObjectNumber, Object
 
 from apidoc.factory.source.element import Element as ElementFactory
 
-from apidoc.lib.util.decorator import add_property
 from apidoc.lib.util.cast import to_bool
 
 

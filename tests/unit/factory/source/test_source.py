@@ -1,17 +1,10 @@
 import unittest
 
 from mock import patch, call
-from apidoc.factory.source import Source as SourceFactory, RootFactory
+from apidoc.factory.source import Source as SourceFactory
 from apidoc.object.config import Config as ConfigObject
 
-from apidoc.object.source import Root, Element, Sampleable, Displayable
-from apidoc.object.source import Version, Configuration
-from apidoc.object.source import MethodCategory, Method, Category, TypeCategory
-from apidoc.object.source import Parameter, ResponseCode
-from apidoc.object.source import Type, EnumType, EnumTypeValue, TypeFormat
-from apidoc.object.source import Object, ObjectObject, ObjectArray
-from apidoc.object.source import ObjectNumber, ObjectString, ObjectBool, ObjectNone
-from apidoc.object.source import ObjectDynamic, ObjectReference, ObjectType
+from apidoc.object.source import Root, Version, Category, Method, Type, ObjectObject
 
 from apidoc.service.parser import Parser
 from apidoc.service.merger import Merger
@@ -96,7 +89,6 @@ class TestSource(unittest.TestCase):
                 }
             ],
         }, response)
-
 
     def test_apply_config_filter_version(self):
         root = Root()
@@ -391,4 +383,3 @@ class TestSource(unittest.TestCase):
     def test_get_extender_paths(self):
         paths = self.source.get_extender_paths()
         self.assertEqual(5, len(paths))
-

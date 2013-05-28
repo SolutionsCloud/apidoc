@@ -226,7 +226,6 @@ class Version(Element, Sortable, Displayable):
         """
         return (self.major, self.minor, self.name) == (other.major, other.minor, self.name)
 
-
     @property
     def full_uri(self):
         """Return full uri for the method
@@ -282,7 +281,7 @@ class TypeCategory(Category):
     def get_used_types(self):
         """Return list of types of the namspace used
         """
-        used_types = Root.instance().get_used_types();
+        used_types = Root.instance().get_used_types()
         for type in [y for (x, y) in self.types.items() if x not in used_types]:
             logging.getLogger().warn("Unused type %s" % type.name)
         return [y for (x, y) in self.types.items() if x in used_types]
@@ -441,7 +440,7 @@ class Parameter(Element, Sampleable, Sortable):
         })
 
     def get_object(self):
-        object =  Object.factory(self.type, self.version)
+        object = Object.factory(self.type, self.version)
         object.name = self.name
         return object
 
@@ -583,6 +582,7 @@ class EnumType(Type):
         if len(self.values) > 0:
             return [x for x in self.values.keys()][0]
         return super().get_default_sample()
+
 
 class EnumTypeValue(Element, Sortable):
 
@@ -974,6 +974,7 @@ class MergedMethod():
         self.response_body = []
         self.response_codes = []
 
+
 class MergedType():
 
     def __init__(self):
@@ -1053,6 +1054,7 @@ class TypeCrossVersion(ElementCrossVersion):
             self._merged = merged
         return self._merged
 
+
 class MethodCrossVersion(ElementCrossVersion):
 
     @property
@@ -1107,33 +1109,32 @@ class MethodCrossVersion(ElementCrossVersion):
             else:
                 for x in [x for x in list_objects if x.unit_signature == object.unit_signature]:
                     x.versions.append(object.version)
-        return list_objects;
+        return list_objects
 
     def objects_merge_properties(self, objects):
-        seen_signatures = []
         list_properties = {}
         for object in self.objects_without_reference(objects):
             if object.type == Object.Types.object:
                 for (property_name, property_value) in object.properties.items():
                     if property_name not in list_properties.keys():
                         list_properties[property_name] = property_value
-        return list_properties;
+        return list_properties
 
     def objects_property_by_property_name(self, objects, property_name):
         list_objects = []
         for object in [x for x in self.objects_without_reference(objects) if x.type is Object.Types.object]:
             if property_name in object.properties.keys():
                 list_objects.append(object.properties[property_name])
-        return list_objects;
+        return list_objects
 
     def objects_items(self, objects):
         list_objects = []
         for object in [x for x in self.objects_without_reference(objects) if x.type is Object.Types.array]:
             list_objects.append(object.items)
-        return list_objects;
+        return list_objects
 
     def objects_reference(self, objects):
         list_objects = []
         for object in [x for x in objects if x.type is Object.Types.reference]:
             list_objects.append(object.get_reference())
-        return list_objects;
+        return list_objects

@@ -1,6 +1,8 @@
 import unittest
 import os
+
 from mock import patch
+
 from apidoc.factory.config import Config as ConfigFactory
 from apidoc.object.config import Config as ConfigObject
 from apidoc.service.parser import Parser

@@ -2,8 +2,6 @@ from apidoc.object.source import EnumTypeValue as ObjecEnumValue
 
 from apidoc.factory.source.element import Element as ElementFactory
 
-from apidoc.lib.util.decorator import add_property
-
 
 class EnumValue(ElementFactory):
     """ EnumValue Factory

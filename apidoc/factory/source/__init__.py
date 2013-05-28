@@ -1,26 +1,12 @@
-import collections
-
-from copy import deepcopy
-
-from apidoc.object.source import Root, Sampleable, Displayable
-from apidoc.object.source import Version, Configuration
-from apidoc.object.source import Method, Type, MethodCategory, TypeCategory, Category
+from apidoc.object.source import MethodCategory, TypeCategory
 from apidoc.object.source import MethodCrossVersion, TypeCrossVersion, ElementCrossVersion
-from apidoc.object.source import Parameter, ResponseCode
-from apidoc.object.source import Type, EnumType, EnumTypeValue
-from apidoc.object.source import Object, ObjectObject, ObjectArray
-from apidoc.object.source import ObjectNumber, ObjectString, ObjectBool, ObjectNone
-from apidoc.object.source import ObjectDynamic, ObjectReference, ObjectType
 from apidoc.service.parser import Parser
 from apidoc.service.merger import Merger
 from apidoc.service.extender import Extender
 
-from apidoc.factory.source.configuration import Configuration as ConfigurationFactory
-from apidoc.factory.source.category import Category as CategoryFactory
 from apidoc.factory.source.root import Root as RootFactory
 
 from apidoc.lib.util.decorator import add_property
-from apidoc.lib.util.cast import to_bool
 
 
 @add_property("parser", Parser)
@@ -49,7 +35,6 @@ class Source():
 
         return root
 
-
     def get_sources_from_config(self, config):
         """Load a set of source's file defined in the config
         """
@@ -68,7 +53,6 @@ class Source():
         if config["input"]["arguments"] is not None:
             for (argument, value) in config["input"]["arguments"].items():
                 sources = self.replace_argument(sources, argument, value)
-
 
     def replace_argument(self, element, argument, value):
         """Replace sources arguments by value injected in config

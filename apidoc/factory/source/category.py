@@ -2,8 +2,6 @@ from apidoc.object.source import Category as ObjectCategory
 
 from apidoc.factory.source.element import Element as ElementFactory
 
-from apidoc.lib.util.decorator import add_property
-
 
 class Category(ElementFactory):
     """ Category Factory

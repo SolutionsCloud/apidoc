@@ -78,7 +78,7 @@ class TestSource(unittest.TestCase):
         root.method_categories = {"n1": methodCategory}
 
         methodCrossVersion1 = MethodCrossVersion(method)
-        methodCrossVersion1.signatures = {"s1" : method}
+        methodCrossVersion1.signatures = {"s1": method}
 
         methodCategory.methods = {"m1": methodCrossVersion1}
 
@@ -106,7 +106,7 @@ class TestSource(unittest.TestCase):
         }
 
         methodCrossVersion1 = MethodCrossVersion(method)
-        methodCrossVersion1.signatures = {"s1" : method}
+        methodCrossVersion1.signatures = {"s1": method}
 
         methodCategory.methods = {"m1": methodCrossVersion1}
         typeCategory.types = {"t1": type1, "t2": type2}
@@ -209,7 +209,7 @@ class TestSource(unittest.TestCase):
 
         self.assertEqual("//foo/", version.full_uri)
 
-    def test_method_full_uri__failled_when_no_version_uri(self):
+    def test_version_full_uri__failled_when_no_version_uri(self):
         Root.instance().configuration.uri = None
 
         version = Version()
@@ -348,8 +348,8 @@ class TestSource(unittest.TestCase):
             "h1": Parameter(),
             "h2": Parameter()
         }
-        test.request_parameters["h1"].name="h1"
-        test.request_parameters["h2"].name="h2"
+        test.request_parameters["h1"].name = "h1"
+        test.request_parameters["h2"].name = "h2"
         test.request_body = ObjectNumber()
         test.response_codes = [
             ResponseCode()
@@ -584,6 +584,7 @@ class TestSource(unittest.TestCase):
         test.items = "t1"
 
         self.assertEqual(["t1"], test.get_used_types())
+
     def test_objectreference_get_signature_struct(self):
         test = ObjectReference()
         test.name = "foo"
@@ -989,7 +990,7 @@ class TestSource(unittest.TestCase):
         self.assertEqual(ElementCrossVersion.Change.none, test.changed_status("v2"))
 
     def test_mergedMethod(self):
-        test = MergedMethod();
+        test = MergedMethod()
 
         self.assertIsInstance(test.description, list)
         self.assertIsInstance(test.full_uri, list)
@@ -1000,17 +1001,13 @@ class TestSource(unittest.TestCase):
         self.assertIsInstance(test.response_codes, list)
 
     def test_mergedType(self):
-        test = MergedType();
+        test = MergedType()
 
         self.assertIsInstance(test.description, list)
         self.assertIsInstance(test.primary, list)
         self.assertIsInstance(test.values, list)
 
     def test_typeCrossVersion_merged(self):
-        version1 = Version()
-        version2 = Version()
-        version3 = Version()
-
         value1 = EnumTypeValue()
         value1.name = "foo"
         value2 = EnumTypeValue()
@@ -1228,4 +1225,3 @@ class TestSource(unittest.TestCase):
 
         response = test.objects_reference([object1, object2, object3])
         self.assertEqual([reference1, reference2, reference1], response)
-
