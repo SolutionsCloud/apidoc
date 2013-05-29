@@ -23,13 +23,14 @@ class Source():
         """
         raw_sources = self.get_sources_from_config(config)
         merged_source = self.merger.merge_sources(raw_sources)
-        self.inject_arguments_in_sources_from_config(merged_source, config)
+        self.inject_arguments_in_sources(merged_source, config["input"]["arguments"])
         extended_sources = self.extender.extends(merged_source, paths=self.get_extender_paths())
 
         root = self.root_factory.create_from_dictionary(extended_sources)
 
-        self.apply_config_filter(root, config["filter"])
-        self.remove_undisplayed(root)
+        self.hide_filtered_elements(root, config["filter"])
+        self.remove_hidden_elements(root)
+
         self.fix_versions(root)
         self.refactor_hierarchy(root)
 
@@ -47,11 +48,11 @@ class Source():
                 sources.append(self.parser.load_from_file(file))
         return sources
 
-    def inject_arguments_in_sources_from_config(self, sources, config):
+    def inject_arguments_in_sources(self, sources, arguments):
         """ replace arguments in sources
         """
-        if config["input"]["arguments"] is not None:
-            for (argument, value) in config["input"]["arguments"].items():
+        if arguments is not None:
+            for (argument, value) in arguments.items():
                 sources = self.replace_argument(sources, argument, value)
 
     def replace_argument(self, element, argument, value):
@@ -66,7 +67,7 @@ class Source():
         else:
             return element
 
-    def apply_config_filter(self, root, config_filter):
+    def hide_filtered_elements(self, root, config_filter):
         """Remove filter defined in config
         """
         if (config_filter["versions"]["includes"] is not None):
@@ -82,7 +83,7 @@ class Source():
             for category in (category for category in root.categories.values() if category.name in config_filter["categories"]["excludes"]):
                 category.display = False
 
-    def remove_undisplayed(self, root):
+    def remove_hidden_elements(self, root):
         """Remove elements marked a not to display
         """
         root.versions = dict((x, y) for x, y in root.versions.items() if y.display)
@@ -103,7 +104,6 @@ class Source():
 
     def refactor_hierarchy(self, root):
         """Modify elements structure (root/version/elements/) to (root/elementByVersion/element)
-            Todo: This method is not solid
         """
         root.methods = {}
         root.method_categories = {}

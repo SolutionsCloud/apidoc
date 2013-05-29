@@ -90,7 +90,7 @@ class TestSource(unittest.TestCase):
             ],
         }, response)
 
-    def test_apply_config_filter_version(self):
+    def test_hide_filtered_elements__version(self):
         root = Root()
         version1 = Version()
         version2 = Version()
@@ -102,13 +102,13 @@ class TestSource(unittest.TestCase):
         root.versions = {"v1": version1, "v2": version2, "v3": version3}
 
         config = ConfigObject()
-        self.source.apply_config_filter(root, config["filter"])
+        self.source.hide_filtered_elements(root, config["filter"])
 
         self.assertTrue(version1.display)
         self.assertTrue(version2.display)
         self.assertTrue(version3.display)
 
-    def test_apply_config_filter_version_include(self):
+    def test_hide_filtered_elements__version_include(self):
         root = Root()
         version1 = Version()
         version2 = Version()
@@ -121,13 +121,13 @@ class TestSource(unittest.TestCase):
 
         config = ConfigObject()
         config["filter"]["versions"]["includes"] = ["v1", "v3"]
-        self.source.apply_config_filter(root, config["filter"])
+        self.source.hide_filtered_elements(root, config["filter"])
 
         self.assertTrue(version1.display)
         self.assertFalse(version2.display)
         self.assertTrue(version3.display)
 
-    def test_apply_config_filter_version_exclude(self):
+    def test_hide_filtered_elements__version_exclude(self):
         root = Root()
         version1 = Version()
         version2 = Version()
@@ -140,13 +140,13 @@ class TestSource(unittest.TestCase):
 
         config = ConfigObject()
         config["filter"]["versions"]["excludes"] = ["v1", "v3"]
-        self.source.apply_config_filter(root, config["filter"])
+        self.source.hide_filtered_elements(root, config["filter"])
 
         self.assertFalse(version1.display)
         self.assertTrue(version2.display)
         self.assertFalse(version3.display)
 
-    def test_apply_config_filter_category(self):
+    def test_hide_filtered_elements__category(self):
         root = Root()
         version1 = Version()
 
@@ -161,13 +161,13 @@ class TestSource(unittest.TestCase):
         version1.categories = {"s1": category1, "s2": category2, "s3": category3}
 
         config = ConfigObject()
-        self.source.apply_config_filter(root, config["filter"])
+        self.source.hide_filtered_elements(root, config["filter"])
 
         self.assertTrue(category1.display)
         self.assertTrue(category2.display)
         self.assertTrue(category3.display)
 
-    def test_apply_config_filter_category_include(self):
+    def test_hide_filtered_elements__category_include(self):
         root = Root()
 
         category1 = Category("c")
@@ -181,13 +181,13 @@ class TestSource(unittest.TestCase):
 
         config = ConfigObject()
         config["filter"]["categories"]["includes"] = ["v1", "v3"]
-        self.source.apply_config_filter(root, config["filter"])
+        self.source.hide_filtered_elements(root, config["filter"])
 
         self.assertTrue(category1.display)
         self.assertFalse(category2.display)
         self.assertTrue(category3.display)
 
-    def test_apply_config_filter_category_exclude(self):
+    def test_hide_filtered_elements__category_exclude(self):
         root = Root()
 
         category1 = Category("c1")
@@ -198,13 +198,13 @@ class TestSource(unittest.TestCase):
 
         config = ConfigObject()
         config["filter"]["categories"]["excludes"] = ["c1", "c3"]
-        self.source.apply_config_filter(root, config["filter"])
+        self.source.hide_filtered_elements(root, config["filter"])
 
         self.assertFalse(category1.display)
         self.assertTrue(category2.display)
         self.assertFalse(category3.display)
 
-    def test_remove_undisplayed(self):
+    def test_remove_hidden_elements(self):
         root = Root()
         version1 = Version()
         version2 = Version()
@@ -225,7 +225,7 @@ class TestSource(unittest.TestCase):
         version1.display = False
         category2.display = False
 
-        self.source.remove_undisplayed(root)
+        self.source.remove_hidden_elements(root)
 
         self.assertEqual(1, len(root.versions))
         self.assertEqual(version2, root.versions["v2"])
