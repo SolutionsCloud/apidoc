@@ -2,7 +2,7 @@ from apidoc.object.source import RootDto as ObjectRoot
 from apidoc.object.source import Category, VersionDto
 from apidoc.object.source import MethodCategory, TypeCategory
 from apidoc.object.source import MethodDto, TypeDto
-from apidoc.object.source import MultiVersion
+from apidoc.object.source import MultiVersion, Element, EnumType
 from apidoc.object.source import MethodCrossVersion, TypeCrossVersion, ElementCrossVersion
 
 
@@ -49,19 +49,13 @@ class RootDto():
             method_dto = MethodDto(method)
             category.methods.append(method_dto)
 
-        self.hydrate__attribute(method_dto.description, method.description, version.name)
-        self.hydrate__attribute(method_dto.uri, method.uri, version.name)
-        self.hydrate__attribute(method_dto.code, method.code, version.name)
+        self.hydrate_value(method_dto.description, method.description, version.name)
+        self.hydrate_value(method_dto.uri, "%s%s%s" % (root.configuration.uri or "", version.uri or "", method.uri or ""), version.name)
+        self.hydrate_value(method_dto.code, method.code, version.name)
 
-    def hydrate__attribute(self, attribute, value, version):
-        find = False
-        for versioned_value in attribute:
-            if versioned_value.value == value:
-                versioned_value.versions.append(version)
-                find = True
-
-        if not find:
-            attribute.append(MultiVersion(value, version))
+        self.hydrate_list(method_dto.request_headers, method.request_headers.values(), version.name)
+        self.hydrate_list(method_dto.request_parameters, method.request_parameters.values(), version.name)
+        self.hydrate_list(method_dto.response_codes, method.response_codes, version.name)
 
     def hydrate_type(self, rootDto, root, type, version):
         categories = dict((category.name, category) for category in rootDto.type_categories)
@@ -81,8 +75,44 @@ class RootDto():
             type_dto = TypeDto(type)
             category.types.append(type_dto)
 
-        self.hydrate__attribute(type_dto.description, type.description, version.name)
-        self.hydrate__attribute(type_dto.primary, type.primary, version.name)
+        self.hydrate_value(type_dto.description, type.description, version.name)
+        self.hydrate_value(type_dto.primary, type.primary, version.name)
+        self.hydrate_value(type_dto.format.pretty, type.format.pretty, version.name)
+        self.hydrate_value(type_dto.format.advanced, type.format.advanced, version.name)
+        self.hydrate_value(type_dto.format.sample, type.format.sample, version.name)
+
+        if (isinstance(type, EnumType)):
+            self.hydrate_list(type_dto.values, type.values.values(), version.name)
+
+    def equals(self, value1, value2):
+        if isinstance(value1, Element):
+            if isinstance(value2, Element):
+                return value1.signature == value2.signature
+            return False
+        return value1 == value2
+
+    def hydrate_value(self, dto_value, source_value, version):
+        if source_value is None:
+            return
+        find = False
+        for versioned_value in dto_value:
+            if self.equals(versioned_value.value, source_value):
+                versioned_value.versions.append(version)
+                find = True
+
+        if not find:
+            dto_value.append(MultiVersion(source_value, version))
+
+    def hydrate_list(self, dto_list, source_list, version):
+        for source_value in source_list:
+            find = False
+            for versioned_value in dto_list:
+                if self.equals(versioned_value.value.signature, source_value.signature):
+                    versioned_value.versions.append(version)
+                    find = True
+
+            if not find:
+                dto_list.append(MultiVersion(source_value, version))
 
     def fix_versions(self, root):
         """Set the version of elements

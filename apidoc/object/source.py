@@ -108,8 +108,7 @@ class Element():
     def signature(self):
         """Return a uniq signature of the element
         """
-        if self._signature is None:
-            self._signature = hashlib.md5(repr(self.get_signature_struct()).encode("UTF-8")).hexdigest()
+        return hashlib.md5(repr(self.get_signature_struct()).encode("UTF-8")).hexdigest()
         return self._signature
 
     def get_signature_struct(self):
@@ -239,8 +238,6 @@ class Version(Element, Displayable):
         deprecated = 3
         draft = 4
 
-    _full_uri = None
-
     def __init__(self):
         """Class instantiation
         """
@@ -263,30 +260,11 @@ class Version(Element, Displayable):
         """
         return (self.major, self.minor, self.name) == (other.major, other.minor, self.name)
 
-    @property
-    def full_uri(self):
-        """Return full uri for the method
-        """
-        if self._full_uri is None:
-            if RootDto.instance().configuration.uri is not None:
-                self._full_uri = RootDto.instance().configuration.uri
-                if self.uri is not None:
-                    self._full_uri = "%s%s" % (RootDto.instance().configuration.uri, self.uri)
-                else:
-                    self._full_uri = RootDto.instance().configuration.uri
-            elif self.uri is None:
-                raise ValueError("No uri defined in version \"%s\"." % self.name)
-            else:
-                self._full_uri = self.uri
-        return self._full_uri
-
 
 class VersionDto(ElementDto, Sortable):
 
     """Element Version
     """
-
-    _full_uri = None
 
     def __init__(self, version):
         """Class instantiation
@@ -307,23 +285,6 @@ class VersionDto(ElementDto, Sortable):
         """Return true if self is equals to other
         """
         return (self.major, self.minor, self.name) == (other.major, other.minor, self.name)
-
-    @property
-    def full_uri(self):
-        """Return full uri for the method
-        """
-        if self._full_uri is None:
-            if RootDto.instance().configuration.uri is not None:
-                self._full_uri = RootDto.instance().configuration.uri
-                if self.uri is not None:
-                    self._full_uri = "%s%s" % (RootDto.instance().configuration.uri, self.uri)
-                else:
-                    self._full_uri = RootDto.instance().configuration.uri
-            elif self.uri is None:
-                raise ValueError("No uri defined in version \"%s\"." % self.name)
-            else:
-                self._full_uri = self.uri
-        return self._full_uri
 
 
 class Category(Element, Displayable):
@@ -410,8 +371,6 @@ class Method(Element, Displayable):
         head = 5
         http = 6
 
-    _full_uri = None
-
     @Element.version.setter
     def version(self, value):
         """Set the version and propagate it to is subelements
@@ -454,14 +413,6 @@ class Method(Element, Displayable):
             raise ValueError("Unknown response code \"%s\" in \"%s\"." % (self.code, self.name))
 
         return "OK"
-
-    @property
-    def full_uri(self):
-        """Return full uri for the method
-        """
-        if self._full_uri is None:
-            self._full_uri = "%s%s" % (RootDto.instance().versions[self.version].full_uri, self.uri)
-        return self._full_uri
 
     def __init__(self):
         """Class instantiation
@@ -512,6 +463,7 @@ class MethodDto(ElementVersionedDto, Sortable, Displayable):
 
         self.code = []
         self.uri = []
+
         self.request_headers = []
         self.request_parameters = []
         self.request_body = []
@@ -669,9 +621,10 @@ class TypeDto(ElementVersionedDto, Sortable):
         super().__init__(type)
 
         self.name = type.name
-        self.format = TypeFormat()
+        self.format = TypeFormatDto(type.format)
 
         self.primary = []
+        self.values = []
 
 
 class TypeFormat(Sampleable):
@@ -701,6 +654,19 @@ class TypeFormat(Sampleable):
             return self.pretty
 
         return None
+
+
+class TypeFormatDto(Sampleable):
+
+    """Element Type
+    """
+
+    def __init__(self, type_format):
+        """Class instantiation
+        """
+        self.sample = []
+        self.pretty = []
+        self.advanced = []
 
 
 class EnumType(Type):
