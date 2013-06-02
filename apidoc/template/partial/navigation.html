@@ -3,7 +3,7 @@
 {%- if sources.versions|length > 1 %}
 <ul id="nav-versions" class="nav nav-list doc-sidenav">
     <li class="nav-header"><h5>Versions</h5></li>
-    {%- for version in sources.versions.values()|sort %}
+    {%- for version in sources.versions|sort %}
     <li data-version="{{ version.name }}" data-status="{{ version.status|upper }}">
         <a href="javascript:navigateTo({version: '{{ version.name }}'}, ['category', 'method', 'category', 'type'])" data-target="#v-{{ version.name }}">{{ version.name }} <code>{{ version.status|upper }}</code></a>
     </li>

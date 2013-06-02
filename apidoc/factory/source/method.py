@@ -20,7 +20,6 @@ class Method(ElementFactory):
         """
         method = ObjectMethod()
         self.set_common_datas(method, name, datas)
-
         if "category" in datas:
             method.category = str(datas["category"])
         if "code" in datas:
@@ -38,5 +37,4 @@ class Method(ElementFactory):
             method.request_body = self.object_factory.create_from_name_and_dictionary("request", datas["request_body"])
         if "response_body" in datas and datas["response_body"]:
             method.response_body = self.object_factory.create_from_name_and_dictionary("response", datas["response_body"])
-
         return method

@@ -17,7 +17,7 @@ class Root():
     def create_from_dictionary(self, datas):
         """Return a populated Object Root from dictionnary datas
         """
-        root = ObjectRoot.instance()
+        root = ObjectRoot()
 
         if "configuration" in datas and datas["configuration"] is not None:
             root.configuration = self.configuration_factory.create_from_dictionary(datas["configuration"])
@@ -26,5 +26,4 @@ class Root():
             root.categories = self.category_factory.create_dictionary_of_element_from_dictionary("categories", datas)
 
         root.versions = self.version_factory.create_dictionary_of_element_from_dictionary("versions", datas)
-
         return root

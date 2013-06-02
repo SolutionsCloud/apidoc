@@ -1,4 +1,4 @@
-from apidoc.object.source import Root
+from apidoc.object.source import RootDto
 
 
 class Source():
@@ -9,5 +9,5 @@ class Source():
     def validate(self, sources):
         """Validate the format of sources
         """
-        if not isinstance(sources, Root):
+        if not isinstance(sources, RootDto):
             raise Exception("Source object expected")

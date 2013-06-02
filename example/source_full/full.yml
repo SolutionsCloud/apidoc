@@ -9,9 +9,6 @@ categories:
   Category2:
     description: Another Category
     order: 1
-  Category3:
-    description: Another Category
-    order: 1
 versions:
   v1.0:
     description: First release of the API
@@ -148,7 +145,7 @@ versions:
     types:
       version:
         primary: string
-        namespace: global
+        category: global
         description: Defined a version
         format:
           pretty: VN.N
@@ -156,14 +153,14 @@ versions:
           advanced: V\d+\.\d+
       notUsed:
         primary: string
-        namespace: global
+        category: global
         description: A unused type
         format:
           pretty: VN.N
           sample: V0.1
           advanced: V\d+\.\d+
       enumStatus:
-        namespace: Lists
+        category: Lists
         primary: enum
         description: List the version's status
         values:

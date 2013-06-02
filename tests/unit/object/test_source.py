@@ -1,6 +1,6 @@
 import unittest
 
-from apidoc.object.source import Root, Element, Sampleable, Displayable, Sortable, ElementCrossVersion
+from apidoc.object.source import Root, RootDto, Element, Sampleable, Displayable, Sortable, ElementCrossVersion
 from apidoc.object.source import Version
 from apidoc.object.source import MethodCategory, Method, Category, TypeCategory
 from apidoc.object.source import Parameter, ResponseCode
@@ -52,7 +52,7 @@ class TestSource(unittest.TestCase):
             root.previous_version("baz")
 
     def test_root_get_used_type_categories(self):
-        root = Root.instance()
+        root = RootDto.instance()
 
         category1 = TypeCategory("n1")
         category2 = TypeCategory("n2")
@@ -87,7 +87,7 @@ class TestSource(unittest.TestCase):
         self.assertEqual([category1], response)
 
     def test_root_get_used_types(self):
-        root = Root.instance()
+        root = RootDto.instance()
 
         typeCategory = TypeCategory("n1")
         methodCategory = MethodCategory("n1")
@@ -186,7 +186,7 @@ class TestSource(unittest.TestCase):
         self.assertEqual(sortable1, sorted([sortable2, sortable1])[0])
 
     def test_version_full_uri(self):
-        Root.instance().configuration.uri = None
+        RootDto.instance().configuration.uri = None
 
         version = Version()
         version.uri = "bar"
@@ -194,7 +194,7 @@ class TestSource(unittest.TestCase):
         self.assertEqual("bar", version.full_uri)
 
     def test_method_full_uri__with_root_uri(self):
-        Root.instance().configuration.uri = "//foo/"
+        RootDto.instance().configuration.uri = "//foo/"
 
         version = Version()
         version.uri = "bar"
@@ -202,7 +202,7 @@ class TestSource(unittest.TestCase):
         self.assertEqual("//foo/bar", version.full_uri)
 
     def test_method_full_uri__without_version_uri(self):
-        Root.instance().configuration.uri = "//foo/"
+        RootDto.instance().configuration.uri = "//foo/"
 
         version = Version()
         version.uri = None
@@ -210,7 +210,7 @@ class TestSource(unittest.TestCase):
         self.assertEqual("//foo/", version.full_uri)
 
     def test_version_full_uri__failled_when_no_version_uri(self):
-        Root.instance().configuration.uri = None
+        RootDto.instance().configuration.uri = None
 
         version = Version()
         version.uri = None
@@ -592,8 +592,8 @@ class TestSource(unittest.TestCase):
         test.reference_name = "baz"
         test.version = "v1"
 
-        Root.instance().references["baz"] = ElementCrossVersion(Object())
-        Root.instance().references["baz"].versions["v1"] = Object()
+        RootDto.instance().references["baz"] = ElementCrossVersion(Object())
+        RootDto.instance().references["baz"].versions["v1"] = Object()
 
         self.assertEqual({
             "name": "foo",
@@ -611,8 +611,8 @@ class TestSource(unittest.TestCase):
         test.reference_name = "baz"
         test.version = "v1"
 
-        Root.instance().references["baz"] = ElementCrossVersion(Object())
-        Root.instance().references["baz"].versions["v1"] = Object()
+        RootDto.instance().references["baz"] = ElementCrossVersion(Object())
+        RootDto.instance().references["baz"].versions["v1"] = Object()
 
         self.assertEqual({
             "description": "bar",
@@ -629,8 +629,8 @@ class TestSource(unittest.TestCase):
         test.reference_name = "baz"
         test.version = "v1"
 
-        Root.instance().references["baz"] = ElementCrossVersion(Object())
-        Root.instance().references["baz"].versions["v1"] = object1
+        RootDto.instance().references["baz"] = ElementCrossVersion(Object())
+        RootDto.instance().references["baz"].versions["v1"] = object1
 
         self.assertEqual(["t1"], test.get_used_types())
 
@@ -641,8 +641,8 @@ class TestSource(unittest.TestCase):
         test.type_name = "baz"
         test.version = "v1"
 
-        Root.instance().types["baz"] = ElementCrossVersion(Type())
-        Root.instance().types["baz"].versions["v1"] = Type()
+        RootDto.instance().types["baz"] = ElementCrossVersion(Type())
+        RootDto.instance().types["baz"].versions["v1"] = Type()
 
         self.assertEqual({
             "name": "foo",
@@ -660,8 +660,8 @@ class TestSource(unittest.TestCase):
         test.type_name = "baz"
         test.version = "v1"
 
-        Root.instance().types["baz"] = ElementCrossVersion(Type())
-        Root.instance().types["baz"].versions["v1"] = Type()
+        RootDto.instance().types["baz"] = ElementCrossVersion(Type())
+        RootDto.instance().types["baz"].versions["v1"] = Type()
 
         self.assertEqual({
             "name": "foo",
@@ -734,7 +734,7 @@ class TestSource(unittest.TestCase):
     def test_method_full_uri(self):
         version = Version()
         version.uri = "foo/"
-        Root.instance().versions["v1"] = version
+        RootDto.instance().versions["v1"] = version
 
         method = Method()
         method.uri = "bar"
@@ -743,11 +743,11 @@ class TestSource(unittest.TestCase):
         self.assertEqual("foo/bar", method.full_uri)
 
     def test_method_full_uri__with_root_and_version(self):
-        Root.instance().configuration.uri = "//foo/"
+        RootDto.instance().configuration.uri = "//foo/"
 
         version = Version()
         version.uri = "bar/"
-        Root.instance().versions["v1"] = version
+        RootDto.instance().versions["v1"] = version
 
         method = Method()
         method.uri = "baz"
@@ -757,7 +757,7 @@ class TestSource(unittest.TestCase):
 
     def test_method_full_uri__failled_when_no_version_uri(self):
         version = Version()
-        Root.instance().versions["v1"] = version
+        RootDto.instance().versions["v1"] = version
 
         method = Method()
         method.uri = "bar"
@@ -857,8 +857,8 @@ class TestSource(unittest.TestCase):
         type.format = TypeFormat()
         type.format.pretty = "foo"
 
-        Root.instance().types["baz"] = ElementCrossVersion(Type())
-        Root.instance().types["baz"].versions["v1"] = type
+        RootDto.instance().types["baz"] = ElementCrossVersion(Type())
+        RootDto.instance().types["baz"].versions["v1"] = type
 
         self.assertEqual("foo", test.get_default_sample())
 
@@ -890,7 +890,7 @@ class TestSource(unittest.TestCase):
 
         ecv = ElementCrossVersion(object)
         ecv.versions["v1"] = object
-        Root.instance().references = {
+        RootDto.instance().references = {
             "bar": ecv
         }
 
@@ -904,7 +904,7 @@ class TestSource(unittest.TestCase):
         test.version = "v1"
         test.reference_name = "bar"
 
-        Root.instance().references = {}
+        RootDto.instance().references = {}
 
         with self.assertRaises(ValueError):
             test.get_reference()
@@ -915,10 +915,10 @@ class TestSource(unittest.TestCase):
         test.version = "v1"
         test.reference_name = "bar"
 
-        Root.instance().references = {
+        RootDto.instance().references = {
             "bar": ElementCrossVersion(Type())
         }
-        Root.instance().references["bar"].versions = {}
+        RootDto.instance().references["bar"].versions = {}
 
         with self.assertRaises(ValueError):
             test.get_reference()
@@ -929,7 +929,7 @@ class TestSource(unittest.TestCase):
         test.version = "v1"
         test.type_name = "bar"
 
-        Root.instance().types = {}
+        RootDto.instance().types = {}
 
         with self.assertRaises(ValueError):
             test.get_type()
@@ -940,10 +940,10 @@ class TestSource(unittest.TestCase):
         test.version = "v1"
         test.type_name = "bar"
 
-        Root.instance().types = {
+        RootDto.instance().types = {
             "bar": ElementCrossVersion(Type())
         }
-        Root.instance().types["bar"].versions = {}
+        RootDto.instance().types["bar"].versions = {}
 
         with self.assertRaises(ValueError):
             test.get_type()
@@ -959,7 +959,7 @@ class TestSource(unittest.TestCase):
         version3.name = "v3"
         version3.major = 3
 
-        Root.instance().versions = {
+        RootDto.instance().versions = {
             "v1": version1,
             "v2": version2,
             "v3": version3
@@ -1088,7 +1088,7 @@ class TestSource(unittest.TestCase):
         method3.response_body = "foo"
         method3.response_body = "bar"
 
-        Root.instance().versions = {
+        RootDto.instance().versions = {
             "v1": version1,
             "v2": version2,
             "v3": version3
@@ -1120,10 +1120,10 @@ class TestSource(unittest.TestCase):
 
         reference1 = ObjectObject()
 
-        Root.instance().references = {
+        RootDto.instance().references = {
             "baz": ElementCrossVersion(Type())
         }
-        Root.instance().references["baz"].versions = {"v1": reference1}
+        RootDto.instance().references["baz"].versions = {"v1": reference1}
 
         response = test.objects_without_reference([object1, object2])
         self.assertEqual([object1, reference1], response)
@@ -1216,12 +1216,12 @@ class TestSource(unittest.TestCase):
         reference1 = ObjectObject()
         reference2 = ObjectObject()
 
-        Root.instance().references = {
+        RootDto.instance().references = {
             "foo": ElementCrossVersion(Type()),
             "baz": ElementCrossVersion(Type())
         }
-        Root.instance().references["foo"].versions = {"v1": reference1}
-        Root.instance().references["baz"].versions = {"v1": reference2}
+        RootDto.instance().references["foo"].versions = {"v1": reference1}
+        RootDto.instance().references["baz"].versions = {"v1": reference2}
 
         response = test.objects_reference([object1, object2, object3])
         self.assertEqual([reference1, reference2, reference1], response)

@@ -379,7 +379,3 @@ class TestSource(unittest.TestCase):
         v2 = Method()
         v2.name = "b"
         self.assertLess(v1, v2)
-
-    def test_get_extender_paths(self):
-        paths = self.source.get_extender_paths()
-        self.assertEqual(5, len(paths))

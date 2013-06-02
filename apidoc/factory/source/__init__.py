@@ -1,10 +1,9 @@
-from apidoc.object.source import MethodCategory, TypeCategory
-from apidoc.object.source import MethodCrossVersion, TypeCrossVersion, ElementCrossVersion
 from apidoc.service.parser import Parser
 from apidoc.service.merger import Merger
 from apidoc.service.extender import Extender
 
 from apidoc.factory.source.root import Root as RootFactory
+from apidoc.factory.source.rootDto import RootDto as RootDtoFactory
 
 from apidoc.lib.util.decorator import add_property
 
@@ -12,29 +11,42 @@ from apidoc.lib.util.decorator import add_property
 @add_property("parser", Parser)
 @add_property("merger", Merger)
 @add_property("extender", Extender)
-@add_property("root_factory", RootFactory)
+@add_property("root_source_factory", RootFactory)
+@add_property("root_dto_factory", RootDtoFactory)
 class Source():
 
     """Create source objet
     """
 
+    extender_paths = (
+        "categories/?",
+        "versions/?",
+        "versions/?/methods/?",
+        "versions/?/types/?",
+        "versions/?/references/?",
+    )
+
     def create_from_config(self, config):
         """ Create a well populated Root object
         """
-        raw_sources = self.get_sources_from_config(config)
-        merged_source = self.merger.merge_sources(raw_sources)
-        self.inject_arguments_in_sources(merged_source, config["input"]["arguments"])
-        extended_sources = self.extender.extends(merged_source, paths=self.get_extender_paths())
 
-        root = self.root_factory.create_from_dictionary(extended_sources)
+        raw_sources = self.get_sources_from_config(config)
+        sources = self.format_sources_from_config(raw_sources, config)
+
+        root = self.root_source_factory.create_from_dictionary(sources)
 
         self.hide_filtered_elements(root, config["filter"])
         self.remove_hidden_elements(root)
 
-        self.fix_versions(root)
-        self.refactor_hierarchy(root)
+        return self.root_dto_factory.create_from_root(root)
 
-        return root
+    def format_sources_from_config(self, raw_sources, config):
+        """ Create a well populated Root object
+        """
+
+        merged_source = self.merger.merge_sources(raw_sources)
+        self.inject_arguments_in_sources(merged_source, config["input"]["arguments"])
+        return self.extender.extends(merged_source, paths=self.extender_paths)
 
     def get_sources_from_config(self, config):
         """Load a set of source's file defined in the config
@@ -87,82 +99,6 @@ class Source():
         """Remove elements marked a not to display
         """
         root.versions = dict((x, y) for x, y in root.versions.items() if y.display)
-        displayed_categories = [category.name for category in root.categories.values() if category.display]
+        hidden_categories = [category.name for category in root.categories.values() if not category.display]
         for version in root.versions.values():
-            version.methods = dict((x, y) for x, y in version.methods.items() if y.display and (y.category is None or y.category in displayed_categories))
-
-    def fix_versions(self, root):
-        """Set the version of elements
-        """
-        for (version_name, version) in root.versions.items():
-            for (type_name, type) in version.types.items():
-                type.version = version_name
-            for (reference_name, reference) in version.references.items():
-                reference.version = version_name
-            for (method_name, method) in version.methods.items():
-                method.version = version_name
-
-    def refactor_hierarchy(self, root):
-        """Modify elements structure (root/version/elements/) to (root/elementByVersion/element)
-        """
-        root.methods = {}
-        root.method_categories = {}
-        root.types = {}
-        root.type_categories = {}
-        root.references = {}
-        for (version_name, version) in root.versions.items():
-            for (reference_name, reference) in version.references.items():
-                if reference_name not in root.references:
-                    root.references[reference_name] = ElementCrossVersion(element=reference)
-                root.references[reference_name].versions[version_name] = reference
-
-            for (type_name, type) in version.types.items():
-                if type.category not in root.type_categories:
-                    root.type_categories[type.category] = TypeCategory(name=type.category)
-                    if type.category in root.categories:
-                        root.type_categories[type.category].order = root.categories[type.category].order
-                        root.type_categories[type.category].description = root.categories[type.category].description
-
-                if type_name not in root.type_categories[type.category].types:
-                    root.type_categories[type.category].types[type_name] = TypeCrossVersion(element=type)
-                root.type_categories[type.category].types[type_name].versions[version_name] = type
-
-                if type.signature not in root.type_categories[type.category].types[type_name].signatures:
-                    root.type_categories[type.category].types[type_name].signatures[type.signature] = type
-
-                if type_name not in root.types:
-                    root.types[type_name] = TypeCrossVersion(element=type)
-                root.types[type_name].versions[version_name] = type
-
-            for (method_name, method) in version.methods.items():
-                if method.category not in root.method_categories:
-                    root.method_categories[method.category] = MethodCategory(name=method.category)
-                    if method.category in root.categories:
-                        root.method_categories[method.category].order = root.categories[method.category].order
-                        root.method_categories[method.category].description = root.categories[method.category].description
-
-                if method_name not in root.method_categories[method.category].methods:
-                    root.method_categories[method.category].methods[method_name] = MethodCrossVersion(element=method)
-                root.method_categories[method.category].methods[method_name].versions[version_name] = method
-
-                if method.signature not in root.method_categories[method.category].methods[method_name].signatures:
-                    root.method_categories[method.category].methods[method_name].signatures[method.signature] = method
-
-                if method_name not in root.methods:
-                    root.methods[method_name] = MethodCrossVersion(element=method)
-                root.methods[method_name].versions[version_name] = method
-
-            del(version.methods)
-            del(version.types)
-            del(version.references)
-
-    def get_extender_paths(self):
-        """Retrieve extension lookup path
-        """
-        return (
-            "categories/?",
-            "versions/?",
-            "versions/?/methods/?",
-            "versions/?/types/?",
-            "versions/?/references/?",
-        )
+            version.methods = dict((x, y) for x, y in version.methods.items() if y.display and (y.category is None or y.category not in hidden_categories))

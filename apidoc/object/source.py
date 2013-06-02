@@ -11,16 +11,6 @@ class Root():
     """Root object of sources elements
     """
 
-    _instance = None
-
-    @classmethod
-    def instance(cls):
-        """Retrieve the unique instance of the element
-        """
-        if Root._instance is None:
-            Root._instance = Root()
-        return Root._instance
-
     def __init__(self):
         """Class instantiation
         """
@@ -28,11 +18,34 @@ class Root():
         self.configuration = Configuration()
         self.versions = {}
         self.categories = {}
-        self.method_categories = {}
         self.methods = {}
-        self.type_categories = {}
         self.types = {}
         self.references = {}
+
+
+class RootDto():
+
+    """Root object of sources elements for templates
+    """
+
+    _instance = None
+
+    @classmethod
+    def instance(cls):
+        """Retrieve the unique instance of the element
+        """
+        if RootDto._instance is None:
+            RootDto._instance = RootDto()
+        return RootDto._instance
+
+    def __init__(self):
+        """Class instantiation
+        """
+        super().__init__()
+        self.configuration = Configuration()
+        self.versions = []
+        self.method_categories = []
+        self.type_categories = []
 
     @lru_cache()
     def previous_version(self, version):
@@ -106,6 +119,30 @@ class Element():
             "name": self.name,
             "description": self.description
         }
+
+
+class ElementDto():
+
+    """Element
+    """
+
+    def __init__(self, element):
+        """Class instantiation
+        """
+        self.name = element.name
+        self.description = element.description
+
+
+class ElementVersionedDto():
+
+    """Element
+    """
+
+    def __init__(self, element):
+        """Class instantiation
+        """
+        self.name = element.name
+        self.description = []
 
 
 class Sampleable():
@@ -188,7 +225,7 @@ class Configuration(Element):
         self.title = None
 
 
-class Version(Element, Sortable, Displayable):
+class Version(Element, Displayable):
 
     """Element Version
     """
@@ -231,12 +268,12 @@ class Version(Element, Sortable, Displayable):
         """Return full uri for the method
         """
         if self._full_uri is None:
-            if Root.instance().configuration.uri is not None:
-                self._full_uri = Root.instance().configuration.uri
+            if RootDto.instance().configuration.uri is not None:
+                self._full_uri = RootDto.instance().configuration.uri
                 if self.uri is not None:
-                    self._full_uri = "%s%s" % (Root.instance().configuration.uri, self.uri)
+                    self._full_uri = "%s%s" % (RootDto.instance().configuration.uri, self.uri)
                 else:
-                    self._full_uri = Root.instance().configuration.uri
+                    self._full_uri = RootDto.instance().configuration.uri
             elif self.uri is None:
                 raise ValueError("No uri defined in version \"%s\"." % self.name)
             else:
@@ -244,7 +281,52 @@ class Version(Element, Sortable, Displayable):
         return self._full_uri
 
 
-class Category(Element, Sortable, Displayable):
+class VersionDto(ElementDto, Sortable):
+
+    """Element Version
+    """
+
+    _full_uri = None
+
+    def __init__(self, version):
+        """Class instantiation
+        """
+        super().__init__(version)
+
+        self.uri = version.uri
+        self.major = version.major
+        self.minor = version.minor
+        self.status = version.status
+
+    def __lt__(self, other):
+        """Return true if self is lower than other
+        """
+        return (self.major, self.minor, self.name) < (other.major, other.minor, self.name)
+
+    def __eq__(self, other):
+        """Return true if self is equals to other
+        """
+        return (self.major, self.minor, self.name) == (other.major, other.minor, self.name)
+
+    @property
+    def full_uri(self):
+        """Return full uri for the method
+        """
+        if self._full_uri is None:
+            if RootDto.instance().configuration.uri is not None:
+                self._full_uri = RootDto.instance().configuration.uri
+                if self.uri is not None:
+                    self._full_uri = "%s%s" % (RootDto.instance().configuration.uri, self.uri)
+                else:
+                    self._full_uri = RootDto.instance().configuration.uri
+            elif self.uri is None:
+                raise ValueError("No uri defined in version \"%s\"." % self.name)
+            else:
+                self._full_uri = self.uri
+        return self._full_uri
+
+
+class Category(Element, Displayable):
 
     """Element Category
     """
@@ -255,6 +337,19 @@ class Category(Element, Sortable, Displayable):
         super().__init__()
         self.name = name
         self.order = 99
+
+
+class CategoryDto(ElementDto, Sortable):
+
+    """Element Category
+    """
+
+    def __init__(self, category):
+        """Class instantiation
+        """
+        super().__init__(category)
+
+        self.order = category.order
 
     def __lt__(self, other):
         """Return true if self is lower than other
@@ -267,39 +362,39 @@ class Category(Element, Sortable, Displayable):
         return (self.order, self.name) == (other.order, other.name)
 
 
-class TypeCategory(Category):
+class TypeCategory(CategoryDto):
 
     """Element TypeCategory
     """
 
-    def __init__(self, name):
+    def __init__(self, category):
         """Class instantiation
         """
-        super().__init__(name)
-        self.types = {}
+        super().__init__(category)
+        self.types = []
 
     def get_used_types(self):
         """Return list of types of the namspace used
         """
-        used_types = Root.instance().get_used_types()
+        used_types = RootDto.instance().get_used_types()
         for type in [y for (x, y) in self.types.items() if x not in used_types]:
             logging.getLogger().warn("Unused type %s" % type.name)
         return [y for (x, y) in self.types.items() if x in used_types]
 
 
-class MethodCategory(Category):
+class MethodCategory(CategoryDto):
 
-    """Element TypeCategory
+    """Element MethodCategory
     """
 
-    def __init__(self, name):
+    def __init__(self, category):
         """Class instantiation
         """
-        super().__init__(name)
-        self.methods = {}
+        super().__init__(category)
+        self.methods = []
 
 
-class Method(Element, Sortable, Displayable):
+class Method(Element, Displayable):
 
     """Element Method
     """
@@ -365,7 +460,7 @@ class Method(Element, Sortable, Displayable):
         """Return full uri for the method
         """
         if self._full_uri is None:
-            self._full_uri = "%s%s" % (Root.instance().versions[self.version].full_uri, self.uri)
+            self._full_uri = "%s%s" % (RootDto.instance().versions[self.version].full_uri, self.uri)
         return self._full_uri
 
     def __init__(self):
@@ -404,6 +499,41 @@ class Method(Element, Sortable, Displayable):
             types += self.response_body.get_used_types()
 
         return list({}.fromkeys(types).keys())
+
+
+class MethodDto(ElementVersionedDto, Sortable, Displayable):
+
+    def __init__(self, method):
+        """Class instantiation
+        """
+        super().__init__(method)
+
+        self.method = method.method
+
+        self.code = []
+        self.uri = []
+        self.request_headers = []
+        self.request_parameters = []
+        self.request_body = []
+        self.response_codes = []
+        self.response_body = []
+
+
+class MultiVersion(Sortable):
+
+    def __init__(self, value, version):
+        self.versions = [version]
+        self.value = value
+
+    def __lt__(self, other):
+        """Return true if self is lower than other
+        """
+        return sorted(self.versions) < sorted(other.versions)
+
+    def __eq__(self, other):
+        """Return true if self is equals to other
+        """
+        return self.versions == other.versions
 
 
 class Parameter(Element, Sampleable, Sortable):
@@ -486,7 +616,7 @@ class ResponseCode(Element, Sortable):
         })
 
 
-class Type(Element, Sortable):
+class Type(Element):
 
     """Element Type
     """
@@ -526,6 +656,22 @@ class Type(Element, Sortable):
         """Return default value for the element
         """
         return "my_%s" % self.name
+
+
+class TypeDto(ElementVersionedDto, Sortable):
+
+    """Element Type
+    """
+
+    def __init__(self, type):
+        """Class instantiation
+        """
+        super().__init__(type)
+
+        self.name = type.name
+        self.format = TypeFormat()
+
+        self.primary = []
 
 
 class TypeFormat(Sampleable):
@@ -893,17 +1039,17 @@ class ObjectReference(Object):
     def get_reference(self):
         """Return a reference object from the reference_name defined in sources
         """
-        if self.reference_name not in Root.instance().references:
-            print(Root.instance().references.keys())
+        if self.reference_name not in RootDto.instance().references:
+            print(RootDto.instance().references.keys())
             raise ValueError(
                 "Unable to find reference \"%s\"." % self.reference_name
             )
-        if self.version not in Root.instance().references[self.reference_name].versions:
+        if self.version not in RootDto.instance().references[self.reference_name].versions:
             raise ValueError(
                 "Unable to find reference \"%s\" at version \"%s\"." % (self.reference_name, self.version)
             )
 
-        reference = Root.instance().references[self.reference_name].versions[self.version]
+        reference = RootDto.instance().references[self.reference_name].versions[self.version]
         if self.optional:
             reference.optional = self.optional
         if self.description is not None:
@@ -943,12 +1089,12 @@ class ObjectType(Object):
     def get_type(self):
         """Return a type object from the type_name defined in sources
         """
-        if self.type_name not in Root.instance().types:
+        if self.type_name not in RootDto.instance().types:
             raise ValueError("Unable to find type \"%s\"." % self.type_name)
-        if self.version not in Root.instance().types[self.type_name].versions:
+        if self.version not in RootDto.instance().types[self.type_name].versions:
             raise ValueError("Unable to find type \"%s\" at version \"%s\"." % (self.type_name, self.version))
 
-        return Root.instance().types[self.type_name].versions[self.version]
+        return RootDto.instance().types[self.type_name].versions[self.version]
 
     def get_default_sample(self):
         """Return default value for the element
@@ -1012,7 +1158,7 @@ class ElementCrossVersion(Element, Sortable):
     def changed_status(self, version):
         """Return the change status for the specified version
         """
-        previous_version = Root.instance().previous_version(version)
+        previous_version = RootDto.instance().previous_version(version)
         if previous_version is None:
             if version not in self.versions:
                 return ElementCrossVersion.Change.none
