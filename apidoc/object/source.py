@@ -464,6 +464,8 @@ class MethodDto(ElementVersionedDto, Sortable, Displayable):
         self.code = []
         self.uri = []
 
+        self.changed_status = {}
+
         self.request_headers = []
         self.request_parameters = []
         self.request_body = []
@@ -622,6 +624,8 @@ class TypeDto(ElementVersionedDto, Sortable):
 
         self.name = type.name
         self.format = TypeFormatDto(type.format)
+
+        self.changed_status = {}
 
         self.primary = []
         self.values = []

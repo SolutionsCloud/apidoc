@@ -24,12 +24,40 @@ class RootDto():
             for type in version.types.values():
                 self.hydrate_type(rootDto, root, type, version)
 
+        self.changed_status(rootDto)
+
         #self.fix_versions(root)
         #self.refactor_hierarchy(root)
+
+        #TODO display only used types
+        #TODO display only used categories
 
         from apidoc.lib.util.serialize import json_repr
         print(json_repr(rootDto))
         return rootDto
+
+    def changed_status(self, rootDto):
+        sorted_version = sorted(rootDto.versions)
+
+        items = []
+        for category in rootDto.method_categories:
+            items = items + category.methods
+        for category in rootDto.type_categories:
+            items = items + category.types
+
+        for item in items:
+            new = False
+            for version in sorted_version:
+                if version.name not in item.changed_status.keys():
+                    if new:
+                        item.changed_status[version.name] = ElementCrossVersion.Change.deleted
+                        new = False
+                    else:
+                        item.changed_status[version.name] = ElementCrossVersion.Change.none
+                else:
+                    if not new:
+                        item.changed_status[version.name] = ElementCrossVersion.Change.new
+                        new = True
 
     def hydrate_method(self, rootDto, root, method, version):
         categories = dict((category.name, category) for category in rootDto.method_categories)
@@ -45,9 +73,11 @@ class RootDto():
         methods = dict((method.name, method) for method in category.methods)
         if method.name in methods.keys():
             method_dto = methods[method.name]
+            method_dto.changed_status[version.name] = ElementCrossVersion.Change.none
         else:
             method_dto = MethodDto(method)
             category.methods.append(method_dto)
+            method_dto.changed_status[version.name] = ElementCrossVersion.Change.new
 
         self.hydrate_value(method_dto.description, method.description, version.name)
         self.hydrate_value(method_dto.uri, "%s%s%s" % (root.configuration.uri or "", version.uri or "", method.uri or ""), version.name)
@@ -71,9 +101,11 @@ class RootDto():
         types = dict((type.name, type) for type in category.types)
         if type.name in types.keys():
             type_dto = types[type.name]
+            type_dto.changed_status[version.name] = ElementCrossVersion.Change.none
         else:
             type_dto = TypeDto(type)
             category.types.append(type_dto)
+            type_dto.changed_status[version.name] = ElementCrossVersion.Change.new
 
         self.hydrate_value(type_dto.description, type.description, version.name)
         self.hydrate_value(type_dto.primary, type.primary, version.name)

@@ -1,4 +1,4 @@
-{%- for category in sources.get_used_type_categories()|sort %}
+{%- for category in sources.type_categories|sort %}
     <li class="category" id="c-{{ category.name }}">
     {%- if category.name != None -%}
         <h3>{{ category.name }}</h3>
@@ -7,9 +7,9 @@
         {%- endif %}
     {%- endif %}
         <ul class="unstyled">
-    {%- for type_versioned in category.get_used_types()|sort %}
-            <li class="type item" id="t-{{ type_versioned.name }}">
-                <h4>{{ type_versioned.name }}</h4>
+    {%- for types in category.types|sort %}
+            <li class="type item" id="t-{{ types.name }}">
+                <h4>{{ types.name }}</h4>
         {%- if sources.versions|length > 1 %}
                 <div class="diff-header">
                     <h5 class="desc"></h5>
@@ -22,9 +22,9 @@
                          Diff
                     </h5>
                     <ul class="versions inline">
-            {%- for version in sources.versions.values()|sort %}
-                        <li data-version="{{ version.name }}" data-changed="{{ type_versioned.changed_status(version.name)|lower }}"
-                {%- if version.name not in type_versioned.versions -%}
+            {%- for version in sources.versions|sort %}
+                        <li data-version="{{ version.name }}" data-changed="{{ types.changed_status[version.name]|lower }}"
+                {%- if version.name not in types.versions -%}
                     data-exists="no"
                 {%- else -%}
                     data-exists="yes"
@@ -37,11 +37,12 @@
         {%- endif -%}
                 <div class="nocontents">no implementation for this version</div>
                 <div class="contents">
+{#
         {%- include "partial/type_diff.html" -%}
                     <div class="stack sample">
-        {%- for type in type_versioned.signatures.values() %}
+        {%- for type in types.signatures.values() %}
                         <div data-version="
-            {%- for (type_version_name, type_version) in type_versioned.versions.items() %}
+            {%- for (type_version_name, type_version) in types.versions.items() %}
                 {%- if type_version.signature == type.signature %}{{ type_version_name }} {% endif %}
             {%- endfor -%}
                     ">
@@ -49,6 +50,7 @@
                         </div>
         {%- endfor %}
                     </div>
+#}
                 </div>
             </li>
     {%- endfor %}

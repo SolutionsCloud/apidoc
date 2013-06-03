@@ -13,11 +13,11 @@
 <div class="scroll-spyable">
     <ul class="nav nav-list doc-sidenav">
         <li class="nav-header"><h5>Methods</h5></li>
-{%- for category in sources.method_categories.values()|sort %}
+{%- for category in sources.method_categories|sort %}
     {%- if category.name != None -%}
         <li class="nav-header" data-group="{{ category.name }}"><a href="javascript:navigateTo({category: '{{ category.name }}'}, ['category', 'method', 'type'])" data-target="#c-{{ category.name }}"><h6>{{ category.name }}</h6></a></li>
     {%- endif -%}
-    {%- for method in category.methods.values()|sort %}
+    {%- for method in category.methods|sort %}
         <li data-group="{{ category.name }}"  data-item="{{ method.name }}"><a href="javascript:navigateTo({category: '{{ category.name }}', method: '{{ method.name }}'}, ['category', 'method'])" data-target="#m-{{ method.name }}"><i class="i-chevron"></i><span>{{ method.name }}</span></a></li>
     {%- endfor %}
     {%- if not loop.last %}
@@ -27,11 +27,11 @@
     </ul>
     <ul class="nav nav-list doc-sidenav">
         <li class="nav-header"><h5>Types</h5></li>
-{%- for category in sources.get_used_type_categories()|sort %}
+{%- for category in sources.type_categories|sort %}
     {%- if category.name != None -%}
         <li class="nav-header" data-group="{{ category.name }}"><a href="javascript:navigateTo({category: '{{ category.name }}'}, ['category', 'method', 'type'])" data-target="#c-{{ category.name }}"><h6>{{ category.name }}</h6></a></li>
     {%- endif -%}
-    {%- for type in category.get_used_types()|sort %}
+    {%- for type in category.types|sort %}
         <li data-group="{{ category.name }}"  data-item="{{ type.name }}"><a href="javascript:navigateTo({category: '{{ category.name }}', type: '{{ type.name }}'}, ['category', 'method'])" data-target="#t-{{ type.name }}"><i class="i-chevron"></i><span>{{ type.name }}</span></a></li>
     {%- endfor %}
     {%- if not loop.last %}

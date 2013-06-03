@@ -1,4 +1,4 @@
-{%- for category in sources.method_categories.values()|sort %}
+{%- for category in sources.method_categories|sort %}
     <li class="category" id="c-{{ category.name }}">
     {%- if category.name != None -%}
         <h3>{{ category.name }}</h3>
@@ -7,11 +7,11 @@
         {%- endif %}
     {%- endif %}
         <ul class="unstyled">
-    {%- for method_versioned in category.methods.values()|sort %}
-            <li class="method item" id="m-{{ method_versioned.name }}"
-                data-method="{{ method_versioned.reference.method|upper }}"
+    {%- for method in category.methods|sort %}
+            <li class="method item" id="m-{{ method.name }}"
+                data-method="{{ method.method|upper }}"
             >
-                <h4>{{ method_versioned.name }}</h4>
+                <h4>{{ method.name }}</h4>
         {%- if sources.versions|length > 1 %}
                 <div class="diff-header">
                     <h5 class="desc"></h5>
@@ -24,9 +24,9 @@
                          Diff
                     </h5>
                     <ul class="versions inline">
-            {%- for version in sources.versions.values()|sort %}
-                        <li data-version="{{ version.name }}" data-changed="{{ method_versioned.changed_status(version.name)|lower }}"
-                {%- if version.name not in method_versioned.versions -%}
+            {%- for version in sources.versions|sort %}
+                        <li data-version="{{ version.name }}" data-changed="{{ method.changed_status[version.name]|lower }}"
+                {%- if version.name not in method.versions -%}
                     data-exists="no"
                 {%- else -%}
                     data-exists="yes"
@@ -39,11 +39,12 @@
         {%- endif -%}
                 <div class="nocontents">no implementation for this version</div>
                 <div class="contents">
+{#
         {%- include "partial/method_diff.html" -%}
                     <div class="stack sample">
-        {%- for method in method_versioned.signatures.values() %}
+        {%- for method in method.signatures.values() %}
                         <div data-version="
-            {%- for (method_version_name, method_version) in method_versioned.versions.items() %}
+            {%- for (method_version_name, method_version) in method.versions.items() %}
                 {%- if method_version.signature == method.signature %}{{ method_version_name }} {% endif %}
             {%- endfor -%}
                     ">
@@ -51,6 +52,7 @@
                         </div>
         {%- endfor %}
                     </div>
+#}
                 </div>
             </li>
     {%- endfor %}
