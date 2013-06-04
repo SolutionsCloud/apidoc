@@ -45,7 +45,8 @@ class Source():
         """
 
         merged_source = self.merger.merge_sources(raw_sources)
-        self.inject_arguments_in_sources(merged_source, config["input"]["arguments"])
+        merged_source = self.inject_arguments_in_sources(merged_source, config["input"]["arguments"])
+
         return self.extender.extends(merged_source, paths=self.extender_paths)
 
     def get_sources_from_config(self, config):
@@ -66,6 +67,8 @@ class Source():
         if arguments is not None:
             for (argument, value) in arguments.items():
                 sources = self.replace_argument(sources, argument, value)
+
+        return sources
 
     def replace_argument(self, element, argument, value):
         """Replace sources arguments by value injected in config

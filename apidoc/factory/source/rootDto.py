@@ -79,13 +79,18 @@ class RootDto():
             category.methods.append(method_dto)
             method_dto.changed_status[version.name] = ElementCrossVersion.Change.new
 
+        method_uri = "%s%s%s" % (root.configuration.uri or "", version.uri or "", method.uri or "")
         self.hydrate_value(method_dto.description, method.description, version.name)
-        self.hydrate_value(method_dto.uri, "%s%s%s" % (root.configuration.uri or "", version.uri or "", method.uri or ""), version.name)
+        self.hydrate_value(method_dto.uri, method_uri, version.name)
         self.hydrate_value(method_dto.code, method.code, version.name)
 
-        self.hydrate_list(method_dto.request_headers, method.request_headers.values(), version.name)
-        self.hydrate_list(method_dto.request_parameters, method.request_parameters.values(), version.name)
-        self.hydrate_list(method_dto.response_codes, method.response_codes, version.name)
+        for parameter in method.request_parameters.values():
+            parameter.position = method_uri.find("{%s}" % parameter.name)
+        parameters = [parameter for parameter in method.request_parameters.values() if parameter.position >= 0]
+
+        self.hydrate_list(method_dto.request_headers, sorted(method.request_headers.values()), version.name)
+        self.hydrate_list(method_dto.request_parameters, sorted(parameters), version.name)
+        self.hydrate_list(method_dto.response_codes, sorted(method.response_codes), version.name)
 
     def hydrate_type(self, rootDto, root, type, version):
         categories = dict((category.name, category) for category in rootDto.type_categories)

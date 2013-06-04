@@ -195,8 +195,6 @@ versions:
         description: changes
         uri: /changes/{version}/{new_parameter}
         request_parameters:
-          version:
-            description: Overide V1
           new_parameter:
             type: number
             description: New parameter in this version

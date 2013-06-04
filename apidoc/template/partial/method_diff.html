@@ -2,71 +2,70 @@
 {%- import "helper/diff.html" as diff %}
 
 <h5 class="stack title"></h5>
-{% if method_versioned.merged.description %}
+{% if method.description %}
 <div class="description stack">
-    {% for description in method_versioned.merged.description %}
-    <div class="diff_version" data-version="{{ diff.diff_display_version(description, method_versioned, "description") }}">
-        {{- description -}}
+    {% for description in method.description %}
+    <div class="diff_version" data-version="{{ description.versions|join(" ") }}">
+        {{- description.value -}}
     </div>
     {%- endfor -%}
 </div>
 {%- endif -%}
-
 <div class="request stack">
     <h5><i class="i-request"></i> Request: </h5>
     <h6>Resource: </h6>
-{% for full_uri in method_versioned.merged.full_uri %}
-    <code  class="diff_version" data-version="{{ diff.diff_display_version(full_uri, method_versioned, "full_uri") }}"><span class="hur">{{ full_uri }}</span></code>
+{% for uri in method.uri %}
+    <code  class="diff_version" data-version="{{ uri.versions|join(" ") }}"><span class="hur">{{ uri.value }}</span></code>
 {%- endfor -%}
 
-{%- if method_versioned.merged.request_parameters %}
+{%- if method.request_parameters %}
     <h6>URI Parameters: </h6>
     {%- call util.render_table([{"name": "Parameter"},
         {"width": "160px", "name": "Type"},
         {"width": "70px", "name": "Optional"},
         {"width": "50%", "name": "Description"}]) %}
-        {%- for parameter in method_versioned.merged.request_parameters|sort %}
-        <tr class="diff_version" data-version="{{ diff.diff_display_version_signature(parameter.signature, method_versioned, "cleaned_request_parameters") }}">
-            <td><span class="str">{{ util.none_to_empty(parameter.name) }}</span></td>
+        {%- for parameter in method.request_parameters|sort %}
+        <tr class="diff_version" data-version="{{ parameter.versions|join(" ") }}">
+            <td><span class="str">{{ util.none_to_empty(parameter.value.name) }}</span></td>
             <td><span class="typ">
-            {%- if parameter.type != None %}
-                {%- if parameter.get_object().type|lower == "type" %}
-                    <a href="javascript:navigateTo({type: '{{parameter.type}}'}, ['category', 'method'])">{{parameter.type}}</a>
+            {%- if parameter.value.type != None %}
+                {%- if parameter.value.get_object().type|lower == "type" %}
+                    <a href="javascript:navigateTo({type: '{{parameter.value.type}}'}, ['category', 'method'])">{{parameter.value.type}}</a>
                 {%- else -%}
-                    {{- parameter.type -}}
+                    {{- parameter.value.type -}}
                 {%- endif -%}
             {%- endif -%}
-            <td><span class="lit">{% if parameter.optional %}Optional{% endif %}</span></td>
-            <td><span class="com">{{ util.none_to_empty(parameter.description) }}</span></td>
+            <td><span class="lit">{% if parameter.value.optional %}Optional{% endif %}</span></td>
+            <td><span class="com">{{ util.none_to_empty(parameter.value.description) }}</span></td>
         </tr>
         {%- endfor %}
     {%- endcall %}
 {%- endif %}
 
-{%- if method_versioned.merged.request_headers %}
+{%- if method.request_headers %}
     <h6>Headers: </h6>
     {%- call util.render_table([{"name": "Parameter"},
         {"width": "160px", "name": "Type"},
         {"width": "50%", "name": "Description"}]) %}
-        {%- for parameter in method_versioned.merged.request_headers|sort %}
-        <tr class="diff_version" data-version="{{ diff.diff_display_version_signature(parameter.signature, method_versioned, "request_headers") }}">
-            <td><span class="str">{{ util.none_to_empty(parameter.name) }}</span></td>
+        {%- for parameter in method.request_headers|sort %}
+        <tr class="diff_version" data-version="{{ parameter.versions|join(" ") }}">
+            <td><span class="str">{{ util.none_to_empty(parameter.value.name) }}</span></td>
             <td><span class="typ">
-            {%- if parameter.type != None %}
-                {%- if parameter.get_object().type|lower == "type" %}
-                    <a href="javascript:navigateTo({type: '{{parameter.type}}'}, ['category', 'method'])">{{parameter.type}}</a>
+            {%- if parameter.value.type != None %}
+                {%- if parameter.value.get_object().type|lower == "type" %}
+                    <a href="javascript:navigateTo({type: '{{parameter.value.type}}'}, ['category', 'method'])">{{parameter.value.type}}</a>
                 {%- else -%}
-                    {{- parameter.type -}}
+                    {{- parameter.value.type -}}
                 {%- endif -%}
             {%- endif -%}</span></td>
-            <td><span class="com">{{ util.none_to_empty(parameter.description) }}</span></td>
+            <td><span class="com">{{ util.none_to_empty(parameter.value.description) }}</span></td>
         </tr>
         {%- endfor %}
     {%- endcall %}
 {%- endif %}
 
-
-{%- if method_versioned.merged.request_body %}
+{#
+{%- if method.request_body %}
     <h6>Body: </h6>
     <div class="code"><table class="table-hover">
         <colgroup>
@@ -74,15 +73,17 @@
             <col width="50%%"></col>
         </colgroup>
         <tbody>
-{{ diff.diff_code_commented(method_versioned, method_versioned.merged.request_body) }}
+{{ diff.diff_code_commented(method_versioned, method.request_body) }}
         </tbody>
     </table></div>
 {%- endif %}
+#}
 </div>
 
 <div class="response stack">
     <h5><i class="i-response"></i> Response: </h5>
-{%- if method_versioned.merged.response_body %}
+{#
+{%- if method.response_body %}
     <h6>Body: </h6>
     <div class="code"><table class="table-hover">
         <colgroup>
@@ -90,21 +91,22 @@
             <col width="50%%"></col>
         </colgroup>
         <tbody>
-{{ diff.diff_code_commented(method_versioned, method_versioned.merged.response_body) }}
+{{ diff.diff_code_commented(method_versioned, method.response_body) }}
         </tbody>
     </table></div>
 {%- endif %}
+#}
 
-{%- if method_versioned.merged.response_codes %}
+{%- if method.response_codes %}
     <h6>Codes: </h6>
 {%- call util.render_table([{"width": "50px", "name": "Code"},
     {"name": "Message"},
     {"width": "50%", "name": "Description"}]) %}
-    {%- for parameter in method_versioned.merged.response_codes|sort %}
-        <tr class="diff_version" data-version="{{ diff.diff_display_version_signature_list(parameter.signature, method_versioned, "response_codes") }}">
-            <td><span class="lit">{{ util.none_to_empty(parameter.code) }}</span></td>
-            <td><span class="str">{{ util.none_to_empty(parameter.message) }}</span></td>
-            <td><span class="com">{{ util.none_to_empty(parameter.description) }}</span></td>
+    {%- for parameter in method.response_codes|sort %}
+        <tr class="diff_version" data-version="{{ parameter.versions|join(" ") }}">
+            <td><span class="lit">{{ util.none_to_empty(parameter.value.code) }}</span></td>
+            <td><span class="str">{{ util.none_to_empty(parameter.value.message) }}</span></td>
+            <td><span class="com">{{ util.none_to_empty(parameter.value.description) }}</span></td>
         </tr>
     {%- endfor %}
 {%- endcall %}

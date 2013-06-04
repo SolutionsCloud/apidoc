@@ -1,11 +1,11 @@
 {%- import "helper/util.html" as util %}
 {%- import "helper/diff.html" as diff %}
 
-{% if type_versioned.merged.description %}
+{% if type.description %}
 <div class="description stack">
-    {% for description in type_versioned.merged.description %}
-    <div class="diff_version" data-version="{{ diff.diff_display_version(description, type_versioned, "description") }}">
-        {{- description -}}
+    {% for description in type.description %}
+    <div class="diff_version" data-version="{{ description.versions|join(" ") }}">
+        {{- description.value -}}
     </div>
     {%- endfor -%}
 </div>
@@ -14,19 +14,19 @@
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>
     <h6>Primary: </h6>
-{% for primary in type_versioned.merged.primary %}
-    <div class="diff_version" data-version="{{ diff.diff_display_version(primary, type_versioned, "primary") }}">
-        <code><span class="typ">{{ primary }}</span></code>
+{% for primary in type.primary %}
+    <div class="diff_version" data-version="{{ primary.versions|join(" ") }}">
+        <code><span class="typ">{{ primary.value }}</span></code>
     </div>
 {%- endfor -%}
 
-{%- if type_versioned.merged.values %}
+{%- if type.values %}
         <h6>Values: </h6>
     {%- call util.render_table([{"width": "200px", "name": "Value"}, {"name": "Description"}]) %}
-        {%- for parameter in type_versioned.merged.values|sort %}
-        <tr class="diff_version" data-version="{{ diff.diff_display_version_signature(parameter.signature, type_versioned, "values") }}">
-            <td><span class="str">{{ util.none_to_empty(parameter.name) }}</span></td>
-            <td><span class="com">{{ util.none_to_empty(parameter.description) }}</span></td>
+        {%- for value in type.values|sort %}
+        <tr class="diff_version" data-version="{{ value.versions|join(" ") }}">
+            <td><span class="str">{{ util.none_to_empty(value.value.name) }}</span></td>
+            <td><span class="com">{{ util.none_to_empty(value.value.description) }}</span></td>
         </tr>
         {%- endfor %}
     {%- endcall %}

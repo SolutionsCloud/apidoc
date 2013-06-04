@@ -7,9 +7,9 @@
         {%- endif %}
     {%- endif %}
         <ul class="unstyled">
-    {%- for types in category.types|sort %}
-            <li class="type item" id="t-{{ types.name }}">
-                <h4>{{ types.name }}</h4>
+    {%- for type in category.types|sort %}
+            <li class="type item" id="t-{{ type.name }}">
+                <h4>{{ type.name }}</h4>
         {%- if sources.versions|length > 1 %}
                 <div class="diff-header">
                     <h5 class="desc"></h5>
@@ -23,8 +23,8 @@
                     </h5>
                     <ul class="versions inline">
             {%- for version in sources.versions|sort %}
-                        <li data-version="{{ version.name }}" data-changed="{{ types.changed_status[version.name]|lower }}"
-                {%- if version.name not in types.versions -%}
+                        <li data-version="{{ version.name }}" data-changed="{{ type.changed_status[version.name]|lower }}"
+                {%- if version.name not in type.versions -%}
                     data-exists="no"
                 {%- else -%}
                     data-exists="yes"
@@ -37,12 +37,12 @@
         {%- endif -%}
                 <div class="nocontents">no implementation for this version</div>
                 <div class="contents">
-{#
         {%- include "partial/type_diff.html" -%}
+{#
                     <div class="stack sample">
-        {%- for type in types.signatures.values() %}
+        {%- for type in type.signatures.values() %}
                         <div data-version="
-            {%- for (type_version_name, type_version) in types.versions.items() %}
+            {%- for (type_version_name, type_version) in type.versions.items() %}
                 {%- if type_version.signature == type.signature %}{{ type_version_name }} {% endif %}
             {%- endfor -%}
                     ">

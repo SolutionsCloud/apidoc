@@ -482,12 +482,12 @@ class MultiVersion(Sortable):
     def __lt__(self, other):
         """Return true if self is lower than other
         """
-        return sorted(self.versions) < sorted(other.versions)
+        return (self.value, sorted(self.versions)) < (other.value, sorted(other.versions))
 
     def __eq__(self, other):
         """Return true if self is equals to other
         """
-        return self.versions == other.versions
+        return (self.versions, self.value) == (other.versions, other.value)
 
 
 class Parameter(Element, Sampleable, Sortable):
@@ -518,7 +518,6 @@ class Parameter(Element, Sampleable, Sortable):
         """
         return merge_dict(super().get_signature_struct(), {
             "type": self.type,
-            "position": self.position,
             "description": self.description,
             "optional": self.optional,
         })
