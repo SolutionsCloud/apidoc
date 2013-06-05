@@ -2,8 +2,10 @@ from apidoc.object.source import RootDto as ObjectRoot
 from apidoc.object.source import Category, VersionDto
 from apidoc.object.source import MethodCategory, TypeCategory
 from apidoc.object.source import MethodDto, TypeDto
-from apidoc.object.source import MultiVersion, Element, EnumType
-from apidoc.object.source import MethodCrossVersion, TypeCrossVersion, ElementCrossVersion
+from apidoc.object.source import MultiVersion, EnumType
+from apidoc.object.source import ObjectObject
+from apidoc.object.source import ParameterDto, PositionableParameterDto, ResponseCodeDto
+from apidoc.object.source import ObjectDto
 
 
 class RootDto():
@@ -24,19 +26,19 @@ class RootDto():
             for type in version.types.values():
                 self.hydrate_type(rootDto, root, type, version)
 
-        self.changed_status(rootDto)
-
-        #self.fix_versions(root)
-        #self.refactor_hierarchy(root)
+        self.define_changes_status(rootDto)
 
         #TODO display only used types
         #TODO display only used categories
+        #TODO inject type data into ObjectType (needed for signature)
+        #TODO inject reference data into ObjectReference
 
         from apidoc.lib.util.serialize import json_repr
         print(json_repr(rootDto))
+
         return rootDto
 
-    def changed_status(self, rootDto):
+    def define_changes_status(self, rootDto):
         sorted_version = sorted(rootDto.versions)
 
         items = []
@@ -48,15 +50,15 @@ class RootDto():
         for item in items:
             new = False
             for version in sorted_version:
-                if version.name not in item.changed_status.keys():
+                if version.name not in item.changes_status.keys():
                     if new:
-                        item.changed_status[version.name] = ElementCrossVersion.Change.deleted
+                        item.changes_status[version.name] = MultiVersion.Change.deleted
                         new = False
                     else:
-                        item.changed_status[version.name] = ElementCrossVersion.Change.none
+                        item.changes_status[version.name] = MultiVersion.Change.none
                 else:
                     if not new:
-                        item.changed_status[version.name] = ElementCrossVersion.Change.new
+                        item.changes_status[version.name] = MultiVersion.Change.new
                         new = True
 
     def hydrate_method(self, rootDto, root, method, version):
@@ -73,24 +75,30 @@ class RootDto():
         methods = dict((method.name, method) for method in category.methods)
         if method.name in methods.keys():
             method_dto = methods[method.name]
-            method_dto.changed_status[version.name] = ElementCrossVersion.Change.none
+            method_dto.changes_status[version.name] = MultiVersion.Change.none
         else:
             method_dto = MethodDto(method)
             category.methods.append(method_dto)
-            method_dto.changed_status[version.name] = ElementCrossVersion.Change.new
+            method_dto.changes_status[version.name] = MultiVersion.Change.new
 
         method_uri = "%s%s%s" % (root.configuration.uri or "", version.uri or "", method.uri or "")
         self.hydrate_value(method_dto.description, method.description, version.name)
         self.hydrate_value(method_dto.uri, method_uri, version.name)
         self.hydrate_value(method_dto.code, method.code, version.name)
 
-        for parameter in method.request_parameters.values():
+        parameters = [PositionableParameterDto(parameter) for parameter in method.request_parameters.values()]
+        for parameter in parameters:
             parameter.position = method_uri.find("{%s}" % parameter.name)
-        parameters = [parameter for parameter in method.request_parameters.values() if parameter.position >= 0]
+        request_parameters = [parameter for parameter in parameters if parameter.position >= 0]
+        request_headers = [ParameterDto(parameter) for parameter in method.request_headers.values()]
+        response_codes = [ResponseCodeDto(parameter) for parameter in method.response_codes]
 
-        self.hydrate_list(method_dto.request_headers, sorted(method.request_headers.values()), version.name)
-        self.hydrate_list(method_dto.request_parameters, sorted(parameters), version.name)
-        self.hydrate_list(method_dto.response_codes, sorted(method.response_codes), version.name)
+        self.hydrate_list(method_dto.request_headers, sorted(request_headers), version.name)
+        self.hydrate_list(method_dto.request_parameters, sorted(request_parameters), version.name)
+        self.hydrate_list(method_dto.response_codes, sorted(response_codes), version.name)
+
+        self.hydrade_object(method_dto.request_body, method.request_body, version.name)
+        self.hydrade_object(method_dto.response_body, method.response_body, version.name)
 
     def hydrate_type(self, rootDto, root, type, version):
         categories = dict((category.name, category) for category in rootDto.type_categories)
@@ -106,11 +114,11 @@ class RootDto():
         types = dict((type.name, type) for type in category.types)
         if type.name in types.keys():
             type_dto = types[type.name]
-            type_dto.changed_status[version.name] = ElementCrossVersion.Change.none
+            type_dto.changes_status[version.name] = MultiVersion.Change.none
         else:
             type_dto = TypeDto(type)
             category.types.append(type_dto)
-            type_dto.changed_status[version.name] = ElementCrossVersion.Change.new
+            type_dto.changes_status[version.name] = MultiVersion.Change.new
 
         self.hydrate_value(type_dto.description, type.description, version.name)
         self.hydrate_value(type_dto.primary, type.primary, version.name)
@@ -121,19 +129,12 @@ class RootDto():
         if (isinstance(type, EnumType)):
             self.hydrate_list(type_dto.values, type.values.values(), version.name)
 
-    def equals(self, value1, value2):
-        if isinstance(value1, Element):
-            if isinstance(value2, Element):
-                return value1.signature == value2.signature
-            return False
-        return value1 == value2
-
     def hydrate_value(self, dto_value, source_value, version):
         if source_value is None:
             return
         find = False
         for versioned_value in dto_value:
-            if self.equals(versioned_value.value, source_value):
+            if versioned_value.value == source_value:
                 versioned_value.versions.append(version)
                 find = True
 
@@ -144,74 +145,37 @@ class RootDto():
         for source_value in source_list:
             find = False
             for versioned_value in dto_list:
-                if self.equals(versioned_value.value.signature, source_value.signature):
+                if versioned_value.value == source_value:
                     versioned_value.versions.append(version)
                     find = True
 
             if not find:
                 dto_list.append(MultiVersion(source_value, version))
 
-    def fix_versions(self, root):
-        """Set the version of elements
-        """
-        for (version_name, version) in root.versions.items():
-            for (type_name, type) in version.types.items():
-                type.version = version_name
-            for (reference_name, reference) in version.references.items():
-                reference.version = version_name
-            for (method_name, method) in version.methods.items():
-                method.version = version_name
+    def hydrade_object(self, dto_object, source_object, version):
+        if source_object is None:
+            return None
 
-    def refactor_hierarchy(self, root):
-        """Modify elements structure (root/version/elements/) to (root/elementByVersion/element)
-        """
-        root.methods = {}
-        root.method_categories = {}
-        root.types = {}
-        root.type_categories = {}
-        root.references = {}
-        for (version_name, version) in root.versions.items():
-            for (reference_name, reference) in version.references.items():
-                if reference_name not in root.references:
-                    root.references[reference_name] = ElementCrossVersion(element=reference)
-                root.references[reference_name].versions[version_name] = reference
+        source_dto = ObjectDto.factory(source_object)
 
-            for (type_name, type) in version.types.items():
-                if type.category not in root.type_categories:
-                    root.type_categories[type.category] = TypeCategory(name=type.category)
-                    if type.category in root.categories:
-                        root.type_categories[type.category].order = root.categories[type.category].order
-                        root.type_categories[type.category].description = root.categories[type.category].description
+        find = None
+        for versioned_value in dto_object:
+            if versioned_value.value == source_dto:
+                versioned_value.versions.append(version)
+                find = versioned_value
 
-                if type_name not in root.type_categories[type.category].types:
-                    root.type_categories[type.category].types[type_name] = TypeCrossVersion(element=type)
-                root.type_categories[type.category].types[type_name].versions[version_name] = type
+        if find is None:
+            if source_dto.type is ObjectObject.Types.object:
+                for (property_name, property_value) in source_object.properties.items():
+                    source_dto.properties[property_name] = self.hydrade_object([], property_value, version)
 
-                if type.signature not in root.type_categories[type.category].types[type_name].signatures:
-                    root.type_categories[type.category].types[type_name].signatures[type.signature] = type
+            dto_object.append(MultiVersion(source_dto, version))
+        else:
+            if source_dto.type is ObjectObject.Types.object:
+                for (property_name, property_value) in source_object.properties.items():
+                    if find.value.type is ObjectObject.Types.object and property_name in find.value.properties.keys():
+                        find.value.properties[property_name] = self.hydrade_object(find.value.properties[property_name], property_value, version)
+                    else:
+                        find.value.properties[property_name] = self.hydrade_object([], property_value, version)
 
-                if type_name not in root.types:
-                    root.types[type_name] = TypeCrossVersion(element=type)
-                root.types[type_name].versions[version_name] = type
-
-            for (method_name, method) in version.methods.items():
-                if method.category not in root.method_categories:
-                    root.method_categories[method.category] = MethodCategory(name=method.category)
-                    if method.category in root.categories:
-                        root.method_categories[method.category].order = root.categories[method.category].order
-                        root.method_categories[method.category].description = root.categories[method.category].description
-
-                if method_name not in root.method_categories[method.category].methods:
-                    root.method_categories[method.category].methods[method_name] = MethodCrossVersion(element=method)
-                root.method_categories[method.category].methods[method_name].versions[version_name] = method
-
-                if method.signature not in root.method_categories[method.category].methods[method_name].signatures:
-                    root.method_categories[method.category].methods[method_name].signatures[method.signature] = method
-
-                if method_name not in root.methods:
-                    root.methods[method_name] = MethodCrossVersion(element=method)
-                root.methods[method_name].versions[version_name] = method
-
-            del(version.methods)
-            del(version.types)
-            del(version.references)
+        return dto_object

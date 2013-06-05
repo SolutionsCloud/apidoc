@@ -23,7 +23,7 @@
                     </h5>
                     <ul class="versions inline">
             {%- for version in sources.versions|sort %}
-                        <li data-version="{{ version.name }}" data-changed="{{ type.changed_status[version.name]|lower }}"
+                        <li data-version="{{ version.name }}" data-changed="{{ type.changes_status[version.name]|lower }}"
                 {%- if version.name not in type.versions -%}
                     data-exists="no"
                 {%- else -%}

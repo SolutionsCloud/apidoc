@@ -1,9 +1,7 @@
-import hashlib
 import logging
 
-from functools import total_ordering, lru_cache
+from functools import total_ordering
 from apidoc.lib.util.enum import Enum
-from apidoc.lib.util.tools import merge_dict
 
 
 class Root():
@@ -47,18 +45,6 @@ class RootDto():
         self.method_categories = []
         self.type_categories = []
 
-    @lru_cache()
-    def previous_version(self, version):
-        """return version previous to that provided in parameter
-        """
-        last_version = None
-        for v in sorted(self.versions.values()):
-            if v.name == version:
-                return last_version
-            last_version = v.name
-
-        raise ValueError("Unknown version \"%s\"" % version)
-
     def get_used_type_categories(self):
         """return list of used type_categories
         """
@@ -88,36 +74,6 @@ class Element():
         super().__init__()
         self.name = None
         self.description = None
-
-    _signature = None
-    _version = None
-
-    def version():
-        """The version property.
-        """
-        def fget(self):
-            return self._version
-
-        def fset(self, value):
-            self._version = value
-
-        return locals()
-    version = property(**version())
-
-    @property
-    def signature(self):
-        """Return a uniq signature of the element
-        """
-        return hashlib.md5(repr(self.get_signature_struct()).encode("UTF-8")).hexdigest()
-        return self._signature
-
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return {
-            "name": self.name,
-            "description": self.description
-        }
 
 
 class ElementDto():
@@ -169,27 +125,35 @@ class Sampleable():
 
 
 @total_ordering
-class Sortable():
+class Comparable():
 
     """Element who can be sorted
     """
 
-    def __init__(self):
-        """Class instantiation
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
         """
-        super().__init__()
-        self.name = None
-        self.description = None
+        return ()
+
+    def get_comparable_values_for_equality(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return self.get_comparable_values()
+
+    def get_comparable_values_for_ordering(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return self.get_comparable_values()
 
     def __lt__(self, other):
         """Return true if self is lower than other
         """
-        return (str(self.name), str(self.description)) < (str(other.name), str(self.description))
+        return self.get_comparable_values_for_ordering() < other.get_comparable_values_for_ordering()
 
     def __eq__(self, other):
         """Return true if self is equals to other
         """
-        return (str(self.name), str(self.description)) == (str(other.name), str(self.description))
+        return type(self) is type(other) and self.get_comparable_values_for_equality() == other.get_comparable_values_for_equality()
 
 
 class Displayable():
@@ -202,13 +166,6 @@ class Displayable():
         """
         super().__init__()
         self.display = True
-
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return {
-            "display": self.display
-        }
 
 
 class Configuration(Element):
@@ -261,7 +218,7 @@ class Version(Element, Displayable):
         return (self.major, self.minor, self.name) == (other.major, other.minor, self.name)
 
 
-class VersionDto(ElementDto, Sortable):
+class VersionDto(ElementDto, Comparable):
 
     """Element Version
     """
@@ -276,15 +233,10 @@ class VersionDto(ElementDto, Sortable):
         self.minor = version.minor
         self.status = version.status
 
-    def __lt__(self, other):
-        """Return true if self is lower than other
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
         """
-        return (self.major, self.minor, self.name) < (other.major, other.minor, self.name)
-
-    def __eq__(self, other):
-        """Return true if self is equals to other
-        """
-        return (self.major, self.minor, self.name) == (other.major, other.minor, self.name)
+        return (int(self.major), int(self.minor), str(self.name))
 
 
 class Category(Element, Displayable):
@@ -300,7 +252,7 @@ class Category(Element, Displayable):
         self.order = 99
 
 
-class CategoryDto(ElementDto, Sortable):
+class CategoryDto(ElementDto, Comparable):
 
     """Element Category
     """
@@ -312,15 +264,10 @@ class CategoryDto(ElementDto, Sortable):
 
         self.order = category.order
 
-    def __lt__(self, other):
-        """Return true if self is lower than other
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
         """
-        return (self.order, str(self.name)) < (other.order, str(other.name))
-
-    def __eq__(self, other):
-        """Return true if self is equals to other
-        """
-        return (self.order, self.name) == (other.order, other.name)
+        return (int(self.order), str(self.name))
 
 
 class TypeCategory(CategoryDto):
@@ -370,36 +317,6 @@ class Method(Element, Displayable):
         delete = 4
         head = 5
         http = 6
-
-    @Element.version.setter
-    def version(self, value):
-        """Set the version and propagate it to is subelements
-        """
-        self._version = value
-        for parameter in self.request_parameters.values():
-            parameter.version = value
-        for parameter in self.request_headers.values():
-            parameter.version = value
-        for parameter in self.response_codes:
-            parameter.version = value
-        if self.request_body:
-            self.request_body.version = value
-        if self.response_body:
-            self.response_body.version = value
-
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return merge_dict(super().get_signature_struct(), {
-            "code": self.code,
-            "uri": self.uri,
-            "method": str(self.method),
-            "request_headers": sorted([x.signature for x in self.request_headers.values()]),
-            "request_parameters": sorted([x.signature for x in self.cleaned_request_parameters.values()]),
-            "request_body": None if self.request_body is None else self.request_body.signature,
-            "response_codes": sorted([x.signature for x in self.response_codes]),
-            "response_body": None if self.response_body is None else self.response_body.signature,
-        })
 
     @property
     def message(self):
@@ -452,7 +369,7 @@ class Method(Element, Displayable):
         return list({}.fromkeys(types).keys())
 
 
-class MethodDto(ElementVersionedDto, Sortable, Displayable):
+class MethodDto(ElementVersionedDto, Comparable):
 
     def __init__(self, method):
         """Class instantiation
@@ -464,7 +381,7 @@ class MethodDto(ElementVersionedDto, Sortable, Displayable):
         self.code = []
         self.uri = []
 
-        self.changed_status = {}
+        self.changes_status = {}
 
         self.request_headers = []
         self.request_parameters = []
@@ -472,25 +389,67 @@ class MethodDto(ElementVersionedDto, Sortable, Displayable):
         self.response_codes = []
         self.response_body = []
 
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name))
 
-class MultiVersion(Sortable):
+
+class MultiVersion(Comparable):
+
+    class Change(Enum):
+        """List of availables Change for this element
+        """
+        none = 1
+        new = 2
+        updated = 3
+        deleted = 4
 
     def __init__(self, value, version):
         self.versions = [version]
         self.value = value
 
-    def __lt__(self, other):
-        """Return true if self is lower than other
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
         """
-        return (self.value, sorted(self.versions)) < (other.value, sorted(other.versions))
+        return (self.value, sorted(self.versions))
 
-    def __eq__(self, other):
-        """Return true if self is equals to other
+
+class ParameterDto(ElementDto, Sampleable, Comparable):
+
+    def __init__(self, parameter):
+        """Class instantiation
         """
-        return (self.versions, self.value) == (other.versions, other.value)
+        super().__init__(parameter)
+        self.type = parameter.type
+        self.optional = parameter.optional
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name), str(self.description))
+
+    def get_object(self):
+        object = Object.factory(self.type, None)
+        object.name = self.name
+        return object
 
 
-class Parameter(Element, Sampleable, Sortable):
+class PositionableParameterDto(ParameterDto):
+
+    def __init__(self, parameter):
+        """Class instantiation
+        """
+        super().__init__(parameter)
+        self.position = 0
+
+    def get_comparable_values_for_ordering(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (int(self.position), str(self.name), str(self.description))
+
+
+class Parameter(Element, Sampleable):
 
     """Element Parameter
     """
@@ -501,29 +460,9 @@ class Parameter(Element, Sampleable, Sortable):
         super().__init__()
         self.type = None
         self.optional = False
-        self.position = 0
-
-    def __lt__(self, other):
-        """Return true if self is lower than other
-        """
-        return (int(self.position), str(self.name), str(self.description)) < (int(other.position), str(other.name), str(other.description))
-
-    def __eq__(self, other):
-        """Return true if self is equals to other
-        """
-        return (int(self.position), str(self.name), str(self.description)) == (int(other.position), str(other.name), str(other.description))
-
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return merge_dict(super().get_signature_struct(), {
-            "type": self.type,
-            "description": self.description,
-            "optional": self.optional,
-        })
 
     def get_object(self):
-        object = Object.factory(self.type, self.version)
+        object = Object.factory(self.type, None)
         object.name = self.name
         return object
 
@@ -538,7 +477,22 @@ class Parameter(Element, Sampleable, Sortable):
         return [self.type]
 
 
-class ResponseCode(Element, Sortable):
+class ResponseCodeDto(ElementDto, Comparable):
+
+    def __init__(self, parameter):
+        """Class instantiation
+        """
+        super().__init__(parameter)
+        self.code = parameter.code
+        self.message = parameter.message
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (int(self.code), str(self.message), str(self.description))
+
+
+class ResponseCode(Element):
 
     """Element ResponseCode
     """
@@ -549,24 +503,6 @@ class ResponseCode(Element, Sortable):
         super().__init__()
         self.code = 200
         self.message = None
-
-    def __lt__(self, other):
-        """Return true if self is lower than other
-        """
-        return (int(self.code), str(self.message), str(self.description)) < (int(other.code), str(other.message), str(self.description))
-
-    def __eq__(self, other):
-        """Return true if self is equals to other
-        """
-        return (int(self.code), str(self.message), str(self.description)) == (int(other.code), str(other.message), str(self.description))
-
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return merge_dict(super().get_signature_struct(), {
-            "code": self.code,
-            "message": self.message,
-        })
 
 
 class Type(Element):
@@ -590,14 +526,6 @@ class Type(Element):
         self.format = TypeFormat()
         self.category = None
 
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return merge_dict(super().get_signature_struct(), {
-            "primary": self.primary,
-            "format": self.format.get_signature_struct(),
-        })
-
     def get_sample(self):
         """Return the a sample for the element
         """
@@ -611,7 +539,7 @@ class Type(Element):
         return "my_%s" % self.name
 
 
-class TypeDto(ElementVersionedDto, Sortable):
+class TypeDto(ElementVersionedDto, Comparable):
 
     """Element Type
     """
@@ -624,10 +552,15 @@ class TypeDto(ElementVersionedDto, Sortable):
         self.name = type.name
         self.format = TypeFormatDto(type.format)
 
-        self.changed_status = {}
+        self.changes_status = {}
 
         self.primary = []
         self.values = []
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name))
 
 
 class TypeFormat(Sampleable):
@@ -641,14 +574,6 @@ class TypeFormat(Sampleable):
         super().__init__()
         self.pretty = None
         self.advanced = None
-
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return {
-            "pretty": self.pretty,
-            "advanced": self.advanced,
-        }
 
     def get_default_sample(self):
         """Return default value for the element
@@ -684,13 +609,6 @@ class EnumType(Type):
         self.primary = Type.Primaries.enum
         self.values = {}
 
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return merge_dict(super().get_signature_struct(), {
-            "values": sorted([x.signature for x in self.values.values()])
-        })
-
     def get_default_sample(self):
         """Return default value for the element
         """
@@ -699,12 +617,43 @@ class EnumType(Type):
         return super().get_default_sample()
 
 
-class EnumTypeValue(Element, Sortable):
+class EnumTypeValue(Element, Comparable):
 
     """Element EnumTypeValue
     """
 
-    pass
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name), str(self.description))
+
+
+class ObjectDto(ElementDto, Comparable):
+
+    """Element Object
+    """
+
+    @classmethod
+    def factory(cls, object_source):
+        """Return a proper object
+        """
+        if isinstance(object_source, ObjectObject):
+            return ObjectObjectDto(object_source)
+        else:
+            return ObjectDto(object_source)
+
+    def __init__(self, object):
+        """Class instantiation
+        """
+        super().__init__(object)
+        self.type = object.type
+        self.optional = object.optional
+        self.required = object.required
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name), str(self.description), str(self.type), bool(self.optional), bool(self.required))
 
 
 class Object(Element, Sampleable):
@@ -768,39 +717,22 @@ class Object(Element, Sampleable):
         self.optional = False
         self.required = True
 
-    _unit_signature = None
-
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return merge_dict(super().get_signature_struct(), {
-            "type": str(self.type),
-            "optional": self.optional,
-            "required": self.required,
-        })
-
-    @property
-    def unit_signature(self):
-        """Return a uniq signature of the element
-        """
-        if self._unit_signature is None:
-            self._unit_signature = hashlib.md5(repr(self.get_unit_signature_struct()).encode("UTF-8")).hexdigest()
-        return self._unit_signature
-
-    def get_unit_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return {
-            "description": str(self.description),
-            "type": str(self.type),
-            "optional": self.optional,
-            "required": self.required,
-        }
-
     def get_used_types(self):
         """Return list of types used in the object
         """
         return []
+
+
+class ObjectObjectDto(ObjectDto):
+
+    """Element ObjectObject
+    """
+
+    def __init__(self, object):
+        """Class instantiation
+        """
+        super().__init__(object)
+        self.properties = {}
 
 
 class ObjectObject(Object):
@@ -814,26 +746,6 @@ class ObjectObject(Object):
         super().__init__()
         self.type = Object.Types("object")
         self.properties = {}
-
-    @Element.version.setter
-    def version(self, value):
-        """Set the version and propagate it to is subelements
-        """
-        self._version = value
-        for object in self.properties.values():
-            object.version = value
-
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return merge_dict(super().get_signature_struct(), {
-            "properties": sorted([x.signature for x in self.properties.values()])
-        })
-
-    def get_unit_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return super().get_unit_signature_struct()
 
     def get_used_types(self):
         """Return list of types used in the object
@@ -856,26 +768,6 @@ class ObjectArray(Object):
         self.type = Object.Types("array")
         self.items = None
         self.sample_count = 2
-
-    @Element.version.setter
-    def version(self, value):
-        """Set the version and propagate it to is subelements
-        """
-        self._version = value
-        if self.items is not None:
-            self.items.version = value
-
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return merge_dict(super().get_signature_struct(), {
-            "items": None if self.items is None else self.items.signature
-        })
-
-    def get_unit_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return super().get_unit_signature_struct()
 
     def get_used_types(self):
         """Return list of types used in the object
@@ -955,18 +847,6 @@ class ObjectDynamic(Object):
         self.type = Object.Types("dynamic")
         self.items = None
 
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return merge_dict(super().get_signature_struct(), {
-            "items": self.items
-        })
-
-    def get_unit_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return super().get_unit_signature_struct()
-
     def get_default_sample(self):
         """Return default value for the element
         """
@@ -992,18 +872,6 @@ class ObjectReference(Object):
         super().__init__()
         self.type = Object.Types("reference")
         self.reference_name = None
-
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return merge_dict(super().get_signature_struct(), {
-            "reference": self.get_reference().signature
-        })
-
-    def get_unit_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return super().get_unit_signature_struct()
 
     def get_reference(self):
         """Return a reference object from the reference_name defined in sources
@@ -1043,21 +911,10 @@ class ObjectType(Object):
         self.type = Object.Types("type")
         self.type_name = None
 
-    def get_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return merge_dict(super().get_signature_struct(), {
-            "type": self.get_type().signature
-        })
-
-    def get_unit_signature_struct(self):
-        """Return a uniq signature of the element as dict
-        """
-        return self.get_signature_struct()
-
     def get_type(self):
         """Return a type object from the type_name defined in sources
         """
+        return Type()
         if self.type_name not in RootDto.instance().types:
             raise ValueError("Unable to find type \"%s\"." % self.type_name)
         if self.version not in RootDto.instance().types[self.type_name].versions:
@@ -1074,182 +931,3 @@ class ObjectType(Object):
         """Return list of types used in the object
         """
         return [self.type_name]
-
-
-class MergedMethod():
-
-    def __init__(self):
-        """Class instantiation
-        """
-        self.description = []
-        self.full_uri = []
-        self.request_parameters = []
-        self.request_headers = []
-        self.request_body = []
-        self.response_body = []
-        self.response_codes = []
-
-
-class MergedType():
-
-    def __init__(self):
-        """Class instantiation
-        """
-        self.description = []
-        self.primary = []
-        self.values = []
-
-
-class ElementCrossVersion(Element, Sortable):
-    """Element ElementCrossVersion
-    """
-
-    class Change(Enum):
-        """List of availables Change for this element
-        """
-        none = 1
-        new = 2
-        updated = 3
-        deleted = 4
-
-    _merged = None
-
-    def __init__(self, element):
-        """Class instantiation
-        """
-        super().__init__()
-        self.name = element.name
-        self.description = element.description
-        self.reference = element
-        self.versions = {}
-        self.signatures = {}
-
-    def changed_status(self, version):
-        """Return the change status for the specified version
-        """
-        previous_version = RootDto.instance().previous_version(version)
-        if previous_version is None:
-            if version not in self.versions:
-                return ElementCrossVersion.Change.none
-            return ElementCrossVersion.Change.new
-
-        if previous_version not in self.versions:
-            if version not in self.versions:
-                return ElementCrossVersion.Change.none
-            return ElementCrossVersion.Change.new
-
-        if version not in self.versions:
-            return ElementCrossVersion.Change.deleted
-
-        if self.versions[previous_version].signature != self.versions[version].signature:
-            return ElementCrossVersion.Change.updated
-
-        return ElementCrossVersion.Change.none
-
-
-class TypeCrossVersion(ElementCrossVersion):
-
-    @property
-    def merged(self):
-        """Return a merged reference
-        """
-        if self._merged is None:
-            merged = MergedType()
-            seen_values = []
-            for m in self.versions.values():
-                if m.description is not None and m.description not in merged.description:
-                    merged.description.append(m.description)
-                if m.primary is not None and m.primary not in merged.primary:
-                    merged.primary.append(m.primary)
-                if m.primary == Type.Primaries.enum:
-                    for parameter in m.values.values():
-                        if parameter.signature not in seen_values:
-                            seen_values.append(parameter.signature)
-                            merged.values.append(parameter)
-            self._merged = merged
-        return self._merged
-
-
-class MethodCrossVersion(ElementCrossVersion):
-
-    @property
-    def merged(self):
-        """Return a merged reference
-        """
-        if self._merged is None:
-            merged = MergedMethod()
-            seen_request_parameters = []
-            seen_request_headers = []
-            seen_response_codes = []
-            for m in self.versions.values():
-                if m.description is not None and m.description not in merged.description:
-                    merged.description.append(m.description)
-                if m.full_uri is not None and m.full_uri not in merged.full_uri:
-                    merged.full_uri.append(m.full_uri)
-                for parameter in m.cleaned_request_parameters.values():
-                    if parameter.signature not in seen_request_parameters:
-                        seen_request_parameters.append(parameter.signature)
-                        merged.request_parameters.append(parameter)
-                for parameter in m.request_headers.values():
-                    if parameter.signature not in seen_request_headers:
-                        seen_request_headers.append(parameter.signature)
-                        merged.request_headers.append(parameter)
-                for parameter in m.response_codes:
-                    if parameter.signature not in seen_response_codes:
-                        seen_response_codes.append(parameter.signature)
-                        merged.response_codes.append(parameter)
-                if m.request_body is not None:
-                    merged.request_body.append(m.request_body)
-                if m.response_body is not None:
-                    merged.response_body.append(m.response_body)
-            self._merged = merged
-        return self._merged
-
-    def objects_without_reference(self, objects):
-        list_objects = []
-        for object in objects:
-            while object.type == Object.Types.reference:
-                object = object.get_reference()
-            list_objects.append(object)
-        return list_objects
-
-    def objects_by_unit_signature(self, objects):
-        seen_signatures = []
-        list_objects = []
-        for object in self.objects_without_reference(objects):
-            object.versions = [object.version]
-            if object.unit_signature not in seen_signatures:
-                seen_signatures.append(object.unit_signature)
-                list_objects.append(object)
-            else:
-                for x in [x for x in list_objects if x.unit_signature == object.unit_signature]:
-                    x.versions.append(object.version)
-        return list_objects
-
-    def objects_merge_properties(self, objects):
-        list_properties = {}
-        for object in self.objects_without_reference(objects):
-            if object.type == Object.Types.object:
-                for (property_name, property_value) in object.properties.items():
-                    if property_name not in list_properties.keys():
-                        list_properties[property_name] = property_value
-        return list_properties
-
-    def objects_property_by_property_name(self, objects, property_name):
-        list_objects = []
-        for object in [x for x in self.objects_without_reference(objects) if x.type is Object.Types.object]:
-            if property_name in object.properties.keys():
-                list_objects.append(object.properties[property_name])
-        return list_objects
-
-    def objects_items(self, objects):
-        list_objects = []
-        for object in [x for x in self.objects_without_reference(objects) if x.type is Object.Types.array]:
-            list_objects.append(object.items)
-        return list_objects
-
-    def objects_reference(self, objects):
-        list_objects = []
-        for object in [x for x in objects if x.type is Object.Types.reference]:
-            list_objects.append(object.get_reference())
-        return list_objects

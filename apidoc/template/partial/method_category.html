@@ -25,7 +25,7 @@
                     </h5>
                     <ul class="versions inline">
             {%- for version in sources.versions|sort %}
-                        <li data-version="{{ version.name }}" data-changed="{{ method.changed_status[version.name]|lower }}"
+                        <li data-version="{{ version.name }}" data-changed="{{ method.changes_status[version.name]|lower }}"
                 {%- if version.name not in method.versions -%}
                     data-exists="no"
                 {%- else -%}
