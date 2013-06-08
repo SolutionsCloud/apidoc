@@ -389,7 +389,7 @@ class MethodDto(ElementVersionedDto, Comparable):
 
 class MultiVersion(Comparable):
 
-    class Change(Enum):
+    class Changes(Enum):
         """List of availables Change for this element
         """
         none = 1
