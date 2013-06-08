@@ -1,89 +1,60 @@
 {%- import "helper/code.html" as code %}
 
-{%- macro diff_display_version(reference, method_versioned, attribute) -%}
-    {%- for (method_version_name, method_version) in method_versioned.versions.items() -%}
-        {%- if method_version[attribute] == reference %}{{ method_version_name }} {% endif -%}
-    {%- endfor -%}
-{%- endmacro -%}
-
-{%- macro diff_display_version_objects(object) -%}
-    {%- for version in object.versions -%}{{ version }} {% endfor -%}
-{%- endmacro -%}
-
-{%- macro diff_display_version_signature(signature, method_versioned, attribute) -%}
-    {%- for (method_version_name, method_version) in method_versioned.versions.items() %}
-        {%- for element in method_version[attribute].values() %}
-            {%- if element.signature == signature %}{{ method_version_name }} {% endif %}
-        {%- endfor -%}
-    {%- endfor -%}
-{%- endmacro -%}
-
-{%- macro diff_display_version_signature_list(signature, method_versioned, attribute) -%}
-    {%- for (method_version_name, method_version) in method_versioned.versions.items() %}
-        {%- for element in method_version[attribute] %}
-            {%- if element.signature == signature %}{{ method_version_name }} {% endif %}
-        {%- endfor -%}
-    {%- endfor -%}
-{%- endmacro -%}
-
-{%- macro diff_code_commented(method_versioned, objects, prefix="", suffix="", pad_length=0) -%}
-    {%- set object_signed = method_versioned.objects_by_unit_signature(objects) %}
-    {%- for object in object_signed %}
-        {%- if object.type|lower == "object" %}
-    <tr class="diff_version" data-version="{{ diff_display_version_objects(object) }}">
+{%- macro diff_code_commented(objects, prefix="", suffix="", pad_length=0) -%}
+    {%- for  object in objects -%}
+        {%- if object.value.type|lower == "object" %}
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
         <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="pun">{</span></td>
-        <td class="com">{{ code.comment(object) }}</td>
+        <td class="com">{{ code.comment(object.value) }}</td>
     </tr>
-            {%- for property_name in method_versioned.objects_merge_properties(objects).keys()|sort %}
+            {%- for (property_name, property_value) in object.value.properties.items()|sort %}
                 {%- if loop.last %}
-                    {{- diff_code_commented(method_versioned, method_versioned.objects_property_by_property_name(objects, property_name), code.property_name_decorator(property_name), "", pad_length + 1) }}
+                    {{- diff_code_commented(property_value, code.property_name_decorator(property_name), "", pad_length + 1) }}
                 {%- else %}
-                    {{- diff_code_commented(method_versioned, method_versioned.objects_property_by_property_name(objects, property_name), code.property_name_decorator(property_name), "<span class=\"pun\">,</span>", pad_length + 1) }}
+                    {{- diff_code_commented(property_value, code.property_name_decorator(property_name), "<span class=\"pun\">,</span>", pad_length + 1) }}
                 {%- endif %}
             {%- endfor %}
-    <tr class="diff_version" data-version="{{ diff_display_version_objects(object) }}">
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
         <td>{{ code.indent(pad_length) }}<span class="pun">}</span>{{ suffix }}</td>
         <td></td>
     </tr>
-        {%- elif object.type|lower == "array" %}
-    <tr class="diff_version" data-version="{{ diff_display_version_objects(object) }}">
+        {%- elif object.value.type|lower == "array" %}
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
         <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="pun">[</span></td>
-        <td class="com">{{ code.comment(object) }}</td>
+        <td class="com">{{ code.comment(object.value) }}</td>
     </tr>
-            {{- diff_code_commented(method_versioned, method_versioned.objects_items(objects), "", "", pad_length+1) }}
-    <tr class="diff_version" data-version="{{ diff_display_version_objects(object) }}">
+            {{- diff_code_commented(object.value.items, "", "", pad_length+1) }}
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
         <td>{{ code.indent(pad_length) }}<span class="pun">]</span>{{ suffix }}</td>
         <td></td>
     </tr>
-        {%- elif object.type|lower in ("number", "string", "bool") %}
-    <tr class="diff_version" data-version="{{ diff_display_version_objects(object) }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">{{ object.type|lower }}</span>{{ suffix }}</td>
-        <td class="com">{{ code.comment(object) }}</td>
+        {%- elif object.value.type|lower in ("number", "string", "bool") %}
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">{{ object.value.type|lower }}</span>{{ suffix }}</td>
+        <td class="com">{{ code.comment(object.value) }}</td>
     </tr>
-        {%- elif object.type|lower == "none" %}
-    <tr class="diff_version" data-version="{{ diff_display_version_objects(object) }}">
+        {%- elif object.value.type|lower == "none" %}
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
         <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">null</span>{{ suffix }}</td>
-        <td class="com">{{ code.comment(object) }}</td>
+        <td class="com">{{ code.comment(object.value) }}</td>
     </tr>
-        {%- elif object.type|lower == "dynamic" %}
-    <tr class="diff_version" data-version="{{ diff_display_version_objects(object) }}">
+        {%- elif object.value.type|lower == "dynamic" %}
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
         <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="pun">{</span></td>
-        <td class="com">{{ code.comment(object) }}</td>
+        <td class="com">{{ code.comment(object.value) }}</td>
     </tr>
-    <tr class="diff_version" data-version="{{ diff_display_version_objects(object) }}">
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
         <td>{{ code.indent(pad_length + 1) }}<span class="typ">string</span><span class="pun">: </span><span class="typ">{{ object.items }}</span></td>
-        <td class="com">{{ code.comment(object) }}</td>
+        <td class="com">{{ code.comment(object.value) }}</td>
     </tr>
-    <tr class="diff_version" data-version="{{ diff_display_version_objects(object) }}">
-        <td>{{ code.indent(pad_length) }}<span class="pun">}</span>{{ suffix }}</td>
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
+            <td>{{ code.indent(pad_length) }}<span class="pun">}</span>{{ suffix }}</td>
         <td></td>
     </tr>
-        {%- elif object.type|lower == "reference" %}
-            {{- diff_code_commented(method_versioned, method_versioned.objects_reference(objects), prefix, suffix, pad_length) }}
-        {%- else %}
-    <tr class="diff_version" data-version="{{ diff_display_version_objects(object) }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ"><a href="javascript:navigateTo({type: '{{object.type_name}}'}, ['category', 'method'])">{{ object.type_name }}</a></span>{{ suffix }}</td>
-        <td class="com">{{ code.comment(object) }}</td>
+        {%- elif object.value.type|lower == "type" %}
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ"><a href="javascript:navigateTo({type: '{{object.value.type_name}}'}, ['category', 'method'])">{{ object.value.type_name }}</a></span>{{ suffix }}</td>
+        <td class="com">{{ code.comment(object.value) }}</td>
     </tr>
         {%- endif %}
     {%- endfor %}

@@ -6,13 +6,8 @@
     {%- endif %}
     {{- util.none_to_empty(object.description) }}
     {%- if object.type|lower == "type" %}
-        {%- if object.get_type().primary|lower == "enum" and object.get_type().values -%}
-            (
-            {%- for value in object.get_type().values.keys() %}
-                {{- value -}}
-                {%- if not loop.last %}, {% endif %}
-            {%- endfor -%}
-            )
+        {%- if object.primary|lower == "enum" and object.values -%}
+            ({{ object.values|join(", ") }})
         {%- endif %}
     {%- endif %}
 {%- endmacro -%}

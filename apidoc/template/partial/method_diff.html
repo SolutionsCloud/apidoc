@@ -29,7 +29,7 @@
             <td><span class="str">{{ util.none_to_empty(parameter.value.name) }}</span></td>
             <td><span class="typ">
             {%- if parameter.value.type != None %}
-                {%- if parameter.value.get_object().type|lower == "type" %}
+                {%- if not parameter.value.is_internal %}
                     <a href="javascript:navigateTo({type: '{{parameter.value.type}}'}, ['category', 'method'])">{{parameter.value.type}}</a>
                 {%- else -%}
                     {{- parameter.value.type -}}
@@ -52,7 +52,7 @@
             <td><span class="str">{{ util.none_to_empty(parameter.value.name) }}</span></td>
             <td><span class="typ">
             {%- if parameter.value.type != None %}
-                {%- if parameter.value.get_object().type|lower == "type" %}
+                {%- if not parameter.value.is_internal %}
                     <a href="javascript:navigateTo({type: '{{parameter.value.type}}'}, ['category', 'method'])">{{parameter.value.type}}</a>
                 {%- else -%}
                     {{- parameter.value.type -}}
@@ -64,7 +64,6 @@
     {%- endcall %}
 {%- endif %}
 
-{#
 {%- if method.request_body %}
     <h6>Body: </h6>
     <div class="code"><table class="table-hover">
@@ -73,16 +72,14 @@
             <col width="50%%"></col>
         </colgroup>
         <tbody>
-{{ diff.diff_code_commented(method_versioned, method.request_body) }}
+{{ diff.diff_code_commented(method.request_body) }}
         </tbody>
     </table></div>
 {%- endif %}
-#}
 </div>
 
 <div class="response stack">
     <h5><i class="i-response"></i> Response: </h5>
-{#
 {%- if method.response_body %}
     <h6>Body: </h6>
     <div class="code"><table class="table-hover">
@@ -91,11 +88,10 @@
             <col width="50%%"></col>
         </colgroup>
         <tbody>
-{{ diff.diff_code_commented(method_versioned, method.response_body) }}
+{{ diff.diff_code_commented(method.response_body) }}
         </tbody>
     </table></div>
 {%- endif %}
-#}
 
 {%- if method.response_codes %}
     <h6>Codes: </h6>

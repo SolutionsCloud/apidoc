@@ -345,14 +345,6 @@ class Method(Element, Displayable):
         self.response_codes = []
         self.response_body = None
 
-    @property
-    def cleaned_request_parameters(self):
-        """Remove parameter who are not definied in uri
-        """
-        for parameter in self.request_parameters.values():
-            parameter.position = self.uri.find("{%s}" % parameter.name)
-        return dict((x, y) for x, y in self.request_parameters.items() if y.position >= 0)
-
     def get_used_types(self):
         """Return list of types used in the method
         """
@@ -423,16 +415,12 @@ class ParameterDto(ElementDto, Sampleable, Comparable):
         super().__init__(parameter)
         self.type = parameter.type
         self.optional = parameter.optional
+        self.is_internal = self.type in Object.Types
 
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
         return (str(self.name), str(self.description))
-
-    def get_object(self):
-        object = Object.factory(self.type, None)
-        object.name = self.name
-        return object
 
 
 class PositionableParameterDto(ParameterDto):
@@ -639,6 +627,10 @@ class ObjectDto(ElementDto, Comparable):
         """
         if isinstance(object_source, ObjectObject):
             return ObjectObjectDto(object_source)
+        if isinstance(object_source, ObjectType):
+            return ObjectTypeDto(object_source)
+        if isinstance(object_source, ObjectArray):
+            return ObjectArrayDto(object_source)
         else:
             return ObjectDto(object_source)
 
@@ -733,6 +725,32 @@ class ObjectObjectDto(ObjectDto):
         """
         super().__init__(object)
         self.properties = {}
+
+
+class ObjectArrayDto(ObjectDto):
+
+    """Element ObjectObject
+    """
+
+    def __init__(self, object):
+        """Class instantiation
+        """
+        super().__init__(object)
+        self.items = None
+
+
+class ObjectTypeDto(ObjectDto):
+
+    """Element ObjectObject
+    """
+
+    def __init__(self, object):
+        """Class instantiation
+        """
+        super().__init__(object)
+        self.type_name = object.type_name
+        self.primary = None
+        self.values = []
 
 
 class ObjectObject(Object):
