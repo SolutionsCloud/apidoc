@@ -233,6 +233,9 @@ class VersionDto(ElementDto, Comparable):
         self.minor = version.minor
         self.status = version.status
 
+        self.types = {}
+        self.methods = {}
+
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
@@ -302,7 +305,7 @@ class MethodCategory(CategoryDto):
         self.methods = []
 
 
-class Method(Element, Displayable):
+class Method(Element, Displayable, Comparable):
 
     """Element Method
     """
@@ -360,6 +363,11 @@ class Method(Element, Displayable):
 
         return list({}.fromkeys(types).keys())
 
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name))
+
 
 class MethodDto(ElementVersionedDto, Comparable):
 
@@ -380,6 +388,8 @@ class MethodDto(ElementVersionedDto, Comparable):
         self.request_body = []
         self.response_codes = []
         self.response_body = []
+
+        self.originals = {}
 
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
@@ -493,7 +503,7 @@ class ResponseCode(Element):
         self.message = None
 
 
-class Type(Element):
+class Type(Element, Comparable):
 
     """Element Type
     """
@@ -526,6 +536,11 @@ class Type(Element):
         """
         return "my_%s" % self.name
 
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name))
+
 
 class TypeDto(ElementVersionedDto, Comparable):
 
@@ -544,6 +559,8 @@ class TypeDto(ElementVersionedDto, Comparable):
 
         self.primary = []
         self.values = []
+
+        self.originals = {}
 
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object

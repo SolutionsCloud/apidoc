@@ -21,11 +21,11 @@ class RootDto():
         root_dto.versions = [VersionDto(x) for x in root_source.versions.values()]
 
         for version in sorted(root_source.versions.values()):
-            hydratator = Hydradator(version, root_source.versions, root_source.versions[version.name].types, root_source.versions[version.name].references)
+            hydrator = Hydradator(version, root_source.versions, root_source.versions[version.name].types)
             for method in version.methods.values():
-                hydratator.hydrate_method(root_dto, root_source, method)
+                hydrator.hydrate_method(root_dto, root_source, method)
             for type in version.types.values():
-                hydratator.hydrate_type(root_dto, root_source, type)
+                hydrator.hydrate_type(root_dto, root_source, type)
 
         self.define_changes_status(root_dto)
 
@@ -63,11 +63,10 @@ class RootDto():
 
 class Hydradator():
 
-    def __init__(self, version, versions, types, references):
+    def __init__(self, version, versions, types):
         self.version_name = version.name
         self.versions = versions
         self.types = types
-        self.references = references
 
     def hydrate_method(self, root_dto, root_source, method):
         categories = dict((category.name, category) for category in root_dto.method_categories)
@@ -112,6 +111,8 @@ class Hydradator():
         if changes > 0 and method_dto.changes_status[self.version_name] is MultiVersion.Changes.none:
             method_dto.changes_status[self.version_name] = MultiVersion.Changes.updated
 
+        method_dto.originals[self.version_name] = method
+
     def hydrate_type(self, root_dto, root, type):
         categories = dict((category.name, category) for category in root_dto.type_categories)
         if type.category not in categories.keys():
@@ -143,6 +144,8 @@ class Hydradator():
 
         if changes > 0 and type_dto.changes_status[self.version_name] is MultiVersion.Changes.none:
             type_dto.changes_status[self.version_name] = MultiVersion.Changes.updated
+
+        type_dto.originals[self.version_name] = type
 
     def hydrate_value(self, dto_value, source_value):
         if source_value is None:
@@ -181,10 +184,6 @@ class Hydradator():
     def hydrade_object(self, dto_object, source_object):
         if source_object is None:
             return 0
-
-        if source_object.type is ObjectObject.Types.reference:
-            reference = self.references[source_object.reference_name]
-            return self.hydrade_object(dto_object, reference)
 
         source_dto = ObjectDto.factory(source_object)
 

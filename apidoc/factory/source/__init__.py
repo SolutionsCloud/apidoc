@@ -7,6 +7,8 @@ from apidoc.factory.source.rootDto import RootDto as RootDtoFactory
 
 from apidoc.lib.util.decorator import add_property
 
+from apidoc.object.source import ObjectObject
+
 
 @add_property("parser", Parser)
 @add_property("merger", Merger)
@@ -15,7 +17,7 @@ from apidoc.lib.util.decorator import add_property
 @add_property("root_dto_factory", RootDtoFactory)
 class Source():
 
-    """Create source objet
+    """Create source object
     """
 
     extender_paths = (
@@ -37,6 +39,7 @@ class Source():
 
         self.hide_filtered_elements(root, config["filter"])
         self.remove_hidden_elements(root)
+        self.replace_references(root)
 
         return self.root_dto_factory.create_from_root(root)
 
@@ -105,3 +108,43 @@ class Source():
         hidden_categories = [category.name for category in root.categories.values() if not category.display]
         for version in root.versions.values():
             version.methods = dict((x, y) for x, y in version.methods.items() if y.display and (y.category is None or y.category not in hidden_categories))
+
+    def replace_references(self, root):
+        """Remove elements marked a not to display
+        """
+
+        for version in root.versions.values():
+            for method in version.methods.values():
+                if method.request_body is not None:
+                    method.request_body = self.replace_references_in_object(method.request_body, version.references)
+                if method.response_body is not None:
+                    method.response_body = self.replace_references_in_object(method.response_body, version.references)
+
+    def replace_references_in_object(self, object, references):
+        """Remove elements marked a not to display
+        """
+
+        if object is None:
+            return object
+
+        if object.type is ObjectObject.Types.reference:
+            object = self.get_reference(object.reference_name, references)
+            self.replace_references_in_object(object, references)
+        elif object.type is ObjectObject.Types.array:
+            object.items = self.replace_references_in_object(object.items, references)
+        elif object.type is ObjectObject.Types.array:
+            object.items = self.replace_references_in_object(object.items, references)
+        elif object.type is ObjectObject.Types.dynamic:
+            object.items = self.replace_references_in_object(object.items, references)
+        elif object.type is ObjectObject.Types.object:
+            for (property_name, property_value) in object.properties.items():
+                object.properties[property_name] = self.replace_references_in_object(property_value, references)
+
+        return object
+
+    def get_reference(self, reference_name, references):
+        reference = references[reference_name]
+        if reference.type is ObjectObject.Types.reference:
+            return self.get_reference(reference.reference, references)
+
+        return reference

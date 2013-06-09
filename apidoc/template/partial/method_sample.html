@@ -6,28 +6,28 @@
 <div class="code">
 {{- "" -}}
 <span class="hme">
-{%- if method.method|lower == 'http' -%}
+{%- if methd_sample.method|lower == 'http' -%}
     GET
 {%- else -%}
-    {{ method.method|upper }}
+    {{ methd_sample.method|upper }}
 {%- endif -%}
         </span> <span class="hur">
-{{- code.uri_sampled(method.uri, method.request_parameters) -}}
+{{- code.uri_sampled(methd_sample.uri, methd_sample.request_parameters) -}}
         </span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
-{%- for parameter in method.request_headers.values()|sort %}
+{%- for parameter in methd_sample.request_headers.values()|sort %}
 <span class="hat">{{ parameter.name }}</span><span class="pun">: </span><span class="hva">{{ util.none_to_empty(parameter.sample) }}</span>
 {%- endfor %}
-{% if method.request_body -%}
-{{ code.code_sampled(method.request_body) -}}
+{% if methd_sample.request_body -%}
+{{ code.code_sampled(methd_sample.request_body) -}}
 {%- endif -%}
         </div>
         <h6>Response: </h6>
         <div class="code">
 {{- "" -}}
-<span class="hpr">HTTP/1.1</span> <span class="lit">{{ method.code }}</span> <span class="str">{{ method.message }}</span>
+<span class="hpr">HTTP/1.1</span> <span class="lit">{{ methd_sample.code }}</span> <span class="str">{{ methd_sample.message }}</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
-{% if method.response_body -%}
-{{ code.code_sampled(method.response_body) -}}
+{% if methd_sample.response_body -%}
+{{ code.code_sampled(methd_sample.response_body) -}}
 {%- endif -%}
 </div>

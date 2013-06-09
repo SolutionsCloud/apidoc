@@ -32,3 +32,11 @@
         </tbody>
     </table>
 {%- endmacro -%}
+
+{%- macro render_versioned(multi_version, version) -%}
+    {%- for element in multi_version -%}
+        {%- if version in element.versions -%}
+            {{  caller(element.value) }}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endmacro -%}

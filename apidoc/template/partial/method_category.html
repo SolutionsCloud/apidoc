@@ -40,19 +40,28 @@
                 <div class="nocontents">no implementation for this version</div>
                 <div class="contents">
         {%- include "partial/method_diff.html" -%}
-{#
                     <div class="stack sample">
-        {%- for method in method.signatures.values() %}
-                        <div data-version="
-            {%- for (method_version_name, method_version) in method.versions.items() %}
-                {%- if method_version.signature == method.signature %}{{ method_version_name }} {% endif %}
-            {%- endfor -%}
-                    ">
-            {%- include "partial/method_sample.html" -%}
+        {%- for version in sources.versions|sort -%}
+            {%- if method.changes_status[version.name]|lower in ["new", "updated"] -%}
+                        <div data-version="{{ version.name }}
+                {%- set seen = False -%}
+                {%- for v in sources.versions|sort -%}
+                    {%- if seen -%}
+                        {%- if method.changes_status[v.name]|lower == "none" %} {{ v.name -}}
+                        {%- else -%}
+                            {%- set seen = False -%}
+                        {%- endif -%}
+                    {%- endif -%}
+                    {%- if v.name == version.name -%}
+                        {%- set seen = True -%}
+                    {%- endif -%}
+                {%- endfor -%}">
+                {%- set methd_sample = method.originals[version.name] -%}
+                {%- include "partial/method_sample.html" -%}
                         </div>
-        {%- endfor %}
+            {%- endif -%}
+        {%- endfor -%}
                     </div>
-#}
                 </div>
             </li>
     {%- endfor %}

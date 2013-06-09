@@ -20,9 +20,9 @@ def json_repr(obj):
                 obj[key] = serialize(obj[key])
             return obj
         if isinstance(obj, list):
-            return [serialize(item) for item in sorted(obj)]
+            return [serialize(item) for item in obj]
         if isinstance(obj, tuple):
-            return tuple(serialize([item for item in sorted(obj)]))
+            return tuple(serialize([item for item in obj]))
         if hasattr(obj, '__dict__'):
             return serialize(obj.__dict__)
         return repr(obj)

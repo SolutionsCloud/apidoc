@@ -38,19 +38,28 @@
                 <div class="nocontents">no implementation for this version</div>
                 <div class="contents">
         {%- include "partial/type_diff.html" -%}
-{#
                     <div class="stack sample">
-        {%- for type in type.signatures.values() %}
-                        <div data-version="
-            {%- for (type_version_name, type_version) in type.versions.items() %}
-                {%- if type_version.signature == type.signature %}{{ type_version_name }} {% endif %}
-            {%- endfor -%}
-                    ">
-            {%- include "partial/type_sample.html" -%}
+        {%- for version in sources.versions|sort -%}
+            {%- if type.changes_status[version.name]|lower in ["new", "updated"] -%}
+                        <div data-version="{{ version.name }}
+                {%- set seen = False -%}
+                {%- for v in sources.versions|sort -%}
+                    {%- if seen -%}
+                        {%- if type.changes_status[v.name]|lower == "none" %} {{ v.name -}}
+                        {%- else -%}
+                            {%- set seen = False -%}
+                        {%- endif -%}
+                    {%- endif -%}
+                    {%- if v.name == version.name -%}
+                        {%- set seen = True -%}
+                    {%- endif -%}
+                {%- endfor -%}">
+                {%- set type_sample = type.originals[version.name] -%}
+                {%- include "partial/type_sample.html" -%}
                         </div>
-        {%- endfor %}
+            {%- endif -%}
+        {%- endfor -%}
                     </div>
-#}
                 </div>
             </li>
     {%- endfor %}
