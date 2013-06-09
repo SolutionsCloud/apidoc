@@ -31,6 +31,7 @@ class Parameter():
 
     def __init__(self, parameter_raw):
         self.name = parameter_raw.name
+        self.optional = parameter_raw.optional
         self.sample = parameter_raw.get_sample()
 
 
@@ -56,6 +57,7 @@ class Object():
     def __init__(self, object_raw):
         self.name = object_raw.name
         self.type = object_raw.type
+        self.optional = object_raw.optional
         self.sample = object_raw.get_sample()
 
 

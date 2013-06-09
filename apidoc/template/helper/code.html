@@ -6,9 +6,7 @@
     {%- endif %}
     {{- util.none_to_empty(object.description) }}
     {%- if object.type|lower == "type" %}
-        {%- if object.primary|lower == "enum" and object.values -%}
-            ({{ object.values|join(", ") }})
-        {%- endif %}
+        {%- if object.items.primary|lower == "enum" and object.items.values %} ({{ object.items.values.keys()|join(", ") }}){%- endif %}
     {%- endif %}
 {%- endmacro -%}
 

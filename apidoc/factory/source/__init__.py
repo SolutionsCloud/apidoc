@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from apidoc.service.parser import Parser
 from apidoc.service.merger import Merger
 from apidoc.service.extender import Extender
@@ -147,7 +149,7 @@ class Source():
             return object
 
         if object.type is ObjectObject.Types.reference:
-            object = self.get_reference(object.reference_name, references)
+            object = self.get_reference(object, references)
             self.replace_references_in_object(object, references)
         elif object.type is ObjectObject.Types.array:
             object.items = self.replace_references_in_object(object.items, references)
@@ -220,9 +222,15 @@ class Source():
 
         return types
 
-    def get_reference(self, reference_name, references):
-        reference = references[reference_name]
+    def get_reference(self, object, references):
+        reference = deepcopy(references[object.reference_name])
+
+        reference.name = object.name
+        reference.optional = object.optional
+        reference.required = object.required
+        reference.description = object.description
+
         if reference.type is ObjectObject.Types.reference:
-            return self.get_reference(reference.reference, references)
+            return self.get_reference(reference, references)
 
         return reference

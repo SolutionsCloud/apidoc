@@ -77,8 +77,8 @@
 .item[data-changed=deleted]::before,.item>.diff-header>.versions>LI:not(:first-child)[data-changed=deleted]::before,#item-head>.diff-header>H5.desc[data-changed=deleted]::before,#item-head>.diff-header>.versions>LI:not(:first-child)[data-changed=deleted]::before,.doc-sidenav>LI[data-changed=deleted]::before{content:"delete";background-color:#d59090;}
 .item .request>CODE{overflow:auto;display:block;}
 .item>.nocontents{padding:10px 15px;display:none;}
-.item:not(.diff-mode)[data-changed=deleted]>.nocontents{display:block;}
-.item:not(.diff-mode)[data-changed=deleted]>.contents.content-left{display:none;}
+.item:not(.diff-mode)[data-exists=no]>.nocontents{display:block;}
+.item:not(.diff-mode)[data-exists=no]>.contents.content-left{display:none;}
 .item>.contents{overflow-x:auto;}.item>.contents>.title{display:none;}
 .item>.contents>.stack{border-bottom:1px dotted #ddd;padding:10px 15px;}.item>.contents>.stack:last-child{border-bottom:none;}
 .item>.contents>.sample>DIV{display:none;}

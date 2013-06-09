@@ -161,6 +161,8 @@ class Method(ElementVersioned, Comparable):
         self.response_codes = []
         self.response_body = []
 
+        self.versions = []
+
         self.samples = {}
 
     def get_comparable_values(self):
@@ -251,6 +253,8 @@ class Type(ElementVersioned, Comparable):
 
         self.primary = []
         self.values = []
+
+        self.versions = []
 
         self.samples = {}
 

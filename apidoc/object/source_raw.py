@@ -215,7 +215,7 @@ class Method(Element, Displayable, Comparable):
         return (str(self.name))
 
 
-class Parameter(Element, Sampleable):
+class Parameter(Element, Sampleable, Comparable):
 
     """Element Parameter
     """
@@ -240,6 +240,11 @@ class Parameter(Element, Sampleable):
             return self.items.get_sample()
         else:
             return self.get_object().get_sample()
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name))
 
 
 class ResponseCode(Element):

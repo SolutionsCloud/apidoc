@@ -89,6 +89,8 @@ class Hydradator():
             category.methods.append(method_dto)
             method_dto.changes_status[self.version_name] = MultiVersion.Changes.new
 
+        method_dto.versions.append(self.version_name)
+
         parameters = [PositionableParameter(parameter) for parameter in method.request_parameters.values()]
         for parameter in parameters:
             parameter.position = method.full_uri.find("{%s}" % parameter.name)
@@ -133,6 +135,8 @@ class Hydradator():
             type_dto = Type(type)
             category.types.append(type_dto)
             type_dto.changes_status[self.version_name] = MultiVersion.Changes.new
+
+        type_dto.versions.append(self.version_name)
 
         changes = 0
         changes += self.hydrate_value(type_dto.description, type.description)
