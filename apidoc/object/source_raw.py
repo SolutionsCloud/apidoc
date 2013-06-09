@@ -132,6 +132,7 @@ class Version(Element, Displayable):
         """
         super().__init__()
         self.uri = None
+        self.full_uri = None
         self.major = 1
         self.minor = 0
         self.status = Version.Status("current")
@@ -198,6 +199,8 @@ class Method(Element, Displayable, Comparable):
         super().__init__()
         self.code = 200
         self.uri = None
+        self.absolute_uri = None
+        self.full_uri = None
         self.category = None
         self.method = Method.Methods("get")
         self.request_headers = {}
@@ -206,45 +209,10 @@ class Method(Element, Displayable, Comparable):
         self.response_codes = []
         self.response_body = None
 
-    def get_used_types(self):
-        """Return list of types used in the method
-        """
-        types = []
-        for param in self.request_headers.values():
-            types += param.get_used_types()
-        for param in self.cleaned_request_parameters.values():
-            types += param.get_used_types()
-        if self.request_body is not None:
-            types += self.request_body.get_used_types()
-        if self.response_body is not None:
-            types += self.response_body.get_used_types()
-
-        return list({}.fromkeys(types).keys())
-
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
         return (str(self.name))
-
-
-class MultiVersion(Comparable):
-
-    class Changes(Enum):
-        """List of availables Change for this element
-        """
-        none = 1
-        new = 2
-        updated = 3
-        deleted = 4
-
-    def __init__(self, value, version):
-        self.versions = [version]
-        self.value = value
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (self.value, sorted(self.versions))
 
 
 class Parameter(Element, Sampleable):
@@ -258,6 +226,7 @@ class Parameter(Element, Sampleable):
         super().__init__()
         self.type = None
         self.optional = False
+        self.items = None
 
     def get_object(self):
         object = Object.factory(self.type, None)
@@ -267,12 +236,10 @@ class Parameter(Element, Sampleable):
     def get_default_sample(self):
         """Return default value for the element
         """
-        return self.get_object().get_sample()
-
-    def get_used_types(self):
-        """Return list of types used in the parameter
-        """
-        return [self.type]
+        if self.type not in Object.Types:
+            return self.items.get_sample()
+        else:
+            return self.get_object().get_sample()
 
 
 class ResponseCode(Element):
@@ -440,11 +407,6 @@ class Object(Element, Sampleable):
         self.optional = False
         self.required = True
 
-    def get_used_types(self):
-        """Return list of types used in the object
-        """
-        return []
-
 
 class ObjectObject(Object):
 
@@ -457,14 +419,6 @@ class ObjectObject(Object):
         super().__init__()
         self.type = Object.Types("object")
         self.properties = {}
-
-    def get_used_types(self):
-        """Return list of types used in the object
-        """
-        types = []
-        for element in self.properties.values():
-            types += element.get_used_types()
-        return types
 
 
 class ObjectArray(Object):
@@ -479,13 +433,6 @@ class ObjectArray(Object):
         self.type = Object.Types("array")
         self.items = None
         self.sample_count = 2
-
-    def get_used_types(self):
-        """Return list of types used in the object
-        """
-        if self.items is not None:
-            return self.items.get_used_types()
-        return []
 
 
 class ObjectNumber(Object):
@@ -566,11 +513,6 @@ class ObjectDynamic(Object):
             "key2": "sample"
         }
 
-    def get_used_types(self):
-        """Return list of types used in the object
-        """
-        return [self.items]
-
 
 class ObjectReference(Object):
 
@@ -584,11 +526,6 @@ class ObjectReference(Object):
         self.type = Object.Types("reference")
         self.reference_name = None
 
-    def get_used_types(self):
-        """Return list of types used in the object
-        """
-        return self.get_reference().get_used_types()
-
 
 class ObjectType(Object):
 
@@ -601,14 +538,9 @@ class ObjectType(Object):
         super().__init__()
         self.type = Object.Types("type")
         self.type_name = None
+        self.items = None
 
     def get_default_sample(self):
         """Return default value for the element
         """
-        return "TODO"
-        #self.get_type().format.get_sample()
-
-    def get_used_types(self):
-        """Return list of types used in the object
-        """
-        return [self.type_name]
+        return self.items.get_sample()

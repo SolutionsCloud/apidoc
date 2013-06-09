@@ -82,7 +82,7 @@
     {%- if parameters %}
         {%- set sampled = uri %}
         {%- for parameter in parameters.values() %}
-            {%- set sampled = sampled|replace("{" + parameter.name + "}", parameter.get_sample()) %}
+            {%- set sampled = sampled|replace("{" + parameter.name + "}", parameter.sample) %}
             {%- if loop.last %}
                 {{- sampled -}}
             {%- endif %}
@@ -114,16 +114,16 @@
         {%- endfor %}
 {{ indent(pad_length) }}<span class="pun">]</span>{{ suffix }}
     {%- elif object.type|lower == "number" %}
-{{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.get_sample() }}</span>{{ suffix }}
+{{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.sample }}</span>{{ suffix }}
     {%- elif object.type|lower == "string" %}
-{{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.get_sample() }}"</span>{{ suffix }}
+{{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.sample }}"</span>{{ suffix }}
     {%- elif object.type|lower == "bool" %}
-{{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.get_sample() }}</span>{{ suffix }}
+{{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.sample }}</span>{{ suffix }}
     {%- elif object.type|lower == "none" %}
 {{ indent(pad_length) }}{{ prefix }}<span class="typ">null</span>{{ suffix }}
     {%- elif object.type|lower == "dynamic" %}
 {{ indent(pad_length) }}{{ prefix }}<span class="pun">{</span>
-        {%- for key, value in object.get_sample().items() %}
+        {%- for key, value in object.sample.items() %}
 {{ indent(pad_length + 1) }}<span class="str">"{{ key }}"</span><span class="pun">: </span><span class="str">"{{ value }}"</span>
             {%- if not loop.last -%}
 <span class="pun">,</span>
@@ -131,6 +131,6 @@
         {%- endfor %}
 {{ indent(pad_length) }}<span class="pun">}</span>{{ suffix }}
     {%- else %}
-{{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.get_sample() }}"</span>{{ suffix }}
+{{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.sample }}"</span>{{ suffix }}
     {%- endif -%}
 {%- endmacro -%}

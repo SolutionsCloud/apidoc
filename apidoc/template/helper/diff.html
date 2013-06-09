@@ -53,7 +53,7 @@
     </tr>
         {%- elif object.value.type|lower == "type" %}
     <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ"><a href="javascript:navigateTo({type: '{{object.value.type_name}}'}, ['category', 'method'])">{{ object.value.type_name }}</a></span>{{ suffix }}</td>
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ"><a href="javascript:navigateTo({type: '{{object.value.items.name}}'}, ['category', 'method'])">{{ object.value.items.name }}</a></span>{{ suffix }}</td>
         <td class="com">{{ code.comment(object.value) }}</td>
     </tr>
         {%- endif %}

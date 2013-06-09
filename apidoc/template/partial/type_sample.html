@@ -2,15 +2,15 @@
 {%- import "helper/util.html" as util %}
 
 <h5><i class="i-sample"></i> Formats: </h5>
-{%- if type_sample.format.sample %}
+{%- if type_sample.sample %}
 <h6>Sample: </h6>
-<code><span class="str">{{ type_sample.format.sample }}</span></code>
+<code><span class="str">{{ type_sample.sample }}</span></code>
 {%- endif %}
-{%- if type_sample.format.pretty %}
+{%- if type_sample.pretty %}
 <h6>Pretty Print: </h6>
-<code><span class="str">{{ type_sample.format.pretty }}</span></code>
+<code><span class="str">{{ type_sample.pretty }}</span></code>
 {%- endif %}
-{%- if type_sample.format.Advanced %}
+{%- if type_sample.advanced %}
 <h6>Advanced: </h6>
-<code><span class="str">{{ type_sample.format.Advanced }}</span></code>
+<code><span class="str">{{ type_sample.advanced }}</span></code>
 {%- endif %}

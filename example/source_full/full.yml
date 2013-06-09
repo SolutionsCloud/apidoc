@@ -237,7 +237,7 @@ versions:
     display: True
     major: 3
     minor: 0
-    uri: www.example2.com
+    uri: /v3
     methods:
       World:
         category: Hello

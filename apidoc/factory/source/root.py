@@ -26,4 +26,11 @@ class Root():
             root.categories = self.category_factory.create_dictionary_of_element_from_dictionary("categories", datas)
 
         root.versions = self.version_factory.create_dictionary_of_element_from_dictionary("versions", datas)
+
+        for version in root.versions.values():
+            version.full_uri = "%s%s" % (root.configuration.uri or "", version.uri or "")
+            for method in version.methods.values():
+                method.absolute_uri = "%s%s" % (version.uri or "", method.uri)
+                method.full_uri = "%s%s" % (version.full_uri, method.uri)
+
         return root

@@ -54,7 +54,7 @@
                         {%- set seen = True -%}
                     {%- endif -%}
                 {%- endfor -%}">
-                {%- set type_sample = type.originals[version.name] -%}
+                {%- set type_sample = type.samples[version.name] -%}
                 {%- include "partial/type_sample.html" -%}
                         </div>
             {%- endif -%}

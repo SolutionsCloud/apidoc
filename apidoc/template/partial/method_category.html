@@ -56,7 +56,7 @@
                         {%- set seen = True -%}
                     {%- endif -%}
                 {%- endfor -%}">
-                {%- set methd_sample = method.originals[version.name] -%}
+                {%- set method_sample = method.samples[version.name] -%}
                 {%- include "partial/method_sample.html" -%}
                         </div>
             {%- endif -%}

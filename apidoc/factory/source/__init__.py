@@ -36,11 +36,13 @@ class Source():
         sources = self.format_sources_from_config(raw_sources, config)
 
         root = self.root_source_factory.create_from_dictionary(sources)
+        self.replace_references(root)
 
         self.hide_filtered_elements(root, config["filter"])
+        self.remove_unused_types(root)
         self.remove_hidden_elements(root)
 
-        self.replace_references(root)
+        self.replace_types(root)
 
         return self.root_dto_factory.create_from_root(root)
 
@@ -102,6 +104,11 @@ class Source():
             for category in (category for category in root.categories.values() if category.name in config_filter["categories"]["excludes"]):
                 category.display = False
 
+    def remove_unused_types(self, root):
+        used_types = self.get_used_types(root)
+        for version in root.versions.values():
+            version.types = dict((type_name, type_value) for type_name, type_value in version.types.items() if type_name in used_types)
+
     def remove_hidden_elements(self, root):
         """Remove elements marked a not to display
         """
@@ -116,10 +123,21 @@ class Source():
 
         for version in root.versions.values():
             for method in version.methods.values():
-                if method.request_body is not None:
-                    method.request_body = self.replace_references_in_object(method.request_body, version.references)
-                if method.response_body is not None:
-                    method.response_body = self.replace_references_in_object(method.response_body, version.references)
+                method.request_body = self.replace_references_in_object(method.request_body, version.references)
+                method.response_body = self.replace_references_in_object(method.response_body, version.references)
+
+    def replace_types(self, root):
+        """Remove elements marked a not to display
+        """
+
+        for version in root.versions.values():
+            for method in version.methods.values():
+                method.request_body = self.replace_types_in_object(method.request_body, version.types)
+                method.response_body = self.replace_types_in_object(method.response_body, version.types)
+                for parameter in method.request_parameters.values():
+                    self.replace_types_in_parameter(parameter, version.types)
+                for parameter in method.request_headers.values():
+                    self.replace_types_in_parameter(parameter, version.types)
 
     def replace_references_in_object(self, object, references):
         """Remove elements marked a not to display
@@ -142,6 +160,65 @@ class Source():
                 object.properties[property_name] = self.replace_references_in_object(property_value, references)
 
         return object
+
+    def replace_types_in_object(self, object, types):
+        """Remove elements marked a not to display
+        """
+
+        if object is None:
+            return object
+
+        if object.type is ObjectObject.Types.type:
+            object.items = types[object.type_name]
+        elif object.type is ObjectObject.Types.array:
+            object.items = self.replace_types_in_object(object.items, types)
+        elif object.type is ObjectObject.Types.array:
+            object.items = self.replace_types_in_object(object.items, types)
+        elif object.type is ObjectObject.Types.dynamic:
+            object.items = self.replace_types_in_object(object.items, types)
+        elif object.type is ObjectObject.Types.object:
+            for (property_name, property_value) in object.properties.items():
+                object.properties[property_name] = self.replace_types_in_object(property_value, types)
+
+        return object
+
+    def replace_types_in_parameter(self, parameter, types):
+        if parameter.type not in ObjectObject.Types:
+            parameter.items = types[parameter.type]
+
+        return parameter
+
+    def get_used_types(self, root):
+        types = []
+        for version in root.versions.values():
+            for method in version.methods.values():
+                types += self.get_used_types_in_object(method.request_body)
+                types += self.get_used_types_in_object(method.response_body)
+                types += [parameter.type for parameter in method.request_parameters.values() if parameter.type not in ObjectObject.Types]
+                types += [parameter.type for parameter in method.request_headers.values() if parameter.type not in ObjectObject.Types]
+        return list({}.fromkeys(types).keys())
+
+    def get_used_types_in_object(self, object):
+        """Remove elements marked a not to display
+        """
+        types = []
+
+        if object is None:
+            return types
+
+        if object.type is ObjectObject.Types.type:
+            types += [object.type_name]
+        elif object.type is ObjectObject.Types.array:
+            types += self.get_used_types_in_object(object.items)
+        elif object.type is ObjectObject.Types.array:
+            types += self.get_used_types_in_object(object.items)
+        elif object.type is ObjectObject.Types.dynamic:
+            types += self.get_used_types_in_object(object.items)
+        elif object.type is ObjectObject.Types.object:
+            for property in object.properties.values():
+                types += self.get_used_types_in_object(property)
+
+        return types
 
     def get_reference(self, reference_name, references):
         reference = references[reference_name]

@@ -1,11 +1,14 @@
-from apidoc.object.source_dto import RootDto as ObjectRoot
-from apidoc.object.source_raw import Category, EnumType, ObjectObject
-from apidoc.object.source_dto import VersionDto
+from apidoc.object.source_dto import Root as ObjectRoot
+from apidoc.object.source_raw import Category, EnumType
+from apidoc.object.source_raw import Object as ObjectRaw
+from apidoc.object.source_dto import Version
 from apidoc.object.source_dto import MethodCategory, TypeCategory
-from apidoc.object.source_dto import MethodDto, TypeDto
+from apidoc.object.source_dto import Method, Type
 from apidoc.object.source_dto import MultiVersion
-from apidoc.object.source_dto import ParameterDto, PositionableParameterDto, ResponseCodeDto
-from apidoc.object.source_dto import ObjectDto
+from apidoc.object.source_dto import Parameter, PositionableParameter, ResponseCode
+from apidoc.object.source_dto import Object
+from apidoc.object.source_sample import Type as TypeSample
+from apidoc.object.source_sample import Method as MethodSample
 
 
 class RootDto():
@@ -19,7 +22,7 @@ class RootDto():
         root_dto = ObjectRoot()
 
         root_dto.configuration = root_source.configuration
-        root_dto.versions = [VersionDto(x) for x in root_source.versions.values()]
+        root_dto.versions = [Version(x) for x in root_source.versions.values()]
 
         for version in sorted(root_source.versions.values()):
             hydrator = Hydradator(version, root_source.versions, root_source.versions[version.name].types)
@@ -29,9 +32,6 @@ class RootDto():
                 hydrator.hydrate_type(root_dto, root_source, type)
 
         self.define_changes_status(root_dto)
-
-        #TODO display only used types
-        #TODO display only used categories
 
         from apidoc.lib.util.serialize import json_repr
         print(json_repr(root_dto))
@@ -85,23 +85,21 @@ class Hydradator():
             method_dto = methods[method.name]
             method_dto.changes_status[self.version_name] = MultiVersion.Changes.none
         else:
-            method_dto = MethodDto(method)
+            method_dto = Method(method)
             category.methods.append(method_dto)
             method_dto.changes_status[self.version_name] = MultiVersion.Changes.new
 
-        full_uri = "%s%s%s" % (root_source.configuration.uri or "", self.versions[self.version_name].uri or "", method.uri or "")
-        absolute_uri = "%s%s" % (self.versions[self.version_name].uri or "", method.uri or "")
-        parameters = [PositionableParameterDto(parameter) for parameter in method.request_parameters.values()]
+        parameters = [PositionableParameter(parameter) for parameter in method.request_parameters.values()]
         for parameter in parameters:
-            parameter.position = full_uri.find("{%s}" % parameter.name)
+            parameter.position = method.full_uri.find("{%s}" % parameter.name)
         request_parameters = [parameter for parameter in parameters if parameter.position >= 0]
-        request_headers = [ParameterDto(parameter) for parameter in method.request_headers.values()]
-        response_codes = [ResponseCodeDto(parameter) for parameter in method.response_codes]
+        request_headers = [Parameter(parameter) for parameter in method.request_headers.values()]
+        response_codes = [ResponseCode(parameter) for parameter in method.response_codes]
 
         changes = 0
         changes += self.hydrate_value(method_dto.description, method.description)
-        changes += self.hydrate_value(method_dto.full_uri, full_uri)
-        changes += self.hydrate_value(method_dto.absolute_uri, absolute_uri)
+        changes += self.hydrate_value(method_dto.full_uri, method.full_uri)
+        changes += self.hydrate_value(method_dto.absolute_uri, method.absolute_uri)
         changes += self.hydrate_value(method_dto.code, method.code)
 
         changes += self.hydrate_list(method_dto.request_headers, sorted(request_headers))
@@ -114,7 +112,7 @@ class Hydradator():
         if changes > 0 and method_dto.changes_status[self.version_name] is MultiVersion.Changes.none:
             method_dto.changes_status[self.version_name] = MultiVersion.Changes.updated
 
-        method_dto.originals[self.version_name] = method
+        method_dto.samples[self.version_name] = MethodSample(method)
 
     def hydrate_type(self, root_dto, root, type):
         categories = dict((category.name, category) for category in root_dto.type_categories)
@@ -132,7 +130,7 @@ class Hydradator():
             type_dto = types[type.name]
             type_dto.changes_status[self.version_name] = MultiVersion.Changes.none
         else:
-            type_dto = TypeDto(type)
+            type_dto = Type(type)
             category.types.append(type_dto)
             type_dto.changes_status[self.version_name] = MultiVersion.Changes.new
 
@@ -148,7 +146,7 @@ class Hydradator():
         if changes > 0 and type_dto.changes_status[self.version_name] is MultiVersion.Changes.none:
             type_dto.changes_status[self.version_name] = MultiVersion.Changes.updated
 
-        type_dto.originals[self.version_name] = type
+        type_dto.samples[self.version_name] = TypeSample(type)
 
     def hydrate_value(self, dto_value, source_value):
         if source_value is None:
@@ -188,7 +186,7 @@ class Hydradator():
         if source_object is None:
             return 0
 
-        source_dto = ObjectDto.factory(source_object)
+        source_dto = Object.factory(source_object)
 
         changes = 0
         find = None
@@ -200,28 +198,32 @@ class Hydradator():
 
         if find is None:
             changes += 1
-            if source_dto.type is ObjectObject.Types.object:
+            if source_dto.type is ObjectRaw.Types.object:
                 for (property_name, property_value) in source_object.properties.items():
                     source_dto.properties[property_name] = []
                     changes += self.hydrade_object(source_dto.properties[property_name], property_value)
-            elif source_dto.type is ObjectObject.Types.array:
+            elif source_dto.type is ObjectRaw.Types.array:
                 source_dto.items = []
                 changes += self.hydrade_object(source_dto.items, source_object.items)
-            elif source_dto.type is ObjectObject.Types.type:
-                type = self.types[source_object.type_name]
-                source_dto.primary = type.primary
-                if isinstance(type, EnumType):
-                    source_dto.values = [x for x in type.values.keys()]
+            elif source_dto.type is ObjectRaw.Types.dynamic:
+                source_dto.items = []
+                changes += self.hydrade_object(source_dto.items, source_object.items)
+            elif source_dto.type is ObjectRaw.Types.type:
+                source_dto.items = source_object.items
+#                if isinstance(type, EnumType):
+#                    source_dto.values = [x for x in type.values.keys()]
 
             dto_object.append(MultiVersion(source_dto, self.version_name))
         else:
-            if source_dto.type is ObjectObject.Types.object:
+            if source_dto.type is ObjectRaw.Types.object:
                 for (property_name, property_value) in source_object.properties.items():
-                    if find.value.type is ObjectObject.Types.object and property_name in find.value.properties.keys():
+                    if find.value.type is ObjectRaw.Types.object and property_name in find.value.properties.keys():
                         changes += self.hydrade_object(find.value.properties[property_name], property_value)
                     else:
                         changes += self.hydrade_object([], property_value)
-            elif source_dto.type is ObjectObject.Types.array:
+            elif source_dto.type is ObjectRaw.Types.array:
+                changes += self.hydrade_object(find.value.items, source_object.items)
+            elif source_dto.type is ObjectRaw.Types.dynamic:
                 changes += self.hydrade_object(find.value.items, source_object.items)
 
         return changes
