@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.factory.source.type import Type as TypeFactory
 
-from apidoc.object.source import Type, TypeFormat, EnumType, EnumTypeValue
+from apidoc.object.source_raw import Type, TypeFormat, EnumType, EnumTypeValue
 
 
 class TestType(unittest.TestCase):

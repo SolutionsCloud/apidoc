@@ -4,7 +4,9 @@ from mock import patch, call
 from apidoc.factory.source import Source as SourceFactory
 from apidoc.object.config import Config as ConfigObject
 
-from apidoc.object.source import Root, Version, Category, Method, Type, ObjectObject
+from apidoc.object.source_raw import Root, Version, Category, Method
+from apidoc.object.source_dto import Root as RootDto
+from apidoc.object.source_dto import Category as CategoryDto
 
 from apidoc.service.parser import Parser
 from apidoc.service.merger import Merger
@@ -55,7 +57,7 @@ class TestSource(unittest.TestCase):
 
         response = self.source.create_from_config(config)
 
-        self.assertIsInstance(response, Root)
+        self.assertIsInstance(response, RootDto)
 
         mock_extender.assert_called_once_with({"i": "j"}, paths=('categories/?', 'versions/?', 'versions/?/methods/?', 'versions/?/types/?', 'versions/?/references/?'))
         mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
@@ -232,137 +234,22 @@ class TestSource(unittest.TestCase):
         self.assertEqual(1, len(root.versions["v2"].methods))
         self.assertEqual(method1, root.versions["v2"].methods["m1"])
 
-    def test_fix_version(self):
-        root = Root()
-        version1 = Version()
-        version2 = Version()
-
-        method11 = Method()
-        method12 = Method()
-        method21 = Method()
-        method22 = Method()
-
-        type11 = Type()
-        type12 = Type()
-        type21 = Type()
-        type22 = Type()
-
-        reference11 = ObjectObject()
-        reference12 = ObjectObject()
-        reference21 = ObjectObject()
-        reference22 = ObjectObject()
-
-        root.versions = {"v1": version1, "v2": version2}
-
-        version1.methods = {"m1": method11, "m2": method12}
-        version2.methods = {"m1": method21, "m2": method22}
-        version1.types = {"t1": type11, "t2": type12}
-        version2.types = {"t1": type21, "t2": type22}
-        version1.references = {"r1": reference11, "r2": reference12}
-        version2.references = {"r1": reference21, "r2": reference22}
-
-        self.source.fix_versions(root)
-        self.assertEqual("v1", method11.version)
-        self.assertEqual("v2", type21.version)
-        self.assertEqual("v2", reference21.version)
-
-    def test_refactor_hierarchy(self):
-        root = Root()
-        version1 = Version()
-        version2 = Version()
-
-        category1 = Category("c")
-        category2 = Category("c")
-
-        method11 = Method()
-        method11.category = "n1"
-        method12 = Method()
-        method12.category = "n2"
-        method21 = Method()
-        method21.category = "default"
-        method22 = Method()
-        method22.category = "default"
-
-        type11 = Type()
-        type11.category = "n1"
-        type12 = Type()
-        type12.category = "n2"
-        type21 = Type()
-        type21.category = "default"
-        type22 = Type()
-        type22.category = "default"
-
-        reference11 = ObjectObject()
-        reference12 = ObjectObject()
-        reference21 = ObjectObject()
-        reference22 = ObjectObject()
-
-        root.categories = {"n1": category1, "n2": category2}
-        root.versions = {"v1": version1, "v2": version2}
-
-        version1.methods = {"m1": method11, "m2": method12}
-        version2.methods = {"m1": method21, "m2": method22}
-        version1.types = {"t1": type11, "t2": type12}
-        version2.types = {"t1": type21, "t2": type22}
-        version1.references = {"r1": reference11, "r2": reference12}
-        version2.references = {"r1": reference21, "r2": reference22}
-
-        self.source.refactor_hierarchy(root)
-
-        self.assertEqual(2, len(root.methods))
-        self.assertEqual(2, len(root.methods["m1"].versions))
-        self.assertEqual(method12, root.methods["m2"].versions["v1"])
-
-        self.assertEqual(3, len(root.method_categories))
-        self.assertEqual(2, len(root.method_categories["default"].methods))
-        self.assertEqual(method21, root.method_categories["default"].methods["m1"].versions["v2"])
-
-        self.assertEqual(2, len(root.types))
-        self.assertEqual(2, len(root.types["t1"].versions))
-        self.assertEqual(type12, root.types["t2"].versions["v1"])
-
-        self.assertEqual(2, len(root.references))
-        self.assertEqual(2, len(root.references["r1"].versions))
-        self.assertEqual(reference21, root.references["r1"].versions["v2"])
-
-        self.assertEqual(3, len(root.type_categories))
-        self.assertEqual(2, len(root.type_categories["default"].types))
-        self.assertEqual(type21, root.type_categories["default"].types["t1"].versions["v2"])
-
-    def test_sort_version_equals(self):
-        v1 = Version()
-        v1.major = 1
-        v1.minor = 2
-        v2 = Version()
-        v2.major = 1
-        v2.minor = 2
-        self.assertEqual(v1, v2)
-
-    def test_sort_version_lt(self):
-        v1 = Version()
-        v1.major = 1
-        v1.minor = 2
-        v2 = Version()
-        v2.major = 1
-        v2.minor = 3
-        self.assertLess(v1, v2)
-
     def test_sort_category_equals(self):
-        v1 = Category("a")
+        v1 = CategoryDto(Category("a"))
         v1.order = 1
-        v2 = Category("a")
+        v2 = CategoryDto(Category("a"))
         v2.order = 1
         self.assertEqual(v1, v2)
 
     def test_sort_category_lt(self):
-        v1 = Category("a")
-        v2 = Category("b")
+        v1 = CategoryDto(Category("a"))
+        v2 = CategoryDto(Category("b"))
         self.assertLess(v1, v2)
 
     def test_sort_category_lt__on_order(self):
-        v1 = Category("a")
+        v1 = CategoryDto(Category("a"))
         v1.order = 1
-        v2 = Category("a")
+        v2 = CategoryDto(Category("a"))
         v2.order = 2
         self.assertLess(v1, v2)
 

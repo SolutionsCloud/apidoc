@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.factory.source.element import Element as ElementFactory
 
-from apidoc.object.source import Element, Sampleable, Displayable
+from apidoc.object.source_raw import Element, Sampleable, Displayable
 
 
 class TestElement(unittest.TestCase):

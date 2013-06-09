@@ -2,9 +2,9 @@ import unittest
 
 from apidoc.factory.source.object import Object as ObjectFactory
 
-from apidoc.object.source import Object, ObjectObject, ObjectArray
-from apidoc.object.source import ObjectNumber, ObjectString, ObjectBool, ObjectNone
-from apidoc.object.source import ObjectDynamic, ObjectReference, ObjectType
+from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
+from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone
+from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType
 
 
 class TestObject(unittest.TestCase):

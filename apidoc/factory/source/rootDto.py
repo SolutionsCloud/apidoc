@@ -33,9 +33,6 @@ class RootDto():
 
         self.define_changes_status(root_dto)
 
-        from apidoc.lib.util.serialize import json_repr
-        print(json_repr(root_dto))
-
         return root_dto
 
     def define_changes_status(self, root_dto):

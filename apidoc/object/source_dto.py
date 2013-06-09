@@ -288,7 +288,7 @@ class Object(Element, Comparable):
         """
         if object_source.type is ObjectRaw.Types.object:
             return ObjectObject(object_source)
-        elif object_source.type not in ObjectRaw.Types:
+        elif object_source.type not in ObjectRaw.Types or object_source.type is ObjectRaw.Types.type:
             return ObjectType(object_source)
         elif object_source.type is ObjectRaw.Types.array:
             return ObjectArray(object_source)

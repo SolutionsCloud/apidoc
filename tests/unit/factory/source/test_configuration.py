@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.factory.source.configuration import Configuration as ConfigurationFactory
 
-from apidoc.object.source import Configuration
+from apidoc.object.source_raw import Configuration
 
 
 class TestConfiguration(unittest.TestCase):

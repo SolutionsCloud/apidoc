@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.factory.source.version import Version as VersionFactory
 
-from apidoc.object.source import Version, Method, ObjectString, Type
+from apidoc.object.source_raw import Version, Method, ObjectString, Type
 
 
 class TestVersion(unittest.TestCase):

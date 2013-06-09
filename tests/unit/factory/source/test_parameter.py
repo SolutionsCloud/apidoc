@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.factory.source.parameter import Parameter as ParameterFactory
 
-from apidoc.object.source import Parameter
+from apidoc.object.source_raw import Parameter
 
 
 class TestParameter(unittest.TestCase):

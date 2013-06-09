@@ -1,8 +1,8 @@
 import unittest
 
-from apidoc.factory.source.root import RootFactory as RootFactory
+from apidoc.factory.source.root import Root as RootFactory
 
-from apidoc.object.source import Root, Version, Configuration, Category
+from apidoc.object.source_raw import Root, Version, Configuration, Category
 
 
 class TestRoot(unittest.TestCase):

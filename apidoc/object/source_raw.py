@@ -140,16 +140,6 @@ class Version(Element, Displayable):
         self.types = {}
         self.references = {}
 
-    def __lt__(self, other):
-        """Return true if self is lower than other
-        """
-        return (self.major, self.minor, self.name) < (other.major, other.minor, self.name)
-
-    def __eq__(self, other):
-        """Return true if self is equals to other
-        """
-        return (self.major, self.minor, self.name) == (other.major, other.minor, self.name)
-
 
 class Category(Element, Displayable):
 
@@ -284,9 +274,9 @@ class Type(Element, Comparable):
     def get_sample(self):
         """Return the a sample for the element
         """
-        if self.format.sample is None:
+        if self.format.get_sample() is None:
             return self.get_default_sample()
-        return self.format.sample
+        return self.format.get_sample()
 
     def get_default_sample(self):
         """Return default value for the element

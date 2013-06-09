@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.factory.source.method import Method as MethodFactory
 
-from apidoc.object.source import Method, Parameter, ObjectString, ObjectNumber
+from apidoc.object.source_raw import Method, Parameter, ObjectString, ObjectNumber
 
 
 class TestMethod(unittest.TestCase):

@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.factory.source.responseCode import ResponseCode as ResponseCodeFactory
 
-from apidoc.object.source import ResponseCode
+from apidoc.object.source_raw import ResponseCode
 
 
 class TestResponseCode(unittest.TestCase):
