@@ -1,4 +1,4 @@
-from apidoc.object.source import Root as ObjectRoot
+from apidoc.object.source_raw import Root as ObjectRoot
 
 from apidoc.factory.source.configuration import Configuration as ConfigurationFactory
 from apidoc.factory.source.category import Category as CategoryFactory

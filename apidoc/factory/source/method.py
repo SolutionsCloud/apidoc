@@ -1,4 +1,4 @@
-from apidoc.object.source import Method as ObjectMethod
+from apidoc.object.source_raw import Method as ObjectMethod
 
 from apidoc.factory.source.element import Element as ElementFactory
 from apidoc.factory.source.parameter import Parameter as ParameterFactory

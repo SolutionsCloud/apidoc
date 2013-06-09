@@ -5,9 +5,9 @@ from apidoc.service.extender import Extender
 from apidoc.factory.source.root import Root as RootFactory
 from apidoc.factory.source.rootDto import RootDto as RootDtoFactory
 
-from apidoc.lib.util.decorator import add_property
+from apidoc.object.source_raw import ObjectObject
 
-from apidoc.object.source import ObjectObject
+from apidoc.lib.util.decorator import add_property
 
 
 @add_property("parser", Parser)
@@ -39,6 +39,7 @@ class Source():
 
         self.hide_filtered_elements(root, config["filter"])
         self.remove_hidden_elements(root)
+
         self.replace_references(root)
 
         return self.root_dto_factory.create_from_root(root)

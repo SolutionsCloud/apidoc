@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.factory.source.category import Category as CategoryFactory
 
-from apidoc.object.source import Category
+from apidoc.object.source_raw import Category
 
 
 class TestCategory(unittest.TestCase):

@@ -1,5 +1,3 @@
-import logging
-
 from functools import total_ordering
 from apidoc.lib.util.enum import Enum
 
@@ -21,48 +19,6 @@ class Root():
         self.references = {}
 
 
-class RootDto():
-
-    """Root object of sources elements for templates
-    """
-
-    _instance = None
-
-    @classmethod
-    def instance(cls):
-        """Retrieve the unique instance of the element
-        """
-        if RootDto._instance is None:
-            RootDto._instance = RootDto()
-        return RootDto._instance
-
-    def __init__(self):
-        """Class instantiation
-        """
-        super().__init__()
-        self.configuration = Configuration()
-        self.versions = []
-        self.method_categories = []
-        self.type_categories = []
-
-    def get_used_type_categories(self):
-        """return list of used type_categories
-        """
-        for category in [x for x in self.type_categories.values() if len(x.get_used_types()) == 0]:
-            logging.getLogger().warn("Unused type category %s" % category.name)
-        return [x for x in self.type_categories.values() if len(x.get_used_types()) > 0]
-
-    def get_used_types(self):
-        """return list of types used in a method
-        """
-        types = []
-        for category in self.method_categories.values():
-            for method_versioned in category.methods.values():
-                for method in method_versioned.signatures.values():
-                    types += method.get_used_types()
-        return list({}.fromkeys(types).keys())
-
-
 class Element():
 
     """Generic element
@@ -74,30 +30,6 @@ class Element():
         super().__init__()
         self.name = None
         self.description = None
-
-
-class ElementDto():
-
-    """Element
-    """
-
-    def __init__(self, element):
-        """Class instantiation
-        """
-        self.name = element.name
-        self.description = element.description
-
-
-class ElementVersionedDto():
-
-    """Element
-    """
-
-    def __init__(self, element):
-        """Class instantiation
-        """
-        self.name = element.name
-        self.description = []
 
 
 class Sampleable():
@@ -218,30 +150,6 @@ class Version(Element, Displayable):
         return (self.major, self.minor, self.name) == (other.major, other.minor, self.name)
 
 
-class VersionDto(ElementDto, Comparable):
-
-    """Element Version
-    """
-
-    def __init__(self, version):
-        """Class instantiation
-        """
-        super().__init__(version)
-
-        self.uri = version.uri
-        self.major = version.major
-        self.minor = version.minor
-        self.status = version.status
-
-        self.types = {}
-        self.methods = {}
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (int(self.major), int(self.minor), str(self.name))
-
-
 class Category(Element, Displayable):
 
     """Element Category
@@ -253,56 +161,6 @@ class Category(Element, Displayable):
         super().__init__()
         self.name = name
         self.order = 99
-
-
-class CategoryDto(ElementDto, Comparable):
-
-    """Element Category
-    """
-
-    def __init__(self, category):
-        """Class instantiation
-        """
-        super().__init__(category)
-
-        self.order = category.order
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (int(self.order), str(self.name))
-
-
-class TypeCategory(CategoryDto):
-
-    """Element TypeCategory
-    """
-
-    def __init__(self, category):
-        """Class instantiation
-        """
-        super().__init__(category)
-        self.types = []
-
-    def get_used_types(self):
-        """Return list of types of the namspace used
-        """
-        used_types = RootDto.instance().get_used_types()
-        for type in [y for (x, y) in self.types.items() if x not in used_types]:
-            logging.getLogger().warn("Unused type %s" % type.name)
-        return [y for (x, y) in self.types.items() if x in used_types]
-
-
-class MethodCategory(CategoryDto):
-
-    """Element MethodCategory
-    """
-
-    def __init__(self, category):
-        """Class instantiation
-        """
-        super().__init__(category)
-        self.methods = []
 
 
 class Method(Element, Displayable, Comparable):
@@ -369,34 +227,6 @@ class Method(Element, Displayable, Comparable):
         return (str(self.name))
 
 
-class MethodDto(ElementVersionedDto, Comparable):
-
-    def __init__(self, method):
-        """Class instantiation
-        """
-        super().__init__(method)
-
-        self.method = method.method
-
-        self.code = []
-        self.uri = []
-
-        self.changes_status = {}
-
-        self.request_headers = []
-        self.request_parameters = []
-        self.request_body = []
-        self.response_codes = []
-        self.response_body = []
-
-        self.originals = {}
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (str(self.name))
-
-
 class MultiVersion(Comparable):
 
     class Changes(Enum):
@@ -415,36 +245,6 @@ class MultiVersion(Comparable):
         """Return a tupple of values representing the unicity of the object
         """
         return (self.value, sorted(self.versions))
-
-
-class ParameterDto(ElementDto, Sampleable, Comparable):
-
-    def __init__(self, parameter):
-        """Class instantiation
-        """
-        super().__init__(parameter)
-        self.type = parameter.type
-        self.optional = parameter.optional
-        self.is_internal = self.type in Object.Types
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (str(self.name), str(self.description))
-
-
-class PositionableParameterDto(ParameterDto):
-
-    def __init__(self, parameter):
-        """Class instantiation
-        """
-        super().__init__(parameter)
-        self.position = 0
-
-    def get_comparable_values_for_ordering(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (int(self.position), str(self.name), str(self.description))
 
 
 class Parameter(Element, Sampleable):
@@ -473,21 +273,6 @@ class Parameter(Element, Sampleable):
         """Return list of types used in the parameter
         """
         return [self.type]
-
-
-class ResponseCodeDto(ElementDto, Comparable):
-
-    def __init__(self, parameter):
-        """Class instantiation
-        """
-        super().__init__(parameter)
-        self.code = parameter.code
-        self.message = parameter.message
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (int(self.code), str(self.message), str(self.description))
 
 
 class ResponseCode(Element):
@@ -542,32 +327,6 @@ class Type(Element, Comparable):
         return (str(self.name))
 
 
-class TypeDto(ElementVersionedDto, Comparable):
-
-    """Element Type
-    """
-
-    def __init__(self, type):
-        """Class instantiation
-        """
-        super().__init__(type)
-
-        self.name = type.name
-        self.format = TypeFormatDto(type.format)
-
-        self.changes_status = {}
-
-        self.primary = []
-        self.values = []
-
-        self.originals = {}
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (str(self.name))
-
-
 class TypeFormat(Sampleable):
 
     """Element TypeFormat
@@ -587,19 +346,6 @@ class TypeFormat(Sampleable):
             return self.pretty
 
         return None
-
-
-class TypeFormatDto(Sampleable):
-
-    """Element Type
-    """
-
-    def __init__(self, type_format):
-        """Class instantiation
-        """
-        self.sample = []
-        self.pretty = []
-        self.advanced = []
 
 
 class EnumType(Type):
@@ -631,38 +377,6 @@ class EnumTypeValue(Element, Comparable):
         """Return a tupple of values representing the unicity of the object
         """
         return (str(self.name), str(self.description))
-
-
-class ObjectDto(ElementDto, Comparable):
-
-    """Element Object
-    """
-
-    @classmethod
-    def factory(cls, object_source):
-        """Return a proper object
-        """
-        if isinstance(object_source, ObjectObject):
-            return ObjectObjectDto(object_source)
-        if isinstance(object_source, ObjectType):
-            return ObjectTypeDto(object_source)
-        if isinstance(object_source, ObjectArray):
-            return ObjectArrayDto(object_source)
-        else:
-            return ObjectDto(object_source)
-
-    def __init__(self, object):
-        """Class instantiation
-        """
-        super().__init__(object)
-        self.type = object.type
-        self.optional = object.optional
-        self.required = object.required
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (str(self.name), str(self.description), str(self.type), bool(self.optional), bool(self.required))
 
 
 class Object(Element, Sampleable):
@@ -730,44 +444,6 @@ class Object(Element, Sampleable):
         """Return list of types used in the object
         """
         return []
-
-
-class ObjectObjectDto(ObjectDto):
-
-    """Element ObjectObject
-    """
-
-    def __init__(self, object):
-        """Class instantiation
-        """
-        super().__init__(object)
-        self.properties = {}
-
-
-class ObjectArrayDto(ObjectDto):
-
-    """Element ObjectObject
-    """
-
-    def __init__(self, object):
-        """Class instantiation
-        """
-        super().__init__(object)
-        self.items = None
-
-
-class ObjectTypeDto(ObjectDto):
-
-    """Element ObjectObject
-    """
-
-    def __init__(self, object):
-        """Class instantiation
-        """
-        super().__init__(object)
-        self.type_name = object.type_name
-        self.primary = None
-        self.values = []
 
 
 class ObjectObject(Object):
@@ -908,26 +584,6 @@ class ObjectReference(Object):
         self.type = Object.Types("reference")
         self.reference_name = None
 
-    def get_reference(self):
-        """Return a reference object from the reference_name defined in sources
-        """
-        if self.reference_name not in RootDto.instance().references:
-            print(RootDto.instance().references.keys())
-            raise ValueError(
-                "Unable to find reference \"%s\"." % self.reference_name
-            )
-        if self.version not in RootDto.instance().references[self.reference_name].versions:
-            raise ValueError(
-                "Unable to find reference \"%s\" at version \"%s\"." % (self.reference_name, self.version)
-            )
-
-        reference = RootDto.instance().references[self.reference_name].versions[self.version]
-        if self.optional:
-            reference.optional = self.optional
-        if self.description is not None:
-            reference.description = self.description
-        return reference
-
     def get_used_types(self):
         """Return list of types used in the object
         """
@@ -946,21 +602,11 @@ class ObjectType(Object):
         self.type = Object.Types("type")
         self.type_name = None
 
-    def get_type(self):
-        """Return a type object from the type_name defined in sources
-        """
-        return Type()
-        if self.type_name not in RootDto.instance().types:
-            raise ValueError("Unable to find type \"%s\"." % self.type_name)
-        if self.version not in RootDto.instance().types[self.type_name].versions:
-            raise ValueError("Unable to find type \"%s\" at version \"%s\"." % (self.type_name, self.version))
-
-        return RootDto.instance().types[self.type_name].versions[self.version]
-
     def get_default_sample(self):
         """Return default value for the element
         """
-        return self.get_type().format.get_sample()
+        return "TODO"
+        #self.get_type().format.get_sample()
 
     def get_used_types(self):
         """Return list of types used in the object

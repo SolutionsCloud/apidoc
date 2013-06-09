@@ -1,4 +1,4 @@
-from apidoc.object.source import EnumTypeValue as ObjecEnumValue
+from apidoc.object.source_raw import EnumTypeValue as ObjecEnumValue
 
 from apidoc.factory.source.element import Element as ElementFactory
 

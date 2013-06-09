@@ -14,7 +14,7 @@
 <div class="request stack">
     <h5><i class="i-request"></i> Request: </h5>
     <h6>Resource: </h6>
-{% for uri in method.uri %}
+{% for uri in method.full_uri %}
     <code  class="diff_version" data-version="{{ uri.versions|join(" ") }}"><span class="hur">{{ uri.value }}</span></code>
 {%- endfor -%}
 

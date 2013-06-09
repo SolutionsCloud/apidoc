@@ -1,5 +1,5 @@
-from apidoc.object.source import Type as ObjectType
-from apidoc.object.source import EnumType as ObjectEnumType
+from apidoc.object.source_raw import Type as ObjectType
+from apidoc.object.source_raw import EnumType as ObjectEnumType
 
 from apidoc.factory.source.element import Element as ElementFactory
 from apidoc.factory.source.enumValue import EnumValue as EnumValueFactory

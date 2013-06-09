@@ -1,4 +1,4 @@
-from apidoc.object.source import RootDto
+from apidoc.object.source_dto import RootDto
 
 
 class Source():

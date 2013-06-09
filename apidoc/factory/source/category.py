@@ -1,4 +1,4 @@
-from apidoc.object.source import Category as ObjectCategory
+from apidoc.object.source_raw import Category as ObjectCategory
 
 from apidoc.factory.source.element import Element as ElementFactory
 

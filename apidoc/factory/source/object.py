@@ -1,4 +1,4 @@
-from apidoc.object.source import ObjectObject, ObjectArray, ObjectNumber, ObjectString, ObjectBool, ObjectReference, ObjectType, ObjectNone, ObjectDynamic
+from apidoc.object.source_raw import ObjectObject, ObjectArray, ObjectNumber, ObjectString, ObjectBool, ObjectReference, ObjectType, ObjectNone, ObjectDynamic
 
 from apidoc.factory.source.element import Element as ElementFactory
 

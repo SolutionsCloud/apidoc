@@ -1,4 +1,4 @@
-from apidoc.object.source import Configuration as ObjectConfiguration
+from apidoc.object.source_raw import Configuration as ObjectConfiguration
 
 from apidoc.factory.source.element import Element as ElementFactory
 

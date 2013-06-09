@@ -1,11 +1,11 @@
-from apidoc.object.source import RootDto as ObjectRoot
-from apidoc.object.source import Category, VersionDto
-from apidoc.object.source import MethodCategory, TypeCategory
-from apidoc.object.source import MethodDto, TypeDto
-from apidoc.object.source import MultiVersion, EnumType
-from apidoc.object.source import ObjectObject
-from apidoc.object.source import ParameterDto, PositionableParameterDto, ResponseCodeDto
-from apidoc.object.source import ObjectDto
+from apidoc.object.source_dto import RootDto as ObjectRoot
+from apidoc.object.source_raw import Category, EnumType, ObjectObject
+from apidoc.object.source_dto import VersionDto
+from apidoc.object.source_dto import MethodCategory, TypeCategory
+from apidoc.object.source_dto import MethodDto, TypeDto
+from apidoc.object.source_dto import MultiVersion
+from apidoc.object.source_dto import ParameterDto, PositionableParameterDto, ResponseCodeDto
+from apidoc.object.source_dto import ObjectDto
 
 
 class RootDto():
@@ -15,6 +15,7 @@ class RootDto():
     def create_from_root(self, root_source):
         """Return a populated Object Root from dictionnary datas
         """
+
         root_dto = ObjectRoot()
 
         root_dto.configuration = root_source.configuration
@@ -88,17 +89,19 @@ class Hydradator():
             category.methods.append(method_dto)
             method_dto.changes_status[self.version_name] = MultiVersion.Changes.new
 
-        method_uri = "%s%s%s" % (root_source.configuration.uri or "", self.versions[self.version_name].uri or "", method.uri or "")
+        full_uri = "%s%s%s" % (root_source.configuration.uri or "", self.versions[self.version_name].uri or "", method.uri or "")
+        absolute_uri = "%s%s" % (self.versions[self.version_name].uri or "", method.uri or "")
         parameters = [PositionableParameterDto(parameter) for parameter in method.request_parameters.values()]
         for parameter in parameters:
-            parameter.position = method_uri.find("{%s}" % parameter.name)
+            parameter.position = full_uri.find("{%s}" % parameter.name)
         request_parameters = [parameter for parameter in parameters if parameter.position >= 0]
         request_headers = [ParameterDto(parameter) for parameter in method.request_headers.values()]
         response_codes = [ResponseCodeDto(parameter) for parameter in method.response_codes]
 
         changes = 0
         changes += self.hydrate_value(method_dto.description, method.description)
-        changes += self.hydrate_value(method_dto.uri, method_uri)
+        changes += self.hydrate_value(method_dto.full_uri, full_uri)
+        changes += self.hydrate_value(method_dto.absolute_uri, absolute_uri)
         changes += self.hydrate_value(method_dto.code, method.code)
 
         changes += self.hydrate_list(method_dto.request_headers, sorted(request_headers))

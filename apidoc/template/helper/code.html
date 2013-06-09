@@ -70,8 +70,6 @@
         <td>{{ indent(pad_length) }}<span class="pun">}</span>{{ suffix }}</td>
         <td></td>
     </tr>
-    {%- elif object.type|lower == "reference" %}
-        {{- code_commented(object.get_reference(), prefix, suffix, pad_length) }}
     {%- else %}
     <tr>
         <td>{{ indent(pad_length) }}{{ prefix }}<span class="typ">{{ object.type_name }}</span>{{ suffix }}</td>
@@ -132,8 +130,6 @@
             {%- endif %}
         {%- endfor %}
 {{ indent(pad_length) }}<span class="pun">}</span>{{ suffix }}
-    {%- elif object.type|lower == "reference" %}
-        {{- code_sampled(object.get_reference(), prefix, suffix, pad_length) }}
     {%- else %}
 {{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.get_sample() }}"</span>{{ suffix }}
     {%- endif -%}

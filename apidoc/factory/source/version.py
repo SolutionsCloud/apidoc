@@ -1,4 +1,4 @@
-from apidoc.object.source import Version as ObjectVersion
+from apidoc.object.source_raw import Version as ObjectVersion
 
 from apidoc.factory.source.element import Element as ElementFactory
 from apidoc.factory.source.method import Method as MethodFactory

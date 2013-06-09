@@ -1,6 +1,6 @@
 import collections
 
-from apidoc.object.source import Sampleable, Displayable
+from apidoc.object.source_raw import Sampleable, Displayable
 
 from apidoc.lib.util.cast import to_bool
 
