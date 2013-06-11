@@ -1,9 +1,7 @@
 import unittest
 
-from apidoc.object.source_raw import Root, Element, Sampleable, Displayable
-from apidoc.object.source_raw import Root as RootDto
-from apidoc.object.source_raw import Version
-from apidoc.object.source_raw import Method, Category
+from apidoc.object.source_raw import Sampleable
+from apidoc.object.source_raw import Method
 from apidoc.object.source_raw import Parameter, ResponseCode
 from apidoc.object.source_raw import Type, EnumType, EnumTypeValue, TypeFormat
 from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
@@ -11,7 +9,7 @@ from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, Obj
 from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType
 
 
-class TestSource(unittest.TestCase):
+class TestSourceRaw(unittest.TestCase):
 
     def test_sampleable_get_sample(self):
         sampleable = Sampleable()
@@ -103,6 +101,17 @@ class TestSource(unittest.TestCase):
         test.type = "number"
 
         self.assertEqual("123", test.get_default_sample())
+
+    def test_parameter_get_default_sample__for_type(self):
+        test = Parameter()
+
+        item = Type()
+        item.name = "a"
+
+        test.type = "b"
+        test.items = item
+
+        self.assertEqual("my_a", test.get_default_sample())
 
     def test_typeformat_get_default_sample(self):
         test = TypeFormat()
