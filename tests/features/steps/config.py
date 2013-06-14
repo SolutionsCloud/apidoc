@@ -3,6 +3,10 @@ import os
 from apidoc.factory.config import Config as ConfigFactory
 
 
+def assert_equals(first, second):
+    assert first == second, "%s is not equals to %s" % (first, second)
+
+
 @given('a "{format}" config file containing')
 def impl_a(context, format):
     context.conf_file = os.path.join(context.temp_dir, "sample." + format)
@@ -24,7 +28,7 @@ def impl_c(context, text, attribute):
     part = context.config_object
     for a in attribute.split("."):
         part = part[a]
-    assert(str(part) == text)
+    assert_equals(str(part), text)
 
 
 @then('the object_config returned contains the files "{text}" for the attribute "{attribute}"')
@@ -34,7 +38,7 @@ def impl_d(context, text, attribute):
         part = part[a]
 
     text = text.replace("['", "['" + context.temp_dir + "/").replace(", '", ", '" + context.temp_dir + "/")
-    assert(str(part) == text)
+    assert_equals(str(part), text)
 
 
 @then('the object_config returned contains the file "{text}" for the attribute "{attribute}"')
@@ -44,4 +48,4 @@ def impl_e(context, text, attribute):
         part = part[a]
 
     text = context.temp_dir + "/" + text
-    assert(str(part) == text)
+    assert_equals(str(part), text)
