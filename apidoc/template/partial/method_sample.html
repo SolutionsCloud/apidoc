@@ -15,7 +15,7 @@
 {{- code.uri_sampled(method_sample.absolute_uri, method_sample.request_parameters) -}}
         </span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
-{%- for parameter in method_sample.request_headers %}
+{%- for parameter in method_sample.request_headers|sort %}
 <span class="hat">{{ parameter.name }}</span><span class="pun">: </span><span class="hva">{{ util.none_to_empty(parameter.sample) }}</span>
 {%- endfor %}
 {% if method_sample.request_body -%}

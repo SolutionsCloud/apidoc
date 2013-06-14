@@ -4,7 +4,8 @@ from mock import patch, call
 from apidoc.factory.source import Source as SourceFactory
 from apidoc.object.config import Config as ConfigObject
 
-from apidoc.object.source_raw import Root, Version, Category, Method
+from apidoc.object.source_raw import Root, Version, Category, Method, Type, Parameter, Object
+from apidoc.object.source_raw import ObjectReference, ObjectObject, ObjectType, ObjectArray, ObjectDynamic, ObjectString
 from apidoc.object.source_dto import Root as RootDto
 from apidoc.object.source_dto import Category as CategoryDto
 
@@ -205,6 +206,159 @@ class TestSource(unittest.TestCase):
         self.assertFalse(category1.display)
         self.assertTrue(category2.display)
         self.assertFalse(category3.display)
+
+    def test_remove_unused_types(self):
+        root = Root()
+
+        version1 = Version()
+
+        type1 = Type()
+        type2 = Type()
+
+        method1 = Method()
+
+        parameter1 = Parameter()
+        parameter1.type = "t1"
+
+        method1.request_parameters = {"p1": parameter1}
+
+        version1.types = {"t1": type1, "t2": type2}
+        version1.methods = {"m1": method1}
+
+        root.versions = {"v1": version1}
+
+        self.source.remove_unused_types(root)
+
+        self.assertEqual({"t1": type1}, version1.types)
+
+    def test_replace_references(self):
+        root = Root()
+
+        version1 = Version()
+
+        method1 = Method()
+
+        object_reference1 = ObjectReference()
+        object_reference1.reference_name = "r1"
+        object_reference1.name = "a"
+
+        object1 = ObjectObject()
+        object1.description = "b"
+
+        method1.request_body = object_reference1
+
+        version1.references = {"r1": object1}
+        version1.methods = {"m1": method1}
+
+        root.versions = {"v1": version1}
+
+        self.source.replace_references(root)
+
+        self.assertEqual("a", method1.request_body.name)
+        self.assertEqual("b", method1.request_body.description)
+
+    def test_replace_type(self):
+        root = Root()
+
+        version1 = Version()
+
+        method1 = Method()
+
+        object_type1 = ObjectType()
+        object_type1.type_name = "t1"
+
+        type1 = Type()
+
+        parameter1 = Parameter()
+        parameter1.type = "t1"
+
+        parameter2 = Parameter()
+        parameter2.type = "t1"
+
+        method1.request_body = object_type1
+        method1.request_parameters = {"p1": parameter1}
+        method1.request_headers = {"p1": parameter2}
+
+        version1.types = {"t1": type1}
+        version1.methods = {"m1": method1}
+
+        root.versions = {"v1": version1}
+
+        self.source.replace_types(root)
+
+        self.assertEqual(type1, method1.request_body.items)
+        self.assertEqual(type1, method1.request_parameters["p1"].items)
+        self.assertEqual(type1, method1.request_headers["p1"].items)
+
+    def test_replace_references_in_object(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectReference()
+        reference.reference_name = "r1"
+
+        string1 = ObjectString()
+
+        object.properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        self.source.replace_references_in_object(object, {"r1": string1})
+
+        self.assertEqual(Object.Types.string, dynamic.items.type)
+
+    def test_replace_types_in_object(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectType()
+        reference.type_name = "t1"
+
+        type1 = Type()
+
+        object.properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        self.source.replace_types_in_object(object, {"t1": type1})
+
+        self.assertEqual(type1, reference.items)
+
+    def test_get_used_types_in_object(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectType()
+        reference.type_name = "t1"
+
+        object.properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        response = self.source.get_used_types_in_object(object)
+
+        self.assertEqual(["t1"], response)
+
+    def test_get_reference(self):
+        reference = ObjectReference()
+        reference.reference_name = "r1"
+        reference.name = "a"
+        reference.description = "b"
+        reference.optional = True
+        reference.required = False
+
+        reference1 = ObjectReference()
+        reference1.reference_name = "r2"
+
+        reference2 = ObjectString()
+
+        response = self.source.get_reference(reference, {"r1": reference1, "r2": reference2})
+
+        self.assertNotEqual(reference2, response)
+        self.assertEquals("a", response.name)
+        self.assertEquals("b", response.description)
+        self.assertEquals(True, response.optional)
+        self.assertEquals(False, response.required)
 
     def test_remove_hidden_elements(self):
         root = Root()

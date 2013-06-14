@@ -3,7 +3,7 @@ from apidoc.object.source_raw import Category, EnumType
 from apidoc.object.source_raw import Object as ObjectRaw
 from apidoc.object.source_dto import Version
 from apidoc.object.source_dto import MethodCategory, TypeCategory
-from apidoc.object.source_dto import Method, Type
+from apidoc.object.source_dto import Method, Type, EnumTypeValue
 from apidoc.object.source_dto import MultiVersion
 from apidoc.object.source_dto import Parameter, PositionableParameter, ResponseCode
 from apidoc.object.source_dto import Object
@@ -25,7 +25,7 @@ class RootDto():
         root_dto.versions = [Version(x) for x in root_source.versions.values()]
 
         for version in sorted(root_source.versions.values()):
-            hydrator = Hydradator(version, root_source.versions, root_source.versions[version.name].types)
+            hydrator = Hydrator(version, root_source.versions, root_source.versions[version.name].types)
             for method in version.methods.values():
                 hydrator.hydrate_method(root_dto, root_source, method)
             for type in version.types.values():
@@ -59,7 +59,7 @@ class RootDto():
                         new = True
 
 
-class Hydradator():
+class Hydrator():
 
     def __init__(self, version, versions, types):
         self.version_name = version.name
@@ -105,8 +105,8 @@ class Hydradator():
         changes += self.hydrate_list(method_dto.request_parameters, sorted(request_parameters))
         changes += self.hydrate_list(method_dto.response_codes, sorted(response_codes))
 
-        changes += self.hydrade_object(method_dto.request_body, method.request_body)
-        changes += self.hydrade_object(method_dto.response_body, method.response_body)
+        changes += self.hydrate_object(method_dto.request_body, method.request_body)
+        changes += self.hydrate_object(method_dto.response_body, method.response_body)
 
         if changes > 0 and method_dto.changes_status[self.version_name] is MultiVersion.Changes.none:
             method_dto.changes_status[self.version_name] = MultiVersion.Changes.updated
@@ -142,7 +142,7 @@ class Hydradator():
         changes += self.hydrate_value(type_dto.format.advanced, type.format.advanced)
         changes += self.hydrate_value(type_dto.format.sample, type.format.sample)
         if (isinstance(type, EnumType)):
-            changes += self.hydrate_list(type_dto.values, type.values.values())
+            changes += self.hydrate_list(type_dto.values, [EnumTypeValue(type_value) for type_value in type.values.values()])
 
         if changes > 0 and type_dto.changes_status[self.version_name] is MultiVersion.Changes.none:
             type_dto.changes_status[self.version_name] = MultiVersion.Changes.updated
@@ -183,7 +183,7 @@ class Hydradator():
 
         return changes
 
-    def hydrade_object(self, dto_object, source_object):
+    def hydrate_object(self, dto_object, source_object):
         if source_object is None:
             return 0
 
@@ -202,30 +202,29 @@ class Hydradator():
             if source_dto.type is ObjectRaw.Types.object:
                 for (property_name, property_value) in source_object.properties.items():
                     source_dto.properties[property_name] = []
-                    changes += self.hydrade_object(source_dto.properties[property_name], property_value)
+                    changes += self.hydrate_object(source_dto.properties[property_name], property_value)
             elif source_dto.type is ObjectRaw.Types.array:
                 source_dto.items = []
-                changes += self.hydrade_object(source_dto.items, source_object.items)
+                changes += self.hydrate_object(source_dto.items, source_object.items)
             elif source_dto.type is ObjectRaw.Types.dynamic:
                 source_dto.items = []
-                changes += self.hydrade_object(source_dto.items, source_object.items)
+                changes += self.hydrate_object(source_dto.items, source_object.items)
             elif source_dto.type is ObjectRaw.Types.type:
                 source_dto.items = source_object.items
-#                if isinstance(type, EnumType):
-#                    source_dto.values = [x for x in type.values.keys()]
 
             dto_object.append(MultiVersion(source_dto, self.version_name))
         else:
             if source_dto.type is ObjectRaw.Types.object:
                 for (property_name, property_value) in source_object.properties.items():
                     if find.value.type is ObjectRaw.Types.object and property_name in find.value.properties.keys():
-                        changes += self.hydrade_object(find.value.properties[property_name], property_value)
+                        changes += self.hydrate_object(find.value.properties[property_name], property_value)
                     else:
-                        changes += self.hydrade_object([], property_value)
+                        find.value.properties[property_name] = []
+                        changes += self.hydrate_object(find.value.properties[property_name], property_value)
             elif source_dto.type is ObjectRaw.Types.array:
-                changes += self.hydrade_object(find.value.items, source_object.items)
+                changes += self.hydrate_object(find.value.items, source_object.items)
             elif source_dto.type is ObjectRaw.Types.dynamic:
-                changes += self.hydrade_object(find.value.items, source_object.items)
+                changes += self.hydrate_object(find.value.items, source_object.items)
 
         return changes
 
@@ -238,8 +237,8 @@ class Hydradator():
 
     def get_previous_version(self):
         previsous = None
-        for version in sorted(self.versions):
-            if version == self.version_name:
+        for version in sorted(self.versions.values()):
+            if version.name == self.version_name:
                 return previsous
             previsous = version
 

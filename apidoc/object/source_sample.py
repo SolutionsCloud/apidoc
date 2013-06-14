@@ -1,4 +1,5 @@
 from apidoc.object.source_raw import Object as ObjectRaw
+from apidoc.object import Comparable
 
 
 class Type():
@@ -10,7 +11,7 @@ class Type():
         self.advanced = type_raw.format.advanced
 
 
-class Method():
+class Method(Comparable):
 
     def __init__(self, method_raw):
         self.name = method_raw.name
@@ -20,11 +21,16 @@ class Method():
         self.full_uri = method_raw.full_uri
         self.absolute_uri = method_raw.absolute_uri
 
-        self.request_headers = [Parameter(x) for x in sorted(method_raw.request_headers.values())]
+        self.request_headers = [Parameter(x) for x in method_raw.request_headers.values()]
         self.request_parameters = dict((name, Parameter(x)) for name, x in method_raw.request_parameters.items())
 
         self.request_body = Object.factory(method_raw.request_body)
         self.response_body = Object.factory(method_raw.response_body)
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name))
 
 
 class Parameter():

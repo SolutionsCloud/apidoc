@@ -1,6 +1,6 @@
-from functools import total_ordering
 from apidoc.lib.util.enum import Enum
 from apidoc.object.source_raw import Object as ObjectRaw
+from apidoc.object import Comparable
 
 
 class Root():
@@ -42,38 +42,6 @@ class ElementVersioned():
         self.description = []
 
 
-@total_ordering
-class Comparable():
-
-    """Element who can be sorted
-    """
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return ()
-
-    def get_comparable_values_for_equality(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return self.get_comparable_values()
-
-    def get_comparable_values_for_ordering(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return self.get_comparable_values()
-
-    def __lt__(self, other):
-        """Return true if self is lower than other
-        """
-        return self.get_comparable_values_for_ordering() < other.get_comparable_values_for_ordering()
-
-    def __eq__(self, other):
-        """Return true if self is equals to other
-        """
-        return type(self) is type(other) and self.get_comparable_values_for_equality() == other.get_comparable_values_for_equality()
-
-
 class Version(Element, Comparable):
 
     """Element Version
@@ -88,9 +56,6 @@ class Version(Element, Comparable):
         self.major = version.major
         self.minor = version.minor
         self.status = version.status
-
-        self.types = {}
-        self.methods = {}
 
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
@@ -199,7 +164,7 @@ class Parameter(Element, Comparable):
         super().__init__(parameter)
         self.type = parameter.type
         self.optional = parameter.optional
-        self.is_internal = self.type in ObjectRaw.Types
+        self.is_internal = self.type in ObjectRaw.Types or self.type is ObjectRaw.Types.type
 
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
@@ -275,6 +240,22 @@ class TypeFormat():
         self.sample = []
         self.pretty = []
         self.advanced = []
+
+
+class EnumTypeValue(Element, Comparable):
+
+    """Element EnumTypeValue
+    """
+
+    def __init__(self, type_value):
+        """Class instantiation
+        """
+        super().__init__(type_value)
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name), str(self.description))
 
 
 class Object(Element, Comparable):

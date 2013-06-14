@@ -1,5 +1,5 @@
-from functools import total_ordering
 from apidoc.lib.util.enum import Enum
+from apidoc.object import Comparable
 
 
 class Root():
@@ -56,38 +56,6 @@ class Sampleable():
         return "my_%s" % self.name
 
 
-@total_ordering
-class Comparable():
-
-    """Element who can be sorted
-    """
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return ()
-
-    def get_comparable_values_for_equality(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return self.get_comparable_values()
-
-    def get_comparable_values_for_ordering(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return self.get_comparable_values()
-
-    def __lt__(self, other):
-        """Return true if self is lower than other
-        """
-        return self.get_comparable_values_for_ordering() < other.get_comparable_values_for_ordering()
-
-    def __eq__(self, other):
-        """Return true if self is equals to other
-        """
-        return type(self) is type(other) and self.get_comparable_values_for_equality() == other.get_comparable_values_for_equality()
-
-
 class Displayable():
 
     """Element who can be displayed
@@ -113,7 +81,7 @@ class Configuration(Element):
         self.title = None
 
 
-class Version(Element, Displayable):
+class Version(Element, Displayable, Comparable):
 
     """Element Version
     """
@@ -139,6 +107,11 @@ class Version(Element, Displayable):
         self.methods = {}
         self.types = {}
         self.references = {}
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (int(self.major), int(self.minor), str(self.name))
 
 
 class Category(Element, Displayable):
@@ -205,7 +178,7 @@ class Method(Element, Displayable, Comparable):
         return (str(self.name))
 
 
-class Parameter(Element, Sampleable, Comparable):
+class Parameter(Element, Sampleable):
 
     """Element Parameter
     """
@@ -226,15 +199,10 @@ class Parameter(Element, Sampleable, Comparable):
     def get_default_sample(self):
         """Return default value for the element
         """
-        if self.type not in Object.Types:
+        if self.type not in Object.Types or self.type is Object.Types.type:
             return self.items.get_sample()
         else:
             return self.get_object().get_sample()
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (str(self.name))
 
 
 class ResponseCode(Element):
@@ -250,7 +218,7 @@ class ResponseCode(Element):
         self.message = None
 
 
-class Type(Element, Comparable):
+class Type(Element):
 
     """Element Type
     """
@@ -282,11 +250,6 @@ class Type(Element, Comparable):
         """Return default value for the element
         """
         return "my_%s" % self.name
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (str(self.name))
 
 
 class TypeFormat(Sampleable):
@@ -330,15 +293,11 @@ class EnumType(Type):
         return super().get_default_sample()
 
 
-class EnumTypeValue(Element, Comparable):
+class EnumTypeValue(Element):
 
     """Element EnumTypeValue
     """
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (str(self.name), str(self.description))
+    pass
 
 
 class Object(Element, Sampleable):
@@ -538,4 +497,6 @@ class ObjectType(Object):
     def get_default_sample(self):
         """Return default value for the element
         """
+        if self.items is None:
+            return super().get_default_sample()
         return self.items.get_sample()

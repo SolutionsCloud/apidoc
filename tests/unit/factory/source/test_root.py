@@ -25,3 +25,11 @@ class TestRoot(unittest.TestCase):
         self.assertEqual(1, len(response.categories))
         self.assertIn("c1", response.categories)
         self.assertIsInstance(response.categories["c1"], Category)
+
+    def test_create_from_name_and_dictionary__feed_uri(self):
+        datas = {"configuration": {"uri": "a"}, "versions": {"v1": {"uri": "b", "methods": {"m1": {"uri": "c"}}}}}
+        response = self.factory.create_from_dictionary(datas)
+
+        self.assertEqual("ab", response.versions["v1"].full_uri)
+        self.assertEqual("abc", response.versions["v1"].methods["m1"].full_uri)
+        self.assertEqual("bc", response.versions["v1"].methods["m1"].absolute_uri)

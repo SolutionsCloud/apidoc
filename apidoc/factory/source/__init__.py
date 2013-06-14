@@ -153,8 +153,6 @@ class Source():
             self.replace_references_in_object(object, references)
         elif object.type is ObjectObject.Types.array:
             object.items = self.replace_references_in_object(object.items, references)
-        elif object.type is ObjectObject.Types.array:
-            object.items = self.replace_references_in_object(object.items, references)
         elif object.type is ObjectObject.Types.dynamic:
             object.items = self.replace_references_in_object(object.items, references)
         elif object.type is ObjectObject.Types.object:
@@ -172,8 +170,6 @@ class Source():
 
         if object.type is ObjectObject.Types.type:
             object.items = types[object.type_name]
-        elif object.type is ObjectObject.Types.array:
-            object.items = self.replace_types_in_object(object.items, types)
         elif object.type is ObjectObject.Types.array:
             object.items = self.replace_types_in_object(object.items, types)
         elif object.type is ObjectObject.Types.dynamic:
@@ -212,8 +208,6 @@ class Source():
             types += [object.type_name]
         elif object.type is ObjectObject.Types.array:
             types += self.get_used_types_in_object(object.items)
-        elif object.type is ObjectObject.Types.array:
-            types += self.get_used_types_in_object(object.items)
         elif object.type is ObjectObject.Types.dynamic:
             types += self.get_used_types_in_object(object.items)
         elif object.type is ObjectObject.Types.object:
@@ -228,7 +222,8 @@ class Source():
         reference.name = object.name
         reference.optional = object.optional
         reference.required = object.required
-        reference.description = object.description
+        if object.description is not None:
+            reference.description = object.description
 
         if reference.type is ObjectObject.Types.reference:
             return self.get_reference(reference, references)
