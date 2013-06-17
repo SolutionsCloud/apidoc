@@ -92,6 +92,23 @@ versions:
         uri: /endpoint
         method: delete
         description: A simple method
+      JsonRpc:
+        category: Category2
+        uri: /endpoint
+        method: get
+        description: A simple method
+        request_body:
+          type: object
+          properties:
+            method:
+              type: const
+              value: "hello"
+            params:
+              type: array
+              items:
+                type: string
+            id:
+              type: number
       Baz:
         category: Category2
         extends: Bar

@@ -275,6 +275,8 @@ class Object(Element, Comparable):
             return ObjectArray(object_source)
         elif object_source.type is ObjectRaw.Types.dynamic:
             return ObjectDynamic(object_source)
+        elif object_source.type is ObjectRaw.Types.const:
+            return ObjectConst(object_source)
         else:
             return Object(object_source)
 
@@ -326,6 +328,19 @@ class ObjectDynamic(Object):
         """
         super().__init__(object)
         self.items = None
+
+
+class ObjectConst(Object):
+
+    """Element ObjectObject
+    """
+
+    def __init__(self, object):
+        """Class instantiation
+        """
+        super().__init__(object)
+        self.const_type = object.const_type
+        self.value = object.value
 
 
 class ObjectType(Object):

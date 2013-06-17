@@ -318,6 +318,7 @@ class Object(Element, Sampleable):
         reference = 7
         type = 8
         dynamic = 9
+        const = 10
 
     @classmethod
     def factory(cls, str_type, version):
@@ -344,6 +345,8 @@ class Object(Element, Sampleable):
                 object = ObjectNone()
             elif type is Object.Types.dynamic:
                 object = ObjectDynamic()
+            elif type is Object.Types.const:
+                object = ObjectConst()
             object.type = type
         else:
             object = ObjectType()
@@ -466,6 +469,33 @@ class ObjectDynamic(Object):
             "key1": "my_%s" % self.name,
             "key2": "sample"
         }
+
+
+class ObjectConst(Object):
+
+    """Element ObjectConst
+    """
+
+    class Types(Enum):
+
+        """List of availables Primaries for this element
+        """
+        string = 1
+        bool = 2
+        number = 3
+
+    def __init__(self):
+        """Class instantiation
+        """
+        super().__init__()
+        self.type = Object.Types("const")
+        self.const_type = ObjectConst.Types.string
+        self.value = None
+
+    def get_default_sample(self):
+        """Return default value for the element
+        """
+        return self.value
 
 
 class ObjectReference(Object):

@@ -1,4 +1,4 @@
-from apidoc.object.source_raw import ObjectObject, ObjectArray, ObjectNumber, ObjectString, ObjectBool, ObjectReference, ObjectType, ObjectNone, ObjectDynamic
+from apidoc.object.source_raw import ObjectObject, ObjectArray, ObjectNumber, ObjectString, ObjectBool, ObjectReference, ObjectType, ObjectNone, ObjectDynamic, ObjectConst
 
 from apidoc.factory.source.element import Element as ElementFactory
 
@@ -58,6 +58,18 @@ class Object(ElementFactory):
                         object.sample[str(k)] = str(v)
                 else:
                     raise ValueError("A dictionnary is expected for dynamic\s object in \"%s\"" % name)
+        elif type is ObjectObject.Types.const:
+            object = ObjectConst()
+            if "const_type" in datas:
+                const_type = str(datas["const_type"])
+                if not const_type in ObjectConst.Types:
+                    raise ValueError("Const type \"%s\" unknwon" % const_type)
+            else:
+                const_type = ObjectConst.Types.string
+            object.const_type = const_type
+            if not "value" in datas:
+                raise ValueError("Missing const value")
+            object.value = datas["value"]
 
         self.set_common_datas(object, name, datas)
         object.type = type

@@ -30,6 +30,8 @@ from apidoc.object.source_dto import ObjectObject as ObjectObjectDto
 from apidoc.object.source_dto import ObjectArray as ObjectArrayDto
 from apidoc.object.source_dto import ObjectType as ObjectTypeDto
 from apidoc.object.source_dto import ObjectDynamic as ObjectDynamicDto
+from apidoc.object.source_raw import ObjectConst
+from apidoc.object.source_dto import ObjectConst as ObjectConstDto
 
 
 class TestSourceDto(unittest.TestCase):
@@ -390,6 +392,7 @@ class TestSourceDto(unittest.TestCase):
         self.assertIsInstance(ObjectDto.factory(Object.factory("type", "v1")), ObjectTypeDto)
         self.assertIsInstance(ObjectDto.factory(Object.factory("none", "v1")), ObjectDto)
         self.assertIsInstance(ObjectDto.factory(Object.factory("dynamic", "v1")), ObjectDynamicDto)
+        self.assertIsInstance(ObjectDto.factory(Object.factory("const", "v1")), ObjectConstDto)
 
     def test_object_factory_link(self):
         response = ObjectDto.factory(Object.factory("foo", "v1"))
@@ -476,6 +479,14 @@ class TestSourceDto(unittest.TestCase):
         object_dto = ObjectDynamicDto(Object())
 
         self.assertEqual(None, object_dto.items)
+
+    def test_objectConst(self):
+        object = ObjectConst()
+        object.const_type = ObjectConst.Types.number
+        object_dto = ObjectConstDto(object)
+
+        self.assertEqual(ObjectConst.Types.number, object_dto.const_type)
+        self.assertEqual(None, object_dto.value)
 
     def test_objectType(self):
         object = ObjectType()

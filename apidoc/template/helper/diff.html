@@ -1,3 +1,4 @@
+
 {%- import "helper/code.html" as code %}
 
 {%- macro diff_code_commented(objects, prefix="", suffix="", pad_length=0) -%}
@@ -36,6 +37,15 @@
         {%- elif object.value.type|lower == "none" %}
     <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
         <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">null</span>{{ suffix }}</td>
+        <td class="com">{{ code.comment(object.value) }}</td>
+    </tr>
+        {%- elif object.value.type|lower == "const" %}
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
+        <td>{{ code.indent(pad_length) }}{{ prefix }}
+        {%- if object.value.const_type|lower == "number" %}<span class="lit">{{ object.value.value }}</span>
+        {%- elif object.value.const_type|lower == "string" %}<span class="str">"{{ object.value.value }}"</span>
+        {%- elif object.value.const_type|lower == "bool" %}<span class="lit">{{ object.value.value }}</span>
+        {%- endif %}{{ suffix }}</td>
         <td class="com">{{ code.comment(object.value) }}</td>
     </tr>
         {%- elif object.value.type|lower == "dynamic" %}

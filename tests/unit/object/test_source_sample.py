@@ -4,13 +4,14 @@ from apidoc.object.source_raw import Type
 from apidoc.object.source_sample import Type as TypeSample
 from apidoc.object.source_raw import Method
 from apidoc.object.source_sample import Method as MethodSample
-from apidoc.object.source_raw import Parameter, ObjectObject, ObjectArray, ObjectType, ObjectDynamic, Object
+from apidoc.object.source_raw import Parameter, ObjectObject, ObjectArray, ObjectType, ObjectDynamic, Object, ObjectConst
 from apidoc.object.source_sample import Parameter as ParameterSample
 from apidoc.object.source_sample import ObjectObject as ObjectObjectSample
 from apidoc.object.source_sample import ObjectArray as ObjectArraySample
 from apidoc.object.source_sample import Object as ObjectSample
 from apidoc.object.source_sample import ObjectType as ObjectTypeSample
 from apidoc.object.source_sample import ObjectDynamic as ObjectDynamicSample
+from apidoc.object.source_sample import ObjectConst as ObjectConstSample
 
 
 class TestSourceSample(unittest.TestCase):
@@ -91,6 +92,7 @@ class TestSourceSample(unittest.TestCase):
         self.assertIsInstance(ObjectSample.factory(Object.factory("type", "v1")), ObjectTypeSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("none", "v1")), ObjectSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("dynamic", "v1")), ObjectDynamicSample)
+        self.assertIsInstance(ObjectSample.factory(Object.factory("const", "v1")), ObjectConstSample)
 
     def test_object(self):
         object = Object()
@@ -156,6 +158,18 @@ class TestSourceSample(unittest.TestCase):
 
         self.assertEqual("a", object_sample.name)
         self.assertIsInstance(object_sample.items, ObjectDynamicSample)
+
+    def test_objectConst(self):
+        object = ObjectConst()
+        object.name = "a"
+        object.const_type = ObjectConst.Types.number
+        object.value = 21
+
+        object_sample = ObjectConstSample(object)
+
+        self.assertEqual("a", object_sample.name)
+        self.assertEqual(ObjectConst.Types.number, object_sample.const_type)
+        self.assertEqual(21, object_sample.value)
 
     def test_objectType(self):
         object = ObjectType()

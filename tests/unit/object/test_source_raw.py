@@ -6,7 +6,7 @@ from apidoc.object.source_raw import Parameter, ResponseCode
 from apidoc.object.source_raw import Type, EnumType, EnumTypeValue, TypeFormat
 from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
 from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone
-from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType
+from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst
 
 
 class TestSourceRaw(unittest.TestCase):
@@ -153,7 +153,12 @@ class TestSourceRaw(unittest.TestCase):
         type.format.pretty = "foo"
 
         test.items = type
-        print(type.get_sample())
+
+        self.assertEqual("foo", test.get_default_sample())
+
+    def test_objectconst_get_default_sample(self):
+        test = ObjectConst()
+        test.value = "foo"
 
         self.assertEqual("foo", test.get_default_sample())
 

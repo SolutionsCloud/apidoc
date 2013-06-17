@@ -57,6 +57,8 @@ class Object():
             return ObjectArray(object_raw)
         elif object_raw.type is ObjectRaw.Types.dynamic:
             return ObjectDynamic(object_raw)
+        elif object_raw.type is ObjectRaw.Types.const:
+            return ObjectConst(object_raw)
         else:
             return Object(object_raw)
 
@@ -87,6 +89,14 @@ class ObjectDynamic(Object):
     def __init__(self, object_raw):
         super().__init__(object_raw)
         self.items = Object.factory(object_raw.items)
+
+
+class ObjectConst(Object):
+
+    def __init__(self, object_raw):
+        super().__init__(object_raw)
+        self.const_type = object_raw.const_type
+        self.value = object_raw.value
 
 
 class ObjectType(Object):

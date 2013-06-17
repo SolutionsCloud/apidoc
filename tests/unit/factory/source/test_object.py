@@ -4,7 +4,7 @@ from apidoc.factory.source.object import Object as ObjectFactory
 
 from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
 from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone
-from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType
+from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst
 
 
 class TestObject(unittest.TestCase):
@@ -71,6 +71,12 @@ class TestObject(unittest.TestCase):
                             }
                         }
                     }
+                },
+                "fooqux": {
+                    "type": "const",
+                    "description": "c_fooqux",
+                    "const_type": "number",
+                    "value": "d_fooqux"
                 }
             }
         }
@@ -139,6 +145,13 @@ class TestObject(unittest.TestCase):
         self.assertIsInstance(response.properties["foobaz"].items, ObjectObject)
         self.assertEqual("items", response.properties["foobaz"].items.name)
 
+        self.assertIn("fooqux", response.properties)
+        self.assertIsInstance(response.properties["fooqux"], ObjectConst)
+        self.assertEqual("c_fooqux", response.properties["fooqux"].description)
+        self.assertEqual("fooqux", response.properties["fooqux"].name)
+        self.assertEqual("number", response.properties["fooqux"].const_type)
+        self.assertEqual("d_fooqux", response.properties["fooqux"].value)
+
     def test_create_from_name_and_dictionary__failed_missing_type(self):
         with self.assertRaises(ValueError):
             self.factory.create_from_name_and_dictionary("o_name", {})
@@ -146,3 +159,15 @@ class TestObject(unittest.TestCase):
     def test_create_from_name_and_dictionary__failed_wrong_type(self):
         with self.assertRaises(ValueError):
             self.factory.create_from_name_and_dictionary("o_name", {"type": "dynamic", "sample": []})
+
+    def test_create_from_name_and_dictionary__failed_wrong_const_type(self):
+        with self.assertRaises(ValueError):
+            self.factory.create_from_name_and_dictionary("o_name", {"type": "const", "const_type": "baz"})
+
+    def test_create_from_name_and_dictionary__failed_missing_value(self):
+        with self.assertRaises(ValueError):
+            self.factory.create_from_name_and_dictionary("o_name", {"type": "const", "const_type": "string"})
+
+    def test_create_from_name_and_dictionary__default_const_type(self):
+        response = self.factory.create_from_name_and_dictionary("o_name", {"type": "const", "value": "abc"})
+        self.assertEqual(ObjectConst.Types.string, response.const_type)

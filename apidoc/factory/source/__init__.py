@@ -169,6 +169,8 @@ class Source():
             return object
 
         if object.type is ObjectObject.Types.type:
+            if not object.type_name in types.keys():
+                raise ValueError("Type \"%s\" unknow" % object.type_name)
             object.items = types[object.type_name]
         elif object.type is ObjectObject.Types.array:
             object.items = self.replace_types_in_object(object.items, types)

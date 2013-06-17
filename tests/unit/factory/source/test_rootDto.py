@@ -6,7 +6,7 @@ from apidoc.factory.source.rootDto import Hydrator
 
 #from apidoc.object.source_raw import Root, Element, Sampleable, Displayable
 from apidoc.object.source_raw import Root, Version, Method, Type, Category, Parameter, EnumType
-from apidoc.object.source_raw import ObjectString, ObjectArray, ObjectObject, ObjectDynamic, ObjectType
+from apidoc.object.source_raw import ObjectString, ObjectArray, ObjectObject, ObjectDynamic, ObjectType, ObjectConst
 from apidoc.object.source_dto import Root as RootDto
 from apidoc.object.source_dto import Version as VersionDto
 from apidoc.object.source_dto import MethodCategory, TypeCategory, MultiVersion, PositionableParameter
@@ -383,16 +383,18 @@ class TestHydrator(unittest.TestCase):
         type = ObjectType()
         type.name = "e"
         type.items = "f"
+        const = ObjectConst()
+        const.value = "g"
 
-        object1.properties = {"p1": array}
-        object2.properties = {"p1": array, "p2": type}
+        object1.properties = {"p1": array, "p3": const}
+        object2.properties = {"p1": array, "p3": const, "p2": type}
         array.items = dynamic
         dynamic.items = string
 
         response = Hydrator(version1, versions, []).hydrate_object(object_dto, object1)
         response = Hydrator(version2, versions, []).hydrate_object(object_dto, object2)
 
-        self.assertEqual(5, response)
+        self.assertEqual(6, response)
         self.assertEqual(1, len(object_dto))
         self.assertIn(version1.name, object_dto[0].versions)
         self.assertIn(version2.name, object_dto[0].versions)
@@ -402,6 +404,7 @@ class TestHydrator(unittest.TestCase):
         self.assertEqual("d", object_dto[0].value.properties["p1"][0].value.items[0].value.items[0].value.name)
         self.assertEqual("e", object_dto[0].value.properties["p2"][0].value.name)
         self.assertEqual("f", object_dto[0].value.properties["p2"][0].value.items)
+        self.assertEqual("g", object_dto[0].value.properties["p3"][0].value.value)
 
     def test_get_previous_version__first(self):
         version1 = Version()

@@ -18,64 +18,6 @@
     <span class="str">"{{ name }}"</span><span class="pun">: </span>
 {%- endmacro -%}
 
-{%- macro code_commented(object, prefix="", suffix="", pad_length=0) -%}
-    {%- if object.type|lower == "object" %}
-    <tr>
-        <td>{{ indent(pad_length) }}{{ prefix }}<span class="pun">{</span></td>
-        <td class="com">{{ comment(object) }}</td>
-    </tr>
-        {%- for property_name in object.properties.keys()|sort %}
-            {%- if loop.last %}
-                {{- code_commented(object.properties[property_name], property_name_decorator(property_name), "", pad_length + 1) }}
-            {%- else %}
-                {{- code_commented(object.properties[property_name], property_name_decorator(property_name), "<span class=\"pun\">,</span>", pad_length + 1) }}
-            {%- endif %}
-        {%- endfor %}
-    <tr>
-        <td>{{ indent(pad_length) }}<span class="pun">}</span>{{ suffix }}</td>
-        <td></td>
-    </tr>
-    {%- elif object.type|lower == "array" %}
-    <tr>
-        <td>{{ indent(pad_length) }}{{ prefix }}<span class="pun">[</span></td>
-        <td class="com">{{ comment(object) }}</td>
-    </tr>
-        {{- code_commented(object.items, "", "", pad_length+1) }}
-    <tr>
-        <td>{{ indent(pad_length) }}<span class="pun">]</span>{{ suffix }}</td>
-        <td></td>
-    </tr>
-    {%- elif object.type|lower in ("number", "string", "bool") %}
-    <tr>
-        <td>{{ indent(pad_length) }}{{ prefix }}<span class="typ">{{ object.type|lower }}</span>{{ suffix }}</td>
-        <td class="com">{{ comment(object) }}</td>
-    </tr>
-    {%- elif object.type|lower == "none" %}
-    <tr>
-        <td>{{ indent(pad_length) }}{{ prefix }}<span class="typ">null</span>{{ suffix }}</td>
-        <td class="com">{{ comment(object) }}</td>
-    </tr>
-    {%- elif object.type|lower == "dynamic" %}
-    <tr>
-        <td>{{ indent(pad_length) }}{{ prefix }}<span class="pun">{</span></td>
-        <td class="com">{{ comment(object) }}</td>
-    </tr>
-    <tr>
-        <td>{{ indent(pad_length + 1) }}<span class="typ">string</span><span class="pun">: </span><span class="typ">{{ object.items }}</span></td>
-        <td class="com">{{ comment(object) }}</td>
-    </tr>
-    <tr>
-        <td>{{ indent(pad_length) }}<span class="pun">}</span>{{ suffix }}</td>
-        <td></td>
-    </tr>
-    {%- else %}
-    <tr>
-        <td>{{ indent(pad_length) }}{{ prefix }}<span class="typ">{{ object.type_name }}</span>{{ suffix }}</td>
-        <td class="com">{{ comment(object) }}</td>
-    </tr>
-    {%- endif -%}
-{%- endmacro -%}
-
 {%- macro uri_sampled(uri, parameters) %}
     {%- if parameters %}
         {%- set sampled = uri %}
@@ -119,6 +61,14 @@
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.sample }}</span>{{ suffix }}
     {%- elif object.type|lower == "none" %}
 {{ indent(pad_length) }}{{ prefix }}<span class="typ">null</span>{{ suffix }}
+    {%- elif object.type|lower == "const" %}
+        {%- if object.const_type|lower == "number" %}
+{{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.value }}</span>{{ suffix }}
+        {%- elif object.const_type|lower == "string" %}
+{{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.value }}"</span>{{ suffix }}
+        {%- elif object.const_type|lower == "bool" %}
+{{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.value }}</span>{{ suffix }}
+        {%- endif %}
     {%- elif object.type|lower == "dynamic" %}
 {{ indent(pad_length) }}{{ prefix }}<span class="pun">{</span>
         {%- for key, value in object.sample.items() %}

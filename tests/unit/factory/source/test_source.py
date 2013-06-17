@@ -324,6 +324,22 @@ class TestSource(unittest.TestCase):
 
         self.assertEqual(type1, reference.items)
 
+    def test_replace_types_in_object__unknwon(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectType()
+        reference.type_name = "t2"
+
+        type1 = Type()
+
+        object.properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        with self.assertRaises(ValueError):
+            self.source.replace_types_in_object(object, {"t1": type1})
+
     def test_get_used_types_in_object(self):
         object = ObjectObject()
         array = ObjectArray()
