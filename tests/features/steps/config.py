@@ -8,7 +8,7 @@ def assert_equals(first, second):
 
 
 @given('a "{format}" config file containing')
-def impl_a(context, format):
+def given_config_file(context, format):
     context.conf_file = os.path.join(context.temp_dir, "sample." + format)
 
     f = open(context.conf_file, "w")
@@ -17,14 +17,14 @@ def impl_a(context, format):
 
 
 @when('a config_factory load this file')
-def impl_b(context):
+def when_factory_config(context):
     factory = ConfigFactory()
     response = factory.load_from_file(context.conf_file)
     context.config_object = response
 
 
 @then('the object_config returned contains "{text}" for the attribute "{attribute}"')
-def impl_c(context, text, attribute):
+def then_text_attribute(context, text, attribute):
     part = context.config_object
     for a in attribute.split("."):
         part = part[a]
@@ -32,7 +32,7 @@ def impl_c(context, text, attribute):
 
 
 @then('the object_config returned contains the files "{text}" for the attribute "{attribute}"')
-def impl_d(context, text, attribute):
+def then_files_attribute(context, text, attribute):
     part = context.config_object
     for a in attribute.split("."):
         part = part[a]
@@ -42,7 +42,7 @@ def impl_d(context, text, attribute):
 
 
 @then('the object_config returned contains the file "{text}" for the attribute "{attribute}"')
-def impl_e(context, text, attribute):
+def the_file_attribute(context, text, attribute):
     part = context.config_object
     for a in attribute.split("."):
         part = part[a]
