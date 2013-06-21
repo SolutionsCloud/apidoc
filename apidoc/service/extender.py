@@ -50,7 +50,7 @@ class Extender():
     def apply_extends(self, target, keys):
         """Apply a "extend" property in a dict
         """
-        if self.extends_key not in target or not target[self.extends_key]:
+        if not isinstance(target, (list, dict)) or self.extends_key not in target or not target[self.extends_key]:
             return
 
         if not isinstance(target[self.extends_key], list):

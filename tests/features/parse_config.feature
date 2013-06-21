@@ -5,16 +5,16 @@ Feature: Config file parsing
             """
             ---
             """
-         when a config_factory load this file
-         then the object_config returned contains "None" for the attribute "input.directories"
-          and the object_config returned contains "None" for the attribute "input.files"
-          and the object_config returned contains "None" for the attribute "filter.versions.includes"
-          and the object_config returned contains "None" for the attribute "filter.versions.excludes"
-          and the object_config returned contains "None" for the attribute "filter.categories.includes"
-          and the object_config returned contains "None" for the attribute "filter.categories.excludes"
-          and the object_config returned contains "stdout" for the attribute "output.location"
-          and the object_config returned contains "default" for the attribute "output.template"
-          and the object_config returned contains "local" for the attribute "output.componants"
+         When a config_factory load this file
+         Then the object_config returned contains "None" for the attribute "input.directories"
+          And the object_config returned contains "None" for the attribute "input.files"
+          And the object_config returned contains "None" for the attribute "filter.versions.includes"
+          And the object_config returned contains "None" for the attribute "filter.versions.excludes"
+          And the object_config returned contains "None" for the attribute "filter.categories.includes"
+          And the object_config returned contains "None" for the attribute "filter.categories.excludes"
+          And the object_config returned contains "stdout" for the attribute "output.location"
+          And the object_config returned contains "default" for the attribute "output.template"
+          And the object_config returned contains "local" for the attribute "output.componants"
 
 
     Scenario: Parse a minimal file
@@ -24,16 +24,16 @@ Feature: Config file parsing
               files:
                 - ./sources/one.yml
             """
-         when a config_factory load this file
-         then the object_config returned contains "None" for the attribute "input.directories"
-          and the object_config returned contains the files "['sources/one.yml']" for the attribute "input.files"
-          and the object_config returned contains "None" for the attribute "filter.versions.includes"
-          and the object_config returned contains "None" for the attribute "filter.versions.excludes"
-          and the object_config returned contains "None" for the attribute "filter.categories.includes"
-          and the object_config returned contains "None" for the attribute "filter.categories.excludes"
-          and the object_config returned contains "stdout" for the attribute "output.location"
-          and the object_config returned contains "default" for the attribute "output.template"
-          and the object_config returned contains "local" for the attribute "output.componants"
+         When a config_factory load this file
+         Then the object_config returned contains "None" for the attribute "input.directories"
+          And the object_config returned contains the files "['sources/one.yml']" for the attribute "input.files"
+          And the object_config returned contains "None" for the attribute "filter.versions.includes"
+          And the object_config returned contains "None" for the attribute "filter.versions.excludes"
+          And the object_config returned contains "None" for the attribute "filter.categories.includes"
+          And the object_config returned contains "None" for the attribute "filter.categories.excludes"
+          And the object_config returned contains "stdout" for the attribute "output.location"
+          And the object_config returned contains "default" for the attribute "output.template"
+          And the object_config returned contains "local" for the attribute "output.componants"
 
 
     Scenario: Parse a json file
@@ -47,8 +47,8 @@ Feature: Config file parsing
               }
             }
             """
-         when a config_factory load this file
-         then the object_config returned contains the files "['sources/one.yml']" for the attribute "input.files"
+         When a config_factory load this file
+         Then the object_config returned contains the files "['sources/one.yml']" for the attribute "input.files"
 
 
     Scenario: Parse a special file
@@ -57,8 +57,8 @@ Feature: Config file parsing
             output:
               componants: remote
             """
-         when a config_factory load this file
-         then the object_config returned contains "remote" for the attribute "output.componants"
+         When a config_factory load this file
+         Then the object_config returned contains "remote" for the attribute "output.componants"
 
 
     Scenario: Parse a file with wrong attributes
@@ -67,16 +67,16 @@ Feature: Config file parsing
             wrong:
               fail: True
             """
-         when a config_factory load this file
-         then the object_config returned contains "None" for the attribute "input.directories"
-          and the object_config returned contains "None" for the attribute "input.files"
-          and the object_config returned contains "None" for the attribute "filter.versions.includes"
-          and the object_config returned contains "None" for the attribute "filter.versions.excludes"
-          and the object_config returned contains "None" for the attribute "filter.categories.includes"
-          and the object_config returned contains "None" for the attribute "filter.categories.excludes"
-          and the object_config returned contains "stdout" for the attribute "output.location"
-          and the object_config returned contains "default" for the attribute "output.template"
-          and the object_config returned contains "local" for the attribute "output.componants"
+         When a config_factory load this file
+         Then the object_config returned contains "None" for the attribute "input.directories"
+          And the object_config returned contains "None" for the attribute "input.files"
+          And the object_config returned contains "None" for the attribute "filter.versions.includes"
+          And the object_config returned contains "None" for the attribute "filter.versions.excludes"
+          And the object_config returned contains "None" for the attribute "filter.categories.includes"
+          And the object_config returned contains "None" for the attribute "filter.categories.excludes"
+          And the object_config returned contains "stdout" for the attribute "output.location"
+          And the object_config returned contains "default" for the attribute "output.template"
+          And the object_config returned contains "local" for the attribute "output.componants"
 
 
     Scenario: Parse a full file
@@ -116,13 +116,13 @@ Feature: Config file parsing
               template: template/my.html
               componants: embedded
             """
-         when a config_factory load this file
-         then the object_config returned contains the files "['sources', 'sources/sub']" for the attribute "input.directories"
-          and the object_config returned contains the files "['sources/one.yml', 'sources/two.yml']" for the attribute "input.files"
-          and the object_config returned contains "['v1.0', 'v1.1']" for the attribute "filter.versions.includes"
-          and the object_config returned contains "['v2.0', 'v2.1']" for the attribute "filter.versions.excludes"
-          and the object_config returned contains "['s1', 's2']" for the attribute "filter.categories.includes"
-          and the object_config returned contains "['s3', 's4']" for the attribute "filter.categories.excludes"
-          and the object_config returned contains the file "sample.html" for the attribute "output.location"
-          and the object_config returned contains the file "template/my.html" for the attribute "output.template"
-          and the object_config returned contains "embedded" for the attribute "output.componants"
+         When a config_factory load this file
+         Then the object_config returned contains the files "['sources', 'sources/sub']" for the attribute "input.directories"
+          And the object_config returned contains the files "['sources/one.yml', 'sources/two.yml']" for the attribute "input.files"
+          And the object_config returned contains "['v1.0', 'v1.1']" for the attribute "filter.versions.includes"
+          And the object_config returned contains "['v2.0', 'v2.1']" for the attribute "filter.versions.excludes"
+          And the object_config returned contains "['s1', 's2']" for the attribute "filter.categories.includes"
+          And the object_config returned contains "['s3', 's4']" for the attribute "filter.categories.excludes"
+          And the object_config returned contains the file "sample.html" for the attribute "output.location"
+          And the object_config returned contains the file "template/my.html" for the attribute "output.template"
+          And the object_config returned contains "embedded" for the attribute "output.componants"

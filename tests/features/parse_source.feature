@@ -6,12 +6,12 @@ Feature: Source config parsing
             configuration:
               title: a
             """
-         when a source_factory load this file
-         then the root contains "0" versions
-         then the root contains "0" method's categories
-         then the root contains "0" type's categories
-         then the root contains "0" methods
-         then the root contains "0" types
+         When a source_factory load this file
+         Then the root contains "0" versions
+          And the root contains "0" method's categories
+          And the root contains "0" type's categories
+          And the root contains "0" methods
+          And the root contains "0" types
 
     Scenario: common file with method
         Given a "yaml" source file containing
@@ -22,10 +22,10 @@ Feature: Source config parsing
                   a:
                     category: b
             """
-         when a source_factory load this file
-         then the root contains "1" versions
-         then the root contains "1" method's categories
-         then the root contains "1" methods
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "1" method's categories
+          And the root contains "1" methods
 
     Scenario: Use a default method category
         Given a "yaml" source file containing
@@ -34,12 +34,12 @@ Feature: Source config parsing
               v1:
                 methods:
                   a:
-                    url: /
+                    uri: /
             """
-         when a source_factory load this file
-         then the root contains "1" versions
-         then the root contains "1" method's categories
-         then the root contains "1" methods
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "1" method's categories
+          And the root contains "1" methods
 
     Scenario: Share the same method category
         Given a "yaml" source file containing
@@ -52,10 +52,10 @@ Feature: Source config parsing
                   c:
                     category: b
             """
-         when a source_factory load this file
-         then the root contains "1" versions
-         then the root contains "1" method's categories
-         then the root contains "2" methods
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "1" method's categories
+          And the root contains "2" methods
 
     Scenario: Common file with type
         Given a "yaml" source file containing
@@ -72,10 +72,10 @@ Feature: Source config parsing
                     primary: string
                     category: b
             """
-         when a source_factory load this file
-         then the root contains "1" versions
-         then the root contains "1" type's categories
-         then the root contains "1" types
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "1" type's categories
+          And the root contains "1" types
 
     Scenario: Use default type category
         Given a "yaml" source file containing
@@ -90,12 +90,12 @@ Feature: Source config parsing
                 types:
                   a:
                     primary: string
-                    url: /
+                    uri: /
             """
-         when a source_factory load this file
-         then the root contains "1" versions
-         then the root contains "1" type's categories
-         then the root contains "1" types
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "1" type's categories
+          And the root contains "1" types
 
     Scenario: Share the same type category
         Given a "yaml" source file containing
@@ -117,10 +117,10 @@ Feature: Source config parsing
                     primary: string
                     category: b
             """
-         when a source_factory load this file
-         then the root contains "1" versions
-         then the root contains "1" type's categories
-         then the root contains "2" types
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "1" type's categories
+          And the root contains "2" types
 
     Scenario: Ignore unused types
         Given a "yaml" source file containing
@@ -135,8 +135,81 @@ Feature: Source config parsing
                     primary: string
                     category: b
             """
-         when a source_factory load this file
-         then the root contains "1" versions
-         then the root contains "0" type's categories
-         then the root contains "0" types
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "0" type's categories
+          And the root contains "0" types
 
+    Scenario: Ignore undisplayed category
+        Given a "yaml" source file containing
+            """
+            categories:
+              a:
+                display: false
+            versions:
+              v1:
+                methods:
+                  B:
+                    category: a
+            """
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "0" method's categories
+          And the root contains "0" methods
+
+    Scenario: Split files
+        Given a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  a:
+                    url /
+            """
+          and a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  b:
+                    url /
+            """
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "1" method's categories
+          And the root contains "2" methods
+
+ Scenario: extends
+        Given a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  a:
+                    uri: /
+              v2:
+                methods:
+                  b:
+                    uri: /
+            """
+         When a source_factory load this file
+         Then the root contains "2" versions
+          And the root contains "2" methods
+
+ Scenario: multiVersionning of descriptions
+        Given a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  a:
+                    description: b
+              v2:
+                methods:
+                  a:
+                    description: c
+            """
+         When a source_factory load this file
+         Then the root contains "1" methods
+          And the "description" of method "a" is "b" for the version "v1"
+          And the "description" of method "a" is "c" for the version "v2"

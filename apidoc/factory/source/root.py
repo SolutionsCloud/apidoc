@@ -30,7 +30,7 @@ class Root():
         for version in root.versions.values():
             version.full_uri = "%s%s" % (root.configuration.uri or "", version.uri or "")
             for method in version.methods.values():
-                method.absolute_uri = "%s%s" % (version.uri or "", method.uri)
-                method.full_uri = "%s%s" % (version.full_uri, method.uri)
+                method.absolute_uri = "%s%s" % (version.uri or "", method.uri or "")
+                method.full_uri = "%s%s" % (version.full_uri or "", method.uri or "")
 
         return root

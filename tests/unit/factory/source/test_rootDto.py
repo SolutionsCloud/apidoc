@@ -314,7 +314,7 @@ class TestHydrator(unittest.TestCase):
         response = Hydrator(version1, versions, []).hydrate_value(object_dto, object)
         response = Hydrator(version2, versions, []).hydrate_value(object_dto, object)
 
-        self.assertEqual(1, response)
+        self.assertEqual(0, response)
         self.assertEqual(1, len(object_dto))
         self.assertEqual("a", object_dto[0].value)
         self.assertIn(version1.name, object_dto[0].versions)
@@ -352,7 +352,7 @@ class TestHydrator(unittest.TestCase):
         response = Hydrator(version1, versions, []).hydrate_list(object_dto, object)
         response = Hydrator(version2, versions, []).hydrate_list(object_dto, object)
 
-        self.assertEqual(2, response)
+        self.assertEqual(0, response)
         self.assertEqual(2, len(object_dto))
         self.assertEqual("a", object_dto[0].value)
         self.assertEqual("b", object_dto[1].value)
@@ -394,7 +394,7 @@ class TestHydrator(unittest.TestCase):
         response = Hydrator(version1, versions, []).hydrate_object(object_dto, object1)
         response = Hydrator(version2, versions, []).hydrate_object(object_dto, object2)
 
-        self.assertEqual(6, response)
+        self.assertEqual(1, response)
         self.assertEqual(1, len(object_dto))
         self.assertIn(version1.name, object_dto[0].versions)
         self.assertIn(version2.name, object_dto[0].versions)

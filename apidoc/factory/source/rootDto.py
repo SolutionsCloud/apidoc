@@ -231,15 +231,15 @@ class Hydrator():
     def has_changed(self, multi_version):
         previous_version = self.get_previous_version()
         if previous_version is None:
-            return 0
+            return False
 
-        return previous_version not in multi_version.versions
+        return previous_version.name not in multi_version.versions
 
     def get_previous_version(self):
-        previsous = None
+        previous = None
         for version in sorted(self.versions.values()):
             if version.name == self.version_name:
-                return previsous
-            previsous = version
+                return previous
+            previous = version
 
         raise ValueError("Unable to find current version in Version list")
