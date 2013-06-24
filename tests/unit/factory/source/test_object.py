@@ -179,3 +179,55 @@ class TestObject(unittest.TestCase):
     def test_create_from_name_and_dictionary__default_const_type(self):
         response = self.factory.create_from_name_and_dictionary("o_name", {"type": "const", "value": "abc"})
         self.assertEqual(ObjectConst.Types.string, response.const_type)
+
+    def test_create_from_name_and_dictionary__array_default(self):
+        datas = {
+            "type": "array",
+        }
+
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, ObjectArray)
+        self.assertEqual(None, response.items)
+        self.assertEqual(2, response.sample_count)
+
+    def test_create_from_name_and_dictionary__bool_default(self):
+        datas = {
+            "type": "bool",
+        }
+
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, ObjectBool)
+        self.assertEqual(None, response.sample)
+
+    def test_create_from_name_and_dictionary__reference_default(self):
+        datas = {
+            "type": "reference",
+        }
+
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, ObjectReference)
+        self.assertEqual(None, response.reference_name)
+
+    def test_create_from_name_and_dictionary__dynamic_default(self):
+        datas = {
+            "type": "dynamic",
+        }
+
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, ObjectDynamic)
+        self.assertEqual(None, response.sample)
+
+    def test_create_from_name_and_dictionary__new_type(self):
+        ObjectObject.Types.foo = "foo"
+        datas = {
+            "type": "foo",
+        }
+
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        del ObjectObject.Types.foo
+        self.assertIsInstance(response, Object)

@@ -33,6 +33,36 @@ class TestType(unittest.TestCase):
         self.assertEqual("s", response.format.sample)
         self.assertEqual("d", response.format.advanced)
 
+    def test_create_from_name_and_dictionary__without_format(self):
+        datas = {
+            "primary": "string",
+            "description": "c",
+            "category": "a",
+        }
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, Type)
+        self.assertIsInstance(response.format, TypeFormat)
+        self.assertEqual(None, response.format.pretty)
+        self.assertEqual(None, response.format.sample)
+        self.assertEqual(None, response.format.advanced)
+
+    def test_create_from_name_and_dictionary__without_formats_datas(self):
+        datas = {
+            "primary": "string",
+            "description": "c",
+            "category": "a",
+            "format": {
+            }
+        }
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, Type)
+        self.assertIsInstance(response.format, TypeFormat)
+        self.assertEqual(None, response.format.pretty)
+        self.assertEqual(None, response.format.sample)
+        self.assertEqual(None, response.format.advanced)
+
     def test_create_from_name_and_dictionary__failed_missing_primary(self):
         with self.assertRaises(ValueError):
             self.factory.create_from_name_and_dictionary("o_name", {})

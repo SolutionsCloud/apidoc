@@ -27,3 +27,14 @@ class TestResponseCode(unittest.TestCase):
     def test_create_from_dictionary__failed_missing_code(self):
         with self.assertRaises(ValueError):
             self.factory.create_from_dictionary({})
+
+    def test_create_from_dictionary__with_unknwon_code(self):
+        datas = {
+            "code": 800,
+        }
+        response = self.factory.create_from_dictionary(datas)
+
+        self.assertIsInstance(response, ResponseCode)
+        self.assertEqual("800", response.name)
+        self.assertEqual(800, response.code)
+        self.assertEqual(None, response.message)

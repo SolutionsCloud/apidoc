@@ -65,6 +65,20 @@ class TestSource(unittest.TestCase):
         mock_parser_directory.assert_has_calls([call('directory1'), call('directory2')])
         mock_parser_file.assert_has_calls([call('file1'), call('file2')])
 
+    def test_get_sources_from_config(self):
+        config = ConfigObject()
+
+        response = self.source.get_sources_from_config(config)
+
+        self.assertEqual([], response)
+
+    def test_inject_arguments_in_sources(self):
+        source = "foo"
+
+        response = self.source.inject_arguments_in_sources(source, None)
+
+        self.assertEqual("foo", response)
+
     def test_replace_argument(self):
         root = {
             "a": "${a1}",
@@ -324,6 +338,21 @@ class TestSource(unittest.TestCase):
 
         self.assertEqual(type1, reference.items)
 
+    def test_replace_types_in_object_not_an_object(self):
+        object = ObjectString()
+
+        self.source.replace_types_in_object(object, {})
+
+        self.assertEqual(vars(ObjectString()), vars(object))
+
+    def test_replace_types_in_parameter___scalara(self):
+        object = Parameter()
+        object.type = "string"
+
+        response = self.source.replace_types_in_parameter(object, {})
+
+        self.assertEqual(object, response)
+
     def test_replace_types_in_object__unknwon(self):
         object = ObjectObject()
         array = ObjectArray()
@@ -354,6 +383,13 @@ class TestSource(unittest.TestCase):
         response = self.source.get_used_types_in_object(object)
 
         self.assertEqual(["t1"], response)
+
+    def test_get_used_types_in_object__for_scalara(self):
+        object = ObjectString()
+
+        response = self.source.get_used_types_in_object(object)
+
+        self.assertEqual([], response)
 
     def test_get_reference(self):
         reference = ObjectReference()

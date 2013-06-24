@@ -346,6 +346,8 @@ class Object(Element, Sampleable):
             object = ObjectDynamic()
         elif type is Object.Types.const:
             object = ObjectConst()
+        else:
+            object = Object()
         object.type = type
         object.version = version
         return object

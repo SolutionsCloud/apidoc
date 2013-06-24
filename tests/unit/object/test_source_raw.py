@@ -7,6 +7,7 @@ from apidoc.object.source_raw import Type, EnumType, EnumTypeValue, TypeFormat
 from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
 from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone
 from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst
+from apidoc.object.source_raw import Object as ObjectRaw
 
 
 class TestSourceRaw(unittest.TestCase):
@@ -163,6 +164,8 @@ class TestSourceRaw(unittest.TestCase):
         self.assertEqual("foo", test.get_default_sample())
 
     def test_object_factory(self):
+        ObjectRaw.Types.foo = "foo"
+
         self.assertIsInstance(Object.factory("object", "v1"), ObjectObject)
         self.assertIsInstance(Object.factory("array", "v1"), ObjectArray)
         self.assertIsInstance(Object.factory("number", "v1"), ObjectNumber)
@@ -172,3 +175,6 @@ class TestSourceRaw(unittest.TestCase):
         self.assertIsInstance(Object.factory("type", "v1"), ObjectType)
         self.assertIsInstance(Object.factory("none", "v1"), ObjectNone)
         self.assertIsInstance(Object.factory("dynamic", "v1"), ObjectDynamic)
+        self.assertIsInstance(Object.factory("foo", "v1"), ObjectRaw)
+
+        del ObjectRaw.Types.foo

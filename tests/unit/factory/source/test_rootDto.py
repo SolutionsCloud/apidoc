@@ -79,11 +79,36 @@ class TestRootDto(unittest.TestCase):
 
         self.factory.define_changes_status(root_dto)
 
-        print(method1.changes_status)
-
         self.assertEqual(MultiVersion.Changes.new, method1.changes_status["v1"])
         self.assertEqual(MultiVersion.Changes.deleted, method2.changes_status["v2"])
         self.assertEqual(MultiVersion.Changes.none, method3.changes_status["v1"])
+
+    def test_define_changes_status__updated(self):
+        root_dto = RootDto()
+
+        version1 = Version()
+        version1.name = "v1"
+        version1.major = 1
+        version1 = VersionDto(version1)
+        version2 = Version()
+        version2.name = "v2"
+        version2.major = 2
+        version2 = VersionDto(version2)
+
+        category1 = MethodCategory(Category("c1"))
+
+        method1 = Method()
+        method1.changes_status = {"v1": MultiVersion.Changes.new, "v2": MultiVersion.Changes.updated}
+
+        category1.methods = [method1]
+
+        root_dto.versions = [version1, version2]
+        root_dto.method_categories = [category1]
+
+        self.factory.define_changes_status(root_dto)
+
+        self.assertEqual(MultiVersion.Changes.new, method1.changes_status["v1"])
+        self.assertEqual(MultiVersion.Changes.updated, method1.changes_status["v2"])
 
 
 class TestHydrator(unittest.TestCase):
@@ -372,8 +397,10 @@ class TestHydrator(unittest.TestCase):
 
         object1 = ObjectObject()
         object2 = ObjectObject()
+        object3 = ObjectObject()
         object1.name = "a"
         object2.name = "a"
+        object3.name = "b"
         array = ObjectArray()
         array.name = "b"
         dynamic = ObjectDynamic()
@@ -393,11 +420,13 @@ class TestHydrator(unittest.TestCase):
 
         response = Hydrator(version1, versions, []).hydrate_object(object_dto, object1)
         response = Hydrator(version2, versions, []).hydrate_object(object_dto, object2)
+        response = Hydrator(version1, versions, []).hydrate_object(object_dto, object3)
 
         self.assertEqual(1, response)
-        self.assertEqual(1, len(object_dto))
+        self.assertEqual(2, len(object_dto))
         self.assertIn(version1.name, object_dto[0].versions)
-        self.assertIn(version2.name, object_dto[0].versions)
+        self.assertIn(version1.name, object_dto[0].versions)
+        self.assertNotIn(version2.name, object_dto[1].versions)
         self.assertEqual("a", object_dto[0].value.name)
         self.assertEqual("b", object_dto[0].value.properties["p1"][0].value.name)
         self.assertEqual("c", object_dto[0].value.properties["p1"][0].value.items[0].value.name)

@@ -23,6 +23,9 @@ class TestEnum(unittest.TestCase):
     def test_repr(self):
         self.assertEquals("Foo.bar", repr(Foo(1)))
 
+    def test_new__boolean(self):
+        self.assertEquals(None, Foo(object))
+
 
 class Foo(Enum):
     bar = 1

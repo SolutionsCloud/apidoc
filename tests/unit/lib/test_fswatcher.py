@@ -90,13 +90,14 @@ class TestFsWatcher(unittest.TestCase):
         observer.start()
         observer.stop()
 
-    def stest_observer_signature_loop(self):
+    def test_observer_signature_loop(self):
         observer = Observer()
 
         runner = Runner(observer)
         runner.start()
         time.sleep(0.1)
-        raise KeyboardInterrupt()
+        observer.stop()
+
         runner.join()
 
 
@@ -106,4 +107,4 @@ class Runner(threading.Thread):
         self.observer = observer
 
     def run(self):
-        self.observer.loop()
+        self.observer.run()
