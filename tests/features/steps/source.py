@@ -1,6 +1,5 @@
 from behave import given, when, then
 import os
-from apidoc.object.config import Config
 from apidoc.factory.source import Source as SourceFactory
 
 
@@ -26,11 +25,34 @@ def given_source_file(context, format):
     f.close()
 
 
+@given('a configuration with the argument "{name}" equals to "{value}"')
+def given_config_argument(context, name, value):
+    if context.object_config["input"]["arguments"] is None:
+        context.object_config["input"]["arguments"] = {}
+
+    context.object_config["input"]["arguments"][name] = value
+
+
+@given('a configuration filtering the "{type}" "{value}" by "{action}"')
+def impl(context, type, value, action):
+    context.object_config["filter"][type][action] = [value]
+
+
 @when('a source_factory load this file')
 def when_factory_config(context):
     factory = SourceFactory()
-    config = Config()
+    config = context.object_config
+
     config["input"]["files"] = context.conf_files
+    response = factory.create_from_config(config)
+    context.root = response
+
+
+@when('a source_factory load the directory containing this file')
+def when_factory_config_directory(context):
+    factory = SourceFactory()
+    config = context.object_config
+    config["input"]["directories"] = [context.temp_dir]
     response = factory.create_from_config(config)
     context.root = response
 
@@ -62,6 +84,11 @@ def then_count_types(context, count):
     assert_equals(int(count), len(types))
 
 
+@then('the title of the root is "{value}"')
+def then__title(context, value):
+    assert_equals(context.root.configuration.title, value)
+
+
 @then('the changes status of method "{method}" is "{status}" for the version "{version}"')
 def then_changes_status(context, method, status, version):
     methods = dict((method.name, method) for category in context.root.method_categories for method in category.methods)
@@ -75,7 +102,7 @@ def then_attribute_value(context, attribute, method, value, version):
     current_value = [x.value for x in getattr(methods[method], attribute) if version in x.versions]
 
     if value == "null":
-        assert(len(current_value) == 0, "%s is not null" % attribute)
+        assert len(current_value) == 0, "%s is not null" % attribute
     else:
         assert_equals(value, current_value[0])
 

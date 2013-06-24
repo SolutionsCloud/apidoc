@@ -1,5 +1,6 @@
 import tempfile
 import shutil
+from apidoc.object.config import Config
 
 
 def before_all(context):
@@ -12,3 +13,4 @@ def after_all(context):
 
 def before_scenario(context, scenario):
     context.conf_files = []
+    context.object_config = Config()

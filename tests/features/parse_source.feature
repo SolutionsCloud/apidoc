@@ -27,6 +27,20 @@ Feature: Source config parsing
           And the root contains "1" method's categories
           And the root contains "1" methods
 
+    Scenario: common directory
+        Given a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  a:
+                    category: b
+            """
+         When a source_factory load the directory containing this file
+         Then the root contains "1" versions
+          And the root contains "1" method's categories
+          And the root contains "1" methods
+
     Scenario: Use a default method category
         Given a "yaml" source file containing
             """
@@ -223,7 +237,7 @@ Feature: Source config parsing
          Then the root contains "2" versions
           And the root contains "2" methods
 
- Scenario: multiVersionning of descriptions
+    Scenario: multiVersionning of descriptions
         Given a "yaml" source file containing
             """
             versions:
@@ -240,3 +254,81 @@ Feature: Source config parsing
          Then the root contains "1" methods
           And the "description" of method "a" is "b" for the version "v1"
           And the "description" of method "a" is "c" for the version "v2"
+
+    Scenario: Using argument
+        Given a "yaml" source file containing
+            """
+            configuration:
+              title: My ${name}
+            """
+          And a configuration with the argument "name" equals to "doc"
+         When a source_factory load this file
+         Then the title of the root is "My doc"
+
+    Scenario: common file with method
+        Given a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  a:
+                    category: b
+            """
+          And a configuration filtering the "versions" "v1" by "excludes"
+         When a source_factory load this file
+         Then the root contains "0" versions
+          And the root contains "0" method's categories
+          And the root contains "0" methods
+
+    Scenario: common file with method
+        Given a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  a:
+                    category: b
+              v2:
+                extends: v1
+              v3:
+                extends: v1
+            """
+          And a configuration filtering the "versions" "v1" by "includes"
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "1" method's categories
+          And the root contains "1" methods
+
+    Scenario: common file with method
+        Given a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  a:
+                    category: b
+            """
+          And a configuration filtering the "categories" "b" by "excludes"
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "0" method's categories
+          And the root contains "0" methods
+
+    Scenario: common file with method
+        Given a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  a:
+                    category: b
+                  c:
+                    category: d
+                  e:
+                    category: f
+            """
+          And a configuration filtering the "categories" "b" by "includes"
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "1" method's categories
+          And the root contains "1" methods

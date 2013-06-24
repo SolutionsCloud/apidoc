@@ -440,6 +440,26 @@ class TestSource(unittest.TestCase):
         self.assertEqual(1, len(root.versions["v2"].methods))
         self.assertEqual(method1, root.versions["v2"].methods["m1"])
 
+    def test_add_missing_categories(self):
+        root = Root()
+        version1 = Version()
+        category1 = Category("c1")
+        method1 = Method()
+        method2 = Method()
+
+        root.versions = {"v1": version1}
+        root.categories = {"c1": category1}
+
+        version1.methods = {"m1": method1, "m2": method2}
+
+        method1.category = "c1"
+        method2.category = "c2"
+
+        self.source.add_missing_categories(root)
+
+        self.assertEqual(2, len(root.categories))
+        self.assertIsInstance(root.categories["c2"], Category)
+
     def test_sort_category_equals(self):
         v1 = CategoryDto(Category("a"))
         v1.order = 1

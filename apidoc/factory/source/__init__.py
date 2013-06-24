@@ -7,7 +7,7 @@ from apidoc.service.extender import Extender
 from apidoc.factory.source.root import Root as RootFactory
 from apidoc.factory.source.rootDto import RootDto as RootDtoFactory
 
-from apidoc.object.source_raw import ObjectObject
+from apidoc.object.source_raw import ObjectObject, Category
 
 from apidoc.lib.util.decorator import add_property
 
@@ -39,6 +39,8 @@ class Source():
 
         root = self.root_source_factory.create_from_dictionary(sources)
         self.replace_references(root)
+
+        self.add_missing_categories(root)
 
         self.hide_filtered_elements(root, config["filter"])
         self.remove_unused_types(root)
@@ -118,6 +120,16 @@ class Source():
         hidden_categories = [category.name for category in root.categories.values() if not category.display]
         for version in root.versions.values():
             version.methods = dict((x, y) for x, y in version.methods.items() if y.display and (y.category is None or y.category not in hidden_categories))
+
+    def add_missing_categories(self, root):
+        """Remove elements marked a not to display
+        """
+
+        categories = [method.category for version in root.versions.values() for method in version.methods.values() if method.category not in root.categories.keys()] + \
+            [type.category for version in root.versions.values() for type in version.types.values() if type.category not in root.categories.keys()]
+
+        for category_name in categories:
+            root.categories[category_name] = Category(category_name)
 
     def replace_references(self, root):
         """Remove elements marked a not to display
