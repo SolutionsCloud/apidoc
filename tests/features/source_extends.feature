@@ -35,6 +35,28 @@ Feature: Source config extension
           And the changes status of method "a" is "new" for the version "v1"
           And the changes status of method "a" is "updated" for the version "v2"
 
+    Scenario: change a value in a list of extension
+        Given a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  a:
+                    response_codes:
+                    - code: 200
+              v2:
+                extends: v1
+                methods:
+                  a:
+                    response_codes:
+                    - code: 200
+                    - code: 300
+            """
+         When a source_factory load this file
+         Then the root contains "1" methods
+          And the changes status of method "a" is "new" for the version "v1"
+          And the changes status of method "a" is "updated" for the version "v2"
+
     Scenario: removed a method from an extension
         Given a "yaml" source file containing
             """

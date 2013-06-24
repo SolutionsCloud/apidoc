@@ -77,6 +77,29 @@ Feature: Source config parsing
           And the root contains "1" type's categories
           And the root contains "1" types
 
+    Scenario: Common file with Enumtype
+        Given a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  a:
+                    request_headers:
+                      b:
+                        type: a
+                types:
+                  a:
+                    primary: enum
+                    category: b
+                    values:
+                      c:
+                        description: d
+            """
+         When a source_factory load this file
+         Then the root contains "1" versions
+          And the root contains "1" type's categories
+          And the root contains "1" types
+
     Scenario: Use default type category
         Given a "yaml" source file containing
             """
@@ -164,13 +187,17 @@ Feature: Source config parsing
               v1:
                 methods:
                   a:
-                    url /
+                    response_codes:
+                    - code: 200
             """
-          and a "yaml" source file containing
+          And a "yaml" source file containing
             """
             versions:
               v1:
                 methods:
+                  a:
+                    response_codes:
+                    - code: 300
                   b:
                     url /
             """

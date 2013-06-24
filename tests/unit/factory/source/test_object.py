@@ -48,7 +48,14 @@ class TestObject(unittest.TestCase):
                 "foofoo": {
                     "type": "dynamic",
                     "description": "c_foofoo",
-                    "items": "t_foofoo",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "fooqux": {
+                                "type": "string"
+                            }
+                        }
+                    },
                     "sample": {
                         "a": "b",
                         "c": "d"
@@ -127,7 +134,8 @@ class TestObject(unittest.TestCase):
         self.assertIsInstance(response.properties["foofoo"], ObjectDynamic)
         self.assertEqual("c_foofoo", response.properties["foofoo"].description)
         self.assertEqual("foofoo", response.properties["foofoo"].name)
-        self.assertEqual("t_foofoo", response.properties["foofoo"].items)
+        self.assertIsInstance(response.properties["foofoo"].items, ObjectObject)
+        self.assertEqual("items", response.properties["foofoo"].items.name)
         self.assertEqual({"a": "b", "c": "d"}, response.properties["foofoo"].sample)
 
         self.assertIn("foobar", response.properties)

@@ -324,35 +324,29 @@ class Object(Element, Sampleable):
     def factory(cls, str_type, version):
         """Return a proper object
         """
-        if str_type in Object.Types:
-            type = Object.Types(str_type)
+        type = Object.Types(str_type)
 
-            if type is Object.Types.object:
-                object = ObjectObject()
-            elif type is Object.Types.array:
-                object = ObjectArray()
-            elif type is Object.Types.number:
-                object = ObjectNumber()
-            elif type is Object.Types.string:
-                object = ObjectString()
-            elif type is Object.Types.bool:
-                object = ObjectBool()
-            elif type is Object.Types.reference:
-                object = ObjectReference()
-            elif type is Object.Types.type:
-                object = ObjectType()
-            elif type is Object.Types.none:
-                object = ObjectNone()
-            elif type is Object.Types.dynamic:
-                object = ObjectDynamic()
-            elif type is Object.Types.const:
-                object = ObjectConst()
-            object.type = type
-        else:
+        if type is Object.Types.object:
+            object = ObjectObject()
+        elif type is Object.Types.array:
+            object = ObjectArray()
+        elif type is Object.Types.number:
+            object = ObjectNumber()
+        elif type is Object.Types.string:
+            object = ObjectString()
+        elif type is Object.Types.bool:
+            object = ObjectBool()
+        elif type is Object.Types.reference:
+            object = ObjectReference()
+        elif type is Object.Types.type:
             object = ObjectType()
-            object.type = Object.Types("type")
-            object.type_name = str_type
-
+        elif type is Object.Types.none:
+            object = ObjectNone()
+        elif type is Object.Types.dynamic:
+            object = ObjectDynamic()
+        elif type is Object.Types.const:
+            object = ObjectConst()
+        object.type = type
         object.version = version
         return object
 
@@ -435,7 +429,7 @@ class ObjectBool(Object):
     def get_default_sample(self):
         """Return default value for the element
         """
-        return 'true'
+        return True
 
 
 class ObjectNone(Object):

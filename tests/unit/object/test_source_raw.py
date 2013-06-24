@@ -132,7 +132,7 @@ class TestSourceRaw(unittest.TestCase):
     def test_objectbool_get_default_sample(self):
         test = ObjectBool()
 
-        self.assertEqual('true', test.get_default_sample())
+        self.assertEqual('True', str(test.get_default_sample()))
 
     def test_objectdynamic_get_default_sample(self):
         test = ObjectDynamic()
@@ -172,9 +172,3 @@ class TestSourceRaw(unittest.TestCase):
         self.assertIsInstance(Object.factory("type", "v1"), ObjectType)
         self.assertIsInstance(Object.factory("none", "v1"), ObjectNone)
         self.assertIsInstance(Object.factory("dynamic", "v1"), ObjectDynamic)
-
-    def test_object_factory_link(self):
-        response = Object.factory("foo", "v1")
-
-        self.assertIsInstance(response, ObjectType)
-        self.assertEqual("foo", response.type_name)

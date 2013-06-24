@@ -50,7 +50,7 @@ class Object(ElementFactory):
         elif type is ObjectObject.Types.dynamic:
             object = ObjectDynamic()
             if "items" in datas:
-                object.items = str(datas["items"])
+                object.items = self.create_from_name_and_dictionary("items", datas["items"])
             if "sample" in datas:
                 if isinstance(datas["sample"], dict):
                     object.sample = {}

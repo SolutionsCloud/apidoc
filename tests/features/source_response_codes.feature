@@ -37,8 +37,11 @@ Feature: Source config URI manipulation
               v1:
                 methods:
                   a:
+                    code: 300
                     response_codes:
                     - code: 200
+                    - code: 300
             """
          When a source_factory load this file
          Then the "message" of response_codes "200" of method "a" for the version "v1" is "OK"
+         Then the "message" of response_codes "300" of method "a" for the version "v1" is "Multiple Choices"

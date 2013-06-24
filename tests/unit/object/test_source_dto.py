@@ -394,12 +394,6 @@ class TestSourceDto(unittest.TestCase):
         self.assertIsInstance(ObjectDto.factory(Object.factory("dynamic", "v1")), ObjectDynamicDto)
         self.assertIsInstance(ObjectDto.factory(Object.factory("const", "v1")), ObjectConstDto)
 
-    def test_object_factory_link(self):
-        response = ObjectDto.factory(Object.factory("foo", "v1"))
-
-        self.assertIsInstance(response, ObjectTypeDto)
-        self.assertEqual("foo", response.type_name)
-
     def test_object_compare__with_name(self):
         object1 = ObjectDto(Object())
         object2 = ObjectDto(Object())
