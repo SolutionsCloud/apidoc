@@ -11,7 +11,6 @@ categories:
     order: 1
 versions:
   v1.0:
-    description: First release of the API
     status: beta
     major: 1
     minor: 0
@@ -156,7 +155,8 @@ versions:
             reference: element
           metadata:
             type: dynamic
-            item_type: string
+            items:
+              type: string
           typed:
             type: enumStatus
     types:
@@ -202,6 +202,7 @@ versions:
         response_body:
           type: reference
           reference: ref_test
+          inherit: false
       MyResource2:
         category: Category2
         uri: /{version}/resource/{resource_id}

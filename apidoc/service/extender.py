@@ -153,6 +153,8 @@ class Extender():
                 del(datas[self.removed_key])
             if self.inherit_key in datas:
                 del(datas[self.inherit_key])
+            if self.extends_key in datas:
+                del(datas[self.extends_key])
             for key in datas:
                 self.clean_tags(datas[key])
         elif isinstance(datas, list):

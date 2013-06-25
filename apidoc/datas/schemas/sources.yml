@@ -1,0 +1,378 @@
+type: object
+properties:
+  configuration:
+    $ref: "#/definitions/configuration"
+  categories:
+    patternProperties:
+      ".*" :
+        $ref: "#/definitions/category"
+  versions:
+    patternProperties:
+      ".*" :
+        $ref: "#/definitions/version"
+additionalProperties: false
+
+definitions:
+  configuration:
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      uri:
+        type: string
+    additionalProperties: false
+
+  category:
+    properties:
+      display:
+        type: boolean
+      description:
+        type: string
+      order:
+        type: number
+    additionalProperties: false
+
+  version:
+    properties:
+      display:
+        type: boolean
+      uri:
+        type: string
+      major:
+        type: number
+      minor:
+        type: number
+      status:
+        enum:
+        - current
+        - beta
+        - deprecated
+        - draft
+      methods:
+        patternProperties:
+          ".*" :
+            $ref: "#/definitions/method"
+      types:
+        patternProperties:
+          ".*" :
+            $ref: "#/definitions/type"
+      references:
+        patternProperties:
+          ".*" :
+            $ref: "#/definitions/object"
+    additionalProperties: false
+
+  method:
+    properties:
+      description:
+        type: string
+      category:
+        type: string
+      uri:
+        type: string
+      method:
+        enum:
+        - get
+        - post
+        - put
+        - delete
+        - head
+        - http
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - HEAD
+        - HTTP
+      code:
+        type: number
+      request_parameters:
+        patternProperties:
+          ".*" :
+            $ref: "#/definitions/request_parameter"
+      request_headers:
+        patternProperties:
+          ".*" :
+            $ref: "#/definitions/request_header"
+      request_body:
+        $ref: "#/definitions/object"
+      response_codes:
+        items:
+          $ref: "#/definitions/response_code"
+      response_body:
+        $ref: "#/definitions/object"
+    additionalProperties: false
+
+  type:
+    oneOf:
+    - $ref: "#/definitions/type_base"
+    - $ref: "#/definitions/type_enum"
+  type_base:
+    properties:
+      primary:
+        enum:
+        - string
+        - number
+      category:
+        type: string
+      description:
+        type: string
+      format:
+        $ref: "#/definitions/type_format"
+    additionalProperties: false
+    required:
+    - format
+  type_enum:
+    properties:
+      primary:
+        enum:
+        - enum
+      category:
+        type: string
+      description:
+        type: string
+      format:
+        $ref: "#/definitions/type_format"
+      values:
+        items:
+          properties:
+            description:
+              type: string
+          additionalProperties: false
+    required:
+    - format
+    - values
+    additionalProperties: false
+
+  type_format:
+    properties:
+      pretty:
+        type: string
+      advanced:
+        type: string
+      sample:
+        type: string
+    minProperties: 1
+    additionalProperties: false
+
+  request_parameter:
+    $ref: "#/definitions/parameter"
+
+  request_header:
+    $ref: "#/definitions/parameter"
+
+  parameter:
+    properties:
+      type:
+        type: string
+      description:
+        type: string
+      optional:
+        type: boolean
+      sample:
+        type: string
+    additionalProperties: false
+
+  response_code:
+    properties:
+      code:
+        type: number
+      message:
+        type: string
+      description:
+        type: string
+    additionalProperties: false
+
+  object:
+    oneOf:
+    - $ref: "#/definitions/object_object"
+    - $ref: "#/definitions/object_array"
+    - $ref: "#/definitions/object_number"
+    - $ref: "#/definitions/object_string"
+    - $ref: "#/definitions/object_boolean"
+    - $ref: "#/definitions/object_reference"
+    - $ref: "#/definitions/object_type"
+    - $ref: "#/definitions/object_none"
+    - $ref: "#/definitions/object_dynamic"
+    - $ref: "#/definitions/object_const"
+
+  object_object:
+    properties:
+      type:
+        enum:
+        - object
+      description:
+        type: string
+      properties:
+        patternProperties:
+          ".*" :
+            $ref: "#/definitions/object"
+      optional:
+        type: boolean
+    required:
+    - type
+    - properties
+    additionalProperties: false
+
+  object_array:
+    properties:
+      type:
+        enum:
+        - array
+      description:
+        type: string
+      items:
+        $ref: "#/definitions/object"
+      sample_count:
+        type: number
+      optional:
+        type: boolean
+    required:
+    - type
+    - items
+    additionalProperties: false
+
+  object_string:
+    properties:
+      type:
+        enum:
+        - string
+      description:
+        type: string
+      sample:
+        type:
+        - string
+        - number
+      optional:
+        type: boolean
+    required:
+    - type
+    additionalProperties: false
+
+  object_number:
+    properties:
+      type:
+        enum:
+        - number
+      description:
+        type: string
+      sample:
+        type: number
+      optional:
+        type: boolean
+    required:
+    - type
+    additionalProperties: false
+
+  object_boolean:
+    type: object
+    properties:
+      type:
+        enum:
+        - bool
+      description:
+        type: string
+      sample:
+        type: boolean
+      optional:
+        type: boolean
+
+  object_reference:
+    properties:
+      type:
+        enum:
+        - reference
+      description:
+        type: string
+      reference:
+        type: string
+      optional:
+        type: boolean
+    required:
+    - type
+    - reference
+    additionalProperties: false
+
+  object_type:
+    properties:
+      type:
+        not:
+          enum:
+          - object
+          - array
+          - number
+          - string
+          - bool
+          - reference
+          - none
+          - dynamic
+          - const
+      description:
+        type: string
+      optional:
+        type: boolean
+      sample:
+        type: string
+    required:
+    - type
+    additionalProperties: false
+
+  object_none:
+    properties:
+      type:
+        enum:
+        - none
+      description:
+        type: string
+      optional:
+        type: boolean
+    required:
+    - type
+    additionalProperties: false
+
+  object_dynamic:
+    properties:
+      type:
+        enum:
+        - dynamic
+      description:
+        type: string
+      items:
+        $ref: "#/definitions/object"
+      sample:
+        type: object
+      optional:
+        type: boolean
+    required:
+    - type
+    - items
+    additionalProperties: false
+
+  object_const:
+    properties:
+      type:
+        enum:
+        - const
+      description:
+        type: string
+      const_type:
+        enum:
+        - string
+        - number
+        - boolean
+      value:
+        type:
+        - string
+        - number
+        - boolean
+      optional:
+        type: boolean
+    required:
+    - type
+    - value
+    additionalProperties: false
+
+
+
+

@@ -79,7 +79,5 @@ class Object(ElementFactory):
 
         if "optional" in datas:
             object.optional = to_bool(datas["optional"])
-        if "required" in datas:
-            object.required = to_bool(datas["required"])
 
         return object

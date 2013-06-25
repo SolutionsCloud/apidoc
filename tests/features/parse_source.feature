@@ -85,6 +85,8 @@ Feature: Source config parsing
                   a:
                     primary: string
                     category: b
+                    format:
+                      sample: b
             """
          When a source_factory load this file
          Then the root contains "1" versions
@@ -105,6 +107,8 @@ Feature: Source config parsing
                   a:
                     primary: enum
                     category: b
+                    format:
+                      sample: b
                     values:
                       c:
                         description: d
@@ -127,7 +131,8 @@ Feature: Source config parsing
                 types:
                   a:
                     primary: string
-                    uri: /
+                    format:
+                      sample: b
             """
          When a source_factory load this file
          Then the root contains "1" versions
@@ -150,9 +155,13 @@ Feature: Source config parsing
                   a:
                     primary: string
                     category: b
+                    format:
+                      sample: b
                   c:
                     primary: string
                     category: b
+                    format:
+                      sample: b
             """
          When a source_factory load this file
          Then the root contains "1" versions
@@ -171,6 +180,8 @@ Feature: Source config parsing
                   a:
                     primary: string
                     category: b
+                    format:
+                      sample: b
             """
          When a source_factory load this file
          Then the root contains "1" versions

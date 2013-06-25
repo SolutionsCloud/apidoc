@@ -23,7 +23,6 @@ Feature: Source config Body manipulation
                     response_body:
                       type: string
                       optional: false
-                      required: true
             """
          When a source_factory load this file
          Then the response body of method "a" is a "string" for the version "v1"

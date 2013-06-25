@@ -358,7 +358,6 @@ class Object(Element, Sampleable):
         super().__init__()
         self.type = None
         self.optional = False
-        self.required = True
 
 
 class ObjectObject(Object):

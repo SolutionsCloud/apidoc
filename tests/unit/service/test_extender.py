@@ -360,3 +360,42 @@ class TestParser(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self.extender.extends(data, ["root.?", "root.?.sub.?"], ".", "ex")
+
+    def test_clean_tags(self):
+        data = {
+            "root": {
+                "a": {
+                    "ex": ["b", "c"],
+                    "att1": 1,
+                    "removed": "e"
+                },
+                "b": {
+                    "extends": "c",
+                    "ex": "a",
+                    "att2": 2
+                },
+                "c": {
+                    "inherit": "d",
+                    "att3": 3
+                }
+            }
+        }
+        expected = {
+            "root": {
+                "a": {
+                    "ex": ["b", "c"],
+                    "att1": 1
+                },
+                "b": {
+                    "ex": "a",
+                    "att2": 2
+                },
+                "c": {
+                    "att3": 3
+                }
+            }
+        }
+
+        self.extender.extends({}, [])
+        self.extender.clean_tags(data)
+        self.assertEqual(expected, data)

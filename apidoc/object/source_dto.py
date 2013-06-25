@@ -286,12 +286,11 @@ class Object(Element, Comparable):
         super().__init__(object)
         self.type = object.type
         self.optional = object.optional
-        self.required = object.required
 
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
-        return (str(self.name), str(self.description), str(self.type), bool(self.optional), bool(self.required))
+        return (str(self.name), str(self.description), str(self.type), bool(self.optional))
 
 
 class ObjectObject(Object):

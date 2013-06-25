@@ -46,10 +46,10 @@ class TestSource(unittest.TestCase):
         self.source.merger = None
         self.assertIsInstance(self.source.merger, Merger)
 
-    @patch.object(Parser, "load_from_file", side_effect=[{"e": "f"}, {"g": "h"}])
+    @patch.object(Parser, "load_from_file", side_effect=[{"e": "f"}, {"g": "h"}, {}])
     @patch.object(Parser, "load_all_from_directory", side_effect=[[{"a": "b"}, {"c": "d"}], [{"z": "y"}]])
     @patch.object(Merger, "merge_sources", return_value={"i": "j"})
-    @patch.object(Extender, "extends", return_value={"k": "l"})
+    @patch.object(Extender, "extends", return_value={})
     def test_create_from_config(self, mock_extender, mock_merger, mock_parser_directory, mock_parser_file):
         config = ConfigObject()
         config["input"]["directories"] = ["directory1", "directory2"]
@@ -397,7 +397,6 @@ class TestSource(unittest.TestCase):
         reference.name = "a"
         reference.description = "b"
         reference.optional = True
-        reference.required = False
 
         reference1 = ObjectReference()
         reference1.reference_name = "r2"
@@ -410,7 +409,6 @@ class TestSource(unittest.TestCase):
         self.assertEquals("a", response.name)
         self.assertEquals("b", response.description)
         self.assertEquals(True, response.optional)
-        self.assertEquals(False, response.required)
 
     def test_remove_hidden_elements(self):
         root = Root()

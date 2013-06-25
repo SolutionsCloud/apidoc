@@ -43,5 +43,5 @@ versions:
             dateTime:
                 primary: string
                 format:
-                    pretty: yyyy-mm-ddThh:mm:ss(.sss)?Z
-                    sample: 2013-01-31T04:12:04Z
+                    pretty: "yyyy-mm-ddThh:mm:ss(.sss)?Z"
+                    sample: "2013-01-31T04:12:04Z"

@@ -21,14 +21,12 @@ class TestObject(unittest.TestCase):
                     "type": "string",
                     "description": "c_foo",
                     "optional": "true",
-                    "required": "true",
                     "sample": "s_foo"
                 },
                 "bar": {
                     "type": "number",
                     "description": "c_bar",
                     "optional": "false",
-                    "required": "false",
                     "sample": "123.4"
                 },
                 "baz": {
@@ -101,7 +99,6 @@ class TestObject(unittest.TestCase):
         self.assertEqual("foo", response.properties["foo"].name)
         self.assertEqual("s_foo", response.properties["foo"].sample)
         self.assertEqual(True, response.properties["foo"].optional)
-        self.assertEqual(True, response.properties["foo"].required)
 
         self.assertIn("bar", response.properties)
         self.assertIsInstance(response.properties["bar"], ObjectNumber)
@@ -109,7 +106,6 @@ class TestObject(unittest.TestCase):
         self.assertEqual("bar", response.properties["bar"].name)
         self.assertEqual("123.4", response.properties["bar"].sample)
         self.assertEqual(False, response.properties["bar"].optional)
-        self.assertEqual(False, response.properties["bar"].required)
 
         self.assertIn("baz", response.properties)
         self.assertIsInstance(response.properties["baz"], ObjectBool)
@@ -117,7 +113,6 @@ class TestObject(unittest.TestCase):
         self.assertEqual("baz", response.properties["baz"].name)
         self.assertEqual(True, response.properties["baz"].sample)
         self.assertEqual(False, response.properties["baz"].optional)
-        self.assertEqual(True, response.properties["baz"].required)
 
         self.assertIn("qux", response.properties)
         self.assertIsInstance(response.properties["qux"], ObjectNone)
