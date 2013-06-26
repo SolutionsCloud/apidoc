@@ -49,8 +49,8 @@ Feature: Source config URI manipulation
 
                 types:
                   the_type:
-                    primary: string
-                    format:
+                    item:
+                      type: string
                       sample: b
             """
          When a source_factory load this file

@@ -83,35 +83,9 @@ Feature: Source config parsing
                         type: a
                 types:
                   a:
-                    primary: string
                     category: b
-                    format:
-                      sample: b
-            """
-         When a source_factory load this file
-         Then the root contains "1" versions
-          And the root contains "1" type's categories
-          And the root contains "1" types
-
-    Scenario: Common file with Enumtype
-        Given a "yaml" source file containing
-            """
-            versions:
-              v1:
-                methods:
-                  a:
-                    request_headers:
-                      b:
-                        type: a
-                types:
-                  a:
-                    primary: enum
-                    category: b
-                    format:
-                      sample: b
-                    values:
-                      c:
-                        description: d
+                    item:
+                      type: string
             """
          When a source_factory load this file
          Then the root contains "1" versions
@@ -130,9 +104,8 @@ Feature: Source config parsing
                         type: a
                 types:
                   a:
-                    primary: string
-                    format:
-                      sample: b
+                    item:
+                      type: string
             """
          When a source_factory load this file
          Then the root contains "1" versions
@@ -153,15 +126,13 @@ Feature: Source config parsing
                         type: c
                 types:
                   a:
-                    primary: string
                     category: b
-                    format:
-                      sample: b
+                    item:
+                      type: string
                   c:
-                    primary: string
                     category: b
-                    format:
-                      sample: b
+                    item:
+                      type: string
             """
          When a source_factory load this file
          Then the root contains "1" versions
@@ -178,10 +149,9 @@ Feature: Source config parsing
                     uri: /
                 types:
                   a:
-                    primary: string
                     category: b
-                    format:
-                      sample: b
+                    item:
+                      type: string
             """
          When a source_factory load this file
          Then the root contains "1" versions

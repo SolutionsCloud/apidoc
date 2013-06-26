@@ -222,9 +222,9 @@ Feature: Source config Body manipulation
                       type: b
                 types:
                   b:
-                    primary: string
-                    format:
-                      pretty: c
+                    item:
+                      type: string
+                      sample: c
             """
          When a source_factory load this file
          Then the response body of method "a" is a "type" for the version "v1"
