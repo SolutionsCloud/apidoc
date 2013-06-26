@@ -10,7 +10,9 @@ versions:
           type: object
           properties:
             intent:
-              type: listIntent
+              type: enum
+              values:
+              -  sale
               description: Payment intent
             payer:
               type: reference
@@ -30,7 +32,9 @@ versions:
           type: object
           properties:
             intent:
-              type: listIntent
+              type: enum
+              values:
+              -  sale
               description: Payment intent; Must be set to sale currently.
             payer:
               type: reference
@@ -52,7 +56,13 @@ versions:
               type: dateTime
               description: Payment creation time as defined in RFC 3339 Section 5.6 Assigned in response.
             state:
-              type: listStatePayment
+              type: enum
+              values:
+              -  created
+              -  approved
+              -  failed
+              -  canceled
+              -  expired
               description: Payment state.
               sample: approved
             update_time:
@@ -90,7 +100,9 @@ versions:
           type: object
           properties:
             intent:
-              type: listIntent
+              type: enum
+              values:
+              -  sale
               description: Payment intent; Must be set to sale currently.
             payer:
               type: reference
@@ -119,7 +131,9 @@ versions:
           type: object
           properties:
             intent:
-              type: listIntent
+              type: enum
+              values:
+              -  sale
               description: Payment intent; currently only sale is a valid value.
             payer:
               type: reference
@@ -140,7 +154,13 @@ versions:
               type: dateTime
               description: Payment creation time as defined in RFC 3339 Section 5.6. Assigned in response.
             state:
-              type: listStatePayment
+              type: enum
+              values:
+              -  created
+              -  approved
+              -  failed
+              -  canceled
+              -  expired
               description: payment state.
             update_time:
               type: dateTime
@@ -155,7 +175,9 @@ versions:
             type: object
             properties:
               intent:
-                type: listIntent
+                type: enum
+                values:
+                -  sale
                 description: Payment intent; Must be set to sale currently.
               payer:
                 type: reference
@@ -176,7 +198,13 @@ versions:
                 type: dateTime
                 description: Payment creation time as defined in RFC 3339 Section 5.6 Assigned in response.
               state:
-                type: listStatePayment
+                type: enum
+                values:
+                -  created
+                -  approved
+                -  failed
+                -  canceled
+                -  expired
                 description: Payment state.
               update_time:
                 type: dateTime
@@ -199,7 +227,12 @@ versions:
             description: Credit card number.
             sample: 4417119669820331
           type:
-            type: listTypeCreditCard
+            type: enum
+            values:
+            -  visa
+            -  mastercard
+            -  discover
+            -  amex
             description: Credit card type.
           expire_month:
             type: number
@@ -241,7 +274,10 @@ versions:
         type: object
         properties:
           payment_method:
-            type: listPaymentMethod
+            type: enum
+            values:
+            - credit_card
+            - paypal
             description: Payment method used.
           funding_instruments:
             type: array
@@ -342,7 +378,11 @@ versions:
             type: string
             description: Name of the recipient at this address. 50 characters max.
           type:
-            type: listShippingAddressType
+            type: enum
+            values:
+            -  residential
+            -  business
+            -  mailbox
             description: Address type.
             optional: true
       redirect_urls:
@@ -358,8 +398,7 @@ versions:
         type: object
         properties:
           amount:
-            type: reference
-            reference: amount
+            type: amount
             description: Amount being collected.
           description:
             type: string
@@ -380,24 +419,7 @@ versions:
               type: object
               properties:
                 sale:
-                  type: reference
-                  reference: sale
-      amount:
-        type: object
-        properties:
-          currency:
-            type: string
-            description: ISO 4217 3-letter currency code. PayPal currently supports USD only.
-            sample: USD
-          total:
-            type: string
-            description: Total amount charged from the payer to the payee.
-            sample: 7.47
-          details:
-            type: reference
-            reference: details
-            description: Additional details related to a payment amount.
-            optional: true
+                  type: sale
       details:
         type: object
         properties:
@@ -460,119 +482,65 @@ versions:
             description: URL of the related HATEOAS link you can use for subsequent calls.
             sample: https://api.paypal.com/v1/payments/payment/PAY-17S8410768582940NKEE66EQ
           rel:
-            type: listRelLink
+            type: enum
+            values:
+            -  self
+            -  parent_payment
+            -  execute
+            -  refund
             description: Link relation that describes how this link relates to the previous call.
           method:
             type: string
             description: The HTTP method required for the related call.
             sample: GET
-      sale:
-        type: object
-        properties:
-          id:
-            type: string
-            description: ID of the sale transaction.
-          amount:
-            type: reference
-            reference: amount
-            description: Details about the collected amount.
-          description:
-            type: string
-            description: Description of sale.
-          create_time:
-            type: dateTime
-            description: Time of sale as defined in RFC 3339 Section 5.6 Assigned in response.
-          state:
-            type: listStateSale
-            description: State of the sale.
-          sale_id:
-            type: string
-            description: ID of the sale transaction being refunded. Assigned in response.
-          parent_payment:
-            type: string
-            description: ID of the payment resource on which this transaction is based. Assigned in response.
-          update_time:
-            type: dateTime
-            description: Time the resource was last updated. Assigned in response.
     types:
-      listPaymentMethod:
-        primary: enum
-        values:
-          credit_card:
-            description: Credit card
-          paypal:
-            description: Paypal
-        format:
-          sample: credit_card
-      listStatePayment:
-        primary: enum
-        values:
-          created:
-            description: Created
-          approved:
-            description: Approved
-          failed:
-            description: Failed
-          canceled:
-            description: Canceled
-          expired:
-            description: Expired
-        format:
-          sample: created
-      listStateSale:
-        primary: enum
-        values:
-          pending:
-            description: Pending
-          completed:
-            description: Completed
-          refunded:
-            description: Refunded
-          partially_refunded:
-            description: Partially_refunded
-        format:
-          sample: pending
-      listTypeCreditCard:
-        primary: enum
-        values:
-          visa:
-            description: Visa
-          mastercard:
-            description: Mastercard
-          discover:
-            description: Discover
-          amex:
-            description: Amex
-        format:
-          sample: visa
-      listShippingAddressType:
-        primary: enum
-        values:
-          residential:
-            description: Residential
-          business:
-            description: Business
-          mailbox:
-            description: Mailbox
-        format:
-          sample: Residential
-      listIntent:
-        primary: enum
-        values:
-          sale:
-            description: Sale
-        format:
-          sample: sale
-      listRelLink:
-        primary: enum
-        values:
-          self:
-            description: Self
-          parent_payment:
-            description: Parent_payment
-          execute:
-            description: Execute
-          refund:
-            description: Refund
-        format:
-          sample: self
+      sale:
+        item:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ID of the sale transaction.
+            amount:
+              type: amount
+              description: Details about the collected amount.
+            description:
+              type: string
+              description: Description of sale.
+            create_time:
+              type: dateTime
+              description: Time of sale as defined in RFC 3339 Section 5.6 Assigned in response.
+            state:
+              type: enum
+              values:
+              -  pending
+              -  completed
+              -  refunded
+              -  partially_refunded
+              description: State of the sale.
+            sale_id:
+              type: string
+              description: ID of the sale transaction being refunded. Assigned in response.
+            parent_payment:
+              type: string
+              description: ID of the payment resource on which this transaction is based. Assigned in response.
+            update_time:
+              type: dateTime
+              description: Time the resource was last updated. Assigned in response.
+      amount:
+        item:
+          type: object
+          properties:
+            currency:
+              type: string
+              description: ISO 4217 3-letter currency code. PayPal currently supports USD only.
+              sample: USD
+            total:
+              type: string
+              description: Total amount charged from the payer to the payee.
+              sample: 7.47
+            details:
+              type: reference
+              reference: details
+              description: Additional details related to a payment amount.
+              optional: true

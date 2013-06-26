@@ -7,24 +7,22 @@ versions:
         uri: /url
         description: Method M
       M2:
-        extends: M
-        description: M2 extends M. The property uri is not extended. But not this description
+        extends: M0
+        description: M2 extends M. The property uri is extended. But not this description
       M3:
-        extends: v1.0/S/M
+        extends: v1.0/M0
         description: M3 extends M only in version v1.0
-  v1.1:
+  v1.1: # The first version is extended
     major: 1
     minor: 1
     extends: v1.0
-    description: The first version is extended
     methods:
       M1:
         uri: /url
-  v10.2:
+  v10.2: #The first version is extended
     major: 10
     minor: 2
     extends: v1.0
-    description: The first version is extended
     methods:
       M0:
         uri: /url/v1.2
@@ -54,19 +52,17 @@ versions:
         description: This method break the inheritance.
         inherit: false
         uri: /url
-  v1.5:
+  v1.5: #The method M0 is removed but the method M2 is extended by v1.1
     major: 1
     minor: 5
     extends: v1.1
-    description: The method M0 is removed but the method M2 is extended by v1.1
     methods:
       M0:
         removed: true
-  v1.6:
+  v1.6: #The method M0 is restored
     major: 1
     minor: 6
     extends: v1.5
-    description: The method M0 is restored
     methods:
       MO:
         removed: false

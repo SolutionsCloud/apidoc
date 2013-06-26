@@ -15,10 +15,13 @@
 {{- code.uri_sampled(method_sample.absolute_uri, method_sample.request_parameters) -}}
         </span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
-{%- for parameter in method_sample.request_headers|sort %}
+{%- for parameter in method_sample.request_headers %}
 <span class="hat">{{ parameter.name }}</span><span class="pun">: </span><span class="hva">{{ util.none_to_empty(parameter.sample) }}</span>
-{%- endfor %}
-{% if method_sample.request_body -%}
+{%- endfor -%}
+{{- "
+
+" -}}
+{%- if method_sample.request_body -%}
 {{ code.code_sampled(method_sample.request_body) -}}
 {%- endif -%}
         </div>
@@ -27,7 +30,10 @@
 {{- "" -}}
 <span class="hpr">HTTP/1.1</span> <span class="lit">{{ method_sample.code }}</span> <span class="str">{{ method_sample.message }}</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
-{% if method_sample.response_body -%}
+{{- "
+
+" -}}
+{%- if method_sample.response_body -%}
 {{ code.code_sampled(method_sample.response_body) -}}
 {%- endif -%}
 </div>

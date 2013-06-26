@@ -41,7 +41,8 @@ versions:
                         sample: Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP
         types:
             dateTime:
-                primary: string
+                item:
+                    type: string
+                    sample: "2013-01-31T04:12:04Z"
                 format:
                     pretty: "yyyy-mm-ddThh:mm:ss(.sss)?Z"
-                    sample: "2013-01-31T04:12:04Z"

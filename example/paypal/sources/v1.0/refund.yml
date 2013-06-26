@@ -17,8 +17,7 @@ versions:
               type: string
               description: ID of the refund transaction.
             amount:
-              type: reference
-              reference: amount
+              type: amount
               description: Details including both refunded amount (to payer) and refunded fee (to payee). If not specified, a full refund is assumed.
             description:
               type: string
@@ -27,7 +26,11 @@ versions:
               type: dateTime
               description: Time of refund as defined in RFC 3339 Section 5.6. Assigned in response.
             state:
-              type: listStateRefund
+              type: enum
+              values:
+              - pending
+              - completed
+              - failed
               description: State of the refund.
             sale_id:
               type: string

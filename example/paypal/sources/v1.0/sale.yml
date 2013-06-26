@@ -17,8 +17,7 @@ versions:
               type: string
               description: ID of the sale transaction.
             amount:
-              type: reference
-              reference: amount
+              type: amount
               description: Details about the collected amount.
             description:
               type: string
@@ -27,7 +26,12 @@ versions:
               type: dateTime
               description: Time of sale as defined in RFC 3339 Section 5.6 Assigned in response.
             state:
-              type: listStateSale
+              type: enum
+              values:
+              -  pending
+              -  completed
+              -  refunded
+              -  partially_refunded
               description: State of the sale.
             sale_id:
               type: string
@@ -58,8 +62,7 @@ versions:
           type: object
           properties:
             amount:
-              type: reference
-              reference: amount
+              type: amount
               description: object Refund details including both refunded amount (to Payer) and refunded fee (to Payee).
               optional: true
         response_body:
@@ -69,8 +72,7 @@ versions:
               type: string
               description: ID of the sale transaction.
             amount:
-              type: reference
-              reference: amount
+              type: amount
               description: Details including both refunded amount (to payer) and refunded fee (to payee). If not specified, a full refund is assumed.
             description:
               type: string
@@ -79,7 +81,11 @@ versions:
               type: dateTime
               description: Time of refund as defined in RFC 3339 Section 5.6. Assigned in response.
             state:
-              type: listStateRefund
+              type: enum
+              values:
+              - pending
+              - completed
+              - failed
               description: State of the refund.
             sale_id:
               type: string
@@ -96,15 +102,3 @@ versions:
                 type: reference
                 reference: links
               description: HATEOAS links related to this call. Assigned in response.
-    types:
-      listStateRefund:
-        primary: enum
-        values:
-          pending:
-            description: Pending
-          completed:
-            description: Completed
-          failed:
-            description: Failed
-        format:
-          sample: pending

@@ -14,7 +14,12 @@ versions:
                 description: Credit card number.
                 sample: 4417119669820331
               type:
-                type: listTypeCreditCard
+                type: enum
+                values:
+                -  visa
+                -  mastercard
+                -  discover
+                -  amex
                 description: Credit card type.
               expire_month:
                 type: number

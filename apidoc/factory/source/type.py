@@ -15,7 +15,7 @@ class Type(ElementFactory):
         """Return a populated object Type from dictionary datas
         """
         if not "item" in datas:
-            raise ValueError("A type\'s primary must be set in type \"%s\"." % name)
+            raise ValueError("An item must be set in type \"%s\"." % name)
 
         type = ObjectType()
         self.set_common_datas(type, name, datas)

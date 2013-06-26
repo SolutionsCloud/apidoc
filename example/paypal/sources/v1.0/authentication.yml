@@ -11,7 +11,9 @@ versions:
                     type: object
                     properties:
                         grant_type:
-                            type: listGrantType
+                            type: enum
+                            values:
+                            - client_credentials
                             description: Token grant type
                 response_body:
                     type: object
@@ -37,11 +39,3 @@ versions:
                             type: number
                             description: The lifetime in seconds of the access token. Assigned in response.
                             sample: 900
-        types:
-            listGrantType:
-                primary: enum
-                values:
-                    client_credentials:
-                        description: client credentials
-                format:
-                    sample: client_credentials

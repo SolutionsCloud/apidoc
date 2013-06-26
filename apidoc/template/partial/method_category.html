@@ -8,9 +8,7 @@
     {%- endif %}
         <ul class="unstyled">
     {%- for method in category.methods|sort %}
-            <li class="method item" id="m-{{ method.name }}"
-                data-method="{{ method.method|upper }}"
-            >
+            <li class="method item" id="m-{{ method.name }}" data-method="{{ method.method|upper }}">
                 <h4>{{ method.name }}</h4>
         {%- if sources.versions|length > 1 %}
                 <div class="diff-header">
