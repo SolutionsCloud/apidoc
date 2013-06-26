@@ -17,7 +17,7 @@ class TestVersion(unittest.TestCase):
             "extends": ["v1", "v2"],
             "methods": {"m_name": {"uri": "/"}},
             "references": {"r_name": {"type": "string"}},
-            "types": {"t_name": {"primary": "string"}}
+            "types": {"t_name": {"item": {"type": "string"}}}
         }
         response = self.factory.create_from_name_and_dictionary("o_name", datas)
 

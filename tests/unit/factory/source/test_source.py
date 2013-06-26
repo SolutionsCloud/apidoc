@@ -251,18 +251,25 @@ class TestSource(unittest.TestCase):
         version1 = Version()
 
         method1 = Method()
+        type1 = Type()
 
         object_reference1 = ObjectReference()
         object_reference1.reference_name = "r1"
         object_reference1.name = "a"
 
+        object_reference2 = ObjectReference()
+        object_reference2.reference_name = "r1"
+        object_reference2.name = "a"
+
         object1 = ObjectObject()
         object1.description = "b"
 
         method1.request_body = object_reference1
+        type1.item = object_reference2
 
         version1.references = {"r1": object1}
         version1.methods = {"m1": method1}
+        version1.types = {"t1": type1}
 
         root.versions = {"v1": version1}
 
@@ -270,6 +277,8 @@ class TestSource(unittest.TestCase):
 
         self.assertEqual("a", method1.request_body.name)
         self.assertEqual("b", method1.request_body.description)
+        self.assertEqual("a", type1.item.name)
+        self.assertEqual("b", type1.item.description)
 
     def test_replace_type(self):
         root = Root()
@@ -300,9 +309,9 @@ class TestSource(unittest.TestCase):
 
         self.source.replace_types(root)
 
-        self.assertEqual(type1, method1.request_body.items)
-        self.assertEqual(type1, method1.request_parameters["p1"].items)
-        self.assertEqual(type1, method1.request_headers["p1"].items)
+        self.assertEqual(type1, method1.request_body.type_object)
+        self.assertEqual(type1, method1.request_parameters["p1"].type_object)
+        self.assertEqual(type1, method1.request_headers["p1"].type_object)
 
     def test_replace_references_in_object(self):
         object = ObjectObject()
@@ -336,7 +345,7 @@ class TestSource(unittest.TestCase):
 
         self.source.replace_types_in_object(object, {"t1": type1})
 
-        self.assertEqual(type1, reference.items)
+        self.assertEqual(type1, reference.type_object)
 
     def test_replace_types_in_object_not_an_object(self):
         object = ObjectString()

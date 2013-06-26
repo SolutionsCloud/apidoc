@@ -204,7 +204,7 @@ class Source():
 
     def replace_types_in_parameter(self, parameter, types):
         if parameter.type not in ObjectObject.Types:
-            parameter.items = types[parameter.type]
+            parameter.type_object = types[parameter.type]
 
         return parameter
 

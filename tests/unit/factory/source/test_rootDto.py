@@ -3,20 +3,11 @@ import unittest
 from apidoc.factory.source.rootDto import RootDto as RootDtoFactory
 from apidoc.factory.source.rootDto import Hydrator
 
-
-#from apidoc.object.source_raw import Root, Element, Sampleable, Displayable
-from apidoc.object.source_raw import Root, Version, Method, Type, Category, Parameter, EnumType
-from apidoc.object.source_raw import ObjectString, ObjectArray, ObjectObject, ObjectDynamic, ObjectType, ObjectConst
+from apidoc.object.source_raw import Root, Version, Method, Type, Category, Parameter
+from apidoc.object.source_raw import ObjectString, ObjectArray, ObjectObject, ObjectDynamic, ObjectType, ObjectConst, ObjectEnum, EnumValue
 from apidoc.object.source_dto import Root as RootDto
 from apidoc.object.source_dto import Version as VersionDto
 from apidoc.object.source_dto import MethodCategory, TypeCategory, MultiVersion, PositionableParameter
-#from apidoc.object.source_raw import Version
-#from apidoc.object.source_raw import Method, Category
-#from apidoc.object.source_raw import Parameter, ResponseCode
-#from apidoc.object.source_raw import Type, EnumType, EnumTypeValue, TypeFormat
-#from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
-#from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone
-#from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType
 
 
 class TestRootDto(unittest.TestCase):
@@ -32,6 +23,7 @@ class TestRootDto(unittest.TestCase):
         method.category = "a"
         type = Type()
         type.category = "b"
+        type.item = ObjectString()
 
         root.versions = {"v": version}
         version.methods = {"m": method}
@@ -225,17 +217,11 @@ class TestHydrator(unittest.TestCase):
         root = Root()
         version = Version()
         version.name = "v"
-        type = EnumType()
+        type = Type()
         type.category = "a"
-        type.full_uri = "/{p}/"
-
-        parameter = Parameter()
-        parameter.name = "p"
-        parameter.type = "string"
-        type.request_parameters = {"p": parameter}
+        type.item = ObjectString()
 
         root.versions = {"v": version}
-        version.types = {"m": type}
         version.types = {"m": type}
 
         root_dto = RootDto()
@@ -255,6 +241,7 @@ class TestHydrator(unittest.TestCase):
         version.name = "v"
         type = Type()
         type.category = "c"
+        type.item = ObjectString()
 
         root.versions = {"v": version}
         version.types = {"m": type}
@@ -280,8 +267,10 @@ class TestHydrator(unittest.TestCase):
         version.name = "v"
         type1 = Type()
         type1.category = "c"
+        type1.item = ObjectString()
         type2 = Type()
         type2.category = "c"
+        type2.item = ObjectString()
 
         root.versions = {"v": version}
         version.types = {"m1": type1, "m2": type2}
@@ -306,9 +295,11 @@ class TestHydrator(unittest.TestCase):
         type1 = Type()
         type1.name = "m1"
         type1.description = "b"
+        type1.item = ObjectString()
         type2 = Type()
         type2.name = "m1"
         type2.description = "c"
+        type2.item = ObjectString()
 
         root.versions = {"v1": version1, "v2": version2}
         version1.types = {"m1": type1}
@@ -409,12 +400,15 @@ class TestHydrator(unittest.TestCase):
         string.name = "d"
         type = ObjectType()
         type.name = "e"
-        type.items = "f"
+        type.type_object = "f"
         const = ObjectConst()
         const.value = "g"
+        enum = ObjectEnum()
+        enum.name = "h"
+        enum.values = ["h"]
 
-        object1.properties = {"p1": array, "p3": const}
-        object2.properties = {"p1": array, "p3": const, "p2": type}
+        object1.properties = {"p1": array, "p3": const, "p4": enum}
+        object2.properties = {"p1": array, "p3": const, "p4": enum, "p2": type}
         array.items = dynamic
         dynamic.items = string
 
@@ -432,8 +426,9 @@ class TestHydrator(unittest.TestCase):
         self.assertEqual("c", object_dto[0].value.properties["p1"][0].value.items[0].value.name)
         self.assertEqual("d", object_dto[0].value.properties["p1"][0].value.items[0].value.items[0].value.name)
         self.assertEqual("e", object_dto[0].value.properties["p2"][0].value.name)
-        self.assertEqual("f", object_dto[0].value.properties["p2"][0].value.items)
+        self.assertEqual("f", object_dto[0].value.properties["p2"][0].value.type_object)
         self.assertEqual("g", object_dto[0].value.properties["p3"][0].value.value)
+        self.assertEqual("h", object_dto[0].value.properties["p4"][0].value.values[0].value)
 
     def test_get_previous_version__first(self):
         version1 = Version()

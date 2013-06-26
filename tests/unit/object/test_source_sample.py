@@ -4,7 +4,7 @@ from apidoc.object.source_raw import Type
 from apidoc.object.source_sample import Type as TypeSample
 from apidoc.object.source_raw import Method
 from apidoc.object.source_sample import Method as MethodSample
-from apidoc.object.source_raw import Parameter, ObjectObject, ObjectArray, ObjectType, ObjectDynamic, Object, ObjectConst
+from apidoc.object.source_raw import Parameter, ObjectObject, ObjectArray, ObjectType, ObjectDynamic, Object, ObjectConst, ObjectString
 from apidoc.object.source_sample import Parameter as ParameterSample
 from apidoc.object.source_sample import ObjectObject as ObjectObjectSample
 from apidoc.object.source_sample import ObjectArray as ObjectArraySample
@@ -12,6 +12,7 @@ from apidoc.object.source_sample import Object as ObjectSample
 from apidoc.object.source_sample import ObjectType as ObjectTypeSample
 from apidoc.object.source_sample import ObjectDynamic as ObjectDynamicSample
 from apidoc.object.source_sample import ObjectConst as ObjectConstSample
+from apidoc.object.source_sample import ObjectEnum as ObjectEnumSample
 
 
 class TestSourceSample(unittest.TestCase):
@@ -19,14 +20,13 @@ class TestSourceSample(unittest.TestCase):
     def test_type(self):
         type = Type()
         type.name = "a"
-        type.format.sample = "b"
         type.format.pretty = "c"
         type.format.advanced = "d"
 
         type_sample = TypeSample(type)
 
         self.assertEqual("a", type_sample.name)
-        self.assertEqual("b", type_sample.sample)
+        self.assertEqual("my_a", type_sample.sample)
         self.assertEqual("c", type_sample.pretty)
         self.assertEqual("d", type_sample.advanced)
 
@@ -93,6 +93,7 @@ class TestSourceSample(unittest.TestCase):
         self.assertIsInstance(ObjectSample.factory(Object.factory("none", "v1")), ObjectSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("dynamic", "v1")), ObjectDynamicSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("const", "v1")), ObjectConstSample)
+        self.assertIsInstance(ObjectSample.factory(Object.factory("enum", "v1")), ObjectEnumSample)
 
     def test_object(self):
         object = Object()
@@ -175,6 +176,8 @@ class TestSourceSample(unittest.TestCase):
         object = ObjectType()
         object.name = "a"
         object.type = Object.Types.type
+        object.type_object = Type()
+        object.type_object.item = ObjectString()
 
         object_sample = ObjectTypeSample(object)
 

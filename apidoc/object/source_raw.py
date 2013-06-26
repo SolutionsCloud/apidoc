@@ -189,7 +189,7 @@ class Parameter(Element, Sampleable):
         super().__init__()
         self.type = None
         self.optional = False
-        self.items = None
+        self.type_object = None
 
     def get_object(self):
         object = Object.factory(self.type, None)
@@ -200,7 +200,7 @@ class Parameter(Element, Sampleable):
         """Return default value for the element
         """
         if self.type not in Object.Types or self.type is Object.Types.type:
-            return self.items.get_sample()
+            return self.type_object.get_sample()
         else:
             return self.get_object().get_sample()
 
@@ -218,7 +218,7 @@ class ResponseCode(Element):
         self.message = None
 
 
-class Type(Element, Comparable):
+class Type(Element, Comparable, Sampleable):
 
     """Element Type
     """
@@ -234,7 +234,10 @@ class Type(Element, Comparable):
     def get_sample(self):
         """Return the a sample for the element
         """
-        return self.item.get_sample()
+        if self.item is not None:
+            return self.item.get_sample()
+        else:
+            return super().get_sample()
 
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
@@ -457,7 +460,7 @@ class ObjectEnum(Object):
         """Class instantiation
         """
         super().__init__()
-        self.type = Object.Types("const")
+        self.type = Object.Types("enum")
         self.values = []
         self.descriptions = []
 

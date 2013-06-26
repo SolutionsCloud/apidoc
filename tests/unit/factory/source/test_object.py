@@ -3,7 +3,7 @@ import unittest
 from apidoc.factory.source.object import Object as ObjectFactory
 
 from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
-from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone
+from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone, ObjectEnum
 from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst
 
 
@@ -82,6 +82,18 @@ class TestObject(unittest.TestCase):
                     "description": "c_fooqux",
                     "const_type": "number",
                     "value": "d_fooqux"
+                },
+                "foofum": {
+                    "type": "enum",
+                    "description": "c_foofum",
+                    "values": [
+                        "a_foofum",
+                        "b_foofum",
+                    ],
+                    "descriptions": {
+                        "a_foofum": "d_foofum"
+                    }
+
                 }
             }
         }
@@ -155,6 +167,13 @@ class TestObject(unittest.TestCase):
         self.assertEqual("number", response.properties["fooqux"].const_type)
         self.assertEqual("d_fooqux", response.properties["fooqux"].value)
 
+        self.assertIn("foofum", response.properties)
+        self.assertIsInstance(response.properties["foofum"], ObjectEnum)
+        self.assertEqual("c_foofum", response.properties["foofum"].description)
+        self.assertEqual("foofum", response.properties["foofum"].name)
+        self.assertEqual(["a_foofum", "b_foofum"], response.properties["foofum"].values)
+        self.assertEqual(2, len(response.properties["foofum"].descriptions))
+
     def test_create_from_name_and_dictionary__failed_missing_type(self):
         with self.assertRaises(ValueError):
             self.factory.create_from_name_and_dictionary("o_name", {})
@@ -226,3 +245,13 @@ class TestObject(unittest.TestCase):
 
         del ObjectObject.Types.foo
         self.assertIsInstance(response, Object)
+
+    def test_create_from_name_and_dictionary__enum_without_value(self):
+        with self.assertRaises(ValueError):
+            self.factory.create_from_name_and_dictionary("o_name", {"type": "enum"})
+
+    def test_create_from_name_and_dictionary__enum_without_descriptions(self):
+        response = self.factory.create_from_name_and_dictionary("o_name", {"type": "enum", "values": ["a"]})
+        self.assertEqual(1, len(response.descriptions))
+        self.assertEqual("a", response.descriptions[0].name)
+        self.assertEqual(None, response.descriptions[0].description)

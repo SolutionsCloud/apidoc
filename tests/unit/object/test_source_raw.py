@@ -3,10 +3,10 @@ import unittest
 from apidoc.object.source_raw import Sampleable
 from apidoc.object.source_raw import Method
 from apidoc.object.source_raw import Parameter, ResponseCode
-from apidoc.object.source_raw import Type, EnumType, EnumTypeValue, TypeFormat
+from apidoc.object.source_raw import Type, TypeFormat
 from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
 from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone
-from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst
+from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst, ObjectEnum, EnumValue
 from apidoc.object.source_raw import Object as ObjectRaw
 
 
@@ -27,39 +27,10 @@ class TestSourceRaw(unittest.TestCase):
 
     def test_type_get_sample(self):
         type = Type()
-        type.format.sample = "foo"
+        type.item = ObjectString()
+        type.item.name = "a"
 
-        self.assertEqual("foo", type.get_sample())
-
-    def test_type_get_sample__return_default_sample(self):
-        type = Type()
-        type.format.sample = None
-        type.name = "bar"
-
-        self.assertEqual("my_bar", type.get_sample())
-
-    def test_enum_type_get_sample__return_first_value(self):
-        type = EnumType()
-        type.format.sample = None
-
-        value1 = EnumTypeValue()
-        value1.name = "foo"
-        value2 = EnumTypeValue()
-        value2.name = "bar"
-
-        type.values = {"foo": value1, "bar": value2}
-        type.name = "bar"
-
-        self.assertEqual("foo", type.get_sample())
-
-    def test_enum_type_get_sample__return_default_sample(self):
-        type = EnumType()
-        type.format.sample = None
-
-        type.values = {}
-        type.name = "bar"
-
-        self.assertEqual("my_bar", type.get_sample())
+        self.assertEqual("my_a", type.get_sample())
 
     def test_method_message(self):
         method = Method()
@@ -106,24 +77,14 @@ class TestSourceRaw(unittest.TestCase):
     def test_parameter_get_default_sample__for_type(self):
         test = Parameter()
 
-        item = Type()
-        item.name = "a"
+        type = Type()
+        type.item = ObjectString()
+        type.item.name = "a"
 
         test.type = "b"
-        test.items = item
+        test.type_object = type
 
         self.assertEqual("my_a", test.get_default_sample())
-
-    def test_typeformat_get_default_sample(self):
-        test = TypeFormat()
-        test.pretty = "foo"
-
-        self.assertEqual("foo", test.get_default_sample())
-
-    def test_typeformat_get_default_sample__pretty_undefined(self):
-        test = TypeFormat()
-
-        self.assertEqual(None, test.get_default_sample())
 
     def test_objectnumber_get_default_sample(self):
         test = ObjectNumber()
@@ -149,11 +110,14 @@ class TestSourceRaw(unittest.TestCase):
         test.version = "v1"
         test.type_name = "baz"
 
+        object = ObjectString()
+        object.sample = "foo"
+
         type = Type()
         type.format = TypeFormat()
-        type.format.pretty = "foo"
+        type.item = object
 
-        test.items = type
+        test.type_object = type
 
         self.assertEqual("foo", test.get_default_sample())
 
@@ -178,3 +142,33 @@ class TestSourceRaw(unittest.TestCase):
         self.assertIsInstance(Object.factory("foo", "v1"), ObjectRaw)
 
         del ObjectRaw.Types.foo
+
+    def test_objectenum__get_default_sample(self):
+        test = ObjectEnum()
+        test.values = ["foo"]
+
+        self.assertEqual("foo", test.get_default_sample())
+
+    def test_objectconst__fallback(self):
+        test = ObjectEnum()
+        test.name = "a"
+
+        self.assertEqual("my_a", test.get_default_sample())
+
+    def test_enum_value_compare__with_name(self):
+        value1 = EnumValue()
+        value2 = EnumValue()
+        value1.name = "a"
+        value2.name = "b"
+
+        self.assertTrue(value1 < value2)
+
+    def test_enum_value_compare__with_description(self):
+        value1 = EnumValue()
+        value2 = EnumValue()
+        value1.name = "a"
+        value1.description = "a"
+        value2.name = "a"
+        value2.description = "b"
+
+        self.assertTrue(value1 < value2)

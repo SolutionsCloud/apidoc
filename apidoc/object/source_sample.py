@@ -113,4 +113,5 @@ class ObjectType(Object):
 
     def __init__(self, object_raw):
         super().__init__(object_raw)
-        self.type_object = Object.factory(object_raw.type_object.item)
+        if object_raw.type_object is not None:
+            self.type_object = Object.factory(object_raw.type_object.item)

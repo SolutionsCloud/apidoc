@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.factory.source.type import Type as TypeFactory
 
-from apidoc.object.source_raw import Type, TypeFormat, EnumType, EnumTypeValue
+from apidoc.object.source_raw import Type, TypeFormat, ObjectString
 
 
 class TestType(unittest.TestCase):
@@ -12,12 +12,13 @@ class TestType(unittest.TestCase):
 
     def test_create_from_name_and_dictionary(self):
         datas = {
-            "primary": "string",
             "description": "c",
             "category": "a",
+            "item": {
+                "type": "string"
+            },
             "format": {
                 "pretty": "p",
-                "sample": "s",
                 "advanced": "d",
             }
         }
@@ -26,32 +27,33 @@ class TestType(unittest.TestCase):
         self.assertIsInstance(response, Type)
         self.assertEqual("o_name", response.name)
         self.assertEqual("c", response.description)
-        self.assertIsInstance(response.primary, Type.Primaries)
-        self.assertEqual("string", str(response.primary))
+        self.assertIsInstance(response.item, ObjectString)
         self.assertIsInstance(response.format, TypeFormat)
         self.assertEqual("p", response.format.pretty)
-        self.assertEqual("s", response.format.sample)
         self.assertEqual("d", response.format.advanced)
 
     def test_create_from_name_and_dictionary__without_format(self):
         datas = {
-            "primary": "string",
             "description": "c",
             "category": "a",
+            "item": {
+                "type": "string"
+            }
         }
         response = self.factory.create_from_name_and_dictionary("o_name", datas)
 
         self.assertIsInstance(response, Type)
         self.assertIsInstance(response.format, TypeFormat)
         self.assertEqual(None, response.format.pretty)
-        self.assertEqual(None, response.format.sample)
         self.assertEqual(None, response.format.advanced)
 
     def test_create_from_name_and_dictionary__without_formats_datas(self):
         datas = {
-            "primary": "string",
             "description": "c",
             "category": "a",
+            "item": {
+                "type": "string"
+            },
             "format": {
             }
         }
@@ -60,35 +62,8 @@ class TestType(unittest.TestCase):
         self.assertIsInstance(response, Type)
         self.assertIsInstance(response.format, TypeFormat)
         self.assertEqual(None, response.format.pretty)
-        self.assertEqual(None, response.format.sample)
         self.assertEqual(None, response.format.advanced)
 
-    def test_create_from_name_and_dictionary__failed_missing_primary(self):
+    def test_create_from_name_and_dictionary__failed_missing_item(self):
         with self.assertRaises(ValueError):
             self.factory.create_from_name_and_dictionary("o_name", {})
-
-    def test_create_from_name_and_dictionary__failed_wrong_primary(self):
-        with self.assertRaises(ValueError):
-            self.factory.create_from_name_and_dictionary("o_name", {"primary": "foo"})
-
-    def test_create_from_name_and_dictionary__enum(self):
-        datas = {
-            "primary": "enum",
-            "values": {"a": {"description": "b"}}
-        }
-        response = self.factory.create_from_name_and_dictionary("o_name", datas)
-
-        self.assertIsInstance(response, EnumType)
-        self.assertIsInstance(response.primary, Type.Primaries)
-        self.assertEqual("enum", str(response.primary))
-        self.assertIn("a", response.values)
-        self.assertIsInstance(response.values["a"], EnumTypeValue)
-        self.assertEqual("a", response.values["a"].name)
-
-    def test_create_from_name_and_dictionary__enum__failed_missing_primary(self):
-        with self.assertRaises(ValueError):
-            self.factory.create_from_name_and_dictionary("o_name", {})
-
-    def test_create_from_name_and_dictionary__enum__failed_wrong_primary(self):
-        with self.assertRaises(ValueError):
-            self.factory.create_from_name_and_dictionary("o_name", {"primary": "foo"})

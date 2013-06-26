@@ -14,8 +14,8 @@ from apidoc.object.source_dto import Method as MethodDto
 from apidoc.object.source_raw import Method
 from apidoc.object.source_dto import Type as TypeDto
 from apidoc.object.source_raw import Type
-from apidoc.object.source_dto import EnumTypeValue as EnumTypeValueDto
-from apidoc.object.source_raw import EnumTypeValue
+from apidoc.object.source_dto import EnumValue as EnumValueDto
+from apidoc.object.source_raw import EnumValue
 from apidoc.object.source_dto import TypeFormat as TypeFormatDto
 from apidoc.object.source_raw import TypeFormat
 from apidoc.object.source_dto import Object as ObjectDto
@@ -32,6 +32,7 @@ from apidoc.object.source_dto import ObjectType as ObjectTypeDto
 from apidoc.object.source_dto import ObjectDynamic as ObjectDynamicDto
 from apidoc.object.source_raw import ObjectConst
 from apidoc.object.source_dto import ObjectConst as ObjectConstDto
+from apidoc.object.source_dto import ObjectEnum as ObjectEnumDto
 
 
 class TestSourceDto(unittest.TestCase):
@@ -327,8 +328,7 @@ class TestSourceDto(unittest.TestCase):
         self.assertEqual([], type_dto.description)
         self.assertIsInstance(type_dto.format, TypeFormatDto)
 
-        self.assertEqual([], type_dto.primary)
-        self.assertEqual([], type_dto.values)
+        self.assertEqual([], type_dto.item)
         self.assertEqual([], type_dto.versions)
         self.assertEqual({}, type_dto.changes_status)
         self.assertEqual({}, type_dto.samples)
@@ -344,7 +344,6 @@ class TestSourceDto(unittest.TestCase):
 
     def test_typeFormat(self):
         type_format = TypeFormat()
-        type_format.sample = "a"
         type_format.pretty = "b"
 
         type_format_dto = TypeFormatDto(type_format)
@@ -354,18 +353,18 @@ class TestSourceDto(unittest.TestCase):
         self.assertEqual([], type_format_dto.advanced)
 
     def test_typeValue(self):
-        type = EnumTypeValue()
+        type = EnumValue()
         type.name = "a"
         type.description = "b"
 
-        type_value_dto = EnumTypeValueDto(type)
+        type_value_dto = EnumValueDto(type)
 
         self.assertEqual("a", type_value_dto.name)
         self.assertEqual("b", type_value_dto.description)
 
     def test_typeValue_compare__with_name(self):
-        type_value1 = EnumTypeValueDto(EnumTypeValue())
-        type_value2 = EnumTypeValueDto(EnumTypeValue())
+        type_value1 = EnumValueDto(EnumValue())
+        type_value2 = EnumValueDto(EnumValue())
 
         type_value1.name = "a"
         type_value2.name = "b"
@@ -373,8 +372,8 @@ class TestSourceDto(unittest.TestCase):
         self.assertEqual(type_value1, sorted([type_value2, type_value1])[0])
 
     def test_typeValue_compare__with_description(self):
-        type_value1 = EnumTypeValueDto(EnumTypeValue())
-        type_value2 = EnumTypeValueDto(EnumTypeValue())
+        type_value1 = EnumValueDto(EnumValue())
+        type_value2 = EnumValueDto(EnumValue())
 
         type_value1.name = "a"
         type_value1.description = "a"
@@ -393,6 +392,7 @@ class TestSourceDto(unittest.TestCase):
         self.assertIsInstance(ObjectDto.factory(Object.factory("none", "v1")), ObjectDto)
         self.assertIsInstance(ObjectDto.factory(Object.factory("dynamic", "v1")), ObjectDynamicDto)
         self.assertIsInstance(ObjectDto.factory(Object.factory("const", "v1")), ObjectConstDto)
+        self.assertIsInstance(ObjectDto.factory(Object.factory("enum", "v1")), ObjectEnumDto)
 
     def test_object_compare__with_name(self):
         object1 = ObjectDto(Object())
@@ -485,11 +485,17 @@ class TestSourceDto(unittest.TestCase):
     def test_objectType(self):
         object = ObjectType()
         object.type_name = "a"
-        object.primarie = "b"
         object.values = ["c"]
 
         object_dto = ObjectTypeDto(object)
 
         self.assertEqual("a", object_dto.type_name)
-        self.assertEqual(None, object_dto.primary)
         self.assertEqual([], object_dto.values)
+
+    def test_enum_compare__with_major(self):
+        enum1 = ObjectEnumDto(Object.factory("enum", "v1"))
+        enum2 = ObjectEnumDto(Object.factory("enum", "v1"))
+        enum1.name = "a"
+        enum2.name = "b"
+
+        self.assertTrue(enum1 < enum2)
