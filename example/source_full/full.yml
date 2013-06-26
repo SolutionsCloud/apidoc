@@ -1,5 +1,5 @@
 configuration:
-  title: Full Sample
+  titles: Full Sample
   description: A full sample using ApiDoc
   uri: ${base_url}
 categories:

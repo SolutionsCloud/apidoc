@@ -1,7 +1,6 @@
-import os
 from copy import deepcopy
-from jsonschema import validate
 
+from apidoc.service.validator import Validator
 from apidoc.service.parser import Parser
 from apidoc.service.merger import Merger
 from apidoc.service.extender import Extender
@@ -14,6 +13,7 @@ from apidoc.object.source_raw import ObjectObject, Category
 from apidoc.lib.util.decorator import add_property
 
 
+@add_property("validator", Validator)
 @add_property("parser", Parser)
 @add_property("merger", Merger)
 @add_property("extender", Extender)
@@ -39,7 +39,7 @@ class Source():
         raw_sources = self.get_sources_from_config(config)
         sources = self.format_sources_from_config(raw_sources, config)
 
-        self.validate_sources(sources)
+        self.validator.validate_sources(sources)
 
         root = self.root_source_factory.create_from_dictionary(sources)
         self.replace_references(root)
@@ -62,11 +62,6 @@ class Source():
         merged_source = self.inject_arguments_in_sources(merged_source, config["input"]["arguments"])
 
         return self.extender.extends(merged_source, paths=self.extender_paths)
-
-    def validate_sources(self, sources):
-        schema_file = os.path.join("apidoc", "datas", "schemas", "sources.yml")
-        schema = self.parser.load_from_file(schema_file)
-        validate(sources, schema)
 
     def get_sources_from_config(self, config):
         """Load a set of source's file defined in the config
