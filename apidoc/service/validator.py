@@ -17,10 +17,7 @@ class Validator():
         schema_file = os.path.join("apidoc", "datas", "schemas", "sources.yml")
         schema = self.parser.load_from_file(schema_file)
 
-        from jsonschema import validate
-        validate(sources, schema)
-
-        #validator = Draft4Validator(schema)
-        #errors = validator.iter_errors(sources)
-        #for error in errors:
-        #    logging.getLogger().warn("%s: %s" % ("/".join(list(error.path)), error.context[0] if error.context else error.message))
+        validator = Draft4Validator(schema)
+        errors = validator.iter_errors(sources)
+        for error in errors:
+            logging.getLogger().warn("%s: %s" % ("/".join(list(error.path)), error.context[0] if error.context else error.message))

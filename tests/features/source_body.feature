@@ -40,6 +40,20 @@ Feature: Source config Body manipulation
                       values:
                       - A
                       - B
+                      descriptions:
+                        A: desc A
+                      optional: false
+              v2:
+                methods:
+                  a:
+                    response_body:
+                      type: enum
+                      values:
+                      - A
+                      - B
+                      - C
+                      descriptions:
+                        A: desc A
                       optional: false
             """
          When a source_factory load this file
