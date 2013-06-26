@@ -43,5 +43,6 @@ setup(
         'template/resource/js/*.js',
         'template/resource/img/*.png',
     ]},
-    install_requires=requirements
+    install_requires=requirements,
+    dependency_links=['git+git://github.com/Julian/jsonschema.git@v2.0.0']
 )
