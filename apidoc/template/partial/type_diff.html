@@ -13,21 +13,26 @@
 
 <div class="configuration stack">
     <h5><i class="i-presentation"></i> Presentation: </h5>
-    <h6>Primary: </h6>
-{% for primary in type.primary %}
-    <div class="diff_version" data-version="{{ primary.versions|join(" ") }}">
-        <code><span class="typ">{{ primary.value }}</span></code>
-    </div>
-{%- endfor -%}
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+{{ diff.diff_code_commented(type.item) }}
+        </tbody>
+    </table></div>
 
-{%- if type.values %}
-        <h6>Values: </h6>
+{% if type.item and type.item[0].value.type|lower == "enum" %}
+    <h6>Values: </h6>
     {%- call util.render_table([{"width": "200px", "name": "Value"}, {"name": "Description"}]) %}
-        {%- for value in type.values|sort %}
-        <tr class="diff_version" data-version="{{ value.versions|join(" ") }}">
-            <td><span class="str">{{ util.none_to_empty(value.value.name) }}</span></td>
-            <td><span class="com">{{ util.none_to_empty(value.value.description) }}</span></td>
-        </tr>
+        {%- for item in type.item|sort %}
+            {%- for value in item.value.descriptions|sort %}
+            <tr class="diff_version" data-version="{{ value.versions|join(" ") }}">
+                <td><span class="str">{{ util.none_to_empty(value.value.name) }}</span></td>
+                <td><span class="com">{{ util.none_to_empty(value.value.description) }}</span></td>
+            </tr>
+            {%- endfor %}
         {%- endfor %}
     {%- endcall %}
 {%- endif %}

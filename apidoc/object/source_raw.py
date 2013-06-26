@@ -218,41 +218,31 @@ class ResponseCode(Element):
         self.message = None
 
 
-class Type(Element):
+class Type(Element, Comparable):
 
     """Element Type
     """
-
-    class Primaries(Enum):
-
-        """List of availables Primaries for this element
-        """
-        string = 1
-        enum = 2
-        number = 3
 
     def __init__(self):
         """Class instantiation
         """
         super().__init__()
-        self.primary = Type.Primaries.string
         self.format = TypeFormat()
         self.category = None
+        self.item = None
 
     def get_sample(self):
         """Return the a sample for the element
         """
-        if self.format.get_sample() is None:
-            return self.get_default_sample()
-        return self.format.get_sample()
+        return self.item.get_sample()
 
-    def get_default_sample(self):
-        """Return default value for the element
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
         """
-        return "my_%s" % self.name
+        return (str(self.name))
 
 
-class TypeFormat(Sampleable):
+class TypeFormat():
 
     """Element TypeFormat
     """
@@ -263,41 +253,6 @@ class TypeFormat(Sampleable):
         super().__init__()
         self.pretty = None
         self.advanced = None
-
-    def get_default_sample(self):
-        """Return default value for the element
-        """
-        if self.pretty is not None:
-            return self.pretty
-
-        return None
-
-
-class EnumType(Type):
-
-    """Element EnumType
-    """
-
-    def __init__(self):
-        """Class instantiation
-        """
-        super().__init__()
-        self.primary = Type.Primaries.enum
-        self.values = {}
-
-    def get_default_sample(self):
-        """Return default value for the element
-        """
-        if len(self.values) > 0:
-            return [x for x in self.values.keys()][0]
-        return super().get_default_sample()
-
-
-class EnumTypeValue(Element):
-
-    """Element EnumTypeValue
-    """
-    pass
 
 
 class Object(Element, Sampleable):
@@ -319,6 +274,7 @@ class Object(Element, Sampleable):
         type = 8
         dynamic = 9
         const = 10
+        enum = 11
 
     @classmethod
     def factory(cls, str_type, version):
@@ -346,6 +302,8 @@ class Object(Element, Sampleable):
             object = ObjectDynamic()
         elif type is Object.Types.const:
             object = ObjectConst()
+        elif type is Object.Types.enum:
+            object = ObjectEnum()
         else:
             object = Object()
         object.type = type
@@ -493,6 +451,32 @@ class ObjectConst(Object):
         return self.value
 
 
+class ObjectEnum(Object):
+
+    def __init__(self):
+        """Class instantiation
+        """
+        super().__init__()
+        self.type = Object.Types("const")
+        self.values = []
+        self.descriptions = []
+
+    def get_default_sample(self):
+        """Return default value for the element
+        """
+        if not self.values:
+            return super().get_default_sample()
+        return self.values[0]
+
+
+class EnumValue(Object, Comparable):
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name), str(self.description))
+
+
 class ObjectReference(Object):
 
     """Element ObjectReference
@@ -517,11 +501,11 @@ class ObjectType(Object):
         super().__init__()
         self.type = Object.Types("type")
         self.type_name = None
-        self.items = None
+        self.type_object = None
 
     def get_default_sample(self):
         """Return default value for the element
         """
-        if self.items is None:
+        if self.type_object is None:
             return super().get_default_sample()
-        return self.items.get_sample()
+        return self.type_object.get_sample()

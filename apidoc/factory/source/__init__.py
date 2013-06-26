@@ -143,6 +143,8 @@ class Source():
             for method in version.methods.values():
                 method.request_body = self.replace_references_in_object(method.request_body, version.references)
                 method.response_body = self.replace_references_in_object(method.response_body, version.references)
+            for type in version.types.values():
+                type.item = self.replace_references_in_object(type.item, version.references)
 
     def replace_types(self, root):
         """Remove elements marked a not to display
@@ -156,6 +158,8 @@ class Source():
                     self.replace_types_in_parameter(parameter, version.types)
                 for parameter in method.request_headers.values():
                     self.replace_types_in_parameter(parameter, version.types)
+            for type in version.types.values():
+                type.item = self.replace_types_in_object(type.item, version.types)
 
     def replace_references_in_object(self, object, references):
         """Remove elements marked a not to display
@@ -187,7 +191,7 @@ class Source():
         if object.type is ObjectObject.Types.type:
             if not object.type_name in types.keys():
                 raise ValueError("Type \"%s\" unknow" % object.type_name)
-            object.items = types[object.type_name]
+            object.type_object = types[object.type_name]
         elif object.type is ObjectObject.Types.array:
             object.items = self.replace_types_in_object(object.items, types)
         elif object.type is ObjectObject.Types.dynamic:

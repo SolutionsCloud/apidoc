@@ -6,9 +6,10 @@ class Type():
 
     def __init__(self, type_raw):
         self.name = type_raw.name
-        self.sample = type_raw.format.sample
+        self.sample = type_raw.get_sample()
         self.pretty = type_raw.format.pretty
         self.advanced = type_raw.format.advanced
+        self.item = Object.factory(type_raw.item)
 
 
 class Method(Comparable):
@@ -59,6 +60,8 @@ class Object():
             return ObjectDynamic(object_raw)
         elif object_raw.type is ObjectRaw.Types.const:
             return ObjectConst(object_raw)
+        elif object_raw.type is ObjectRaw.Types.enum:
+            return ObjectEnum(object_raw)
         else:
             return Object(object_raw)
 
@@ -99,7 +102,15 @@ class ObjectConst(Object):
         self.value = object_raw.value
 
 
+class ObjectEnum(Object):
+
+    def __init__(self, object_raw):
+        super().__init__(object_raw)
+        self.values = object_raw.values
+
+
 class ObjectType(Object):
 
     def __init__(self, object_raw):
         super().__init__(object_raw)
+        self.type_object = Object.factory(object_raw.type_object.item)

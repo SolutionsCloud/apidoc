@@ -48,6 +48,19 @@
         {%- endif %}{{ suffix }}</td>
         <td class="com">{{ code.comment(object.value) }}</td>
     </tr>
+        {%- elif object.value.type|lower == "enum" %}
+    <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">enum</span>{{ suffix }}</td>
+        <td class="com">{{ code.comment(object.value) }} (
+            {%- for value in object.value.values|sort %}
+                {%- if loop.first -%}
+                    <span class="diff_version" data-version="{{ value.versions|join(" ") }}">{{ value.value }}</span>
+                {%- else -%}
+                    <span class="diff_version" data-version="{{ value.versions|join(" ") }}">, {{ value.value }}</span>
+                {%- endif -%}
+            {%- endfor -%}
+        )</td>
+    </tr>
         {%- elif object.value.type|lower == "dynamic" %}
     <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
         <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="pun">{</span></td>
@@ -63,7 +76,7 @@
     </tr>
         {%- elif object.value.type|lower == "type" %}
     <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ"><a href="javascript:navigateTo({type: '{{object.value.items.name}}'}, ['category', 'method'])">{{ object.value.items.name }}</a></span>{{ suffix }}</td>
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ"><a href="javascript:navigateTo({type: '{{object.value.type_object.name}}'}, ['category', 'method'])">{{ object.value.type_object.name }}</a></span>{{ suffix }}</td>
         <td class="com">{{ code.comment(object.value) }}</td>
     </tr>
         {%- endif %}

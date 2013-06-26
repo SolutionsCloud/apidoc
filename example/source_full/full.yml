@@ -1,5 +1,5 @@
 configuration:
-  titles: Full Sample
+  title: Full Sample
   description: A full sample using ApiDoc
   uri: ${base_url}
 categories:
@@ -53,6 +53,11 @@ versions:
           properties:
             name:
               type: string
+            choice:
+              type: enum
+              values:
+              - Foo
+              - Bar
               description: Resource Name
             ref:
               type: version
@@ -127,6 +132,19 @@ versions:
         properties:
           name:
             type: string
+          complexe_type:
+            type: complexe_type
+          complexe_type_with_ref:
+            type: complexe_type_wr
+          values:
+            type: array
+            items:
+              type: number
+      element2:
+        type: object
+        properties:
+          name:
+            type: string
           values:
             type: array
             items:
@@ -161,36 +179,52 @@ versions:
             type: enumStatus
     types:
       version:
-        primary: string
-        category: global
         description: Defined a version
-        format:
-          pretty: VN.N
-          sample: V0.1
-          advanced: V\d+\.\d+
-      notUsed:
-        primary: string
         category: global
-        description: A unused type
+        item:
+          type: string
+          sample: V0.1
         format:
           pretty: VN.N
+          advanced: V\d+\.\d+
+      complexe_type:
+        description: A complexe type
+        item:
+          type: object
+          properties:
+            sub_a:
+              type: string
+            sub_b:
+              type: string
+      complexe_type_wr:
+        description: A complexe type with reference
+        item:
+          type: reference
+          reference: element2
+      notUsed:
+        description: A unused type
+        category: global
+        item:
+          type: string
           sample: V0.1
+        format:
+          pretty: VN.N
           advanced: V\d+\.\d+
       enumStatus:
-        category: Lists
-        primary: enum
         description: List the version's status
-        values:
-          DRAFT:
-            description: Specifications not freezed
-          BETA:
-            description: Specifications freezed but implementation in progress
-          CURRENT:
-            description: Current stable version
-          DEPRECATED:
-            description: Old version. Will be removed
-        format:
+        category: Lists
+        item:
+          type: enum
+          values:
+          - DRAFT
+          - BETA
+          - CURRENT
+          - DEPRECATED
           sample: CURRENT
+          descriptions:
+            DRAFT: Draft
+            BETA: Beta
+            CURRENT: Current
   v2.0:
     extends: v1.0
     major: 2
@@ -248,9 +282,13 @@ versions:
             description: foooo
     types:
       enumStatus:
-        values:
-          DRAFT2:
-            description: Specifications not freezed
+        description: d2
+        item:
+          values:
+          - DRAFT2
+          descriptions:
+            DRAFT2: Draft
+            BETA: Beta2
   v3.0:
     display: True
     major: 3

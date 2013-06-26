@@ -28,6 +28,24 @@ Feature: Source config Body manipulation
          Then the response body of method "a" is a "string" for the version "v1"
           And the response body sample of method "a" is "my_response" for the version "v1"
 
+    Scenario: Body as enum
+        Given a "yaml" source file containing
+            """
+            versions:
+              v1:
+                methods:
+                  a:
+                    response_body:
+                      type: enum
+                      values:
+                      - A
+                      - B
+                      optional: false
+            """
+         When a source_factory load this file
+         Then the response body of method "a" is a "enum" for the version "v1"
+          And the response body sample of method "a" is "A" for the version "v1"
+
     Scenario: Body as number
         Given a "yaml" source file containing
             """

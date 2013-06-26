@@ -105,53 +105,24 @@ definitions:
     additionalProperties: false
 
   type:
-    oneOf:
-    - $ref: "#/definitions/type_base"
-    - $ref: "#/definitions/type_enum"
-  type_base:
     properties:
-      primary:
-        enum:
-        - string
-        - number
-      category:
-        type: string
       description:
         type: string
+      category:
+        type: string
+      item:
+        $ref: "#/definitions/object"
       format:
         $ref: "#/definitions/type_format"
     additionalProperties: false
     required:
-    - format
-  type_enum:
-    properties:
-      primary:
-        enum:
-        - enum
-      category:
-        type: string
-      description:
-        type: string
-      format:
-        $ref: "#/definitions/type_format"
-      values:
-        items:
-          properties:
-            description:
-              type: string
-          additionalProperties: false
-    required:
-    - format
-    - values
-    additionalProperties: false
+    - item
 
   type_format:
     properties:
       pretty:
         type: string
       advanced:
-        type: string
-      sample:
         type: string
     minProperties: 1
     additionalProperties: false
@@ -196,6 +167,7 @@ definitions:
     - $ref: "#/definitions/object_none"
     - $ref: "#/definitions/object_dynamic"
     - $ref: "#/definitions/object_const"
+    - $ref: "#/definitions/object_enum"
 
   object_object:
     properties:
@@ -308,6 +280,7 @@ definitions:
           - none
           - dynamic
           - const
+          - enum
       description:
         type: string
       optional:
@@ -371,6 +344,38 @@ definitions:
     required:
     - type
     - value
+    additionalProperties: false
+
+  object_enum:
+    properties:
+      type:
+        enum:
+        - enum
+      description:
+        type: string
+      descriptions:
+        patternProperties:
+          ".*" :
+            type: string
+        additionalProperties: false
+      values:
+        type: array
+        items:
+          type:
+          - string
+          - number
+          - boolean
+        minItems: 1
+      optional:
+        type: boolean
+      sample:
+        type:
+          - string
+          - number
+          - boolean
+    required:
+    - type
+    - values
     additionalProperties: false
 
 

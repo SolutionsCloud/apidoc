@@ -216,8 +216,7 @@ class Type(ElementVersioned, Comparable):
 
         self.changes_status = {}
 
-        self.primary = []
-        self.values = []
+        self.item = []
 
         self.versions = []
 
@@ -242,22 +241,6 @@ class TypeFormat():
         self.advanced = []
 
 
-class EnumTypeValue(Element, Comparable):
-
-    """Element EnumTypeValue
-    """
-
-    def __init__(self, type_value):
-        """Class instantiation
-        """
-        super().__init__(type_value)
-
-    def get_comparable_values(self):
-        """Return a tupple of values representing the unicity of the object
-        """
-        return (str(self.name), str(self.description))
-
-
 class Object(Element, Comparable):
 
     """Element Object
@@ -277,6 +260,8 @@ class Object(Element, Comparable):
             return ObjectDynamic(object_source)
         elif object_source.type is ObjectRaw.Types.const:
             return ObjectConst(object_source)
+        elif object_source.type is ObjectRaw.Types.enum:
+            return ObjectEnum(object_source)
         else:
             return Object(object_source)
 
@@ -307,7 +292,7 @@ class ObjectObject(Object):
 
 class ObjectArray(Object):
 
-    """Element ObjectObject
+    """Element ObjectArray
     """
 
     def __init__(self, object):
@@ -319,7 +304,7 @@ class ObjectArray(Object):
 
 class ObjectDynamic(Object):
 
-    """Element ObjectObject
+    """Element ObjectDynamic
     """
 
     def __init__(self, object):
@@ -331,7 +316,7 @@ class ObjectDynamic(Object):
 
 class ObjectConst(Object):
 
-    """Element ObjectObject
+    """Element ObjectConst
     """
 
     def __init__(self, object):
@@ -342,9 +327,37 @@ class ObjectConst(Object):
         self.value = object.value
 
 
+class ObjectEnum(Object):
+
+    """Element ObjectEnum
+    """
+
+    def __init__(self, object):
+        """Class instantiation
+        """
+        super().__init__(object)
+        self.values = []
+        self.descriptions = []
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name), str(self.description))
+
+
+class EnumValue(Object):
+    """Element ObjectEnum
+    """
+
+    def __init__(self, object):
+        """Class instantiation
+        """
+        super().__init__(object)
+
+
 class ObjectType(Object):
 
-    """Element ObjectObject
+    """Element ObjectType
     """
 
     def __init__(self, object):
@@ -352,5 +365,4 @@ class ObjectType(Object):
         """
         super().__init__(object)
         self.type_name = object.type_name
-        self.primary = None
         self.values = []

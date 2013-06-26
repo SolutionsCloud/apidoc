@@ -1,9 +1,9 @@
 from apidoc.object.source_dto import Root as ObjectRoot
-from apidoc.object.source_raw import Category, EnumType
+from apidoc.object.source_raw import Category
 from apidoc.object.source_raw import Object as ObjectRaw
 from apidoc.object.source_dto import Version
 from apidoc.object.source_dto import MethodCategory, TypeCategory
-from apidoc.object.source_dto import Method, Type, EnumTypeValue
+from apidoc.object.source_dto import Method, Type
 from apidoc.object.source_dto import MultiVersion
 from apidoc.object.source_dto import Parameter, PositionableParameter, ResponseCode
 from apidoc.object.source_dto import Object
@@ -137,12 +137,9 @@ class Hydrator():
 
         changes = 0
         changes += self.hydrate_value(type_dto.description, type.description)
-        changes += self.hydrate_value(type_dto.primary, type.primary)
         changes += self.hydrate_value(type_dto.format.pretty, type.format.pretty)
         changes += self.hydrate_value(type_dto.format.advanced, type.format.advanced)
-        changes += self.hydrate_value(type_dto.format.sample, type.format.sample)
-        if (isinstance(type, EnumType)):
-            changes += self.hydrate_list(type_dto.values, [EnumTypeValue(type_value) for type_value in type.values.values()])
+        changes += self.hydrate_object(type_dto.item, type.item)
 
         if changes > 0 and type_dto.changes_status[self.version_name] is MultiVersion.Changes.none:
             type_dto.changes_status[self.version_name] = MultiVersion.Changes.updated
@@ -209,8 +206,13 @@ class Hydrator():
             elif source_dto.type is ObjectRaw.Types.dynamic:
                 source_dto.items = []
                 changes += self.hydrate_object(source_dto.items, source_object.items)
+            elif source_dto.type is ObjectRaw.Types.enum:
+                source_dto.values = []
+                source_dto.descriptions = []
+                self.hydrate_list(source_dto.values, sorted(source_object.values))
+                self.hydrate_list(source_dto.descriptions, sorted(source_object.descriptions))
             elif source_dto.type is ObjectRaw.Types.type:
-                source_dto.items = source_object.items
+                source_dto.type_object = source_object.type_object
 
             dto_object.append(MultiVersion(source_dto, self.version_name))
         else:
@@ -225,6 +227,9 @@ class Hydrator():
                 changes += self.hydrate_object(find.value.items, source_object.items)
             elif source_dto.type is ObjectRaw.Types.dynamic:
                 changes += self.hydrate_object(find.value.items, source_object.items)
+            elif source_dto.type is ObjectRaw.Types.enum:
+                changes += self.hydrate_list(find.value.values, source_object.values)
+                changes += self.hydrate_list(find.value.descriptions, source_object.descriptions)
 
         return changes
 
