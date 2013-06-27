@@ -1,4 +1,3 @@
-type: object
 properties:
   configuration:
     $ref: "#/definitions/configuration"
@@ -377,7 +376,3 @@ definitions:
     - type
     - values
     additionalProperties: false
-
-
-
-

@@ -3,10 +3,12 @@ import os
 from apidoc.object.config import Config as ConfigObject
 from apidoc.service.parser import Parser
 from apidoc.service.merger import Merger
+from apidoc.service.validator import Validator
 
 from apidoc.lib.util.decorator import add_property
 
 
+@add_property("validator", Validator)
 @add_property("parser", Parser)
 @add_property("merger", Merger)
 class Config():
@@ -20,6 +22,8 @@ class Config():
         parser = self.parser
 
         datas = parser.load_from_file(config_file)
+        self.validator.validate_config(datas)
+
         if datas is None:
             config = ConfigObject()
         else:

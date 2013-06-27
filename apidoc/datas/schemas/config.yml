@@ -1,0 +1,59 @@
+properties:
+  input:
+    properties:
+      directories:
+        items:
+          type: string
+        minItems: 1
+      files:
+        items:
+          type: string
+        minItems: 1
+      arguments:
+        patternProperties:
+          ".*" :
+            type:
+            - string
+            - number
+            - boolean
+    additionalProperties: false
+  filter:
+    properties:
+      versions:
+        properties:
+          excludes:
+            items:
+              type: string
+          includes:
+            items:
+              type: string
+        additionalProperties: false
+      categories:
+        properties:
+          excludes:
+            items:
+              type: string
+          includes:
+            items:
+              type: string
+        additionalProperties: false
+    additionalProperties: false
+  output:
+    properties:
+      location:
+        oneOf:
+        - enum:
+          - stdout
+        - type: string
+      template:
+        oneOf:
+        - enum:
+          - default
+        - type: string
+      componants:
+        enum:
+        - local
+        - embedded
+        - remote
+    additionalProperties: false
+additionalProperties: false
