@@ -27,6 +27,11 @@ class Comparable():
         """
         return self.get_comparable_values_for_ordering() < other.get_comparable_values_for_ordering()
 
+    def __gt__(self, other):
+        """Return true if self is lower than other
+        """
+        return self.get_comparable_values_for_ordering() > other.get_comparable_values_for_ordering()
+
     def __eq__(self, other):
         """Return true if self is equals to other
         """

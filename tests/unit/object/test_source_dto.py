@@ -8,7 +8,7 @@ from apidoc.object.source_dto import MethodCategory as MethodCategoryDto
 from apidoc.object.source_dto import Version as VersionDto
 from apidoc.object.source_raw import Version
 from apidoc.object.source_dto import Parameter as ParameterDto
-from apidoc.object.source_dto import PositionableParameter as PositionableParameterDto
+from apidoc.object.source_dto import RequestParameter as RequestParameterDto
 from apidoc.object.source_raw import Parameter
 from apidoc.object.source_dto import Method as MethodDto
 from apidoc.object.source_raw import Method
@@ -223,13 +223,15 @@ class TestSourceDto(unittest.TestCase):
         parameter.description = "b"
         parameter.type = "foo"
         parameter.optional = False
+        parameter.position = 1
 
-        parameter_dto = ParameterDto(parameter)
+        parameter_dto = RequestParameterDto(parameter)
 
         self.assertEqual("a", parameter_dto.name)
         self.assertEqual("b", parameter_dto.description)
         self.assertEqual(False, parameter_dto.optional)
         self.assertEqual(False, parameter_dto.is_internal)
+        self.assertFalse(parameter_dto.is_query_string)
 
     def test_parameter_compare__with_name(self):
         parameter1 = ParameterDto(Parameter())
@@ -256,22 +258,31 @@ class TestSourceDto(unittest.TestCase):
         parameter.type = "foo"
         parameter.optional = False
 
-        parameter_dto = PositionableParameterDto(parameter)
+        parameter_dto = RequestParameterDto(parameter)
 
         self.assertEqual("a", parameter_dto.name)
         self.assertEqual("b", parameter_dto.description)
         self.assertEqual(False, parameter_dto.optional)
         self.assertEqual(False, parameter_dto.is_internal)
         self.assertEqual(0, parameter_dto.position)
+        self.assertEqual(False, parameter_dto.is_query_string)
 
     def test_positionable_parameter_compare__with_position(self):
-        parameter1 = PositionableParameterDto(Parameter())
-        parameter2 = PositionableParameterDto(Parameter())
+        parameter1 = RequestParameterDto(Parameter())
+        parameter2 = RequestParameterDto(Parameter())
         parameter1.position = 1
         parameter2.position = 2
 
         self.assertTrue(parameter1 < parameter2)
         self.assertEqual(parameter1, parameter2)
+
+    def test_positionable_parameter_compare__with_position_negative(self):
+        parameter1 = RequestParameterDto(Parameter())
+        parameter2 = RequestParameterDto(Parameter())
+        parameter1.position = -1
+        parameter2.position = 2
+
+        self.assertTrue(parameter1 > parameter2)
 
     def test_response_code(self):
         parameter = ResponseCode()

@@ -115,14 +115,6 @@ def then_attribute_values(context, attribute, method, parameter, version):
     assert_in(parameter, current_values)
 
 
-@then('the "{attribute}" of method "{method}" does not contains a "{parameter}" for the version "{version}"')
-def then_not_attribute_values(context, attribute, method, parameter, version):
-    methods = dict((method.name, method) for category in context.root.method_categories for method in category.methods)
-    current_values = dict((x.value.name, x.value) for x in getattr(methods[method], attribute) if version in x.versions)
-
-    assert_notin(parameter, current_values)
-
-
 @then('the "{attribute}" of method "{method}" contains in order "{param1}" then "{param2}" for the version "{version}"')
 def then_attribute_values_order(context, attribute, method, param1, param2, version):
     methods = dict((method.name, method) for category in context.root.method_categories for method in category.methods)

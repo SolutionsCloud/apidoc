@@ -191,6 +191,7 @@ class Parameter(Element, Sampleable):
         self.optional = False
         self.generic = False
         self.type_object = None
+        self.position = 0
 
     def get_object(self):
         object = Object.factory(self.type, None)

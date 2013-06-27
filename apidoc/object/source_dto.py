@@ -173,18 +173,22 @@ class Parameter(Element, Comparable):
         return (not self.generic, str(self.name), str(self.description))
 
 
-class PositionableParameter(Parameter):
+class RequestParameter(Parameter):
 
     def __init__(self, parameter):
         """Class instantiation
         """
         super().__init__(parameter)
-        self.position = 0
+        self.position = parameter.position
+
+    @property
+    def is_query_string(self):
+        return self.position < 0
 
     def get_comparable_values_for_ordering(self):
         """Return a tupple of values representing the unicity of the object
         """
-        return (int(self.position), str(self.name), str(self.description))
+        return (0 if self.position >= 0 else 1, int(self.position), str(self.name), str(self.description))
 
 
 class ResponseCode(Element, Comparable):

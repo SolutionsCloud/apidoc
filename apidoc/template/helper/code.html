@@ -24,6 +24,21 @@
                 {{- sampled -}}
             {%- endif %}
         {%- endfor %}
+        {%- set first_param = True -%}
+        {%- set active_query_string = (uri.find("?") < 0) -%}
+        {%- for parameter in parameters.values() -%}
+        {{parameter}}
+            {%- if parameter.is_query_string -%}
+                {%- if active_query_string -%}?{% endif -%}
+                {%- if first_param -%}
+                    {{ parameter.name }}={{ parameter.sample }}
+                {%- else -%}
+                    &amps;{{ parameter.name }}={{ parameter.sample }}
+                {%- endif -%}
+                {%- set active_query_string = false -%}
+                {%- set first_param = false -%}
+            {% endif -%}
+        {%- endfor %}
     {%- else %}
         {{- uri -}}
     {%- endif %}

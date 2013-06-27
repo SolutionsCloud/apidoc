@@ -40,6 +40,11 @@ class Parameter():
         self.name = parameter_raw.name
         self.optional = parameter_raw.optional
         self.sample = parameter_raw.get_sample()
+        self.position = parameter_raw.position
+
+    @property
+    def is_query_string(self):
+        return self.position < 0
 
 
 class Object():

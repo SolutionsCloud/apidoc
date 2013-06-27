@@ -5,7 +5,7 @@ from apidoc.object.source_dto import Version
 from apidoc.object.source_dto import MethodCategory, TypeCategory
 from apidoc.object.source_dto import Method, Type
 from apidoc.object.source_dto import MultiVersion
-from apidoc.object.source_dto import Parameter, PositionableParameter, ResponseCode
+from apidoc.object.source_dto import Parameter, RequestParameter, ResponseCode
 from apidoc.object.source_dto import Object
 from apidoc.object.source_sample import Type as TypeSample
 from apidoc.object.source_sample import Method as MethodSample
@@ -88,10 +88,9 @@ class Hydrator():
 
         method_dto.versions.append(self.version_name)
 
-        parameters = [PositionableParameter(parameter) for parameter in method.request_parameters.values()]
-        for parameter in parameters:
+        for parameter in method.request_parameters.values():
             parameter.position = method.full_uri.find("{%s}" % parameter.name)
-        request_parameters = [parameter for parameter in parameters if parameter.position >= 0]
+        request_parameters = [RequestParameter(parameter) for parameter in method.request_parameters.values()]
         request_headers = [Parameter(parameter) for parameter in method.request_headers.values()]
         response_codes = [ResponseCode(parameter) for parameter in method.response_codes]
 

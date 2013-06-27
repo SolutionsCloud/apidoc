@@ -76,12 +76,14 @@ class TestSourceSample(unittest.TestCase):
         parameter.name = "a"
         parameter.type = "string"
         parameter.optional = True
+        parameter.position = 0
 
         parameter_sample = ParameterSample(parameter)
 
         self.assertEqual("a", parameter_sample.name)
         self.assertTrue(parameter_sample.optional)
         self.assertEqual("my_a", parameter_sample.sample)
+        self.assertFalse(parameter_sample.is_query_string)
 
     def test_object_factory(self):
         self.assertIsInstance(ObjectSample.factory(Object.factory("object", "v1")), ObjectObjectSample)

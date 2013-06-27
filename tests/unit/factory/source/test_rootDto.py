@@ -4,10 +4,10 @@ from apidoc.factory.source.rootDto import RootDto as RootDtoFactory
 from apidoc.factory.source.rootDto import Hydrator
 
 from apidoc.object.source_raw import Root, Version, Method, Type, Category, Parameter
-from apidoc.object.source_raw import ObjectString, ObjectArray, ObjectObject, ObjectDynamic, ObjectType, ObjectConst, ObjectEnum, EnumValue
+from apidoc.object.source_raw import ObjectString, ObjectArray, ObjectObject, ObjectDynamic, ObjectType, ObjectConst, ObjectEnum
 from apidoc.object.source_dto import Root as RootDto
 from apidoc.object.source_dto import Version as VersionDto
-from apidoc.object.source_dto import MethodCategory, TypeCategory, MultiVersion, PositionableParameter
+from apidoc.object.source_dto import MethodCategory, TypeCategory, MultiVersion, RequestParameter
 
 
 class TestRootDto(unittest.TestCase):
@@ -133,7 +133,7 @@ class TestHydrator(unittest.TestCase):
         self.assertEqual(0, len(root_dto.type_categories))
         self.assertEqual(1, len(root_dto.method_categories[0].methods))
         self.assertEqual(1, len(root_dto.method_categories[0].methods[0].request_parameters))
-        self.assertIsInstance(root_dto.method_categories[0].methods[0].request_parameters[0].value, PositionableParameter)
+        self.assertIsInstance(root_dto.method_categories[0].methods[0].request_parameters[0].value, RequestParameter)
         self.assertEqual(1, root_dto.method_categories[0].methods[0].request_parameters[0].value.position)
 
     def test_hydrate_method__with_known_category(self):

@@ -15,21 +15,6 @@ Feature: Source config URI manipulation
          When a source_factory load this file
          Then the "request_parameters" of method "a" contains a "param" for the version "v1"
 
-    Scenario: parameter missing are hidden
-        Given a "yaml" source file containing
-            """
-            versions:
-              v1:
-                methods:
-                  a:
-                    uri: /a
-                    request_parameters:
-                      param:
-                        type: string
-            """
-         When a source_factory load this file
-         Then the "request_parameters" of method "a" does not contains a "param" for the version "v1"
-
     Scenario: parameter in uri of version
         Given a "yaml" source file containing
             """
