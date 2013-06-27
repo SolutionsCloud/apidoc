@@ -15,7 +15,8 @@ class TestParameter(unittest.TestCase):
             "description": "c",
             "type": "a",
             "sample": "b",
-            "optional": "1"
+            "optional": "1",
+            "generic": "1"
         }
         response = self.factory.create_from_name_and_dictionary("o_name", datas)
 
@@ -24,4 +25,5 @@ class TestParameter(unittest.TestCase):
         self.assertEqual("c", response.description)
         self.assertEqual("a", response.type)
         self.assertEqual("b", response.sample)
-        self.assertEqual(True, response.optional)
+        self.assertTrue(response.optional)
+        self.assertTrue(response.generic)

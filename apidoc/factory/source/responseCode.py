@@ -1,6 +1,7 @@
 from apidoc.object.source_raw import ResponseCode as ObjectResponseCode
 
 from apidoc.factory.source.element import Element as ElementFactory
+from apidoc.lib.util.cast import to_bool
 
 
 class ResponseCode(ElementFactory):
@@ -64,5 +65,7 @@ class ResponseCode(ElementFactory):
             code.message = str(datas["message"])
         elif code.code in self.default_messages.keys():
             code.message = self.default_messages[code.code]
+        if "generic" in datas:
+            code.generic = to_bool(datas["generic"])
 
         return code

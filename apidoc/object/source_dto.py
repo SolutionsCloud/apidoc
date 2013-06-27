@@ -164,12 +164,13 @@ class Parameter(Element, Comparable):
         super().__init__(parameter)
         self.type = parameter.type
         self.optional = parameter.optional
+        self.generic = parameter.generic
         self.is_internal = self.type in ObjectRaw.Types or self.type is ObjectRaw.Types.type
 
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
-        return (str(self.name), str(self.description))
+        return (not self.generic, str(self.name), str(self.description))
 
 
 class PositionableParameter(Parameter):
@@ -194,11 +195,12 @@ class ResponseCode(Element, Comparable):
         super().__init__(parameter)
         self.code = parameter.code
         self.message = parameter.message
+        self.generic = parameter.generic
 
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
-        return (int(self.code), str(self.message), str(self.description))
+        return (not self.generic, int(self.code), str(self.message), str(self.description))
 
 
 class Type(ElementVersioned, Comparable):

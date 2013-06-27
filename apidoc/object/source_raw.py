@@ -189,6 +189,7 @@ class Parameter(Element, Sampleable):
         super().__init__()
         self.type = None
         self.optional = False
+        self.generic = False
         self.type_object = None
 
     def get_object(self):
@@ -216,6 +217,7 @@ class ResponseCode(Element):
         super().__init__()
         self.code = 200
         self.message = None
+        self.generic = False
 
 
 class Type(Element, Comparable, Sampleable):

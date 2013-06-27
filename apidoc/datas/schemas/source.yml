@@ -142,6 +142,8 @@ definitions:
         type: boolean
       sample:
         type: string
+      generic:
+        type: boolean
     additionalProperties: false
 
   response_code:
@@ -152,6 +154,8 @@ definitions:
         type: string
       description:
         type: string
+      generic:
+        type: boolean
     additionalProperties: false
 
   object:

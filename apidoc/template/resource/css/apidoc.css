@@ -86,6 +86,7 @@
 .item>.contents H5{margin-top:0;margin-bottom:5px;}
 .item>.contents H6{margin-top:5px;margin-bottom:5px;}
 .item>.contents .table{background-color:#FFF;}.item>.contents .table THEAD{background-color:#F5F5F5;}
+.item>.contents .table TR.generic{background-color:#F5F5F5;}
 .item>.contents.content-left{display:block;}
 .item>.contents.content-right{display:none;}
 .item:not(.diff-mode)>.contents .diff_version:not(.diff_new){display:none;}

@@ -25,7 +25,7 @@
         {"width": "70px", "name": "Optional"},
         {"width": "50%", "name": "Description"}]) %}
         {%- for parameter in method.request_parameters|sort %}
-        <tr class="diff_version" data-version="{{ parameter.versions|join(" ") }}">
+        <tr class="diff_version {% if parameter.value.generic %}generic{% endif %}" data-version="{{ parameter.versions|join(" ") }}">
             <td><span class="str">{{ util.none_to_empty(parameter.value.name) }}</span></td>
             <td><span class="typ">
             {%- if parameter.value.type != None %}
@@ -48,7 +48,7 @@
         {"width": "160px", "name": "Type"},
         {"width": "50%", "name": "Description"}]) %}
         {%- for parameter in method.request_headers|sort %}
-        <tr class="diff_version" data-version="{{ parameter.versions|join(" ") }}">
+        <tr class="diff_version {% if parameter.value.generic %}generic{% endif %}" data-version="{{ parameter.versions|join(" ") }}">
             <td><span class="str">{{ util.none_to_empty(parameter.value.name) }}</span></td>
             <td><span class="typ">
             {%- if parameter.value.type != None %}
@@ -99,7 +99,7 @@
     {"name": "Message"},
     {"width": "50%", "name": "Description"}]) %}
     {%- for parameter in method.response_codes|sort %}
-        <tr class="diff_version" data-version="{{ parameter.versions|join(" ") }}">
+        <tr class="diff_version {% if parameter.value.generic %}generic{% endif %}" data-version="{{ parameter.versions|join(" ") }}">
             <td><span class="lit">{{ util.none_to_empty(parameter.value.code) }}</span></td>
             <td><span class="str">{{ util.none_to_empty(parameter.value.message) }}</span></td>
             <td><span class="com">{{ util.none_to_empty(parameter.value.description) }}</span></td>

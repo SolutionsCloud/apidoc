@@ -37,10 +37,14 @@ versions:
             type: string
             description: Authentification token
             sample: 1234567890abcdefghij
+          content-type:
+            type: string
+            generic: true
         request_parameters:
           version:
             type: version
             description: Api version
+            generic: true
           resource_id:
             type: number
             description: Resource identifier
@@ -86,6 +90,7 @@ versions:
           - code: 400
             message: Bad name format
             description: The resource name is not correct
+            generic: true
           - code: 400
             message: Bad element Syntaxe
             description: The resource element is not correct

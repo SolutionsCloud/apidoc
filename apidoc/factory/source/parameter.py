@@ -19,5 +19,7 @@ class Parameter(ElementFactory):
             parameter.optional = to_bool(datas["optional"])
         if "type" in datas:
             parameter.type = str(datas["type"])
+        if "generic" in datas:
+            parameter.generic = to_bool(datas["generic"])
 
         return parameter

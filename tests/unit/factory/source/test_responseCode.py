@@ -15,6 +15,7 @@ class TestResponseCode(unittest.TestCase):
             "code": 200,
             "description": "c",
             "message": "a",
+            "generic": "1"
         }
         response = self.factory.create_from_dictionary(datas)
 
@@ -23,6 +24,7 @@ class TestResponseCode(unittest.TestCase):
         self.assertEqual("c", response.description)
         self.assertEqual(200, response.code)
         self.assertEqual("a", response.message)
+        self.assertTrue(response.generic)
 
     def test_create_from_dictionary__failed_missing_code(self):
         with self.assertRaises(ValueError):
