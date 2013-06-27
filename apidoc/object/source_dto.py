@@ -130,6 +130,14 @@ class Method(ElementVersioned, Comparable):
 
         self.samples = {}
 
+    @property
+    def request_uri_parameters(self):
+        return [x for x in self.request_parameters if not x.value.is_query_string]
+
+    @property
+    def request_query_string_parameters(self):
+        return [x for x in self.request_parameters if x.value.is_query_string]
+
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
@@ -185,9 +193,15 @@ class RequestParameter(Parameter):
     def is_query_string(self):
         return self.position < 0
 
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (0 if self.position >= 0 else 1, not self.generic, str(self.name), str(self.description))
+
     def get_comparable_values_for_ordering(self):
         """Return a tupple of values representing the unicity of the object
         """
+
         return (0 if self.position >= 0 else 1, int(self.position), str(self.name), str(self.description))
 
 

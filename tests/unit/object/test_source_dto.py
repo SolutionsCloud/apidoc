@@ -172,6 +172,12 @@ class TestSourceDto(unittest.TestCase):
         method.description = "b"
         method.method = Method.Methods.put
 
+        parameter1 = RequestParameterDto(Parameter())
+        parameter1.position = 2
+        parameter2 = RequestParameterDto(Parameter())
+        parameter2.position = -1
+        method.parameter = {"p1": parameter1, "p2": parameter2}
+
         method_dto = MethodDto(method)
 
         self.assertEqual("a", method_dto.name)
@@ -189,6 +195,12 @@ class TestSourceDto(unittest.TestCase):
         self.assertEqual([], method_dto.versions)
         self.assertEqual({}, method_dto.changes_status)
         self.assertEqual({}, method_dto.samples)
+
+        m1 = MultiVersionDto(parameter1, "v1")
+        m2 = MultiVersionDto(parameter2, "v1")
+        method_dto.request_parameters = [m1, m2]
+        self.assertEqual([m1], method_dto.request_uri_parameters)
+        self.assertEqual([m2], method_dto.request_query_string_parameters)
 
     def test_method_compare__with_name(self):
         method1 = MethodDto(Method())

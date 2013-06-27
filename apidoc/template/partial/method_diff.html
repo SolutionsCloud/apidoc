@@ -18,13 +18,37 @@
     <code  class="diff_version" data-version="{{ uri.versions|join(" ") }}"><span class="hur">{{ uri.value }}</span></code>
 {%- endfor -%}
 
-{%- if method.request_parameters %}
+{%- if method.request_uri_parameters %}
     <h6>URI Parameters: </h6>
     {%- call util.render_table([{"name": "Parameter"},
         {"width": "160px", "name": "Type"},
         {"width": "70px", "name": "Optional"},
         {"width": "50%", "name": "Description"}]) %}
-        {%- for parameter in method.request_parameters|sort %}
+        {%- for parameter in method.request_uri_parameters|sort %}
+        <tr class="diff_version {% if parameter.value.generic %}generic{% endif %}" data-version="{{ parameter.versions|join(" ") }}">
+            <td><span class="str">{{ util.none_to_empty(parameter.value.name) }}</span></td>
+            <td><span class="typ">
+            {%- if parameter.value.type != None %}
+                {%- if not parameter.value.is_internal %}
+                    <a href="javascript:navigateTo({type: '{{parameter.value.type}}'}, ['category', 'method'])">{{parameter.value.type}}</a>
+                {%- else -%}
+                    {{- parameter.value.type -}}
+                {%- endif -%}
+            {%- endif -%}
+            <td><span class="lit">{% if parameter.value.optional %}Optional{% endif %}</span></td>
+            <td><span class="com">{{ util.none_to_empty(parameter.value.description) }}</span></td>
+        </tr>
+        {%- endfor %}
+    {%- endcall %}
+{%- endif %}
+
+{%- if method.request_query_string_parameters %}
+    <h6>Query String Parameters: </h6>
+    {%- call util.render_table([{"name": "Parameter"},
+        {"width": "160px", "name": "Type"},
+        {"width": "70px", "name": "Optional"},
+        {"width": "50%", "name": "Description"}]) %}
+        {%- for parameter in method.request_query_string_parameters|sort %}
         <tr class="diff_version {% if parameter.value.generic %}generic{% endif %}" data-version="{{ parameter.versions|join(" ") }}">
             <td><span class="str">{{ util.none_to_empty(parameter.value.name) }}</span></td>
             <td><span class="typ">
