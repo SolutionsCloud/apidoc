@@ -24,7 +24,7 @@ class Config():
         datas = parser.load_from_file(config_file)
         self.validator.validate_config(datas)
 
-        if datas is None:
+        if datas is None or datas == {}:
             config = ConfigObject()
         else:
             config = merger.merge_configs(ConfigObject(), [datas])

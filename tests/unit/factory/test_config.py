@@ -32,16 +32,14 @@ class TestConfig(unittest.TestCase):
         self.config.merger = None
         self.assertIsInstance(self.config.merger, Merger)
 
-    @patch.object(Parser, "load_from_file", return_value={"output": {"location": "file2"}})
+    @patch.object(Parser, "load_from_file", side_effect=({"output": {"location": "file2"}}, {}))
     def test_load_from_file(self, mock_parser):
         response = self.config.load_from_file("yaml_file")
-
-        mock_parser.assert_called_once_with("yaml_file")
 
         self.assertIsInstance(response, ConfigObject)
         self.assertEqual(os.path.realpath("") + "/file2", response["output"]["location"])
 
-    @patch.object(Parser, "load_from_file", return_value=None)
+    @patch.object(Parser, "load_from_file", side_effect=({}, {}))
     def test_load_from_file__empty(self, mock_parser):
         response = self.config.load_from_file("yaml_file")
 
