@@ -43,8 +43,6 @@ class TestConfig(unittest.TestCase):
     def test_load_from_file__empty(self, mock_parser):
         response = self.config.load_from_file("yaml_file")
 
-        mock_parser.assert_called_once_with("yaml_file")
-
         self.assertIsInstance(response, ConfigObject)
         self.assertEqual("stdout", response["output"]["location"])
 
