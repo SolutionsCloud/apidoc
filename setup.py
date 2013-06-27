@@ -7,9 +7,9 @@ if sys.version_info < (3, 2):
     raise SystemExit(1)
 
 if sys.version_info == (3, 2):
-    requirements = ['Jinja2 == 2.6', 'PyYAML']
+    requirements = ['Jinja2 == 2.6', 'PyYAML', 'jsonschema']
 else:
-    requirements = ['Jinja2', 'PyYAML']
+    requirements = ['Jinja2', 'PyYAML', 'jsonschema']
 
 from setuptools import setup, find_packages
 
@@ -43,6 +43,5 @@ setup(
         'template/resource/js/*.js',
         'template/resource/img/*.png',
     ]},
-    install_requires=requirements,
-    dependency_links=['git+git://github.com/Julian/jsonschema.git@v2.0.0']
+    install_requires=requirements
 )
