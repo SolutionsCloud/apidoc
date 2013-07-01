@@ -141,7 +141,10 @@ definitions:
       optional:
         type: boolean
       sample:
-        type: string
+        type:
+        - string
+        - number
+        - boolean
       generic:
         type: boolean
     additionalProperties: false
