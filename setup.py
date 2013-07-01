@@ -6,7 +6,7 @@ if sys.version_info < (3, 2):
     print("ApiDoc requires Python 3.2 or later")
     raise SystemExit(1)
 
-if sys.version_info == (3, 2):
+if (3, 2) <= sys.version_info < (3, 3):
     requirements = ['Jinja2 == 2.6', 'PyYAML', 'jsonschema']
 else:
     requirements = ['Jinja2', 'PyYAML', 'jsonschema']
@@ -42,6 +42,9 @@ setup(
         'template/resource/css/*.css',
         'template/resource/js/*.js',
         'template/resource/img/*.png',
+        'template/resource/font/*',
+        'datas/schemas/*.yml',
+        'command/logging.yml',
     ]},
     install_requires=requirements
 )

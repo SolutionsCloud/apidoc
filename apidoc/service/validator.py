@@ -14,13 +14,13 @@ class Validator():
     """Validate a source schema
     """
     def validate_sources(self, sources):
-        schema_location = os.path.join("apidoc", "datas", "schemas", "source.yml")
+        schema_location = os.path.join(os.path.dirname(__file__), "..", "..", "apidoc", "datas", "schemas", "source.yml")
         self.validate_schema(schema_location, sources)
 
     """Validate a config schema
     """
     def validate_config(self, config):
-        schema_location = os.path.join("apidoc", "datas", "schemas", "config.yml")
+        schema_location = os.path.join(os.path.dirname(__file__), "..", "..", "apidoc", "datas", "schemas", "config.yml")
         self.validate_schema(schema_location, config)
 
     """Validate a schema
