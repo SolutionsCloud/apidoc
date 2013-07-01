@@ -55,5 +55,6 @@ properties:
         - local
         - embedded
         - remote
+        - without
     additionalProperties: false
 additionalProperties: false

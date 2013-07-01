@@ -59,6 +59,13 @@ class Template():
                         files = (
                             os.path.join(template_dir, "resource", "js", "apidoc.js"),
                             os.path.join(template_dir, "resource", "css", "apidoc.css"),
+                            os.path.join(template_dir, "resource", "css", "font.css"),
+                            os.path.join(template_dir, "resource", "font", "apidoc.eot"),
+                            os.path.join(template_dir, "resource", "font", "apidoc.woff"),
+                            os.path.join(template_dir, "resource", "font", "apidoc.ttf"),
+                            os.path.join(template_dir, "resource", "font", "source-code-pro.eot"),
+                            os.path.join(template_dir, "resource", "font", "source-code-pro.woff"),
+                            os.path.join(template_dir, "resource", "font", "source-code-pro.ttf"),
                         )
 
                         for file in files:

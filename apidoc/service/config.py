@@ -13,7 +13,7 @@ class Config():
         if not isinstance(config, ConfigObject):
             raise Exception("Config object expected")
 
-        if not config["output"]["componants"] in ("local", "remote", "embedded"):
+        if not config["output"]["componants"] in ("local", "remote", "embedded", "without"):
             raise ValueError("Unknown componant \"%s\"." % config["componants"])
 
         if config["input"]["directories"] is not None:

@@ -25,4 +25,5 @@ output:
 #  componants: local
   componants: embedded
 #  componants: remote
+#  componants: without
 #
