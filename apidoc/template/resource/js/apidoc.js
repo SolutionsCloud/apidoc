@@ -580,12 +580,13 @@ function shortcutSearch(event, key) {
     $("[type=search]").select();
 }
 
-function shortcutGotoPrevious(event, key) {
+function shortcutGotoPrevious(event, key, filter) {
     var current = $(".scroll-spyable>UL>LI.active:visible");
     if (current.length === 0) {
         $(".scroll-spyable>UL>LI[data-item]:visible>A").get(0).click();
     } else {
-        var items = current.prevAll("LI[data-item]:visible").find(">A");
+        filter = (filter === undefined ? "" : filter);
+        var items = current.prevAll("LI[data-item]" + filter + ":visible").find(">A");
         if (items.length > 0) {
             items.sort(function(a, b) {
                 if ($(a).index() < $(b).index()) return 1;
@@ -595,7 +596,7 @@ function shortcutGotoPrevious(event, key) {
             items.get(items.length - 1).click();
         } else {
             var ul = current.closest("UL");
-            var itemsInPrevGroup = current.closest("UL").prev().find('>LI[data-item]:visible>A');
+            var itemsInPrevGroup = current.closest("UL").prev().find(">LI[data-item]" + filter + ":visible>A");
             if (itemsInPrevGroup.length > 0) {
                 itemsInPrevGroup.last().get(0).click();
             }
@@ -603,22 +604,31 @@ function shortcutGotoPrevious(event, key) {
     }
 }
 
-function shortcutGotoNext(event, key) {
+function shortcutGotoNext(event, key, filter) {
     var current = $(".scroll-spyable>UL>LI.active:visible");
     if (current.length === 0) {
         $(".scroll-spyable>UL>LI[data-item]:visible>A").get(0).click();
     } else {
-        var items = current.nextAll("LI[data-item]:visible").find(">A");
+        filter = (filter === undefined ? "" : filter);
+        var items = current.nextAll("LI[data-item]" + filter + ":visible").find(">A");
         if (items.length > 0) {
             items.get(0).click();
         } else {
             var ul = current.closest("UL");
-            var itemsInNextGroup = current.closest("UL").next().find('>LI[data-item]:visible>A');
+            var itemsInNextGroup = current.closest("UL").next().find(">LI[data-item]" + filter + ":visible>A");
             if (itemsInNextGroup.length > 0) {
                 itemsInNextGroup.get(0).click();
             }
         }
     }
+}
+
+function shortcutGotoPreviousWithDiff(event, key) {
+    return shortcutGotoPrevious(event, key, "[data-changed]");
+}
+
+function shortcutGotoNextWithDiff(event, key) {
+    return shortcutGotoNext(event, key, "[data-changed]");
 }
 
 function shortcutGotoPreviousVersion(event, key) {
@@ -786,13 +796,15 @@ function initShortcuts() {
     Mousetrap.bind(['n', 'j'], shortcutGotoNext);
 
     if (conf.multiVersion) {
+        Mousetrap.bind(['shift+k'], shortcutGotoPreviousWithDiff);
+        Mousetrap.bind(['shift+j'], shortcutGotoNextWithDiff);
         Mousetrap.bind(['b'], shortcutGotoPreviousVersion);
         Mousetrap.bind(['v'], shortcutGotoNextVersion);
         Mousetrap.bind(['d'], shortcutToggleDiff);
         Mousetrap.bind(['s'], shortcutToggleSide);
         Mousetrap.bind(['f'], shortcutToggleFull);
-        Mousetrap.bind(['r'], shortcutGotoPreviousDiffVersion);
-        Mousetrap.bind(['e'], shortcutGotoNextDiffVersion);
+        Mousetrap.bind(['shift+b'], shortcutGotoPreviousDiffVersion);
+        Mousetrap.bind(['shift+v'], shortcutGotoNextDiffVersion);
     }
 }
 

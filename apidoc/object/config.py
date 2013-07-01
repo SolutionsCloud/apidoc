@@ -27,5 +27,5 @@ class Config(dict):
             "location": "stdout",
             "template": "default",
             "componants": "local",
-            "layout": "content-only"
+            "layout": "default"
         }
