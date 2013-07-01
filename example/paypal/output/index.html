@@ -580,7 +580,7 @@ legend+.control-group{margin-top:20px;-webkit-margin-top-collapse:separate;}
 .item>.contents H5{margin-top:0;margin-bottom:5px;}
 .item>.contents H6{margin-top:5px;margin-bottom:5px;}
 .item>.contents .table{background-color:#FFF;}.item>.contents .table THEAD{background-color:#F5F5F5;}
-.item>.contents .table TR.generic{background-color:#F5F5F5;}
+.item>.contents .table TR.generic{background-color:#F5F5F5;font-style:italic;}
 .item>.contents.content-left{display:block;}
 .item>.contents.content-right{display:none;}
 .item:not(.diff-mode)>.contents .diff_version:not(.diff_new){display:none;}
@@ -1507,8 +1507,6 @@ $(document).ready(function () {
         <li data-group="Authentication"  data-item="OAuth"><a href="javascript:navigateTo({category: 'Authentication', method: 'OAuth'}, ['category', 'method'])" data-target="#m-OAuth"><i class="i-chevron"></i><span>OAuth</span></a></li>
         <li class="separator"></li><li class="nav-header" data-group="Identity"><a href="javascript:navigateTo({category: 'Identity'}, ['category', 'method', 'type'])" data-target="#c-Identity"><h6>Identity</h6></a></li>
         <li data-group="Identity"  data-item="LookupUser"><a href="javascript:navigateTo({category: 'Identity', method: 'LookupUser'}, ['category', 'method'])" data-target="#m-LookupUser"><i class="i-chevron"></i><span>LookupUser</span></a></li>
-        <li class="separator"></li>
-        <li data-group="None"  data-item="authentificated"><a href="javascript:navigateTo({category: 'None', method: 'authentificated'}, ['category', 'method'])" data-target="#m-authentificated"><i class="i-chevron"></i><span>authentificated</span></a></li>
         <li class="separator"></li><li class="nav-header" data-group="Payments"><a href="javascript:navigateTo({category: 'Payments'}, ['category', 'method', 'type'])" data-target="#c-Payments"><h6>Payments</h6></a></li>
         <li data-group="Payments"  data-item="CreateAPayment"><a href="javascript:navigateTo({category: 'Payments', method: 'CreateAPayment'}, ['category', 'method'])" data-target="#m-CreateAPayment"><i class="i-chevron"></i><span>CreateAPayment</span></a></li>
         <li data-group="Payments"  data-item="ExecutePayment"><a href="javascript:navigateTo({category: 'Payments', method: 'ExecutePayment'}, ['category', 'method'])" data-target="#m-ExecutePayment"><i class="i-chevron"></i><span>ExecutePayment</span></a></li>
@@ -1855,7 +1853,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1/identity/openidconnect/userinfo/?schema=openid<apidoc.object.source_sample.Parameter object at 0x95232ec></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1/identity/openidconnect/userinfo/?schema=openid<apidoc.object.source_sample.Parameter object at 0xa83508c></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -1894,71 +1892,6 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 </span>  <span class="str">"verified_account"</span><span class="pun">: </span><span class="lit">True</span><span class="pun">,
 </span>  <span class="str">"zoneinfo"</span><span class="pun">: </span><span class="str">"my_zoneinfo"</span>
 <span class="pun">}</span></div></div></div>
-                </div>
-            </li>
-        </ul>
-    </li>
-    <li class="category" id="c-None">
-        <ul class="unstyled">
-            <li class="method item" id="m-authentificated" data-method="GET">
-                <h4>authentificated</h4><div class="nocontents">no implementation for this version</div>
-                <div class="contents">
-
-<h5 class="stack title"></h5>
-<div class="request stack">
-    <h5><i class="i-request"></i> Request: </h5>
-    <h6>Resource: </h6>
-
-    <code  class="diff_version" data-version="v1.0"><span class="hur">https://api.paypal.com/v1</span></code>
-    <h6>Headers: </h6><table class="table table-bordered table-hover table-condensed">
-        <colgroup>
-            <col></col>
-            <col width="160px"></col>
-            <col width="50%"></col>
-        </colgroup>
-        <thead>
-            <tr>
-            <th><span
-            >Parameter</span></th>
-            <th><span
-            >Type</span></th>
-            <th><span
-            >Description</span></th>
-            </tr>
-        </thead>
-        <tbody>
-            
-        <tr class="diff_version " data-version="v1.0">
-            <td><span class="str">Authorization</span></td>
-            <td><span class="typ">string</span></td>
-            <td><span class="com">Send the value as the OAuth 2.0 access token with the authentication type set as Bearer</span></td>
-        </tr>
-        <tr class="diff_version " data-version="v1.0">
-            <td><span class="str">Content-Type</span></td>
-            <td><span class="typ">string</span></td>
-            <td><span class="com"></span></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="response stack">
-    <h5><i class="i-response"></i> Response: </h5>
-</div><div class="stack sample"><div data-version="v1.0">
-
-<h5><i class="i-sample"></i> Sample: </h5>
-<h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1</span> <span class="hpr">HTTP/1.1</span>
-<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
-<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
-<span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
-
-</div>
-        <h6>Response: </h6>
-        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
-<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
-
-</div></div></div>
                 </div>
             </li>
         </ul>
@@ -3705,7 +3638,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">POST</span> <span class="hur">/v1payments/payment/PAY-34629814WL663112AKEE3AWQ/execute<apidoc.object.source_sample.Parameter object at 0x94f47ac></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">POST</span> <span class="hur">/v1payments/payment/PAY-34629814WL663112AKEE3AWQ/execute<apidoc.object.source_sample.Parameter object at 0xa809c0c></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -5163,7 +5096,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1payments/payment/PAY-34629814WL663112AKEE3AWQ<apidoc.object.source_sample.Parameter object at 0x94bc62c></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1payments/payment/PAY-34629814WL663112AKEE3AWQ<apidoc.object.source_sample.Parameter object at 0xa7c90cc></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -5506,7 +5439,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/refund/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0x950758c></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/refund/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0xa81c9ec></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -5707,7 +5640,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/sale/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0x952788c></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/sale/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0xa83962c></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -5926,7 +5859,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">POST</span> <span class="hur">/v1/payments/sale/36C38912MN9658832/refund<apidoc.object.source_sample.Parameter object at 0x950ba6c></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">POST</span> <span class="hur">/v1/payments/sale/36C38912MN9658832/refund<apidoc.object.source_sample.Parameter object at 0xa4e068c></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -6183,7 +6116,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/vault/credit-card/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0x952e16c></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/vault/credit-card/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0xa83ceec></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>

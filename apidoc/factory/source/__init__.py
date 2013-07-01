@@ -47,8 +47,8 @@ class Source():
         self.add_missing_categories(root)
 
         self.hide_filtered_elements(root, config["filter"])
-        self.remove_unused_types(root)
         self.remove_hidden_elements(root)
+        self.remove_unused_types(root)
 
         self.replace_types(root)
 
@@ -123,7 +123,7 @@ class Source():
         root.versions = dict((x, y) for x, y in root.versions.items() if y.display)
         hidden_categories = [category.name for category in root.categories.values() if not category.display]
         for version in root.versions.values():
-            version.methods = dict((x, y) for x, y in version.methods.items() if y.display and (y.category is None or y.category not in hidden_categories))
+            version.methods = dict((x, y) for x, y in version.methods.items() if y.display and y.category not in hidden_categories)
 
     def add_missing_categories(self, root):
         """Remove elements marked a not to display
