@@ -9,6 +9,8 @@ properties:
         items:
           type: string
         minItems: 1
+      validate:
+        type: boolean
       arguments:
         patternProperties:
           ".*" :

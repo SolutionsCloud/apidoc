@@ -35,6 +35,9 @@ class Base():
             "-v", "--version", action='version', version='%(prog)s 1.0'
         )
         self.parser.add_argument(
+            "-n", "--no-validate", help="disable validation", action='store_const', const=True
+        )
+        self.parser.add_argument(
             "-a", "--arguments", nargs='+', type=str, metavar="ARGUMENT",
             help="documentation\'s arguments arg1=value1 arg2=value2"
         )
@@ -43,7 +46,6 @@ class Base():
         """return command's configuration from call's arguments
         """
         options = self.parser.parse_args()
-
         if options.config is None and options.directories is None and options.files is None:
             self.parser.print_help()
             sys.exit(2)
@@ -65,6 +67,9 @@ class Base():
 
         if options.output is not None:
             config["output"]["location"] = options.output
+
+        if options.no_validate is not None:
+            config["input"]["validate"] = not options.no_validate
 
         configService = ConfigService()
         configService.validate(config)

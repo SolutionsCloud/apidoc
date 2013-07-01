@@ -1233,12 +1233,13 @@ function shortcutSearch(event, key) {
     $("[type=search]").select();
 }
 
-function shortcutGotoPrevious(event, key) {
+function shortcutGotoPrevious(event, key, filter) {
     var current = $(".scroll-spyable>UL>LI.active:visible");
     if (current.length === 0) {
         $(".scroll-spyable>UL>LI[data-item]:visible>A").get(0).click();
     } else {
-        var items = current.prevAll("LI[data-item]:visible").find(">A");
+        filter = (filter === undefined ? "" : filter);
+        var items = current.prevAll("LI[data-item]" + filter + ":visible").find(">A");
         if (items.length > 0) {
             items.sort(function(a, b) {
                 if ($(a).index() < $(b).index()) return 1;
@@ -1248,7 +1249,7 @@ function shortcutGotoPrevious(event, key) {
             items.get(items.length - 1).click();
         } else {
             var ul = current.closest("UL");
-            var itemsInPrevGroup = current.closest("UL").prev().find('>LI[data-item]:visible>A');
+            var itemsInPrevGroup = current.closest("UL").prev().find(">LI[data-item]" + filter + ":visible>A");
             if (itemsInPrevGroup.length > 0) {
                 itemsInPrevGroup.last().get(0).click();
             }
@@ -1256,22 +1257,31 @@ function shortcutGotoPrevious(event, key) {
     }
 }
 
-function shortcutGotoNext(event, key) {
+function shortcutGotoNext(event, key, filter) {
     var current = $(".scroll-spyable>UL>LI.active:visible");
     if (current.length === 0) {
         $(".scroll-spyable>UL>LI[data-item]:visible>A").get(0).click();
     } else {
-        var items = current.nextAll("LI[data-item]:visible").find(">A");
+        filter = (filter === undefined ? "" : filter);
+        var items = current.nextAll("LI[data-item]" + filter + ":visible").find(">A");
         if (items.length > 0) {
             items.get(0).click();
         } else {
             var ul = current.closest("UL");
-            var itemsInNextGroup = current.closest("UL").next().find('>LI[data-item]:visible>A');
+            var itemsInNextGroup = current.closest("UL").next().find(">LI[data-item]" + filter + ":visible>A");
             if (itemsInNextGroup.length > 0) {
                 itemsInNextGroup.get(0).click();
             }
         }
     }
+}
+
+function shortcutGotoPreviousWithDiff(event, key) {
+    return shortcutGotoPrevious(event, key, "[data-changed]");
+}
+
+function shortcutGotoNextWithDiff(event, key) {
+    return shortcutGotoNext(event, key, "[data-changed]");
 }
 
 function shortcutGotoPreviousVersion(event, key) {
@@ -1439,13 +1449,15 @@ function initShortcuts() {
     Mousetrap.bind(['n', 'j'], shortcutGotoNext);
 
     if (conf.multiVersion) {
+        Mousetrap.bind(['shift+k'], shortcutGotoPreviousWithDiff);
+        Mousetrap.bind(['shift+j'], shortcutGotoNextWithDiff);
         Mousetrap.bind(['b'], shortcutGotoPreviousVersion);
         Mousetrap.bind(['v'], shortcutGotoNextVersion);
         Mousetrap.bind(['d'], shortcutToggleDiff);
         Mousetrap.bind(['s'], shortcutToggleSide);
         Mousetrap.bind(['f'], shortcutToggleFull);
-        Mousetrap.bind(['r'], shortcutGotoPreviousDiffVersion);
-        Mousetrap.bind(['e'], shortcutGotoNextDiffVersion);
+        Mousetrap.bind(['shift+b'], shortcutGotoPreviousDiffVersion);
+        Mousetrap.bind(['shift+v'], shortcutGotoNextDiffVersion);
     }
 }
 
@@ -1861,7 +1873,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1/identity/openidconnect/userinfo/?schema=openid<apidoc.object.source_sample.Parameter object at 0x995f18c></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1/identity/openidconnect/userinfo/?schema=openid<apidoc.object.source_sample.Parameter object at 0x8ec028c></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -3646,7 +3658,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">POST</span> <span class="hur">/v1payments/payment/PAY-34629814WL663112AKEE3AWQ/execute<apidoc.object.source_sample.Parameter object at 0x9933d0c></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">POST</span> <span class="hur">/v1payments/payment/PAY-34629814WL663112AKEE3AWQ/execute<apidoc.object.source_sample.Parameter object at 0x8e94e0c></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -5104,7 +5116,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1payments/payment/PAY-34629814WL663112AKEE3AWQ<apidoc.object.source_sample.Parameter object at 0x98f11cc></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1payments/payment/PAY-34629814WL663112AKEE3AWQ<apidoc.object.source_sample.Parameter object at 0x8e522cc></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -5447,7 +5459,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/refund/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0x9945aec></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/refund/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0x8ea6bec></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -5648,7 +5660,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/sale/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0x996272c></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/sale/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0x8ec382c></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -5867,7 +5879,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">POST</span> <span class="hur">/v1/payments/sale/36C38912MN9658832/refund<apidoc.object.source_sample.Parameter object at 0x960b32c></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">POST</span> <span class="hur">/v1/payments/sale/36C38912MN9658832/refund<apidoc.object.source_sample.Parameter object at 0x8b6b88c></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>
@@ -6124,7 +6136,7 @@ For authentication and authorization related to Identiy, learn how to obtain a u
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/vault/credit-card/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0x9966fec></span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1/payments/vault/credit-card/36C38912MN9658832<apidoc.object.source_sample.Parameter object at 0x8eca10c></span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json</span>
 <span class="hat">Authorization</span><span class="pun">: </span><span class="hva">Bearer EMxItHE7Zl4cMdkvMg-f7c63GQgYZU8FjyPWKQlpsqQP</span>

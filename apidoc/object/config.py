@@ -9,7 +9,8 @@ class Config(dict):
         self["input"] = {
             "directories": None,
             "files": None,
-            "arguments": None
+            "arguments": None,
+            "validate": True
         }
 
         self["filter"] = {

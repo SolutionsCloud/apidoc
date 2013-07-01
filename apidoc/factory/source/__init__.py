@@ -39,7 +39,8 @@ class Source():
         raw_sources = self.get_sources_from_config(config)
         sources = self.format_sources_from_config(raw_sources, config)
 
-        self.validator.validate_sources(sources)
+        if config["input"]["validate"]:
+            self.validator.validate_sources(sources)
 
         root = self.root_source_factory.create_from_dictionary(sources)
         self.replace_references(root)
