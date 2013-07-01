@@ -1,5 +1,5 @@
-{% extends "layout.html" %}
-{% block header %}
+{%- extends "layout/" + layout + ".html" -%}
+{%- block header -%}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
     {%- if sources.configuration.title != None -%}
@@ -39,9 +39,9 @@
 <script type="text/javascript" src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="./js/apidoc.js"></script>
     {%- endif %}
-{%- endblock %}
+{%- endblock -%}
 
-{% block body %}
+{%- block body -%}
 <header>
     <div class="container">
         <h1>

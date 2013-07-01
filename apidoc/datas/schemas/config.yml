@@ -56,5 +56,9 @@ properties:
         - embedded
         - remote
         - without
+      layout:
+        enum:
+        - default
+        - content-only
     additionalProperties: false
 additionalProperties: false

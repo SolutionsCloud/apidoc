@@ -4,3 +4,4 @@ input:
 output:
   location: ./output/index.html
   componants: embedded
+  layout: default

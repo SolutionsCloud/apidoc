@@ -14,7 +14,10 @@ class Config():
             raise Exception("Config object expected")
 
         if not config["output"]["componants"] in ("local", "remote", "embedded", "without"):
-            raise ValueError("Unknown componant \"%s\"." % config["componants"])
+            raise ValueError("Unknown componant \"%s\"." % config["output"]["componants"])
+
+        if not config["output"]["layout"] in ("default", "content-only"):
+            raise ValueError("Unknown layout \"%s\"." % config["output"]["layout"])
 
         if config["input"]["directories"] is not None:
             unknown_directories = [x for x in config["input"]["directories"] if not os.path.isdir(x)]
