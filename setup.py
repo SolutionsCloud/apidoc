@@ -39,6 +39,7 @@ setup(
         'template/*.html',
         'template/helper/*.html',
         'template/partial/*.html',
+        'template/layout/*.html',
         'template/resource/css/*.css',
         'template/resource/js/*.js',
         'template/resource/img/*.png',
