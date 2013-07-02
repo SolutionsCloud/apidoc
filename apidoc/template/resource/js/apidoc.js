@@ -344,7 +344,7 @@ function initScrollNavigation() {
     $(window).scrollspy({target: '.scroll-spyable'});
     $('.doc-sidebar').affix({
         offset: {
-            top: $(".container").outerHeight()
+            top: $(".container").outerHeight() + $(".container").offset().top
         }
     });
 
@@ -508,6 +508,7 @@ function diffActivateModeInline(item) {
     item.trigger("headerChanged");
 
     keepFocusOnItem(item);
+    refreshScrollNavigation();
 }
 
 function diffActivateModeSide(item) {
@@ -515,6 +516,7 @@ function diffActivateModeSide(item) {
     item.trigger("headerChanged");
 
     keepFocusOnItem(item);
+    refreshScrollNavigation();
 }
 
 function diffActivateModeFull(item) {
@@ -522,6 +524,7 @@ function diffActivateModeFull(item) {
     item.trigger("headerChanged");
 
     keepFocusOnItem(item);
+    refreshScrollNavigation();
 }
 
 function diffActivateModeMini(item) {
@@ -529,6 +532,7 @@ function diffActivateModeMini(item) {
     item.trigger("headerChanged");
 
     keepFocusOnItem(item);
+    refreshScrollNavigation();
 }
 
 function keepFocusOnItem(item) {
@@ -586,14 +590,14 @@ function shortcutGotoPrevious(event, key, filter) {
         $(".scroll-spyable>UL>LI[data-item]:visible>A").get(0).click();
     } else {
         filter = (filter === undefined ? "" : filter);
-        var items = current.prevAll("LI[data-item]" + filter + ":visible").find(">A");
+        var items = current.prevAll("LI[data-item]" + filter + ":visible");
         if (items.length > 0) {
             items.sort(function(a, b) {
                 if ($(a).index() < $(b).index()) return 1;
                 if ($(a).index() > $(b).index()) return -1;
                 return 0;
             });
-            items.get(items.length - 1).click();
+            items.first().find(">A").get(0).click();
         } else {
             var ul = current.closest("UL");
             var itemsInPrevGroup = current.closest("UL").prev().find(">LI[data-item]" + filter + ":visible>A");
@@ -610,9 +614,14 @@ function shortcutGotoNext(event, key, filter) {
         $(".scroll-spyable>UL>LI[data-item]:visible>A").get(0).click();
     } else {
         filter = (filter === undefined ? "" : filter);
-        var items = current.nextAll("LI[data-item]" + filter + ":visible").find(">A");
+        var items = current.nextAll("LI[data-item]" + filter + ":visible");
         if (items.length > 0) {
-            items.get(0).click();
+            items.sort(function(a, b) {
+                if ($(a).index() < $(b).index()) return -1;
+                if ($(a).index() > $(b).index()) return 1;
+                return 0;
+            });
+            items.first().find(">A").get(0).click();
         } else {
             var ul = current.closest("UL");
             var itemsInNextGroup = current.closest("UL").next().find(">LI[data-item]" + filter + ":visible>A");
@@ -823,4 +832,3 @@ $(document).ready(function () {
 
     onNavigationChange();
 });
-

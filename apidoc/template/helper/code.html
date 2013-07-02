@@ -27,7 +27,6 @@
         {%- set first_param = True -%}
         {%- set active_query_string = (uri.find("?") < 0) -%}
         {%- for parameter in parameters.values() -%}
-        {{parameter}}
             {%- if parameter.is_query_string -%}
                 {%- if active_query_string -%}?{% endif -%}
                 {%- if first_param -%}
