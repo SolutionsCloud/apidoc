@@ -199,7 +199,7 @@ function displayVersion() {
         $("#nav-versions > LI[data-version].active").removeClass("active");
         $("#nav-versions > LI[data-version=\"" + conf.version + "\"]").addClass("active");
 
-        $(".item > .diff-header > H5.desc").html('<i class="i-diff"></i>' + conf.version);
+        $(".item > .diff-header > H5.desc").html('<i class="i-diff"></i>' + $("#nav-versions > LI[data-version=\"" + conf.version + "\"]>A>SPAN").text());
         $(".item, .nav-list > LI").attr("data-changed", null);
         $(".item").attr("data-exists", "yes");
 
@@ -472,8 +472,8 @@ function displayDiff(item, version) {
 
     item.trigger("headerChanged");
 
-    item.find(" > .contents.content-left > H5.title").text(leftVersion);
-    item.find(" > .contents.content-right > H5.title").text(rightVersion);
+    item.find(" > .contents.content-left > H5.title").text($("#nav-versions > LI[data-version=\"" + leftVersion + "\"]>A>SPAN").text());
+    item.find(" > .contents.content-right > H5.title").text($("#nav-versions > LI[data-version=\"" + rightVersion + "\"]>A>SPAN").text());
     item.find(" > .contents .diff_version").removeClass("diff_new diff_del diff_none");
     item.find(" > .contents .diff_version:not([data-version~=\"" + rightVersion + "\"]):not([data-version~=\"" + leftVersion + "\"])").addClass("diff_none");
     item.find(" > .contents .diff_version[data-version~=\"" + rightVersion + "\"]:not([data-version~=\"" + leftVersion + "\"])").addClass("diff_new");

@@ -66,7 +66,7 @@ class TestSourceDto(unittest.TestCase):
         self.assertEqual([], element_dto.description)
 
     def test_version(self):
-        version = Version
+        version = Version()
         version.name = "a"
         version.description = "b"
         version.uri = "c"
@@ -100,14 +100,28 @@ class TestSourceDto(unittest.TestCase):
 
         self.assertEqual(version1, sorted([version2, version1])[0])
 
+    def test_version_compare__with_label(self):
+        version1 = VersionDto(Version())
+        version2 = VersionDto(Version())
+        version1.major = 1
+        version1.minor = 1
+        version1.label = "a"
+        version2.major = 1
+        version2.minor = 1
+        version2.label = "b"
+
+        self.assertEqual(version1, sorted([version2, version1])[0])
+
     def test_version_compare__with_name(self):
         version1 = VersionDto(Version())
         version2 = VersionDto(Version())
         version1.major = 1
         version1.minor = 1
+        version1.label = "a"
         version1.name = "a"
         version2.major = 1
         version2.minor = 1
+        version2.label = "a"
         version2.name = "b"
 
         self.assertEqual(version1, sorted([version2, version1])[0])
@@ -132,11 +146,23 @@ class TestSourceDto(unittest.TestCase):
 
         self.assertEqual(category1, sorted([category2, category1])[0])
 
+    def test_category_compare__with_label(self):
+        category1 = CategoryDto(Category("c"))
+        category2 = CategoryDto(Category("c"))
+        category1.order = 1
+        category1.label = "a"
+        category2.order = 1
+        category2.label = "b"
+
+        self.assertEqual(category1, sorted([category2, category1])[0])
+
     def test_category_compare__with_name(self):
         category1 = CategoryDto(Category("a"))
         category2 = CategoryDto(Category("b"))
         category1.order = 1
+        category1.label = "a"
         category2.order = 1
+        category2.label = "a"
 
         self.assertEqual(category1, sorted([category2, category1])[0])
 
@@ -202,11 +228,22 @@ class TestSourceDto(unittest.TestCase):
         self.assertEqual([m1], method_dto.request_uri_parameters)
         self.assertEqual([m2], method_dto.request_query_string_parameters)
 
+    def test_method_compare__with_label(self):
+        method1 = MethodDto(Method())
+        method2 = MethodDto(Method())
+
+        method1.label = "a"
+        method2.label = "b"
+
+        self.assertEqual(method1, sorted([method2, method1])[0])
+
     def test_method_compare__with_name(self):
         method1 = MethodDto(Method())
         method2 = MethodDto(Method())
 
+        method1.label = "a"
         method1.name = "a"
+        method2.label = "a"
         method2.name = "b"
 
         self.assertEqual(method1, sorted([method2, method1])[0])

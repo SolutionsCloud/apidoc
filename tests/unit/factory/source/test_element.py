@@ -19,6 +19,7 @@ class TestElement(unittest.TestCase):
         self.assertEqual("c", element.description)
         self.assertNotIn("display", vars(element))
         self.assertNotIn("sample", vars(element))
+        self.assertNotIn("o_name", vars(element))
 
     def test_set_common_datas__sampleable(self):
         datas = {"description": "c", "sample": {"foo": "bar"}}
@@ -28,11 +29,12 @@ class TestElement(unittest.TestCase):
         self.assertEqual("{'foo': 'bar'}", element.sample)
 
     def test_set_common_datas__displayable(self):
-        datas = {"description": "c", "display": "false"}
+        datas = {"description": "c", "display": "false", "label": "d"}
         element = Displayable()
         self.factory.set_common_datas(element, "o_name", datas)
 
         self.assertEqual(False, element.display)
+        self.assertEqual("d", element.label)
 
     def test_set_common_datas__displayable_default(self):
         datas = {"description": "c"}

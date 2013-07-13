@@ -4,6 +4,7 @@ configuration:
   uri: ${base_url}
 categories:
   CategoryOne:
+    label: Category One
     description: First Category
     order: 2
   Category2:
@@ -11,12 +12,14 @@ categories:
     order: 1
 versions:
   v1.0:
+    label: Version 1
     status: beta
     major: 1
     minor: 0
     uri: /v1
     methods:
       TestDiff:
+        label: test diff
         category: CategoryOne
         response_body:
           type: object
@@ -232,6 +235,7 @@ versions:
             CURRENT: Current
   v2.0:
     extends: v1.0
+    label: Version 2
     major: 2
     minor: 0
     status: current

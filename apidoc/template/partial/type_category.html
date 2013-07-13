@@ -1,7 +1,7 @@
 {%- for category in sources.type_categories|sort %}
     <li class="category" id="c-{{ category.name }}">
     {%- if category.name != None -%}
-        <h3>{{ category.name }}</h3>
+        <h3>{{ category.label }}</h3>
         {%- if category.description %}
         <div class="description">{{ category.description }}</div>
         {%- endif %}
@@ -29,7 +29,7 @@
                 {%- else -%}
                     data-exists="yes"
                 {%- endif -%}>
-                        {{- version.name -}}
+                        {{- version.label -}}
                         </li>
             {%- endfor %}
                     </ul>

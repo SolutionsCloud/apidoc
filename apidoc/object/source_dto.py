@@ -51,7 +51,7 @@ class Version(Element, Comparable):
         """Class instantiation
         """
         super().__init__(version)
-
+        self.label = version.label
         self.uri = version.uri
         self.major = version.major
         self.minor = version.minor
@@ -60,7 +60,7 @@ class Version(Element, Comparable):
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
-        return (int(self.major), int(self.minor), str(self.name))
+        return (int(self.major), int(self.minor), str(self.label), str(self.name))
 
 
 class Category(Element, Comparable):
@@ -73,12 +73,13 @@ class Category(Element, Comparable):
         """
         super().__init__(category)
 
+        self.label = category.label
         self.order = category.order
 
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
-        return (int(self.order), str(self.name))
+        return (int(self.order), str(self.label), str(self.name))
 
 
 class TypeCategory(Category):
@@ -112,6 +113,7 @@ class Method(ElementVersioned, Comparable):
         """
         super().__init__(method)
 
+        self.label = method.label
         self.method = method.method
 
         self.code = []
@@ -141,7 +143,7 @@ class Method(ElementVersioned, Comparable):
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
-        return (str(self.name))
+        return (str(self.label), str(self.name))
 
 
 class MultiVersion(Comparable):

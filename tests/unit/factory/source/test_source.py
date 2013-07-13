@@ -65,6 +65,26 @@ class TestSource(unittest.TestCase):
         mock_parser_directory.assert_has_calls([call('directory1'), call('directory2')])
         mock_parser_file.assert_has_calls([call('file1'), call('file2')])
 
+    @patch.object(Parser, "load_from_file", side_effect=[{"e": "f"}, {"g": "h"}, {}])
+    @patch.object(Parser, "load_all_from_directory", side_effect=[[{"a": "b"}, {"c": "d"}], [{"z": "y"}]])
+    @patch.object(Merger, "merge_sources", return_value={"i": "j"})
+    @patch.object(Extender, "extends", return_value={})
+    def test_create_from_config__without_validation(self, mock_extender, mock_merger, mock_parser_directory, mock_parser_file):
+        config = ConfigObject()
+        config["input"]["directories"] = ["directory1", "directory2"]
+        config["input"]["files"] = ["file1", "file2"]
+        config["input"]["arguments"] = {"var": "value"}
+        config["input"]["validate"] = False
+
+        response = self.source.create_from_config(config)
+
+        self.assertIsInstance(response, RootDto)
+
+        mock_extender.assert_called_once_with({"i": "j"}, paths=('categories/?', 'versions/?', 'versions/?/methods/?', 'versions/?/types/?', 'versions/?/references/?'))
+        mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
+        mock_parser_directory.assert_has_calls([call('directory1'), call('directory2')])
+        mock_parser_file.assert_has_calls([call('file1'), call('file2')])
+
     def test_get_sources_from_config(self):
         config = ConfigObject()
 

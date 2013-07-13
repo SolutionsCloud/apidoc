@@ -66,6 +66,7 @@ class Displayable():
         """
         super().__init__()
         self.display = True
+        self.label = ""
 
 
 class Configuration(Element):
@@ -124,6 +125,7 @@ class Category(Element, Displayable):
         """
         super().__init__()
         self.name = name
+        self.label = name
         self.order = 99
 
 

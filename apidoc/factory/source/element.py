@@ -19,8 +19,14 @@ class Element():
         if isinstance(element, Sampleable) and element.sample is None and "sample" in datas:
             element.sample = str(datas["sample"]).strip()
 
-        if isinstance(element, Displayable) and "display" in datas:
-            element.display = to_bool(datas["display"])
+        if isinstance(element, Displayable):
+            if "display" in datas:
+                element.display = to_bool(datas["display"])
+
+            if "label" in datas:
+                element.label = datas["label"]
+            else:
+                element.label = element.name
 
     def create_dictionary_of_element_from_dictionary(self, property_name, datas):
         """Populate a dictionary of elements

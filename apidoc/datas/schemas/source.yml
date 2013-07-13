@@ -26,6 +26,8 @@ definitions:
     properties:
       display:
         type: boolean
+      label:
+        type: string
       description:
         type: string
       order:
@@ -36,6 +38,8 @@ definitions:
     properties:
       display:
         type: boolean
+      label:
+        type: string
       uri:
         type: string
       major:
@@ -64,6 +68,8 @@ definitions:
 
   method:
     properties:
+      label:
+        type: string
       description:
         type: string
       category:
