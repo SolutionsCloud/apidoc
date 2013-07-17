@@ -18,15 +18,17 @@ setup(
     version='1.0',
     description='Api Documentation Generator',
     author='Jérémy Derussé',
-    author_email='jeremy@derusse.com',
+    author_email='jeremy.derusse@sfr.com',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Programming Language :: Python',
+        'Topic :: Documentation',
+        'Topic :: Software Development :: Documentation',
     ],
     platforms=['Any'],
-    packages=find_packages(exclude=['tests', 'tests.*']),
+    packages=find_packages(exclude=['tests', 'tests.*', 'example', 'example.*']),
     entry_points={
         'console_scripts': [
             'apidoc-analyse = apidoc.command.analyse:main',

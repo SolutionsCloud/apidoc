@@ -29,8 +29,9 @@ Installation for users
 The fastest way to get started is by using the command line tool
 
     $ [sudo] apt-get install git python3 python3-setuptools
-    $ git clone https://git.gitorious.jmsp.prod/apidoc/apidoc.git
-    $ apidoc/setup.py install
+    $ git clone https://github.com/SFR-BT/apidoc.git
+    $ cd apidoc
+    $ [sudo] apidoc/setup.py install
 
 
 The config parser script depends on PyYAML which links with LibYAML, which brings a performance boost to the PyYAML parser. However, installing LibYAML is optional but recommended. On Mac OS X, you can use homebrew to install LibYAML:
@@ -51,7 +52,7 @@ Installation for contributors
     $ [sudo] pip install virtualenv
     $ virtualenv -p /usr/bin/python3 vitualenvs/apidoc
     $ source vitualenvs/apidoc/bin/activate
-    $ git clone git@gitorious.jmsp.prod:apidoc/apidoc.git projects/apidoc
+    $ git clone https://github.com/SFR-BT/apidoc.git projects/apidoc
     $ cd apidoc
     $ pip install -r requirements.txt
 
@@ -116,10 +117,30 @@ Mix everything
 
 Todo
 ----
-[see Gotorious](https://gitorious.jmsp.prod/apidoc/pages/Todo)
+
+* RunMode: The end user can run the methods through his browser
+* Simplify Sources: When the API have only one version or only one section, The keys version and section could be ommited in sources files
+* Allow extension everywhere (will replace references)
+* Using different version of source's schema
+* Method templating: Methods are based on template who define what's will be used in the description. Ie. Json-rpc template will simplify request_body/response_body and provide a real errors cases
+* Multiple responses: Provide a way for a request to have differents responses (like inheritances, or simplfyed/advanced responses....)
+* Some methods does not reply always in json (in oAuth process for example)
+* Reduce embedded size
+    * Reduce (or eliminate) jquery
+    * Minimize CSS and javascripts files
 
 
 Licenses
 --------
 
-[see Gotorious](https://gitorious.jmsp.prod/apidoc/pages/Licenses)
+ApiDoc uses the following projects:
+
+[Twitter Bootstrap](http://twitter.github.com/bootstrap)
+
+[Jquery](http://jquery.org/)
+
+[Icon Minia](http://dribbble.com/shots/598215-Icon-Minia-139-Vector-Icons)
+
+[Entypo](http://www.entypo.com/)
+
+[IcoMoon](http://keyamoon.com/icomoon/)
