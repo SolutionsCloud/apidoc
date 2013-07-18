@@ -16,7 +16,8 @@ class TestSerialize(unittest.TestCase):
         self.assertEqual('"foo\\"bar"', json_repr('foo"bar'))
 
     def test_json_repr__Dict(self):
-        self.assertEqual('{"a": 1, "b": 2}', json_repr({"b": 2, "a": 1}))
+        self.assertIn('"a": 1', json_repr({"b": 2, "a": 1}))
+        self.assertIn('"b": 2', json_repr({"b": 2, "a": 1}))
 
     def test_json_repr__List(self):
         self.assertEqual('[1, 2]', json_repr([1, 2]))
@@ -26,6 +27,7 @@ class TestSerialize(unittest.TestCase):
 
     def test_json_repr__ObjectDiff(self):
         self.assertIn('"b": 1', json_repr(objectDict()))
+        self.assertIn('"c": 2', json_repr(objectDict()))
 
     def test_json_repr__ObjectEnum(self):
         self.assertEqual('"a"', json_repr(objectEnum.a))
