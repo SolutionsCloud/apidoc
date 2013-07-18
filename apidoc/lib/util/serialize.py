@@ -1,3 +1,4 @@
+import json
 from apidoc.lib.util.enum import Enum
 
 
@@ -26,5 +27,5 @@ def json_repr(obj):
         if hasattr(obj, '__dict__'):
             return serialize(obj.__dict__)
         return repr(obj)
-    import json
+
     return json.dumps(serialize(obj))
