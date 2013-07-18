@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 
 
 class Template():
@@ -14,14 +15,13 @@ class Template():
         self.output = "stdout"
         self.env = None
 
-    def render(self, sources, config):
+    def render(self, sources, config, out=sys.stdout):
         """Render the documentation as defined in config Object
         """
         template = self.env.get_template(self.input)
         output = template.render(sources=sources, layout=config["output"]["layout"], config=config["output"])
         if self.output == "stdout":
-            os.system('clear')
-            print(output)
+            out.write(output)
         else:
             dir = os.path.dirname(self.output)
             if not os.path.exists(dir):

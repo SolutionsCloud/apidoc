@@ -22,7 +22,7 @@ class Config():
         if config["input"]["directories"] is not None:
             unknown_directories = [x for x in config["input"]["directories"] if not os.path.isdir(x)]
             if len(unknown_directories) > 0:
-                raise Exception(
+                raise ValueError(
                     "Director%s \"%s\" does not exists"
                     % ("ies" if len(unknown_directories) > 1 else "y", ("\" and \"").join(unknown_directories))
                 )
@@ -32,14 +32,14 @@ class Config():
         if config["input"]["files"] is not None:
             unknown_files = [x for x in config["input"]["files"] if not os.path.isfile(x)]
             if len(unknown_files) > 0:
-                raise Exception(
+                raise ValueError(
                     "File%s \"%s\" does not exists"
                     % ("s" if len(unknown_files) > 1 else "", ("\" and \"").join(unknown_files))
                 )
 
         if config["input"]["arguments"] is not None:
             if not isinstance(config["input"]["arguments"], dict):
-                raise Exception(
+                raise ValueError(
                     "Sources arguments \"%s\" are not a dict" % config["input"]["arguments"]
                 )
 
