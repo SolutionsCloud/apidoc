@@ -1,6 +1,9 @@
 ApiDoc
 ======
 
+[![Build Status](https://travis-ci.org/SFR-BT/apidoc.png?branch=master)](https://travis-ci.org/SFR-BT/apidoc) [![Coverage Status](https://coveralls.io/repos/SFR-BT/apidoc/badge.png)](https://coveralls.io/r/SFR-BT/apidoc)
+
+
 Summary
 -------
 

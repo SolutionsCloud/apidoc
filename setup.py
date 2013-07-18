@@ -6,12 +6,27 @@ if sys.version_info < (3, 2):
     print("ApiDoc requires Python 3.2 or later")
     raise SystemExit(1)
 
+from setuptools.command.test import test as TestCommand
+from setuptools import setup, find_packages
+
+
+class PyTest(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import pytest
+        errno = pytest.main(self.test_args)
+        sys.exit(errno)
+
+
 if (3, 2) <= sys.version_info < (3, 3):
     requirements = ['Jinja2 == 2.6', 'PyYAML', 'jsonschema']
 else:
     requirements = ['Jinja2', 'PyYAML', 'jsonschema']
 
-from setuptools import setup, find_packages
 
 setup(
     name='ApiDoc',
@@ -49,5 +64,7 @@ setup(
         'datas/schemas/*.yml',
         'command/logging.yml',
     ]},
-    install_requires=requirements
+    install_requires=requirements,
+    tests_require=['mock', 'pytest'],
+    cmdclass={'test': PyTest}
 )

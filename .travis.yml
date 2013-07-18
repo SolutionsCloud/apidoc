@@ -1,0 +1,18 @@
+language: python
+python:
+  - "3.2"
+  - "3.3"
+install:
+  - pip install -r requirements.txt --use-mirrors
+  - pip install coveralls --use-mirrors
+script:
+  - coverage run setup.py test
+  - coverage report -m
+notifications:
+  email:
+    recipients:
+      - jeremy@derusse.com
+    on_success: change
+    on_failure: always
+after_success:
+  - coveralls
