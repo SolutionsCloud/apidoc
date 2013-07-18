@@ -63,6 +63,18 @@ Installation for contributors
     $ pip install -r requirements.txt
 
 
+Generating self documentation
+-----------------------------
+
+You can build and display
+
+.. code-block:: console
+
+    $ cd docs
+    $ make html
+    $ firefox ./build/html/index.html
+
+
 Running Tests
 -------------
 
@@ -152,7 +164,18 @@ ApiDoc uses the following projects:
 [IcoMoon](http://keyamoon.com/icomoon/)
 
 
+
 See Full Documentation
 ----------------------
 
-[see full documentation](docs/source/index.rst)
+[Documentation index](docs/source/index.rst)
+
+[Installation guide](docs/source/install.rst)
+
+[How to use the application](docs/source/usage.rst)
+
+[Config's file format](docs/source/config.rst)
+
+[Source's file format](docs/source/source.rst)
+
+[Todo list](docs/source/todo.rst)

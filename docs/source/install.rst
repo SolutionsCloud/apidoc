@@ -45,6 +45,18 @@ The safest way to install ApiDoc for contributors is to use virtualenvs
    $ pip install -r requirements.txt
 
 
+Generating self documentation
+-----------------------------
+
+You can build and display
+
+.. code-block:: console
+
+    $ cd docs
+    $ make html
+    $ firefox ./build/html/index.html
+
+
 Running Tests
 -------------
 
