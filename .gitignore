@@ -5,3 +5,4 @@ cover/
 ApiDoc.egg-info/*
 build/*
 dist/*
+docs/build/*

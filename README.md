@@ -17,15 +17,16 @@ By using this application you automatically require all of the necessary modules
 
 For core application
 
-* PyYAML==3.10
-* Jinja2==2.6
+* PyYAML
+* Jinja2
+* JsonSchema
 
 For developers who want to contribute code to ApiDoc
 
-* behave==1.2.2
-* coverage==3.6
-* mock==1.0.1
-* nose==1.3.0
+* behave
+* coverage
+* mock
+* nose
 
 
 Installation for users
@@ -33,10 +34,10 @@ Installation for users
 
 The fastest way to get started is by using the command line tool
 
-    $ [sudo] apt-get install git python3 python3-setuptools
+    $ sudo apt-get install git python3 python3-setuptools
     $ git clone https://github.com/SFR-BT/apidoc.git
     $ cd apidoc
-    $ [sudo] apidoc/setup.py install
+    $ sudo apidoc/setup.py install
 
 
 The config parser script depends on PyYAML which links with LibYAML, which brings a performance boost to the PyYAML parser. However, installing LibYAML is optional but recommended. On Mac OS X, you can use homebrew to install LibYAML:
@@ -53,8 +54,8 @@ On Windows, please install PyYAML using the binaries they provide
 Installation for contributors
 -----------------------------
 
-    $ [sudo] apt-get install git python3 python3-setuptools python3-pip
-    $ [sudo] pip install virtualenv
+    $ sudo apt-get install git python3 python3-setuptools python3-pip
+    $ sudo pip install virtualenv
     $ virtualenv -p /usr/bin/python3 vitualenvs/apidoc
     $ source vitualenvs/apidoc/bin/activate
     $ git clone https://github.com/SFR-BT/apidoc.git projects/apidoc
@@ -149,3 +150,9 @@ ApiDoc uses the following projects:
 [Entypo](http://www.entypo.com/)
 
 [IcoMoon](http://keyamoon.com/icomoon/)
+
+
+See Full Documentation
+----------------------
+
+[see full documentation](docs/source/index.rst)
