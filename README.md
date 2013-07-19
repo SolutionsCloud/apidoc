@@ -12,7 +12,7 @@ Summary
 ApiDoc is a documentation generator designe for API built with Python.
 It's developed by Jérémy Derussé and [SFR](http://www.sfrbusinessteam.fr).
 
-ApiDoc actually consists of a command line interface, maintained in a single repository and actually not documented.
+ApiDoc actually consists of a command line interface, maintained in a single repository.
 By using this application you automatically require all of the necessary modules dependencies which are:
 
 For core application
@@ -34,10 +34,8 @@ Installation for users
 
 The fastest way to get started is by using the command line tool
 
-    $ sudo apt-get install git python3 python3-setuptools
-    $ git clone https://github.com/SFR-BT/apidoc.git
-    $ cd apidoc
-    $ sudo apidoc/setup.py install
+    $ sudo apt-get install python3-pip
+    $ pip3 install apidoc
 
 
 The config parser script depends on PyYAML which links with LibYAML, which brings a performance boost to the PyYAML parser. However, installing LibYAML is optional but recommended. On Mac OS X, you can use homebrew to install LibYAML:
@@ -58,8 +56,8 @@ Installation for contributors
     $ sudo pip install virtualenv
     $ virtualenv -p /usr/bin/python3 vitualenvs/apidoc
     $ source vitualenvs/apidoc/bin/activate
-    $ git clone https://github.com/SFR-BT/apidoc.git projects/apidoc
-    $ cd apidoc
+    $ git clone https://github.com/SFR-BT/apidoc.git
+    $ cd apidoc
     $ pip install -r requirements.txt
 
 

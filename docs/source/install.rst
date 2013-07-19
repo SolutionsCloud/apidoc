@@ -8,10 +8,8 @@ The fastest way to get started is by using the command line tool
 
 .. code-block:: console
 
-   $ sudo apt-get install git python3 python3-setuptools
-   $ git clone https://github.com/SFR-BT/apidoc.git
-   $ cd apidoc
-   $ sudo ./setup.py install
+   $ sudo apt-get install python3-pip
+   $ pip3 install apidoc
 
 
 The config parser script depends on PyYAML which links with LibYAML, which brings a performance boost to the PyYAML parser. However, installing LibYAML is optional but recommended. On Mac OS X, you can use homebrew to install LibYAML:

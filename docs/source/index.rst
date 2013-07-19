@@ -9,7 +9,7 @@ Summary
 ApiDoc is a API documentation generator built with Python.
 It is developed by Jérémy Derussé and `SFR Business Team <http://www.sfrbusinessteam.fr>`_.
 
-ApiDoc consists of a command line interface. It is maintained in a single repository and not yet documented.
+ApiDoc consists of a command line interface. It is maintained in a single repository.
 By using this application you automatically require all of the necessary modules dependencies which are:
 
 
