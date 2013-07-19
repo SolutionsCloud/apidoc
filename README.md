@@ -1,7 +1,7 @@
 ApiDoc
 ======
 
-[![Build Status](https://travis-ci.org/SFR-BT/apidoc.png?branch=master)](https://travis-ci.org/SFR-BT/apidoc) [![Coverage Status](https://coveralls.io/repos/SFR-BT/apidoc/badge.png)](https://coveralls.io/r/SFR-BT/apidoc)
+[![Build Status](https://travis-ci.org/SFR-BT/apidoc.png?branch=master)](https://travis-ci.org/SFR-BT/apidoc) [![Coverage Status](https://coveralls.io/repos/SFR-BT/apidoc/badge.png)](https://coveralls.io/r/SFR-BT/apidoc) [![Version](https://pypip.in/v/ApiDoc/badge.png)](pypi.python.org/pypi/ApiDoc)
 
 
 ![Screenshot](/docs/source/_static/screenshot_sample.png)
@@ -11,6 +11,8 @@ Summary
 
 ApiDoc is a documentation generator designe for API built with Python.
 It's developed by Jérémy Derussé and [SFR](http://www.sfrbusinessteam.fr).
+
+Full documentation available on [ReadTheDocs](https://apidoc.readthedocs.org/en/latest/).
 
 ApiDoc actually consists of a command line interface, maintained in a single repository.
 By using this application you automatically require all of the necessary modules dependencies which are:
@@ -26,7 +28,7 @@ For developers who want to contribute code to ApiDoc
 * behave
 * coverage
 * mock
-* nose
+* nosetests
 
 
 Installation for users
@@ -160,20 +162,3 @@ ApiDoc uses the following projects:
 [Entypo](http://www.entypo.com/)
 
 [IcoMoon](http://keyamoon.com/icomoon/)
-
-
-
-See Full Documentation
-----------------------
-
-[Documentation index](docs/source/index.rst)
-
-[Installation guide](docs/source/install.rst)
-
-[How to use the application](docs/source/usage.rst)
-
-[Config's file format](docs/source/config.rst)
-
-[Source's file format](docs/source/source.rst)
-
-[Todo list](docs/source/todo.rst)

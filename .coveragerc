@@ -1,4 +1,4 @@
 [run]
 source = apidoc
 omit = apidoc/command/*
-branch = 1
+branch = True

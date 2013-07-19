@@ -10,8 +10,6 @@ script:
   - coverage report -m
 notifications:
   email:
-    recipients:
-      - jeremy@derusse.com
     on_success: change
     on_failure: always
 after_success:
