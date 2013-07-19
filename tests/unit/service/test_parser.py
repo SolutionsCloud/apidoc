@@ -4,9 +4,9 @@ from mock import patch, call
 
 from apidoc.service.parser import Parser
 try:
-    from yaml import CLoader as Loader
+    from yaml import CSafeLoader as SafeLoader
 except ImportError:
-    from yaml import Loader
+    from yaml import SafeLoader
 
 
 class TestParser(unittest.TestCase):
@@ -26,14 +26,14 @@ class TestParser(unittest.TestCase):
                 self.assertEqual("content_formated", self.parser.load_from_file("file_name.yml"))
 
                 mock_open.assert_called_once_with("file_name.yml")
-                mock_yaml.assert_called_once_with("file_content", Loader=Loader)
+                mock_yaml.assert_called_once_with("file_content", Loader=SafeLoader)
 
         with patch("builtins.open", return_value="file_content") as mock_open:
             with patch("yaml.load", return_value="content_formated") as mock_yaml:
                 self.assertEqual("content_formated", self.parser.load_from_file("file_name.yaml"))
 
                 mock_open.assert_called_once_with("file_name.yaml")
-                mock_yaml.assert_called_once_with("file_content", Loader=Loader)
+                mock_yaml.assert_called_once_with("file_content", Loader=SafeLoader)
 
         with patch("builtins.open", return_value="file_content") as mock_open:
             with patch("json.load", return_value="content_formated") as mock_json:
