@@ -20,7 +20,7 @@ class Parser():
                 raise ValueError("Config file \"%s\" undetermined" % file_extension)
 
         if format == "yaml":
-            return yaml.load(open(file_path), Loader=yaml.CLoader if yaml.__with_libyaml__ else yaml.Loader)
+            return yaml.safe_load(open(file_path), Loader=yaml.CLoader if yaml.__with_libyaml__ else yaml.Loader)
         elif format == "json":
             return json.load(open(file_path))
         else:
