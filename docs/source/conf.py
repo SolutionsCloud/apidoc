@@ -42,7 +42,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'ApiDoc'
-copyright = '2013, Jérémy Derussé'
+copyright = '2013, Jeremy Derusse, SFR Business Team'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
