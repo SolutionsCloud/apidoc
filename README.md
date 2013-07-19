@@ -1,7 +1,7 @@
 ApiDoc
 ======
 
-[![Build Status](https://travis-ci.org/SFR-BT/apidoc.png?branch=master)](https://travis-ci.org/SFR-BT/apidoc) [![Coverage Status](https://coveralls.io/repos/SFR-BT/apidoc/badge.png)](https://coveralls.io/r/SFR-BT/apidoc) [![Version](https://pypip.in/v/ApiDoc/badge.png)](pypi.python.org/pypi/ApiDoc)
+[![Build Status](https://travis-ci.org/SFR-BT/apidoc.png?branch=master)](https://travis-ci.org/SFR-BT/apidoc) [![Coverage Status](https://coveralls.io/repos/SFR-BT/apidoc/badge.png)](https://coveralls.io/r/SFR-BT/apidoc) [![Version](https://pypip.in/v/ApiDoc/badge.png)](https://pypi.python.org/pypi/ApiDoc)
 
 
 ![Screenshot](/docs/source/_static/screenshot_sample.png)

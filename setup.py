@@ -43,7 +43,7 @@ setup(
         'Topic :: Software Development :: Documentation',
     ],
     platforms=['Any'],
-    packages=find_packages(exclude=['tests', 'tests.*', 'example', 'example.*']),
+    packages=find_packages(exclude=['tests', 'tests.*', 'example', 'example.*', 'docs', 'docs.*']),
     entry_points={
         'console_scripts': [
             'apidoc-analyse = apidoc.command.analyse:main',
@@ -59,7 +59,6 @@ setup(
         'template/layout/*.html',
         'template/resource/css/*.css',
         'template/resource/js/*.js',
-        'template/resource/img/*.png',
         'template/resource/font/*',
         'datas/schemas/*.yml',
         'command/logging.yml',

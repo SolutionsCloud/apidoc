@@ -1,0 +1,12 @@
+include README.md
+include MANIFEST.in
+include LICENSE
+
+recursive-include apidoc/template/helper *.html
+recursive-include apidoc/template/partial *.html
+recursive-include apidoc/template/layout *.html
+recursive-include apidoc/template/resource/css *.css
+recursive-include apidoc/template/resource/js *.js
+recursive-include apidoc/template/resource/font *
+recursive-include apidoc/datas/schemas *.yml
+recursive-include apidoc/command logging.yml
