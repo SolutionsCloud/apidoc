@@ -32,6 +32,10 @@ setup(
     name='ApiDoc',
     version='1.0',
     description='Api Documentation Generator',
+    long_description='''ApiDoc is a documentation generator designe for API built with Python.
+It's developed by Jérémy Derussé and `SFR Business Team http://www.sfrbusinessteam.fr.
+
+Full documentation available on http://apidoc.rtfd.org.''',
     author='Jérémy Derussé',
     author_email='jeremy.derusse@sfr.com',
     classifiers=[

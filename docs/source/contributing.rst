@@ -1,34 +1,8 @@
-Installation
+Contributing
 ============
 
-Installation for users
-----------------------
-
-The fastest way to get started is by using the command line tool
-
-.. code-block:: console
-
-   $ sudo apt-get install python3-pip
-   $ pip3 install apidoc
-
-
-The config parser script depends on PyYAML which links with LibYAML, which brings a performance boost to the PyYAML parser. However, installing LibYAML is optional but recommended. On Mac OS X, you can use homebrew to install LibYAML:
-
-.. code-block:: console
-
-   $ brew install libyaml
-
-On Linux, use your favorite package manager to install LibYAML. Here's how you do it on Debian/Ubuntu:
-
-.. code-block:: console
-
-   $ sudo apt-get install libyaml-dev
-
-On Windows, please install PyYAML using the binaries they provide
-
-
-Installation for contributors
------------------------------
+Installation
+------------
 
 The safest way to install ApiDoc for contributors is to use virtualenvs
 

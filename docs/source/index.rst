@@ -36,10 +36,11 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   install
+   quickstart
    usage
    config
    source
+   contributing
    todo
 
 

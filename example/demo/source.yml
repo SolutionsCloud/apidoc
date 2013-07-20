@@ -1,0 +1,233 @@
+configuration:
+  title: ApiDoc demo
+  description: A sampl demo for ApiDoc
+  uri: http://api.acme.com
+categories:
+  Customers:
+    description: Mange customers
+  Users:
+    description: Manage user and authentification
+versions:
+  v1.0:
+    status: deprecated
+    major: 1
+    minor: 0
+    methods:
+      CustomersList:
+        label: List
+        uri: /{version}/customers
+        description: List customers
+        category: Customers
+        request_parameters:
+          version:
+            type: Version
+            description: Api version
+            generic: true
+        response_body:
+          type: object
+          properties:
+            Customers:
+              type: array
+              items:
+                type: reference
+                reference: object_href
+      CustomerGet:
+        label: Get
+        description: Retrieve properties of a specific customer
+        uri: /{version}/customers/{customer_id}
+        category: Customers
+        request_parameters:
+          version:
+            type: Version
+            description: Api version
+            generic: true
+          customer_id:
+            type: number
+            description: Customer identifier
+        response_body:
+          type: object
+          properties:
+            Customer:
+              type: Customer
+        response_codes:
+          - code: 404
+            message: Customer not found
+            description: Customer does not exists
+      AddUser:
+        label: UserAdd
+        method: POST
+        description: Add an existing unser in a customer
+        uri: /{version}/customers/{customer_id}/users
+        category: Customers
+        request_parameters:
+          version:
+            type: Version
+            description: Api version
+            generic: true
+          customer_id:
+            type: number
+            description: Customer identifier
+        request_body:
+          type: object
+          properties:
+            id:
+              type: number
+              description: User identifier
+        response_body:
+          type: object
+          properties:
+            Customer:
+              type: Customer
+        response_codes:
+          - code: 404
+            message: Customer not found
+            description: Customer does not exists
+          - code: 403
+            message: Forbidden
+            description: User can not be adding to this customer
+      UsersList:
+        label: List
+        uri: /{version}/users
+        description: List users
+        category: Users
+        request_parameters:
+          version:
+            type: Version
+            description: Api version
+            generic: true
+        response_body:
+          type: object
+          properties:
+            Users:
+              type: array
+              items:
+                type: reference
+                reference: object_href
+      UserGet:
+        label: Get
+        description: Retrieve properties of a specific user
+        uri: /{version}/users/{user_id}
+        category: Users
+        request_parameters:
+          version:
+            type: Version
+            description: Api version
+            generic: true
+          user_id:
+            type: number
+            description: user identifier
+        response_body:
+          type: object
+          properties:
+            User:
+              type: User
+        response_codes:
+          - code: 404
+            message: User not found
+            description: User does not exists
+
+    references:
+      object_href:
+        type: object
+        properties:
+          id:
+            type: number
+            description: Object identifier
+          name:
+            type: string
+            description: Name of the object
+
+    types:
+      Version:
+        description: A version
+        format:
+          pretty: VN.N
+          advanced: V\d+\.\d+
+        item:
+          type: string
+          sample: v1.0
+      Customer:
+        description: A customer
+        item:
+          type: object
+          properties:
+            id:
+              type: number
+              description: Customer identifier
+            name:
+              type: string
+              description: Name of the customer
+            users:
+              type: array
+              description: List of users
+              items:
+                type: User
+      User:
+        description: A user
+        item:
+          type: object
+          properties:
+            id:
+              type: number
+              description: User identifier
+            name:
+              type: string
+              description: Name of the user
+            email:
+              type: string
+              description: Email address of the user
+  v2.0:
+    extends: v1.0
+    status: current
+    major: 2
+    minor: 0
+
+    methods:
+      UserCreate:
+        label: Create
+        method: POST
+        description: Create a nex User
+        uri: /{version}/users
+        category: Users
+        request_parameters:
+          version:
+            type: Version
+            description: Api version
+            generic: true
+        request_body:
+          type: object
+          properties:
+            user:
+              type: User
+        response_body:
+          type: object
+          properties:
+            User:
+              type: User
+        response_codes:
+          - code: 404
+            message: Customer not found
+            description: Customer does not exists
+          - code: 403
+            message: Forbidden
+            description: User can not be adding to this customer
+
+    references:
+      object_href:
+        type: object
+        properties:
+          previous:
+            type: string
+            description: Link to the previous element
+            optional: true
+          next:
+            type: string
+            description: Link to the next element
+            optional: true
+    types:
+      User:
+        item:
+          properties:
+            phone:
+              type: string
+              description: User's phone number
