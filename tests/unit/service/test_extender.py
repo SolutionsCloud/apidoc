@@ -44,6 +44,24 @@ class TestParser(unittest.TestCase):
         response = self.extender.extends(data, ["root.?"], ".", "ex")
         self.assertEqual(expected, response)
 
+    def test_extends__simple_extend__multiple_keys(self):
+        data = {
+            "root": {
+                "a": {"att1": 1, "att2": ["A"]},
+                "b": {"ex": ["a"], "att2": ["B"]}
+            }
+        }
+
+        expected = {
+            "root": {
+                "a": {"att1": 1, "att2": ["A"]},
+                "b": {"att1": 1, "att2": ["B", "A"]}
+            }
+        }
+
+        response = self.extender.extends(data, ["root.?"], ".", "ex")
+        self.assertEqual(expected, response)
+
     def test_extends__extend_dont_override(self):
         data = {
             "root": {
