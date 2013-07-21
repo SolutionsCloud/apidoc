@@ -56,16 +56,12 @@ class Extender():
         if not isinstance(target[self.extends_key], list):
             target[self.extends_key] = [target[self.extends_key]]
 
-        extends_paths = deepcopy(target[self.extends_key])
-        for extends_path in extends_paths:
-            if not self.extends_key in target:
-                continue
+        while len(target[self.extends_key]) > 0:
+            extends_path = target[self.extends_key][0]
             target[self.extends_key].remove(extends_path)
             extends_path_part = extends_path.split(self.separator)
             path = self.get_location_from_keys(keys[0:len(keys) - len(extends_path_part)] + extends_path_part)
             self.merge(target, path, keys)
-        if self.extends_key in target:
-            del(target[self.extends_key])
 
     def get_location_from_keys(self, keys):
         """Return a location by replacing ? in path by keys
