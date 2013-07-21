@@ -31,4 +31,4 @@ class Validator():
         validator = Draft4Validator(schema)
         errors = validator.iter_errors(input)
         for error in errors:
-            logging.getLogger().warn("%s: %s" % ("/".join(list(error.path)), error.context[0] if error.context else error.message))
+            logging.getLogger().warn("%s: %s" % ("/".join([str(x) for x in error.path]), error.context[0] if error.context else error.message))
