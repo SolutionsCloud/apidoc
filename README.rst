@@ -6,7 +6,9 @@ ApiDoc
 .. image:: https://coveralls.io/repos/SFR-BT/apidoc/badge.png
         :target: https://coveralls.io/r/SFR-BT/apidoc
 .. image:: https://pypip.in/v/ApiDoc/badge.png
-        :target: https://pypi.python.org/pypi/ApiDoc
+        :target: https://crate.io/packages/ApiDoc
+.. image:: https://pypip.in/d/ApiDoc/badge.png
+        :target: https://crate.io/packages/ApiDoc
 
 Summary
 -------
