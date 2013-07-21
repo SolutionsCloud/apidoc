@@ -90,8 +90,8 @@
 .item>.contents.content-left{display:block;}
 .item>.contents.content-right{display:none;}
 .item:not(.diff-mode)>.contents .diff_version:not(.diff_new){display:none;}
-.item.diff-mode .diff_version.diff_new{background-color:#dbffdb;}
-.item.diff-mode .diff_version.diff_del{background-color:#ffdbdb;}
+.item.diff-mode .diff_version.diff_new{background-color:#dbffdb !important;}
+.item.diff-mode .diff_version.diff_del{background-color:#ffdbdb !important;}
 .item.diff-mode .diff_version.diff_none{display:none;}
 .item.diff-mode>.contents>.sample{display:none;}
 .item.diff-mode-side>.contents>.title{display:block;}

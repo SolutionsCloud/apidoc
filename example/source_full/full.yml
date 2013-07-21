@@ -20,6 +20,7 @@ versions:
     methods:
       TestDiff:
         label: test diff
+        display: false
         category: CategoryOne
         response_body:
           type: object
@@ -261,6 +262,7 @@ versions:
             description: New parameter in this version
         response_codes:
           - code: 403
+            generic: true
             message: Something Wrong
             description: The resource name is not correct
         request_body:
