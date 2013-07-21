@@ -70,6 +70,8 @@ definitions:
     properties:
       label:
         type: string
+      display:
+        type: boolean
       description:
         type: string
       category:
