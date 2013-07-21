@@ -53,6 +53,6 @@ WithCoverage
 
 .. code-block:: console
 
-   $ nosetests --with-coverage --cover-package=apidoc --cover-package=util --cover-erase --cover-html --cover-branch --cover-html-dir=tests/cover/unit
+   $ nosetests --with-coverage --cover-package=apidoc --cover-erase --cover-html --cover-branch --cover-html-dir=tests/cover/unit
    $ coverage run --branch `which behave` tests/features/; coverage html --include=apidoc* -d tests/cover/features
    $ coverage run --branch `which behave` tests/features/; coverage run --append --branch `which nosetests`; coverage html --include=apidoc* -d tests/cover/unified
