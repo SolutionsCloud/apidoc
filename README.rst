@@ -1,10 +1,10 @@
 ApiDoc
 ======
 
-.. image:: https://travis-ci.org/SFR-BT/apidoc.png?branch=master
-        :target: https://travis-ci.org/SFR-BT/apidoc
-.. image:: https://coveralls.io/repos/SFR-BT/apidoc/badge.png
-        :target: https://coveralls.io/r/SFR-BT/apidoc
+.. image:: https://travis-ci.org/SolutionsCloud/apidoc.png?branch=master
+        :target: https://travis-ci.org/SolutionsCloud/apidoc
+.. image:: https://coveralls.io/repos/SolutionsCloud/apidoc/badge.png
+        :target: https://coveralls.io/r/SolutionsCloud/apidoc
 .. image:: https://pypip.in/v/ApiDoc/badge.png
         :target: https://crate.io/packages/ApiDoc
 .. image:: https://pypip.in/d/ApiDoc/badge.png
@@ -58,7 +58,7 @@ You can ddownload a sample file and try to render it documentation
 
    $ mkdir apidoc
    $ cd apidoc
-   $ wget https://raw.github.com/SFR-BT/apidoc/master/example/demo/source.yml
+   $ wget https://raw.github.com/SolutionsCloud/apidoc/master/example/demo/source.yml
    $ apidoc-render -f source.yml -o output/index.html
    $ firefox output/index.html
 

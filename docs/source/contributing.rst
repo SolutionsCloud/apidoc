@@ -12,7 +12,7 @@ The safest way to install ApiDoc for contributors is to use virtualenvs
    $ sudo pip install virtualenv
    $ virtualenv -p /usr/bin/python3 vitualenvs/apidoc
    $ source vitualenvs/apidoc/bin/activate
-   $ git clone https://github.com/SFR-BT/apidoc.git
+   $ git clone https://github.com/SolutionsCloud/apidoc.git
    $ cd apidoc
    $ pip install -r requirements.txt
 

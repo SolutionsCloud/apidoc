@@ -40,6 +40,6 @@ Run a sample demo
 
    $ mkdir apidoc
    $ cd apidoc
-   $ wget https://raw.github.com/SFR-BT/apidoc/master/example/demo/source.yml
+   $ wget https://raw.github.com/SolutionsCloud/apidoc/master/example/demo/source.yml
    $ apidoc-render -f source.yml -o output/index.html
    $ firefox output/index.html
