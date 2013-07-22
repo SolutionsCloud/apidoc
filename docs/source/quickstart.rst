@@ -9,8 +9,15 @@ The fastest way to get started is by using the command line tool
 .. code-block:: console
 
    $ sudo apt-get install python3-pip
-   $ pip3 install apidoc
+   $ sudo pip3 install apidoc
 
+if the package python3-pip does not exists.
+
+.. code-block:: console
+
+   $ sudo apt-get install python3-setuptools
+   $ sudo easy_install3 pip
+   $ sudo pip3-2 install apidoc
 
 The config parser script depends on PyYAML which links with LibYAML, which brings a performance boost to the PyYAML parser. However, installing LibYAML is optional but recommended. On Mac OS X, you can use homebrew to install LibYAML:
 
