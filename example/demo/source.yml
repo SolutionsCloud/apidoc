@@ -1,10 +1,10 @@
 configuration:
   title: ApiDoc demo
-  description: A sampl demo for ApiDoc
+  description: A sample demo for ApiDoc
   uri: http://api.acme.com
 categories:
   Customers:
-    description: Mange customers
+    description: Manage customers
   Users:
     description: Manage user and authentification
 versions:
