@@ -13,11 +13,11 @@ ApiDoc
 Summary
 -------
 
-ApiDoc is a documentation generator designe for API built with Python.
+`ApiDoc <http://solutionscloud.github.io/apidoc>`_ is a documentation generator designe for API built with Python.
 
 .. image:: https://raw.github.com/SolutionsCloud/apidoc/master/docs/source/_static/screenshot_sample.png
 
-It's developed by Jérémy Derussé and `SFR Business Team <http://www.sfrbusinessteam.fr>`_.
+It's developed by `Jérémy Derussé <http://github.com/jeremy-derusse>`_ and `SFR Business Team <http://www.sfrbusinessteam.fr>`_.
 
 `Full documentation available on ReadTheDocs. <http://apidoc.rtfd.org>`_
 
