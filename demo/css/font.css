@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'apidoc';
+    src: url('../font/apidoc.eot');
+    src: url('../font/apidoc.eot?#iefix') format('embedded-opentype'),
+         url('../font/apidoc.woff') format('woff'),
+         url('../font/apidoc.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'Source Code Pro';
+    src: url('../font/source-code-pro.eot');
+    src: url('../font/source-code-pro.eot?#iefix') format('embedded-opentype'),
+         url('../font/source-code-pro.woff') format('woff'),
+         url('../font/source-code-pro.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

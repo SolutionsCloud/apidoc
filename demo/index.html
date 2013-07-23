@@ -1,0 +1,1325 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ApiDoc demo</title>
+    
+<link href="http://fonts.googleapis.com/css?family=Source+Code+Pro" media="all" rel="stylesheet" type="text/css" />
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/apidoc.css" rel="stylesheet">
+<link href="./css/font.css" rel="stylesheet">
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/mousetrap.min.js"></script>
+<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./js/apidoc.js"></script>
+     
+</head>
+<body>
+    <header>
+    <div class="container">
+        <h1>ApiDoc demo</h1><p>
+        A sample demo for ApiDoc
+        </p></div>
+</header><div class="help_overlay" style="display:none"></div>
+<div class="help_popup" style="display:none">
+    <h2>Keyboard Shortcuts</h2>
+    <div class="help_row">
+        <h3>Site wide shortcuts</h3>
+        <dl class="keyboard-mappings">
+            <dt>?</dt>
+            <dd>Bring up this help dialog</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+            <dt>esc</dt>
+            <dd>Hide this help dialog</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+            <dt>/</dt>
+            <dd>Focus search bar</dd>
+        </dl>
+    </div>
+    <div class="help_row">
+        <h3>Navigation</h3>
+        <dl class="keyboard-mappings">
+            <dt>j <em>or</em> n</dt>
+            <dd>Move to next method or type</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+            <dt>k <em>or</em> p</dt>
+            <dd>Move to previous method or type</dd>
+        </dl>
+    
+        <dl class="keyboard-mappings">
+            <dt>v</dt>
+            <dd>Move to next version</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+            <dt>b</dt>
+            <dd>Move to previous version</dd>
+        </dl>
+    
+    </div>
+    
+    <div class="help_row">
+        <h3>Diff</h3>
+        <dl class="keyboard-mappings">
+            <dt>&lt;shift&gt; + j</dt>
+            <dd>Move to next method or type with a diff</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+            <dt>&lt;shift&gt; + k</dt>
+            <dd>Move to previous method or type with a diff</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+            <dt>d</dt>
+            <dd>Toggle diff mode</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+            <dt>s</dt>
+            <dd>Toggle side by side / inline mode</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+            <dt>f</dt>
+            <dd>Toggle full / strict diff</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+            <dt>&lt;shift&gt; + v</dt>
+            <dd>Move to next version to diff</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+            <dt>&lt;shift&gt; + b</dt>
+            <dd>Move to previous version to diff</dd>
+        </dl>
+    </div>
+    
+</div><div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3">
+            <div class="doc-sidebar span3"><input type="search" placeholder="search" class="span12">
+<ul id="nav-versions" class="nav nav-list doc-sidenav">
+    <li class="nav-header"><h5>Versions</h5></li>
+    <li data-version="v1.0" data-status="DEPRECATED">
+        <a href="javascript:navigateTo({version: 'v1.0'}, ['category', 'method', 'category', 'type'])" data-target="#v-v1.0"><span>v1.0 </span><code>DEPRECATED</code></a>
+    </li>
+    <li data-version="v2.0" data-status="CURRENT">
+        <a href="javascript:navigateTo({version: 'v2.0'}, ['category', 'method', 'category', 'type'])" data-target="#v-v2.0"><span>v2.0 </span><code>CURRENT</code></a>
+    </li>
+</ul>
+<div class="scroll-spyable">
+    <ul class="nav nav-list doc-sidenav">
+        <li class="nav-header"><h5>Methods</h5></li><li class="nav-header" data-group="Customers"><a href="javascript:navigateTo({category: 'Customers'}, ['category', 'method', 'type'])" data-target="#c-Customers"><h6>Customers</h6></a></li>
+        <li data-group="Customers"  data-item="CustomerGet"><a href="javascript:navigateTo({category: 'Customers', method: 'CustomerGet'}, ['category', 'method'])" data-target="#m-CustomerGet"><i class="i-chevron"></i><span>Get</span></a></li>
+        <li data-group="Customers"  data-item="CustomersList"><a href="javascript:navigateTo({category: 'Customers', method: 'CustomersList'}, ['category', 'method'])" data-target="#m-CustomersList"><i class="i-chevron"></i><span>List</span></a></li>
+        <li data-group="Customers"  data-item="AddUser"><a href="javascript:navigateTo({category: 'Customers', method: 'AddUser'}, ['category', 'method'])" data-target="#m-AddUser"><i class="i-chevron"></i><span>UserAdd</span></a></li>
+        <li class="separator"></li><li class="nav-header" data-group="Users"><a href="javascript:navigateTo({category: 'Users'}, ['category', 'method', 'type'])" data-target="#c-Users"><h6>Users</h6></a></li>
+        <li data-group="Users"  data-item="UserCreate"><a href="javascript:navigateTo({category: 'Users', method: 'UserCreate'}, ['category', 'method'])" data-target="#m-UserCreate"><i class="i-chevron"></i><span>Create</span></a></li>
+        <li data-group="Users"  data-item="UserGet"><a href="javascript:navigateTo({category: 'Users', method: 'UserGet'}, ['category', 'method'])" data-target="#m-UserGet"><i class="i-chevron"></i><span>Get</span></a></li>
+        <li data-group="Users"  data-item="UsersList"><a href="javascript:navigateTo({category: 'Users', method: 'UsersList'}, ['category', 'method'])" data-target="#m-UsersList"><i class="i-chevron"></i><span>List</span></a></li>
+    </ul>
+    <ul class="nav nav-list doc-sidenav">
+        <li class="nav-header"><h5>Types</h5></li>
+        <li data-group="None"  data-item="Customer"><a href="javascript:navigateTo({category: 'None', type: 'Customer'}, ['category', 'method'])" data-target="#t-Customer"><i class="i-chevron"></i><span>Customer</span></a></li>
+        <li data-group="None"  data-item="User"><a href="javascript:navigateTo({category: 'None', type: 'User'}, ['category', 'method'])" data-target="#t-User"><i class="i-chevron"></i><span>User</span></a></li>
+        <li data-group="None"  data-item="Version"><a href="javascript:navigateTo({category: 'None', type: 'Version'}, ['category', 'method'])" data-target="#t-Version"><i class="i-chevron"></i><span>Version</span></a></li>
+    </ul>
+</div>
+            </div>
+        </div>
+        <div class="span9">
+            <div id="item-head" class="span9 item">
+                <h4></h4>
+                <div class="diff-header"></div>
+                <div class="stack">
+                    <h5>hello</h5>
+                </div>
+            </div>
+            <div class="page-header">
+                <h2>Methods</h2>
+            </div>
+            <ul class="unstyled">
+    <li class="category" id="c-Customers"><h3>Customers</h3>
+        <div class="description">Manage customers</div>
+        <ul class="unstyled">
+            <li class="method item" id="m-CustomerGet" data-method="GET">
+                <h4>Get</h4>
+                <div class="diff-header">
+                    <h5 class="desc"></h5>
+                    <h5 class="diff">
+                        <i class="i-side mode-side"></i>
+                        <i class="i-inline mode-inline"></i>
+                        <i class="i-full mode-full"></i>
+                        <i class="i-mini mode-mini"></i>
+                        <i class="i-diff"></i>
+                         Diff
+                    </h5>
+                    <ul class="versions inline">
+                        <li data-version="v1.0" data-changed="new"data-exists="yes">v1.0</li>
+                        <li data-version="v2.0" data-changed="none"data-exists="yes">v2.0</li>
+                    </ul>
+                </div><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
+
+<h5 class="stack title"></h5>
+
+<div class="description stack">
+    
+    <div class="diff_version" data-version="v1.0 v2.0">Retrieve properties of a specific customer</div></div><div class="request stack">
+    <h5><i class="i-request"></i> Request: </h5>
+    <h6>Resource: </h6>
+
+    <code  class="diff_version" data-version="v1.0 v2.0"><span class="hur">http://api.acme.com/{version}/customers/{customer_id}</span></code>
+    <h6>URI Parameters: </h6><table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <col></col>
+            <col width="160px"></col>
+            <col width="70px"></col>
+            <col width="50%"></col>
+        </colgroup>
+        <thead>
+            <tr>
+            <th><span
+            >Parameter</span></th>
+            <th><span
+            >Type</span></th>
+            <th><span
+            >Optional</span></th>
+            <th><span
+            >Description</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="diff_version generic" data-version="v1.0 v2.0">
+            <td><span class="str">version</span></td>
+            <td><span class="typ">
+                    <a href="javascript:navigateTo({type: 'Version'}, ['category', 'method'])">Version</a><td><span class="lit"></span></td>
+            <td><span class="com">Api version</span></td>
+        </tr>
+        <tr class="diff_version " data-version="v1.0 v2.0">
+            <td><span class="str">customer_id</span></td>
+            <td><span class="typ">number<td><span class="lit"></span></td>
+            <td><span class="com">Customer identifier</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="response stack">
+    <h5><i class="i-response"></i> Response: </h5>
+    <h6>Body: </h6>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"Customer"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'Customer'}, ['category', 'method'])">Customer</a></span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">}</span></td>
+        <td></td>
+    </tr>
+        </tbody>
+    </table></div>
+    <h6>Codes: </h6><table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <col width="50px"></col>
+            <col></col>
+            <col width="50%"></col>
+        </colgroup>
+        <thead>
+            <tr>
+            <th><span
+            >Code</span></th>
+            <th><span
+            >Message</span></th>
+            <th><span
+            >Description</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="diff_version " data-version="v1.0 v2.0">
+            <td><span class="lit">404</span></td>
+            <td><span class="str">Customer not found</span></td>
+            <td><span class="com">Customer does not exists</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div><div class="stack sample"><div data-version="v1.0 v2.0">
+
+<h5><i class="i-sample"></i> Sample: </h5>
+<h6>Request: </h6>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1.0/customers/123</span> <span class="hpr">HTTP/1.1</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+</div>
+        <h6>Response: </h6>
+        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+<span class="pun">{
+</span>  <span class="str">"Customer"</span><span class="pun">: </span><span class="pun">{
+</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>    <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
+</span>    <span class="str">"users"</span><span class="pun">: </span><span class="pun">[
+</span>      <span class="pun">{
+</span>        <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
+</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>        <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+      <span class="pun">}</span><span class="pun">,
+</span>      <span class="pun">{
+</span>        <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
+</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>        <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+      <span class="pun">}</span>
+    <span class="pun">]</span>
+  <span class="pun">}</span>
+<span class="pun">}</span></div></div></div>
+                </div>
+            </li>
+            <li class="method item" id="m-CustomersList" data-method="GET">
+                <h4>List</h4>
+                <div class="diff-header">
+                    <h5 class="desc"></h5>
+                    <h5 class="diff">
+                        <i class="i-side mode-side"></i>
+                        <i class="i-inline mode-inline"></i>
+                        <i class="i-full mode-full"></i>
+                        <i class="i-mini mode-mini"></i>
+                        <i class="i-diff"></i>
+                         Diff
+                    </h5>
+                    <ul class="versions inline">
+                        <li data-version="v1.0" data-changed="new"data-exists="yes">v1.0</li>
+                        <li data-version="v2.0" data-changed="updated"data-exists="yes">v2.0</li>
+                    </ul>
+                </div><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
+
+<h5 class="stack title"></h5>
+
+<div class="description stack">
+    
+    <div class="diff_version" data-version="v1.0 v2.0">List customers</div></div><div class="request stack">
+    <h5><i class="i-request"></i> Request: </h5>
+    <h6>Resource: </h6>
+
+    <code  class="diff_version" data-version="v1.0 v2.0"><span class="hur">http://api.acme.com/{version}/customers</span></code>
+    <h6>URI Parameters: </h6><table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <col></col>
+            <col width="160px"></col>
+            <col width="70px"></col>
+            <col width="50%"></col>
+        </colgroup>
+        <thead>
+            <tr>
+            <th><span
+            >Parameter</span></th>
+            <th><span
+            >Type</span></th>
+            <th><span
+            >Optional</span></th>
+            <th><span
+            >Description</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="diff_version generic" data-version="v1.0 v2.0">
+            <td><span class="str">version</span></td>
+            <td><span class="typ">
+                    <a href="javascript:navigateTo({type: 'Version'}, ['category', 'method'])">Version</a><td><span class="lit"></span></td>
+            <td><span class="com">Api version</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="response stack">
+    <h5><i class="i-response"></i> Response: </h5>
+    <h6>Body: </h6>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"Customers"</span><span class="pun">: </span><span class="pun">[</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>    <span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>      <span class="str">"id"</span><span class="pun">: </span><span class="typ">number</span><span class="pun">,</span></td>
+        <td class="com">Object identifier</td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>      <span class="str">"name"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
+        <td class="com">Name of the object</td>
+    </tr>
+    <tr class="diff_version" data-version="v2.0">
+        <td>      <span class="str">"next"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
+        <td class="com"><span class="optional lit">Optional</span>Link to the next element</td>
+    </tr>
+    <tr class="diff_version" data-version="v2.0">
+        <td>      <span class="str">"previous"</span><span class="pun">: </span><span class="typ">string</span></td>
+        <td class="com"><span class="optional lit">Optional</span>Link to the previous element</td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>    <span class="pun">}</span></td>
+        <td></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="pun">]</span></td>
+        <td></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">}</span></td>
+        <td></td>
+    </tr>
+        </tbody>
+    </table></div>
+</div><div class="stack sample"><div data-version="v1.0">
+
+<h5><i class="i-sample"></i> Sample: </h5>
+<h6>Request: </h6>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1.0/customers</span> <span class="hpr">HTTP/1.1</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+</div>
+        <h6>Response: </h6>
+        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+<span class="pun">{
+</span>  <span class="str">"Customers"</span><span class="pun">: </span><span class="pun">[
+</span>    <span class="pun">{
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+    <span class="pun">}</span><span class="pun">,
+</span>    <span class="pun">{
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+    <span class="pun">}</span>
+  <span class="pun">]</span>
+<span class="pun">}</span></div></div><div data-version="v2.0">
+
+<h5><i class="i-sample"></i> Sample: </h5>
+<h6>Request: </h6>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1.0/customers</span> <span class="hpr">HTTP/1.1</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+</div>
+        <h6>Response: </h6>
+        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+<span class="pun">{
+</span>  <span class="str">"Customers"</span><span class="pun">: </span><span class="pun">[
+</span>    <span class="pun">{
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
+</span>      <span class="str">"next"</span><span class="pun">: </span><span class="str">"my_next"</span><span class="pun">,
+</span>      <span class="str">"previous"</span><span class="pun">: </span><span class="str">"my_previous"</span>
+    <span class="pun">}</span><span class="pun">,
+</span>    <span class="pun">{
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
+</span>      <span class="str">"next"</span><span class="pun">: </span><span class="str">"my_next"</span><span class="pun">,
+</span>      <span class="str">"previous"</span><span class="pun">: </span><span class="str">"my_previous"</span>
+    <span class="pun">}</span>
+  <span class="pun">]</span>
+<span class="pun">}</span></div></div></div>
+                </div>
+            </li>
+            <li class="method item" id="m-AddUser" data-method="POST">
+                <h4>UserAdd</h4>
+                <div class="diff-header">
+                    <h5 class="desc"></h5>
+                    <h5 class="diff">
+                        <i class="i-side mode-side"></i>
+                        <i class="i-inline mode-inline"></i>
+                        <i class="i-full mode-full"></i>
+                        <i class="i-mini mode-mini"></i>
+                        <i class="i-diff"></i>
+                         Diff
+                    </h5>
+                    <ul class="versions inline">
+                        <li data-version="v1.0" data-changed="new"data-exists="yes">v1.0</li>
+                        <li data-version="v2.0" data-changed="none"data-exists="yes">v2.0</li>
+                    </ul>
+                </div><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
+
+<h5 class="stack title"></h5>
+
+<div class="description stack">
+    
+    <div class="diff_version" data-version="v1.0 v2.0">Add an existing unser in a customer</div></div><div class="request stack">
+    <h5><i class="i-request"></i> Request: </h5>
+    <h6>Resource: </h6>
+
+    <code  class="diff_version" data-version="v1.0 v2.0"><span class="hur">http://api.acme.com/{version}/customers/{customer_id}/users</span></code>
+    <h6>URI Parameters: </h6><table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <col></col>
+            <col width="160px"></col>
+            <col width="70px"></col>
+            <col width="50%"></col>
+        </colgroup>
+        <thead>
+            <tr>
+            <th><span
+            >Parameter</span></th>
+            <th><span
+            >Type</span></th>
+            <th><span
+            >Optional</span></th>
+            <th><span
+            >Description</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="diff_version generic" data-version="v1.0 v2.0">
+            <td><span class="str">version</span></td>
+            <td><span class="typ">
+                    <a href="javascript:navigateTo({type: 'Version'}, ['category', 'method'])">Version</a><td><span class="lit"></span></td>
+            <td><span class="com">Api version</span></td>
+        </tr>
+        <tr class="diff_version " data-version="v1.0 v2.0">
+            <td><span class="str">customer_id</span></td>
+            <td><span class="typ">number<td><span class="lit"></span></td>
+            <td><span class="com">Customer identifier</span></td>
+        </tr>
+        </tbody>
+    </table>
+    <h6>Body: </h6>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"id"</span><span class="pun">: </span><span class="typ">number</span></td>
+        <td class="com">User identifier</td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">}</span></td>
+        <td></td>
+    </tr>
+        </tbody>
+    </table></div>
+</div>
+
+<div class="response stack">
+    <h5><i class="i-response"></i> Response: </h5>
+    <h6>Body: </h6>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"Customer"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'Customer'}, ['category', 'method'])">Customer</a></span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">}</span></td>
+        <td></td>
+    </tr>
+        </tbody>
+    </table></div>
+    <h6>Codes: </h6><table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <col width="50px"></col>
+            <col></col>
+            <col width="50%"></col>
+        </colgroup>
+        <thead>
+            <tr>
+            <th><span
+            >Code</span></th>
+            <th><span
+            >Message</span></th>
+            <th><span
+            >Description</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="diff_version " data-version="v1.0 v2.0">
+            <td><span class="lit">403</span></td>
+            <td><span class="str">Forbidden</span></td>
+            <td><span class="com">User can not be adding to this customer</span></td>
+        </tr>
+        <tr class="diff_version " data-version="v1.0 v2.0">
+            <td><span class="lit">404</span></td>
+            <td><span class="str">Customer not found</span></td>
+            <td><span class="com">Customer does not exists</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div><div class="stack sample"><div data-version="v1.0 v2.0">
+
+<h5><i class="i-sample"></i> Sample: </h5>
+<h6>Request: </h6>
+<div class="code"><span class="hme">POST</span> <span class="hur">/v1.0/customers/123/users</span> <span class="hpr">HTTP/1.1</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+<span class="pun">{
+</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span>
+<span class="pun">}</span></div>
+        <h6>Response: </h6>
+        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+<span class="pun">{
+</span>  <span class="str">"Customer"</span><span class="pun">: </span><span class="pun">{
+</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>    <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
+</span>    <span class="str">"users"</span><span class="pun">: </span><span class="pun">[
+</span>      <span class="pun">{
+</span>        <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
+</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>        <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+      <span class="pun">}</span><span class="pun">,
+</span>      <span class="pun">{
+</span>        <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
+</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>        <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+      <span class="pun">}</span>
+    <span class="pun">]</span>
+  <span class="pun">}</span>
+<span class="pun">}</span></div></div></div>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <li class="category" id="c-Users"><h3>Users</h3>
+        <div class="description">Manage user and authentification</div>
+        <ul class="unstyled">
+            <li class="method item" id="m-UserCreate" data-method="POST">
+                <h4>Create</h4>
+                <div class="diff-header">
+                    <h5 class="desc"></h5>
+                    <h5 class="diff">
+                        <i class="i-side mode-side"></i>
+                        <i class="i-inline mode-inline"></i>
+                        <i class="i-full mode-full"></i>
+                        <i class="i-mini mode-mini"></i>
+                        <i class="i-diff"></i>
+                         Diff
+                    </h5>
+                    <ul class="versions inline">
+                        <li data-version="v1.0" data-changed="none"data-exists="no">v1.0</li>
+                        <li data-version="v2.0" data-changed="new"data-exists="yes">v2.0</li>
+                    </ul>
+                </div><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
+
+<h5 class="stack title"></h5>
+
+<div class="description stack">
+    
+    <div class="diff_version" data-version="v2.0">Create a nex User</div></div><div class="request stack">
+    <h5><i class="i-request"></i> Request: </h5>
+    <h6>Resource: </h6>
+
+    <code  class="diff_version" data-version="v2.0"><span class="hur">http://api.acme.com/{version}/users</span></code>
+    <h6>URI Parameters: </h6><table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <col></col>
+            <col width="160px"></col>
+            <col width="70px"></col>
+            <col width="50%"></col>
+        </colgroup>
+        <thead>
+            <tr>
+            <th><span
+            >Parameter</span></th>
+            <th><span
+            >Type</span></th>
+            <th><span
+            >Optional</span></th>
+            <th><span
+            >Description</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="diff_version generic" data-version="v2.0">
+            <td><span class="str">version</span></td>
+            <td><span class="typ">
+                    <a href="javascript:navigateTo({type: 'Version'}, ['category', 'method'])">Version</a><td><span class="lit"></span></td>
+            <td><span class="com">Api version</span></td>
+        </tr>
+        </tbody>
+    </table>
+    <h6>Body: </h6>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+
+    <tr class="diff_version" data-version="v2.0">
+        <td><span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v2.0">
+        <td>  <span class="str">"user"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'User'}, ['category', 'method'])">User</a></span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v2.0">
+        <td><span class="pun">}</span></td>
+        <td></td>
+    </tr>
+        </tbody>
+    </table></div>
+</div>
+
+<div class="response stack">
+    <h5><i class="i-response"></i> Response: </h5>
+    <h6>Body: </h6>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+
+    <tr class="diff_version" data-version="v2.0">
+        <td><span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v2.0">
+        <td>  <span class="str">"User"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'User'}, ['category', 'method'])">User</a></span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v2.0">
+        <td><span class="pun">}</span></td>
+        <td></td>
+    </tr>
+        </tbody>
+    </table></div>
+    <h6>Codes: </h6><table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <col width="50px"></col>
+            <col></col>
+            <col width="50%"></col>
+        </colgroup>
+        <thead>
+            <tr>
+            <th><span
+            >Code</span></th>
+            <th><span
+            >Message</span></th>
+            <th><span
+            >Description</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="diff_version " data-version="v2.0">
+            <td><span class="lit">403</span></td>
+            <td><span class="str">Forbidden</span></td>
+            <td><span class="com">User can not be adding to this customer</span></td>
+        </tr>
+        <tr class="diff_version " data-version="v2.0">
+            <td><span class="lit">404</span></td>
+            <td><span class="str">Customer not found</span></td>
+            <td><span class="com">Customer does not exists</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div><div class="stack sample"><div data-version="v2.0">
+
+<h5><i class="i-sample"></i> Sample: </h5>
+<h6>Request: </h6>
+<div class="code"><span class="hme">POST</span> <span class="hur">/v1.0/users</span> <span class="hpr">HTTP/1.1</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+<span class="pun">{
+</span>  <span class="str">"user"</span><span class="pun">: </span><span class="pun">{
+</span>    <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
+</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>    <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
+</span>    <span class="str">"phone"</span><span class="pun">: </span><span class="str">"my_phone"</span>
+  <span class="pun">}</span>
+<span class="pun">}</span></div>
+        <h6>Response: </h6>
+        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+<span class="pun">{
+</span>  <span class="str">"User"</span><span class="pun">: </span><span class="pun">{
+</span>    <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
+</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>    <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
+</span>    <span class="str">"phone"</span><span class="pun">: </span><span class="str">"my_phone"</span>
+  <span class="pun">}</span>
+<span class="pun">}</span></div></div></div>
+                </div>
+            </li>
+            <li class="method item" id="m-UserGet" data-method="GET">
+                <h4>Get</h4>
+                <div class="diff-header">
+                    <h5 class="desc"></h5>
+                    <h5 class="diff">
+                        <i class="i-side mode-side"></i>
+                        <i class="i-inline mode-inline"></i>
+                        <i class="i-full mode-full"></i>
+                        <i class="i-mini mode-mini"></i>
+                        <i class="i-diff"></i>
+                         Diff
+                    </h5>
+                    <ul class="versions inline">
+                        <li data-version="v1.0" data-changed="new"data-exists="yes">v1.0</li>
+                        <li data-version="v2.0" data-changed="none"data-exists="yes">v2.0</li>
+                    </ul>
+                </div><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
+
+<h5 class="stack title"></h5>
+
+<div class="description stack">
+    
+    <div class="diff_version" data-version="v1.0 v2.0">Retrieve properties of a specific user</div></div><div class="request stack">
+    <h5><i class="i-request"></i> Request: </h5>
+    <h6>Resource: </h6>
+
+    <code  class="diff_version" data-version="v1.0 v2.0"><span class="hur">http://api.acme.com/{version}/users/{user_id}</span></code>
+    <h6>URI Parameters: </h6><table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <col></col>
+            <col width="160px"></col>
+            <col width="70px"></col>
+            <col width="50%"></col>
+        </colgroup>
+        <thead>
+            <tr>
+            <th><span
+            >Parameter</span></th>
+            <th><span
+            >Type</span></th>
+            <th><span
+            >Optional</span></th>
+            <th><span
+            >Description</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="diff_version generic" data-version="v1.0 v2.0">
+            <td><span class="str">version</span></td>
+            <td><span class="typ">
+                    <a href="javascript:navigateTo({type: 'Version'}, ['category', 'method'])">Version</a><td><span class="lit"></span></td>
+            <td><span class="com">Api version</span></td>
+        </tr>
+        <tr class="diff_version " data-version="v1.0 v2.0">
+            <td><span class="str">user_id</span></td>
+            <td><span class="typ">number<td><span class="lit"></span></td>
+            <td><span class="com">user identifier</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="response stack">
+    <h5><i class="i-response"></i> Response: </h5>
+    <h6>Body: </h6>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"User"</span><span class="pun">: </span><span class="typ"><a href="javascript:navigateTo({type: 'User'}, ['category', 'method'])">User</a></span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">}</span></td>
+        <td></td>
+    </tr>
+        </tbody>
+    </table></div>
+    <h6>Codes: </h6><table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <col width="50px"></col>
+            <col></col>
+            <col width="50%"></col>
+        </colgroup>
+        <thead>
+            <tr>
+            <th><span
+            >Code</span></th>
+            <th><span
+            >Message</span></th>
+            <th><span
+            >Description</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="diff_version " data-version="v1.0 v2.0">
+            <td><span class="lit">404</span></td>
+            <td><span class="str">User not found</span></td>
+            <td><span class="com">User does not exists</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div><div class="stack sample"><div data-version="v1.0 v2.0">
+
+<h5><i class="i-sample"></i> Sample: </h5>
+<h6>Request: </h6>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1.0/users/123</span> <span class="hpr">HTTP/1.1</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+</div>
+        <h6>Response: </h6>
+        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+<span class="pun">{
+</span>  <span class="str">"User"</span><span class="pun">: </span><span class="pun">{
+</span>    <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
+</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>    <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+  <span class="pun">}</span>
+<span class="pun">}</span></div></div></div>
+                </div>
+            </li>
+            <li class="method item" id="m-UsersList" data-method="GET">
+                <h4>List</h4>
+                <div class="diff-header">
+                    <h5 class="desc"></h5>
+                    <h5 class="diff">
+                        <i class="i-side mode-side"></i>
+                        <i class="i-inline mode-inline"></i>
+                        <i class="i-full mode-full"></i>
+                        <i class="i-mini mode-mini"></i>
+                        <i class="i-diff"></i>
+                         Diff
+                    </h5>
+                    <ul class="versions inline">
+                        <li data-version="v1.0" data-changed="new"data-exists="yes">v1.0</li>
+                        <li data-version="v2.0" data-changed="updated"data-exists="yes">v2.0</li>
+                    </ul>
+                </div><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
+
+<h5 class="stack title"></h5>
+
+<div class="description stack">
+    
+    <div class="diff_version" data-version="v1.0 v2.0">List users</div></div><div class="request stack">
+    <h5><i class="i-request"></i> Request: </h5>
+    <h6>Resource: </h6>
+
+    <code  class="diff_version" data-version="v1.0 v2.0"><span class="hur">http://api.acme.com/{version}/users</span></code>
+    <h6>URI Parameters: </h6><table class="table table-bordered table-hover table-condensed">
+        <colgroup>
+            <col></col>
+            <col width="160px"></col>
+            <col width="70px"></col>
+            <col width="50%"></col>
+        </colgroup>
+        <thead>
+            <tr>
+            <th><span
+            >Parameter</span></th>
+            <th><span
+            >Type</span></th>
+            <th><span
+            >Optional</span></th>
+            <th><span
+            >Description</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr class="diff_version generic" data-version="v1.0 v2.0">
+            <td><span class="str">version</span></td>
+            <td><span class="typ">
+                    <a href="javascript:navigateTo({type: 'Version'}, ['category', 'method'])">Version</a><td><span class="lit"></span></td>
+            <td><span class="com">Api version</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="response stack">
+    <h5><i class="i-response"></i> Response: </h5>
+    <h6>Body: </h6>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"Users"</span><span class="pun">: </span><span class="pun">[</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>    <span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>      <span class="str">"id"</span><span class="pun">: </span><span class="typ">number</span><span class="pun">,</span></td>
+        <td class="com">Object identifier</td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>      <span class="str">"name"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
+        <td class="com">Name of the object</td>
+    </tr>
+    <tr class="diff_version" data-version="v2.0">
+        <td>      <span class="str">"next"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
+        <td class="com"><span class="optional lit">Optional</span>Link to the next element</td>
+    </tr>
+    <tr class="diff_version" data-version="v2.0">
+        <td>      <span class="str">"previous"</span><span class="pun">: </span><span class="typ">string</span></td>
+        <td class="com"><span class="optional lit">Optional</span>Link to the previous element</td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>    <span class="pun">}</span></td>
+        <td></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="pun">]</span></td>
+        <td></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">}</span></td>
+        <td></td>
+    </tr>
+        </tbody>
+    </table></div>
+</div><div class="stack sample"><div data-version="v1.0">
+
+<h5><i class="i-sample"></i> Sample: </h5>
+<h6>Request: </h6>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1.0/users</span> <span class="hpr">HTTP/1.1</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+</div>
+        <h6>Response: </h6>
+        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+<span class="pun">{
+</span>  <span class="str">"Users"</span><span class="pun">: </span><span class="pun">[
+</span>    <span class="pun">{
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+    <span class="pun">}</span><span class="pun">,
+</span>    <span class="pun">{
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+    <span class="pun">}</span>
+  <span class="pun">]</span>
+<span class="pun">}</span></div></div><div data-version="v2.0">
+
+<h5><i class="i-sample"></i> Sample: </h5>
+<h6>Request: </h6>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1.0/users</span> <span class="hpr">HTTP/1.1</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+</div>
+        <h6>Response: </h6>
+        <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
+<span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
+
+<span class="pun">{
+</span>  <span class="str">"Users"</span><span class="pun">: </span><span class="pun">[
+</span>    <span class="pun">{
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
+</span>      <span class="str">"next"</span><span class="pun">: </span><span class="str">"my_next"</span><span class="pun">,
+</span>      <span class="str">"previous"</span><span class="pun">: </span><span class="str">"my_previous"</span>
+    <span class="pun">}</span><span class="pun">,
+</span>    <span class="pun">{
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
+</span>      <span class="str">"next"</span><span class="pun">: </span><span class="str">"my_next"</span><span class="pun">,
+</span>      <span class="str">"previous"</span><span class="pun">: </span><span class="str">"my_previous"</span>
+    <span class="pun">}</span>
+  <span class="pun">]</span>
+<span class="pun">}</span></div></div></div>
+                </div>
+            </li>
+        </ul>
+    </li>
+            </ul>
+            <div class="page-header">
+                <h2>Types</h2>
+            </div>
+            <ul class="unstyled">
+    <li class="category" id="c-None">
+        <ul class="unstyled">
+            <li class="type item" id="t-Customer">
+                <h4>Customer</h4>
+                <div class="diff-header">
+                    <h5 class="desc"></h5>
+                    <h5 class="diff">
+                        <i class="i-side mode-side"></i>
+                        <i class="i-inline mode-inline"></i>
+                        <i class="i-full mode-full"></i>
+                        <i class="i-mini mode-mini"></i>
+                        <i class="i-diff"></i>
+                         Diff
+                    </h5>
+                    <ul class="versions inline">
+                        <li data-version="v1.0" data-changed="new"data-exists="yes">v1.0</li>
+                        <li data-version="v2.0" data-changed="none"data-exists="yes">v2.0</li>
+                    </ul>
+                </div><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
+
+
+<div class="description stack">
+    
+    <div class="diff_version" data-version="v1.0 v2.0">A customer</div></div><div class="configuration stack">
+    <h5><i class="i-presentation"></i> Presentation: </h5>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"id"</span><span class="pun">: </span><span class="typ">number</span><span class="pun">,</span></td>
+        <td class="com">Customer identifier</td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"name"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
+        <td class="com">Name of the customer</td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"users"</span><span class="pun">: </span><span class="pun">[</span></td>
+        <td class="com">List of users</td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>    <span class="typ"><a href="javascript:navigateTo({type: 'User'}, ['category', 'method'])">User</a></span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="pun">]</span></td>
+        <td></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">}</span></td>
+        <td></td>
+    </tr>
+        </tbody>
+    </table></div>
+
+
+</div><div class="stack sample"><div data-version="v1.0 v2.0">
+
+<h5><i class="i-sample"></i> Formats: </h5>
+<h6>Sample: </h6>
+<div class="code"><span class="pun">{
+</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>  <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
+</span>  <span class="str">"users"</span><span class="pun">: </span><span class="pun">[
+</span>    <span class="pun">{
+</span>      <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+    <span class="pun">}</span><span class="pun">,
+</span>    <span class="pun">{
+</span>      <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+    <span class="pun">}</span>
+  <span class="pun">]</span>
+<span class="pun">}</span></div></div></div>
+                </div>
+            </li>
+            <li class="type item" id="t-User">
+                <h4>User</h4>
+                <div class="diff-header">
+                    <h5 class="desc"></h5>
+                    <h5 class="diff">
+                        <i class="i-side mode-side"></i>
+                        <i class="i-inline mode-inline"></i>
+                        <i class="i-full mode-full"></i>
+                        <i class="i-mini mode-mini"></i>
+                        <i class="i-diff"></i>
+                         Diff
+                    </h5>
+                    <ul class="versions inline">
+                        <li data-version="v1.0" data-changed="new"data-exists="yes">v1.0</li>
+                        <li data-version="v2.0" data-changed="updated"data-exists="yes">v2.0</li>
+                    </ul>
+                </div><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
+
+
+<div class="description stack">
+    
+    <div class="diff_version" data-version="v1.0 v2.0">A user</div></div><div class="configuration stack">
+    <h5><i class="i-presentation"></i> Presentation: </h5>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">{</span></td>
+        <td class="com"></td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"email"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
+        <td class="com">Email address of the user</td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"id"</span><span class="pun">: </span><span class="typ">number</span><span class="pun">,</span></td>
+        <td class="com">User identifier</td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td>  <span class="str">"name"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
+        <td class="com">Name of the user</td>
+    </tr>
+    <tr class="diff_version" data-version="v2.0">
+        <td>  <span class="str">"phone"</span><span class="pun">: </span><span class="typ">string</span></td>
+        <td class="com">User's phone number</td>
+    </tr>
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="pun">}</span></td>
+        <td></td>
+    </tr>
+        </tbody>
+    </table></div>
+
+
+</div><div class="stack sample"><div data-version="v1.0">
+
+<h5><i class="i-sample"></i> Formats: </h5>
+<h6>Sample: </h6>
+<div class="code"><span class="pun">{
+</span>  <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
+</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>  <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
+<span class="pun">}</span></div></div><div data-version="v2.0">
+
+<h5><i class="i-sample"></i> Formats: </h5>
+<h6>Sample: </h6>
+<div class="code"><span class="pun">{
+</span>  <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
+</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>  <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
+</span>  <span class="str">"phone"</span><span class="pun">: </span><span class="str">"my_phone"</span>
+<span class="pun">}</span></div></div></div>
+                </div>
+            </li>
+            <li class="type item" id="t-Version">
+                <h4>Version</h4>
+                <div class="diff-header">
+                    <h5 class="desc"></h5>
+                    <h5 class="diff">
+                        <i class="i-side mode-side"></i>
+                        <i class="i-inline mode-inline"></i>
+                        <i class="i-full mode-full"></i>
+                        <i class="i-mini mode-mini"></i>
+                        <i class="i-diff"></i>
+                         Diff
+                    </h5>
+                    <ul class="versions inline">
+                        <li data-version="v1.0" data-changed="new"data-exists="yes">v1.0</li>
+                        <li data-version="v2.0" data-changed="none"data-exists="yes">v2.0</li>
+                    </ul>
+                </div><div class="nocontents">no implementation for this version</div>
+                <div class="contents">
+
+
+<div class="description stack">
+    
+    <div class="diff_version" data-version="v1.0 v2.0">A version</div></div><div class="configuration stack">
+    <h5><i class="i-presentation"></i> Presentation: </h5>
+    <div class="code"><table class="table-hover">
+        <colgroup>
+            <col width="50%%"></col>
+            <col width="50%%"></col>
+        </colgroup>
+        <tbody>
+
+    <tr class="diff_version" data-version="v1.0 v2.0">
+        <td><span class="typ">string</span></td>
+        <td class="com"></td>
+    </tr>
+        </tbody>
+    </table></div>
+
+
+</div><div class="stack sample"><div data-version="v1.0 v2.0">
+
+<h5><i class="i-sample"></i> Formats: </h5>
+<h6>Pretty Print: </h6>
+<code><span class="str">VN.N</span></code>
+<h6>Advanced: </h6>
+<code><span class="str">V\d+\.\d+</span></code>
+<h6>Sample: </h6>
+<div class="code"><span class="str">"v1.0"</span></div></div></div>
+                </div>
+            </li>
+        </ul>
+    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
