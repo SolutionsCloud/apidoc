@@ -13,7 +13,7 @@ ApiDoc
 Summary
 -------
 
-.. image:: /docs/source/_static/screenshot_sample.png
+.. image:: https://raw.github.com/SolutionsCloud/apidoc/master/docs/source/_static/screenshot_sample.png
 
 ApiDoc is a documentation generator designe for API built with Python.
 It's developed by Jérémy Derussé and `SFR Business Team <http://www.sfrbusinessteam.fr>`_.
@@ -52,7 +52,7 @@ On Windows, please install PyYAML using the binaries they provide
 Try it
 ------
 
-You can ddownload a sample file and try to render it documentation
+You can download a sample file and try to render it documentation
 
 .. code-block:: console
 
