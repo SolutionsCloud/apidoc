@@ -143,7 +143,8 @@ class Method(Element, Displayable, Comparable):
         put = 3
         delete = 4
         head = 5
-        http = 6
+        option = 6
+        patch = 7
 
     @property
     def message(self):

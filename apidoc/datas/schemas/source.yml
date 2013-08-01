@@ -85,13 +85,15 @@ definitions:
         - put
         - delete
         - head
-        - http
+        - option
+        - patch
         - GET
         - POST
         - PUT
         - DELETE
         - HEAD
-        - HTTP
+        - OPTION
+        - PATCH
       code:
         type: number
       request_parameters:

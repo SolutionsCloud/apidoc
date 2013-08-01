@@ -75,6 +75,33 @@
             background-color: hsl(0, 90%, 35%);
         }
     }
+    &[data-method=HEAD] {
+        background-color: hsl(0, 0%, 90%);
+        &, &::after, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
+            border-color: hsl(0, 0%, 70%);
+        }
+        &::after {
+            background-color: hsl(0, 0%, 35%);
+        }
+    }
+    &[data-method=OPTION] {
+        background-color: hsl(0, 0%, 97%);
+        &, &::after, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
+            border-color: hsl(0, 0%, 80%);
+        }
+        &::after {
+            background-color: hsl(0, 0%, 70%);
+        }
+    }
+    &[data-method=PATCH] {
+        background-color: hsl(65, 90%, 90%);
+        &, &::after, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
+            border-color: hsl(65, 90%, 70%);
+        }
+        &::after {
+            background-color: hsl(65, 90%, 40%);
+        }
+    }
 }
 
 #item-head {
