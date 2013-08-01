@@ -15,7 +15,8 @@
 .hat{color:#606;}
 .hva{color:#080;}
 .code{overflow:auto;white-space:pre;display:block;padding:9.5px;margin:0 0 10px;border:1px solid #ccc;border:1px solid rgba(0, 0, 0, 0.15);-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}.code TABLE{width:100%;}
-.code .optional{margin-left:-15px;margin-right:10px;}
+.code TR>TD.com{padding-left:10px;}
+.code TR.optional>TD.com{padding-left:5px;}.code TR.optional>TD.com:before{content:"Optional";padding-right:5px;color:#066;}
 .code,PRE,CODE{font-family:'Source Code Pro',monospace;font-size:13px;line-height:13px;background-color:#FFF;}
 .doc-sidenav.nav{margin:20px 0 0;border:1px solid #e5e5e5;position:relative;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;-webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.065);-moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.065);box-shadow:0 1px 4px rgba(0, 0, 0, 0.065);}.doc-sidenav.nav>li.nav-header>a{padding-left:15px;margin-top:0;}
 .doc-sidenav.nav>li:first-child>a{-webkit-border-radius:6px 6px 0 0;-moz-border-radius:6px 6px 0 0;border-radius:6px 6px 0 0;}

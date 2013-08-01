@@ -144,7 +144,9 @@ versions:
           complexe_type:
             type: complexe_type
           complexe_type_with_ref:
+            description: "a long description to check the issue #10"
             type: complexe_type_wr
+            optional: true
           values:
             type: array
             items:

@@ -1,12 +1,5 @@
 {%- import "helper/util.html" as util %}
 
-{%- macro comment(object) -%}
-    {%- if object.optional -%}
-        <span class="optional lit">Optional</span>
-    {%- endif %}
-    {{- util.none_to_empty(object.description) }}
-{%- endmacro -%}
-
 {%- macro indent(pad_length) -%}
     {{ " " * 2 * pad_length }}
 {%- endmacro -%}
