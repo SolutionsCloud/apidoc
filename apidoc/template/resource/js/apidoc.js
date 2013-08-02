@@ -324,7 +324,7 @@ function initNavigation() {
 }
 
 function focusNavigation() {
-    if (!window.matchMedia('(max-width: 767px)').matches) {
+    if (!isSmallDevice()) {
         // pas de focus si la souris est sur la navigation
         if ($(".doc-sidebar").data('hover')) {
             return;
@@ -482,10 +482,19 @@ function displayDiff(item, version) {
     refreshScrollNavigation();
 }
 
+function isSmallDevice() {
+    return window.matchMedia('(max-width: 767px)').matches;
+}
+
 function toggleDiffLayout(item) {
     item.toggleClass("diff-mode");
     if (item.is(".diff-mode")) {
-        item.addClass("diff-mode-side").removeClass("diff-mode-inline");
+        if (isSmallDevice()) {
+            item.addClass("diff-mode-inline").removeClass("diff-mode-side");
+        } else {
+            item.addClass("diff-mode-side").removeClass("diff-mode-inline");
+        }
+
         item.addClass("diff-mode-full").removeClass("diff-mode-mini");
 
         displayDiff(item);
