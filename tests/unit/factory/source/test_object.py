@@ -3,7 +3,7 @@ import unittest
 from apidoc.factory.source.object import Object as ObjectFactory
 
 from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
-from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone, ObjectEnum
+from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBoolean, ObjectNone, ObjectEnum
 from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst
 
 
@@ -30,7 +30,7 @@ class TestObject(unittest.TestCase):
                     "sample": "123.4"
                 },
                 "baz": {
-                    "type": "bool",
+                    "type": "boolean",
                     "description": "c_baz",
                     "sample": "true"
                 },
@@ -120,7 +120,7 @@ class TestObject(unittest.TestCase):
         self.assertEqual(False, response.properties["bar"].optional)
 
         self.assertIn("baz", response.properties)
-        self.assertIsInstance(response.properties["baz"], ObjectBool)
+        self.assertIsInstance(response.properties["baz"], ObjectBoolean)
         self.assertEqual("c_baz", response.properties["baz"].description)
         self.assertEqual("baz", response.properties["baz"].name)
         self.assertEqual(True, response.properties["baz"].sample)
@@ -205,14 +205,14 @@ class TestObject(unittest.TestCase):
         self.assertEqual(None, response.items)
         self.assertEqual(2, response.sample_count)
 
-    def test_create_from_name_and_dictionary__bool_default(self):
+    def test_create_from_name_and_dictionary__boolean_default(self):
         datas = {
-            "type": "bool",
+            "type": "boolean",
         }
 
         response = self.factory.create_from_name_and_dictionary("o_name", datas)
 
-        self.assertIsInstance(response, ObjectBool)
+        self.assertIsInstance(response, ObjectBoolean)
         self.assertEqual(None, response.sample)
 
     def test_create_from_name_and_dictionary__reference_default(self):

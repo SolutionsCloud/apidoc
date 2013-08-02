@@ -74,7 +74,7 @@ Feature: Source config Body manipulation
          Then the response body of method "a" is a "number" for the version "v1"
           And the response body sample of method "a" is "123" for the version "v1"
 
-    Scenario: Body as bool
+    Scenario: Body as boolean
         Given a "yaml" source file containing
             """
             versions:
@@ -82,15 +82,15 @@ Feature: Source config Body manipulation
                 methods:
                   a:
                     response_body:
-                      type: bool
+                      type: boolean
                   b:
                     response_body:
-                      type: bool
+                      type: boolean
                       sample: yes
 
             """
          When a source_factory load this file
-         Then the response body of method "a" is a "bool" for the version "v1"
+         Then the response body of method "a" is a "boolean" for the version "v1"
           And the response body sample of method "a" is "True" for the version "v1"
           And the response body sample of method "b" is "True" for the version "v1"
 

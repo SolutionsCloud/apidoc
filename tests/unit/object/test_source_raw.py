@@ -5,7 +5,7 @@ from apidoc.object.source_raw import Method
 from apidoc.object.source_raw import Parameter, ResponseCode
 from apidoc.object.source_raw import Type, TypeFormat
 from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
-from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone
+from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBoolean, ObjectNone
 from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst, ObjectEnum, EnumValue
 from apidoc.object.source_raw import Object as ObjectRaw
 
@@ -91,8 +91,8 @@ class TestSourceRaw(unittest.TestCase):
 
         self.assertEqual('123', test.get_default_sample())
 
-    def test_objectbool_get_default_sample(self):
-        test = ObjectBool()
+    def test_objectboolean_get_default_sample(self):
+        test = ObjectBoolean()
 
         self.assertEqual('True', str(test.get_default_sample()))
 
@@ -134,7 +134,7 @@ class TestSourceRaw(unittest.TestCase):
         self.assertIsInstance(Object.factory("array", "v1"), ObjectArray)
         self.assertIsInstance(Object.factory("number", "v1"), ObjectNumber)
         self.assertIsInstance(Object.factory("string", "v1"), ObjectString)
-        self.assertIsInstance(Object.factory("bool", "v1"), ObjectBool)
+        self.assertIsInstance(Object.factory("boolean", "v1"), ObjectBoolean)
         self.assertIsInstance(Object.factory("reference", "v1"), ObjectReference)
         self.assertIsInstance(Object.factory("type", "v1"), ObjectType)
         self.assertIsInstance(Object.factory("none", "v1"), ObjectNone)

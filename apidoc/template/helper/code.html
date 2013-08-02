@@ -65,7 +65,7 @@
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.sample }}</span>{{ suffix }}
     {%- elif object.type|lower == "string" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.sample }}"</span>{{ suffix }}
-    {%- elif object.type|lower == "bool" -%}
+    {%- elif object.type|lower == "boolean" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{% if object.sample %}true{% else %}false{% endif %}</span>{{ suffix }}
     {%- elif object.type|lower == "none" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="typ">null</span>{{ suffix }}
@@ -74,7 +74,7 @@
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.value }}</span>{{ suffix }}
         {%- elif object.const_type|lower == "string" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.value }}"</span>{{ suffix }}
-        {%- elif object.const_type|lower == "bool" -%}
+        {%- elif object.const_type|lower == "boolean" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{% if object.value %}true{% else %}false{% endif %}</span>{{ suffix }}
         {%- endif -%}
     {%- elif object.type|lower == "dynamic" -%}

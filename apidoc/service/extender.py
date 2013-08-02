@@ -3,7 +3,7 @@ from copy import deepcopy
 from apidoc.service.merger import Merger
 
 from apidoc.lib.util.decorator import add_property
-from apidoc.lib.util.cast import to_bool
+from apidoc.lib.util.cast import to_boolean
 
 
 @add_property("merger", Merger)
@@ -121,7 +121,7 @@ class Extender():
         """Delete sub properties flagged as removed
         """
         if isinstance(datas, dict):
-            if self.removed_key in datas and to_bool(datas[self.removed_key]):
+            if self.removed_key in datas and to_boolean(datas[self.removed_key]):
                 return None
 
             new_datas = {}

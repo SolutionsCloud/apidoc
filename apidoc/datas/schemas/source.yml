@@ -259,6 +259,7 @@ definitions:
       type:
         enum:
         - bool
+        - boolean
       description:
         type: string
       sample:
@@ -292,6 +293,7 @@ definitions:
           - number
           - string
           - bool
+          - boolean
           - reference
           - none
           - dynamic

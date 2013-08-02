@@ -169,7 +169,7 @@ versions:
           size:
             type: number
           active:
-            type: bool
+            type: boolean
           version:
             type: version
             description: A link to the type
@@ -280,7 +280,7 @@ versions:
               type: array
               description: A list of elements
               items:
-                type: bool
+                type: boolean
     references:
       ref_test:
         type: object

@@ -277,7 +277,7 @@ class Object(Element, Sampleable):
         array = 2
         number = 3
         string = 4
-        bool = 5
+        boolean = 5
         none = 6
         reference = 7
         type = 8
@@ -299,8 +299,8 @@ class Object(Element, Sampleable):
             object = ObjectNumber()
         elif type is Object.Types.string:
             object = ObjectString()
-        elif type is Object.Types.bool:
-            object = ObjectBool()
+        elif type is Object.Types.boolean:
+            object = ObjectBoolean()
         elif type is Object.Types.reference:
             object = ObjectReference()
         elif type is Object.Types.type:
@@ -383,16 +383,16 @@ class ObjectString(Object):
         self.type = Object.Types("string")
 
 
-class ObjectBool(Object):
+class ObjectBoolean(Object):
 
-    """Element ObjectBool
+    """Element ObjectBoolean
     """
 
     def __init__(self):
         """Class instantiation
         """
         super().__init__()
-        self.type = Object.Types("bool")
+        self.type = Object.Types("boolean")
 
     def get_default_sample(self):
         """Return default value for the element
@@ -443,7 +443,7 @@ class ObjectConst(Object):
         """List of availables Primaries for this element
         """
         string = 1
-        bool = 2
+        boolean = 2
         number = 3
 
     def __init__(self):

@@ -1,4 +1,4 @@
-from apidoc.lib.util.cast import to_bool
+from apidoc.lib.util.cast import to_boolean
 
 
 class Merger():
@@ -10,7 +10,7 @@ class Merger():
         """Merge extended dicts
         """
         if isinstance(target, dict):
-            if inherit and inherit_key in target and not to_bool(target[inherit_key]):
+            if inherit and inherit_key in target and not to_boolean(target[inherit_key]):
                 return
             if not isinstance(extends, dict):
                 raise ValueError("Unable to merge: Dictionnary expected")

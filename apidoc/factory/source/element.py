@@ -2,7 +2,7 @@ import collections
 
 from apidoc.object.source_raw import Sampleable, Displayable
 
-from apidoc.lib.util.cast import to_bool
+from apidoc.lib.util.cast import to_boolean
 
 
 class Element():
@@ -21,7 +21,7 @@ class Element():
 
         if isinstance(element, Displayable):
             if "display" in datas:
-                element.display = to_bool(datas["display"])
+                element.display = to_boolean(datas["display"])
 
             if "label" in datas:
                 element.label = datas["label"]

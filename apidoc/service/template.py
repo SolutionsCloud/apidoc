@@ -51,8 +51,7 @@ class Template():
 
                             if not os.path.exists(os.path.join(dir, dirname)):
                                 os.makedirs(os.path.join(dir, dirname))
-                            if os.path.exists(file):
-                                shutil.copyfile(file, os.path.join(dir, dirname, filename))
+                            shutil.copyfile(file, os.path.join(dir, dirname, filename))
 
                 if config["output"]["componants"] == "remote":
                     for template_dir in self.env.loader.searchpath:
@@ -74,6 +73,5 @@ class Template():
 
                             if not os.path.exists(os.path.join(dir, dirname)):
                                 os.makedirs(os.path.join(dir, dirname))
-                            if os.path.exists(file):
-                                shutil.copyfile(file, os.path.join(dir, dirname, filename))
+                            shutil.copyfile(file, os.path.join(dir, dirname, filename))
             open(self.output, "w").write(output)
