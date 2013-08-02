@@ -31,7 +31,7 @@ definitions:
       description:
         type: string
       order:
-        type: number
+        type: integer
     additionalProperties: false
 
   version:
@@ -43,9 +43,9 @@ definitions:
       uri:
         type: string
       major:
-        type: number
+        type: integer
       minor:
-        type: number
+        type: integer
       status:
         enum:
         - current
@@ -95,7 +95,7 @@ definitions:
         - OPTION
         - PATCH
       code:
-        type: number
+        type: integer
       request_parameters:
         patternProperties:
           ".*" :
@@ -154,6 +154,7 @@ definitions:
         type:
         - string
         - number
+        - integer
         - boolean
       generic:
         type: boolean
@@ -162,7 +163,7 @@ definitions:
   response_code:
     properties:
       code:
-        type: number
+        type: integer
       message:
         type: string
       description:
@@ -176,6 +177,7 @@ definitions:
     - $ref: "#/definitions/object_object"
     - $ref: "#/definitions/object_array"
     - $ref: "#/definitions/object_number"
+    - $ref: "#/definitions/object_integer"
     - $ref: "#/definitions/object_string"
     - $ref: "#/definitions/object_boolean"
     - $ref: "#/definitions/object_reference"
@@ -213,7 +215,7 @@ definitions:
       items:
         $ref: "#/definitions/object"
       sample_count:
-        type: number
+        type: integer
       optional:
         type: boolean
     required:
@@ -232,6 +234,7 @@ definitions:
         type:
         - string
         - number
+        - integer
       optional:
         type: boolean
     required:
@@ -253,12 +256,28 @@ definitions:
     - type
     additionalProperties: false
 
+  object_integer:
+    properties:
+      type:
+        enum:
+        - integer
+      description:
+        type: string
+      sample:
+        type: integer
+      optional:
+        type: boolean
+    required:
+    - type
+    additionalProperties: false
+
   object_boolean:
     type: object
     properties:
       type:
         enum:
         - bool
+        - boolean
       description:
         type: string
       sample:
@@ -290,8 +309,10 @@ definitions:
           - object
           - array
           - number
+          - integer
           - string
           - bool
+          - boolean
           - reference
           - none
           - dynamic
@@ -349,11 +370,13 @@ definitions:
         enum:
         - string
         - number
+        - integer
         - boolean
       value:
         type:
         - string
         - number
+        - integer
         - boolean
       optional:
         type: boolean
@@ -380,6 +403,7 @@ definitions:
           type:
           - string
           - number
+          - integer
           - boolean
         minItems: 1
       optional:
@@ -388,6 +412,7 @@ definitions:
         type:
           - string
           - number
+          - integer
           - boolean
     required:
     - type

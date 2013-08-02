@@ -447,7 +447,7 @@ class TestSourceDto(unittest.TestCase):
         self.assertIsInstance(ObjectDto.factory(Object.factory("array", "v1")), ObjectArrayDto)
         self.assertIsInstance(ObjectDto.factory(Object.factory("number", "v1")), ObjectDto)
         self.assertIsInstance(ObjectDto.factory(Object.factory("string", "v1")), ObjectDto)
-        self.assertIsInstance(ObjectDto.factory(Object.factory("bool", "v1")), ObjectDto)
+        self.assertIsInstance(ObjectDto.factory(Object.factory("boolean", "v1")), ObjectDto)
         self.assertIsInstance(ObjectDto.factory(Object.factory("type", "v1")), ObjectTypeDto)
         self.assertIsInstance(ObjectDto.factory(Object.factory("none", "v1")), ObjectDto)
         self.assertIsInstance(ObjectDto.factory(Object.factory("dynamic", "v1")), ObjectDynamicDto)
@@ -480,7 +480,7 @@ class TestSourceDto(unittest.TestCase):
 
         object1.name = "a"
         object1.description = "a"
-        object1.type = Object.Types.bool
+        object1.type = Object.Types.boolean
         object2.name = "a"
         object2.description = "a"
         object2.type = Object.Types.string
@@ -493,11 +493,11 @@ class TestSourceDto(unittest.TestCase):
 
         object1.name = "a"
         object1.description = "a"
-        object1.type = Object.Types.bool
+        object1.type = Object.Types.boolean
         object1.optional = False
         object2.name = "a"
         object2.description = "a"
-        object2.type = Object.Types.bool
+        object2.type = Object.Types.boolean
         object2.optional = True
 
         self.assertEqual(object1, sorted([object2, object1])[0])
@@ -508,12 +508,12 @@ class TestSourceDto(unittest.TestCase):
 
         object1.name = "a"
         object1.description = "a"
-        object1.type = Object.Types.bool
+        object1.type = Object.Types.boolean
         object1.optional = True
         object1.required = False
         object2.name = "a"
         object2.description = "a"
-        object2.type = Object.Types.bool
+        object2.type = Object.Types.boolean
         object2.optional = True
         object2.required = True
 

@@ -43,7 +43,7 @@ Feature: Source config URI manipulation
                       c:
                         type: number
                       d:
-                        type: bool
+                        type: boolean
                       g:
                         type: the_type
 

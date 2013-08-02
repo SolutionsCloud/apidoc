@@ -90,7 +90,7 @@ class TestSourceSample(unittest.TestCase):
         self.assertIsInstance(ObjectSample.factory(Object.factory("array", "v1")), ObjectArraySample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("number", "v1")), ObjectSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("string", "v1")), ObjectSample)
-        self.assertIsInstance(ObjectSample.factory(Object.factory("bool", "v1")), ObjectSample)
+        self.assertIsInstance(ObjectSample.factory(Object.factory("boolean", "v1")), ObjectSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("type", "v1")), ObjectTypeSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("none", "v1")), ObjectSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("dynamic", "v1")), ObjectDynamicSample)
