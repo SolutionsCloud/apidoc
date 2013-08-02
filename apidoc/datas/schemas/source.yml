@@ -31,7 +31,7 @@ definitions:
       description:
         type: string
       order:
-        type: number
+        type: integer
     additionalProperties: false
 
   version:
@@ -43,9 +43,9 @@ definitions:
       uri:
         type: string
       major:
-        type: number
+        type: integer
       minor:
-        type: number
+        type: integer
       status:
         enum:
         - current
@@ -95,7 +95,7 @@ definitions:
         - OPTION
         - PATCH
       code:
-        type: number
+        type: integer
       request_parameters:
         patternProperties:
           ".*" :
@@ -162,7 +162,7 @@ definitions:
   response_code:
     properties:
       code:
-        type: number
+        type: integer
       message:
         type: string
       description:
@@ -213,7 +213,7 @@ definitions:
       items:
         $ref: "#/definitions/object"
       sample_count:
-        type: number
+        type: integer
       optional:
         type: boolean
     required:
