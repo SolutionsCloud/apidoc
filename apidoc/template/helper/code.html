@@ -63,6 +63,8 @@
 {{ indent(pad_length) }}<span class="pun">]</span>{{ suffix }}
     {%- elif object.type|lower == "number" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.sample }}</span>{{ suffix }}
+    {%- elif object.type|lower == "integer" -%}
+{{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.sample }}</span>{{ suffix }}
     {%- elif object.type|lower == "string" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.sample }}"</span>{{ suffix }}
     {%- elif object.type|lower == "boolean" -%}
@@ -71,6 +73,8 @@
 {{ indent(pad_length) }}{{ prefix }}<span class="typ">null</span>{{ suffix }}
     {%- elif object.type|lower == "const" -%}
         {%- if object.const_type|lower == "number" -%}
+{{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.value }}</span>{{ suffix }}
+        {%- elif object.const_type|lower == "integer" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.value }}</span>{{ suffix }}
         {%- elif object.const_type|lower == "string" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.value }}"</span>{{ suffix }}

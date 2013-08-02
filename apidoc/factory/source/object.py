@@ -1,4 +1,4 @@
-from apidoc.object.source_raw import ObjectObject, ObjectArray, ObjectNumber, ObjectString, ObjectBoolean, ObjectReference, ObjectType, ObjectNone, ObjectDynamic, ObjectConst, ObjectEnum, EnumValue
+from apidoc.object.source_raw import ObjectObject, ObjectArray, ObjectNumber, ObjectInteger, ObjectString, ObjectBoolean, ObjectReference, ObjectType, ObjectNone, ObjectDynamic, ObjectConst, ObjectEnum, EnumValue
 from apidoc.object.source_raw import Object as ObjectRaw
 
 from apidoc.factory.source.element import Element as ElementFactory
@@ -33,6 +33,8 @@ class Object(ElementFactory):
                 object.sample_count = int(datas["sample_count"])
         elif type is ObjectRaw.Types.number:
             object = ObjectNumber()
+        elif type is ObjectRaw.Types.integer:
+            object = ObjectInteger()
         elif type is ObjectRaw.Types.string:
             object = ObjectString()
         elif type is ObjectRaw.Types.boolean:

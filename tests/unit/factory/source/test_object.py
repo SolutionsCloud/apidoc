@@ -3,7 +3,7 @@ import unittest
 from apidoc.factory.source.object import Object as ObjectFactory
 
 from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
-from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBoolean, ObjectNone, ObjectEnum
+from apidoc.object.source_raw import ObjectNumber, ObjectInteger, ObjectString, ObjectBoolean, ObjectNone, ObjectEnum
 from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst
 
 
@@ -28,6 +28,12 @@ class TestObject(unittest.TestCase):
                     "description": "c_bar",
                     "optional": "false",
                     "sample": "123.4"
+                },
+                "barfoo": {
+                    "type": "integer",
+                    "description": "c_barfoo",
+                    "optional": "false",
+                    "sample": "123"
                 },
                 "baz": {
                     "type": "boolean",
@@ -118,6 +124,13 @@ class TestObject(unittest.TestCase):
         self.assertEqual("bar", response.properties["bar"].name)
         self.assertEqual("123.4", response.properties["bar"].sample)
         self.assertEqual(False, response.properties["bar"].optional)
+
+        self.assertIn("barfoo", response.properties)
+        self.assertIsInstance(response.properties["barfoo"], ObjectInteger)
+        self.assertEqual("c_barfoo", response.properties["barfoo"].description)
+        self.assertEqual("barfoo", response.properties["barfoo"].name)
+        self.assertEqual("123", response.properties["barfoo"].sample)
+        self.assertEqual(False, response.properties["barfoo"].optional)
 
         self.assertIn("baz", response.properties)
         self.assertIsInstance(response.properties["baz"], ObjectBoolean)

@@ -405,7 +405,7 @@ Objects
 -------
 
 In the bodies of types, requests and responses you can define a complex object using basic elements. Those elements (defined below) contain always a keyword "type" which defines the type of the element.
-The known types, are (object, array, dynamic, boolean, none, string, number, reference, const, enum). If the type is not in this list, ApiDoc will look in the elements declared in the `types` section (see :ref:`source-page-types`).
+The known types, are (object, array, dynamic, boolean, none, string, number, integer, reference, const, enum). If the type is not in this list, ApiDoc will look in the elements declared in the `types` section (see :ref:`source-page-types`).
 
 String
 ^^^^^^
@@ -427,7 +427,24 @@ sample:
 Number
 ^^^^^^
 
-The object Number defines a numeric value.
+The object Number defines a numeric value with optionals decimals.
+
+* description: A description of the number
+* sample: A sample value which will be displayed in the sample fieldset.
+
+sample:
+
+.. code-block:: yaml
+
+   price:
+       type: number
+       description: Price in dollars
+       sample: 20.3
+
+Integer
+^^^^^^^
+
+The object Integer defines a numeric value without decimal.
 
 * description: A description of the number
 * sample: A sample value which will be displayed in the sample fieldset.
@@ -479,7 +496,7 @@ Const
 The object Const defines an constant property. Sometime used in a request like the property "method" in Json-RPC.
 
 * description: A description of the object
-* cont_type: A scalar type of the constant (allowed values are `string`, `number`, `boolean`). If undefined `string` will be used
+* cont_type: A scalar type of the constant (allowed values are `string`, `number`, `integer`, `boolean`). If undefined `string` will be used
 * value: The value associated to the property
 
 sample:
@@ -714,9 +731,9 @@ You can extend multiple elements by providing an list of extensions.
      Paginated:
        request_parameter:
          index:
-           type: number
+           type: integer
          limit:;
-           type: number
+           type: integer
      Customers:
        extends:
          - Authentificated

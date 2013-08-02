@@ -54,7 +54,7 @@ versions:
             description: Resource identifier
             optional: true
           does_not_exists:
-            type: number
+            type: integer
             description: Should not be displayed
         request_body:
           type: object
@@ -79,7 +79,7 @@ versions:
           type: object
           properties:
             id:
-              type: number
+              type: integer
               description: Resource identifier
             name:
               type: string
@@ -121,7 +121,7 @@ versions:
               items:
                 type: string
             id:
-              type: number
+              type: integer
       Baz:
         category: Category2
         extends: Bar
@@ -150,7 +150,7 @@ versions:
           values:
             type: array
             items:
-              type: number
+              type: integer
       element2:
         type: object
         properties:
@@ -159,7 +159,7 @@ versions:
           values:
             type: array
             items:
-              type: number
+              type: integer
       full_element:
         type: object
         extends: element
@@ -167,7 +167,7 @@ versions:
           name:
             removed: true
           size:
-            type: number
+            type: integer
           active:
             type: boolean
           version:
@@ -260,7 +260,7 @@ versions:
         uri: /changes/{version}/{new_parameter}
         request_parameters:
           new_parameter:
-            type: number
+            type: integer
             description: New parameter in this version
         response_codes:
           - code: 403
