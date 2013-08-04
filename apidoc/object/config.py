@@ -27,6 +27,6 @@ class Config(dict):
         self["output"] = {
             "location": "stdout",
             "template": "default",
-            "componants": "local",
+            "componants": "embedded",
             "layout": "default"
         }

@@ -6,7 +6,7 @@ from apidoc.object.source_raw import Parameter, ResponseCode
 from apidoc.object.source_raw import Type, TypeFormat
 from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
 from apidoc.object.source_raw import ObjectNumber, ObjectInteger, ObjectString, ObjectBoolean, ObjectNone
-from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst, ObjectEnum, EnumValue
+from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst, ObjectEnum, EnumValue, Constraint
 from apidoc.object.source_raw import Object as ObjectRaw
 
 
@@ -178,3 +178,15 @@ class TestSourceRaw(unittest.TestCase):
         value2.description = "b"
 
         self.assertTrue(value1 < value2)
+
+    def test_constraint_str(self):
+        c = Constraint("key", "value")
+
+        self.assertEqual("key: value", str(c))
+
+    def test_constraint_repr(self):
+        c = Constraint("key", "value")
+
+        self.assertIn("<class 'apidoc.object.source_raw.Constraint'>", repr(c))
+        self.assertIn("'constraint': 'value'", repr(c))
+        self.assertIn("'name': 'key'", repr(c))

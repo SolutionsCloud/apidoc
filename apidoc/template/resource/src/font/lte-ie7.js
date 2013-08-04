@@ -15,7 +15,8 @@ window.onload = function() {
 			'i-file' : '&#x25a0;',
 			'i-switch' : '&#x21c4;',
 			'i-add-to-list' : '&#x2630;',
-			'i-info' : '&#x2713;'
+			'i-info' : '&#x2713;',
+			'i-stats' : '&#x2774;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
