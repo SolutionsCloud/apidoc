@@ -288,6 +288,12 @@ class Constraint(Comparable):
         self.name = name
         self.constraint = constraint
 
+    def  __str__(self):
+        return '%s: %s' % (self.name, str(self.constraint))
+
+    def  __repr__(self):
+        return "%s(%r)" % (self.__class__, self.__dict__)
+
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """

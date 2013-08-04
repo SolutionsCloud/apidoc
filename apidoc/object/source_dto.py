@@ -301,7 +301,7 @@ class Object(Element, Comparable):
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
-        return (str(self.name), str(self.description), str(self.type), bool(self.optional))
+        return (str(self.name), str(self.description), str(self.type), bool(self.optional), str(self.constraints))
 
 
 class ObjectObject(Object):
@@ -368,7 +368,7 @@ class ObjectEnum(Object):
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
-        return (str(self.name), str(self.description))
+        return (str(self.name), str(self.description), str(self.constraints))
 
 
 class EnumValue(Object):

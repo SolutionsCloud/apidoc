@@ -67,6 +67,8 @@ versions:
               - Foo
               - Bar
               description: Resource Name
+              constraints:
+                foo: bar
             ref:
               type: version
             elements:
@@ -275,12 +277,15 @@ versions:
         request_body:
           type: object
           properties:
+            choice:
+              constraints:
+                foo: baz
             name:
               type: string
               description: Resource Name
             ref:
               type: version
-              description: Resource Name
+              description: Resource reference
             elements:
               type: array
               description: A list of elements
