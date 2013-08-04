@@ -55,6 +55,18 @@ class Sampleable():
         """
         return "my_%s" % self.name
 
+class Constraintable():
+
+    """Element who can provide constraints
+    """
+
+    def __init__(self):
+        """Class instantiation
+        """
+        super().__init__()
+        self.constraints = {}
+
+
 
 class Displayable():
 
@@ -264,6 +276,23 @@ class TypeFormat():
         self.advanced = None
 
 
+class Constraint(Comparable):
+
+    """An oobject's constraint
+    """
+
+    def __init__(self, name, constraint):
+        """Class instantiation
+        """
+        super().__init__()
+        self.name = name
+        self.constraint = constraint
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name))
+
 class Object(Element, Sampleable):
 
     """Element Object
@@ -330,7 +359,7 @@ class Object(Element, Sampleable):
         self.optional = False
 
 
-class ObjectObject(Object):
+class ObjectObject(Object, Constraintable):
 
     """Element ObjectObject
     """
@@ -343,7 +372,7 @@ class ObjectObject(Object):
         self.properties = {}
 
 
-class ObjectArray(Object):
+class ObjectArray(Object, Constraintable):
 
     """Element ObjectArray
     """
@@ -357,7 +386,7 @@ class ObjectArray(Object):
         self.sample_count = 2
 
 
-class ObjectNumber(Object):
+class ObjectNumber(Object, Constraintable):
 
     """Element ObjectNumber
     """
@@ -374,7 +403,7 @@ class ObjectNumber(Object):
         return '13.37'
 
 
-class ObjectInteger(Object):
+class ObjectInteger(Object, Constraintable):
 
     """Element ObjectInteger
     """
@@ -391,7 +420,7 @@ class ObjectInteger(Object):
         return '42'
 
 
-class ObjectString(Object):
+class ObjectString(Object, Constraintable):
 
     """Element ObjectString
     """
@@ -403,7 +432,7 @@ class ObjectString(Object):
         self.type = Object.Types("string")
 
 
-class ObjectBoolean(Object):
+class ObjectBoolean(Object, Constraintable):
 
     """Element ObjectBoolean
     """
@@ -420,7 +449,7 @@ class ObjectBoolean(Object):
         return True
 
 
-class ObjectNone(Object):
+class ObjectNone(Object, Constraintable):
 
     """Element ObjectNone
     """
@@ -432,7 +461,7 @@ class ObjectNone(Object):
         self.type = Object.Types("none")
 
 
-class ObjectDynamic(Object):
+class ObjectDynamic(Object, Constraintable):
 
     """Element ObjectDynamic
     """
@@ -453,7 +482,7 @@ class ObjectDynamic(Object):
         }
 
 
-class ObjectConst(Object):
+class ObjectConst(Object, Constraintable):
 
     """Element ObjectConst
     """
@@ -481,7 +510,7 @@ class ObjectConst(Object):
         return self.value
 
 
-class ObjectEnum(Object):
+class ObjectEnum(Object, Constraintable):
 
     def __init__(self):
         """Class instantiation
@@ -520,7 +549,7 @@ class ObjectReference(Object):
         self.reference_name = None
 
 
-class ObjectType(Object):
+class ObjectType(Object, Constraintable):
 
     """Element ObjectType
     """

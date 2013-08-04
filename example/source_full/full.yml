@@ -168,12 +168,17 @@ versions:
             removed: true
           size:
             type: integer
+            constraints:
+              minimum: 10
+              multipleOf: 10
           active:
             type: boolean
           version:
             type: version
             description: A link to the type
             optional: true
+            constraints:
+              foo: bar
           nothing:
             type: none
           sub_element:

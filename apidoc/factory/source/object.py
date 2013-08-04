@@ -1,4 +1,4 @@
-from apidoc.object.source_raw import ObjectObject, ObjectArray, ObjectNumber, ObjectInteger, ObjectString, ObjectBoolean, ObjectReference, ObjectType, ObjectNone, ObjectDynamic, ObjectConst, ObjectEnum, EnumValue
+from apidoc.object.source_raw import ObjectObject, ObjectArray, ObjectNumber, ObjectInteger, ObjectString, ObjectBoolean, ObjectReference, ObjectType, ObjectNone, ObjectDynamic, ObjectConst, ObjectEnum, EnumValue, Constraint, Constraintable
 from apidoc.object.source_raw import Object as ObjectRaw
 
 from apidoc.factory.source.element import Element as ElementFactory
@@ -94,9 +94,16 @@ class Object(ElementFactory):
             object = ObjectRaw()
 
         self.set_common_datas(object, name, datas)
+        if isinstance(object, Constraintable):
+            self.set_constraints(object, datas)
         object.type = type
 
         if "optional" in datas:
             object.optional = to_boolean(datas["optional"])
 
         return object
+
+    def set_constraints(self, object, datas):
+        if 'constraints' in datas:
+            for name, constraint in datas['constraints'].items():
+                object.constraints[name] = Constraint(name, constraint)
