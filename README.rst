@@ -65,19 +65,3 @@ You can download a sample file and try to render it documentation
     $ wget https://raw.github.com/SolutionsCloud/apidoc/master/example/demo/source.yml
     $ apidoc-render -f source.yml -o output/index.html
     $ firefox output/index.html
-
-
-Todo
-----
-
-* RunMode: The end user can run the methods through his browser
-* Simplify Sources: When the API have only one version or only one section, The keys version and section could be ommited in sources files
-* Allow extension everywhere (will replace references)
-* Using different version of source's schema
-* Method templating: Methods are based on template who define what's will be used in the description. Ie. Json-rpc template will simplify request_body/response_body and provide a real errors cases
-* Multiple responses: Provide a way for a request to have differents responses (like inheritances, or simplfyed/advanced responses....)
-* Some methods does not reply always in json (in oAuth process for example)
-* Reduce embedded size
-    * Reduce (or eliminate) jquery
-    * Minimize CSS and javascripts files
-
