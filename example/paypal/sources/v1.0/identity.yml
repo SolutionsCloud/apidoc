@@ -3,7 +3,7 @@ versions:
     methods:
       LookupUser:
         category: Identity
-        extends: authentificated
+        extends: authenticated
         uri: /identity/openidconnect/userinfo/?schema={schema}
         request_parameters:
           schema:

@@ -107,7 +107,7 @@ Here is a full sample of a section filter
           - v3.0
       categories:
         include:
-          - Authentification
+          - Authentication
           - Common
 
 output

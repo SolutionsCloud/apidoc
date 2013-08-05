@@ -6,7 +6,7 @@ categories:
   Customers:
     description: Manage customers
   Users:
-    description: Manage user and authentification
+    description: Manage user and authentication
 versions:
   v1.0:
     status: deprecated
