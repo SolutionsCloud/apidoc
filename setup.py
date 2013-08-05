@@ -9,6 +9,8 @@ if sys.version_info < (3, 2):
 from setuptools.command.test import test as TestCommand
 from setuptools import setup, find_packages
 
+from apidoc import __version__
+
 
 class PyTest(TestCommand):
     def finalize_options(self):
@@ -30,7 +32,7 @@ else:
 
 setup(
     name='ApiDoc',
-    version='1.0',
+    version=__version__,
     description='Api Documentation Generator',
     long_description='''About
 =====
