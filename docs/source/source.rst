@@ -9,63 +9,63 @@ This is a basic sample of a config file
 
 .. code-block:: yaml
 
-   configuration:
-     title: Hello API
-     description: An API dedicated to the hello service
-     uri: ${base_url}
-   categories:
-     Display:
-       description: Display messages
-     Config:
-       description: Configure the application
-   versions:
-     v1.0:
-       methods:
-         Hello:
-           category: Display
-           uri: /
-           description: Say hello
-           response_body:
-             type: string
-             sample: Hello
-         HelloName:
-           category: Display
-           uri: /{name}
-           request_parameters:
-             name:
-               type: string
-               description: Name of the user
-           request_headers:
-             Accept:
-               type: mimeType
-               description: List of accepted MimeTypes
-               sample: text/plain
-           response_body:
-             type: string
-             sample: Hello my_name
-         ConfigHello:
-           category: Config
-           uri: /
-           method: PUT
-           description: Configure the hello method
-           request_body:
-             type: object
-             properties:
-               language:
-                   type: string
-                   sample: "fr"
-           response_body:
-             type: boolean
-       types:
-         mimeType:
-           item:
-             type: string
-             sample: application/json
-           format:
-             pretty: type/sous-type
-     v2.O:
-       status: beta
-       display: false
+    configuration:
+      title: Hello API
+      description: An API dedicated to the hello service
+      uri: ${base_url}
+    categories:
+      Display:
+        description: Display messages
+      Config:
+        description: Configure the application
+    versions:
+      v1.0:
+        methods:
+          Hello:
+            category: Display
+            uri: /
+            description: Say hello
+            response_body:
+              type: string
+              sample: Hello
+          HelloName:
+            category: Display
+            uri: /{name}
+            request_parameters:
+              name:
+                type: string
+                description: Name of the user
+            request_headers:
+              Accept:
+                type: mimeType
+                description: List of accepted MimeTypes
+                sample: text/plain
+            response_body:
+              type: string
+              sample: Hello my_name
+          ConfigHello:
+            category: Config
+            uri: /
+            method: PUT
+            description: Configure the hello method
+            request_body:
+              type: object
+              properties:
+                language:
+                  type: string
+                  sample: "fr"
+            response_body:
+              type: boolean
+        types:
+          mimeType:
+            item:
+              type: string
+              sample: application/json
+            format:
+              pretty: type/sous-type
+      v2.O:
+        status: beta
+        display: false
 
 All elements are optional, but a least one displayable method is required.
 
@@ -82,10 +82,10 @@ sample:
 
 .. code-block:: yaml
 
-   configuration:
-     title: Hello API
-     description: An API dedicated to the hello service
-     uri: https://api.sfr.com/services/hello
+    configuration:
+      title: Hello API
+      description: An API dedicated to the hello service
+      uri: https://api.sfr.com/services/hello
 
 versions
 --------
@@ -106,24 +106,24 @@ sample:
 
 .. code-block:: yaml
 
-   versions:
-     v1.0:
-       display: true
-       label: Version 1
-       uri: /v1
-       major: 1
-       minor: 0
-       status: current
-       methods:
-         ...
-     v2.0:
-       display: false
-       uri: /v2
-       major: 2
-       minor: 0
-       status: beta
-       methods:
-         ...
+    versions:
+      v1.0:
+        display: true
+        label: Version 1
+        uri: /v1
+        major: 1
+        minor: 0
+        status: current
+        methods:
+          ...
+      v2.0:
+        display: false
+        uri: /v2
+        major: 2
+        minor: 0
+        status: beta
+        methods:
+          ...
 
 categories
 ----------
@@ -139,16 +139,16 @@ sample:
 
 .. code-block:: yaml
 
-   categories:
-     Common:
-       display: false
-       description: a helper section use for extension
-     Version:
-       description: List the version of the API
-       order: 1
-     Authentication:
-       label: Authentication + Logout
-       description: How to login and logout the client
+    categories:
+      Common:
+        display: false
+        description: a helper section use for extension
+      Version:
+        description: List the version of the API
+        order: 1
+      Authentication:
+        label: Authentication + Logout
+        description: How to login and logout the client
 
 .. _source-page-methods:
 
@@ -173,23 +173,23 @@ sample:
 
 .. code-block:: console
 
-   methods:
-     Hello:
-       label: Echo
-       uri: /hello-{name}.json
-       method: get
-       code: 200
-       description: Say hello
-       request_parameters:
-         ...
-       request_headers:
-         ...
-       request_body:
-         ...
-       response_codes:
-         ...
-       response_body:
-         ...
+    methods:
+      Hello:
+        label: Echo
+        uri: /hello-{name}.json
+        method: get
+        code: 200
+        description: Say hello
+        request_parameters:
+          ...
+        request_headers:
+          ...
+        request_body:
+          ...
+        response_codes:
+          ...
+        response_body:
+          ...
 
 .. _source-page-request_parameters:
 
@@ -208,19 +208,19 @@ sample:
 
 .. code-block:: yaml
 
-   request_parameters:
-     name:
-       type: string
-       description: Name of the user
-       optional: false
-       sample: John Doe
-       generic: false
-     language:
-       type: string
-       description: Language of the response
-       optional: true
-       sample: fr
-       generic: true
+    request_parameters:
+      name:
+        type: string
+        description: Name of the user
+        optional: false
+        sample: John Doe
+        generic: false
+      language:
+        type: string
+        description: Language of the response
+        optional: true
+        sample: fr
+        generic: true
 
 .. _source-page-request_headers:
 
@@ -239,16 +239,16 @@ sample:
 
 .. code-block:: yaml
 
-   request_headers:
-     Accept:
-       type: mimeType
-       description: List of accepted MimeTypes
-       sample: text/plain
-       optional: true
-       generic: true
-     X-Auth-Token:
-       type: string
-       description: Authentification token
+    request_headers:
+      Accept:
+        type: mimeType
+        description: List of accepted MimeTypes
+        sample: text/plain
+        optional: true
+        generic: true
+      X-Auth-Token:
+        type: string
+        description: Authentification token
 
 .. _source-page-request_body:
 
@@ -261,14 +261,14 @@ sample:
 
 .. code-block:: yaml
 
-   request_body
-       type: object
-       description: Root envelope
-       properties:
-           login:
-               type: string
-           password:
-               type: string
+    request_body
+        type: object
+        description: Root envelope
+        properties:
+          login:
+            type: string
+          password:
+            type: string
 
 .. _source-page-response_codes:
 
@@ -286,13 +286,13 @@ sample:
 
 .. code-block:: yaml
 
-   response_codes:
-     - code: 400
-       message: Bad name format
-       description: The resource name is not correct
-     - code: 404
-       message: Resource not found
-       generic: true
+    response_codes:
+    - code: 400
+      message: Bad name format
+      description: The resource name is not correct
+    - code: 404
+      message: Resource not found
+      generic: true
 
 .. _source-page-response_body:
 
@@ -305,18 +305,18 @@ sample:
 
 .. code-block:: yaml
 
-   request_body
-       type: array
-       description: List of users
-       items:
-           type: object
-           properties:
-               name:
-                   type: string
-                   description: Name of the user
-               role:
-                   type: CustomRole
-                   description: Role of the user
+    request_body
+      type: array
+      description: List of users
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Name of the user
+          role:
+            type: CustomRole
+            description: Role of the user
 
 .. _source-page-types:
 
@@ -337,29 +337,29 @@ sample:
 
 .. code-block:: yaml
 
-   types:
-     mimeType:
-       category: Common
-       description: A mime type
-       item:
-         type: string
-         sample: application/json
-       format:
-         pretty: type/sous-type
-         advanced: [a-z]\/[a-z]
-     languages:
-       category: Lists
-       description: List of supported language
-       item:
-         type: enum
-         values:
-         - en
-         - fr
-         descriptions:
-           en:
-             description: English
-           fr:
-             description: Français
+    types:
+      mimeType:
+        category: Common
+        description: A mime type
+        item:
+          type: string
+          sample: application/json
+        format:
+          pretty: type/sous-type
+          advanced: [a-z]\/[a-z]
+      languages:
+        category: Lists
+        description: List of supported language
+        item:
+          type: enum
+          values:
+          - en
+          - fr
+          descriptions:
+            en:
+              description: English
+            fr:
+              description: Français
 
 .. _source-page-references:
 
@@ -373,31 +373,31 @@ sample:
 
 .. code-block:: yaml
 
-   methods:
-     listComments:
-       ...
-       response_body:
-         type: array
-         items:
-           type: reference
-           reference: comment
-   reference:
-     comment:
-       type: object
-       properties:
-         owner:
-           type: reference
-           reference: user
-         message:
-           type: string
-         date:
-           type: string
-     user:
-       type: object
-       name:
-         type: string
-       language:
-         type: string
+    methods:
+      listComments:
+        ...
+        response_body:
+          type: array
+          items:
+            type: reference
+            reference: comment
+    reference:
+      comment:
+        type: object
+        properties:
+          owner:
+            type: reference
+            reference: user
+          message:
+            type: string
+          date:
+            type: string
+      user:
+        type: object
+        name:
+          type: string
+        language:
+          type: string
 
 .. _source-page-Objects:
 
@@ -430,13 +430,13 @@ sample:
 
 .. code-block:: yaml
 
-   name:
-       type: string
-       description: Name of the user
-       sample: John Doe
-       constraints:
-           minLength: 1
-           maxLength: 32
+    name:
+      type: string
+      description: Name of the user
+      sample: John Doe
+      constraints:
+        minLength: 1
+        maxLength: 32
 
 Number
 ^^^^^^
@@ -460,13 +460,13 @@ sample:
 
 .. code-block:: yaml
 
-   price:
-       type: number
-       description: Price in dollars
-       sample: 20.3
-       constraints:
-           maximum: 0
-           multipleOf: 0.01
+    price:
+      type: number
+      description: Price in dollars
+      sample: 20.3
+      constraints:
+        maximum: 0
+        multipleOf: 0.01
 
 Integer
 ^^^^^^^
@@ -490,12 +490,12 @@ sample:
 
 .. code-block:: yaml
 
-   age:
-       type: number
-       description: Age of the user
-       sample: 20
-       constraints:
-           maximum: 0
+    age:
+      type: number
+      description: Age of the user
+      sample: 20
+      constraints:
+        maximum: 0
 
 Boolean
 ^^^^^^^
@@ -513,12 +513,12 @@ sample:
 
 .. code-block:: yaml
 
-   is_default:
-       type: boolean
-       description: Define if the group is the default group
-       sample: false
-       constraints:
-           default: false
+    is_default:
+      type: boolean
+      description: Define if the group is the default group
+      sample: false
+      constraints:
+        default: false
 
 None
 ^^^^
@@ -534,11 +534,11 @@ sample:
 
 .. code-block:: yaml
 
-   reboot:
-     type: none
-     description: Set this key if you want reboot your server
-     constraints:
-       compulsory: yes
+    reboot:
+      type: none
+      description: Set this key if you want reboot your server
+      constraints:
+        compulsory: yes
 
 Const
 ^^^^^
@@ -556,12 +556,12 @@ sample:
 
 .. code-block:: yaml
 
-   method:
-     type: const
-     description: Json-RPC method name
-     const_type: string
-     value: "find"
-     constraints:
+    method:
+      type: const
+      description: Json-RPC method name
+      const_type: string
+      value: "find"
+      constraints:
         required: authenticated user
 
 Enum
@@ -580,21 +580,21 @@ sample:
 
 .. code-block:: yaml
 
-   httpMethods:
-     type: enum
-     description: List of Http methods used in Rest
-     values:
-     - GET
-     - POST
-     - PUT
-     - DELETE
-     descriptions:
-       GET: Like select
-       POST: Like insert
-       PUT: Like update
-       DELETE: Like delete
-     sample: GET
-     constraints:
+    httpMethods:
+      type: enum
+      description: List of Http methods used in Rest
+      values:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      descriptions:
+        GET: Like select
+        POST: Like insert
+        PUT: Like update
+        DELETE: Like delete
+      sample: GET
+      constraints:
         required: authenticated user
 
 Object
@@ -612,14 +612,14 @@ sample:
 
 .. code-block:: yaml
 
-   element:
-     type: object
-     description: User to update
-     properties:
-       name:
-         type: string
-         description: New name of the user
-     constraints:
+    element:
+      type: object
+      description: User to update
+      properties:
+        name:
+          type: string
+          description: New name of the user
+      constraints:
         required: authenticated user
 
 Array
@@ -641,16 +641,16 @@ sample:
 
 .. code-block:: yaml
 
-   elements:
-     type: array
-     description: List of users
-     items:
-       type: object
-       properties:
-         name:
-           type: string
-           description: New name of the user
-     constraints:
+    elements:
+      type: array
+      description: List of users
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: New name of the user
+      constraints:
         maxItems: 10
 
 Reference
@@ -666,9 +666,9 @@ sample:
 
 .. code-block:: yaml
 
-   user:
-     type: reference
-     reference: GenericUser
+    user:
+      type: reference
+      reference: GenericUser
 
 Dynamic
 ^^^^^^^
@@ -688,10 +688,10 @@ sample:
 
 .. code-block:: yaml
 
-   metadatas:
-       type: dynamic
-       description: A list of key/value to store what you want
-       item: string
+    metadatas:
+      type: dynamic
+      description: A list of key/value to store what you want
+      item: string
 
 
 Customizations
@@ -710,27 +710,27 @@ Sample using a variable string context:
 
 .. code-block:: yaml
 
-   configuration:
-     title: ${applicationName}
-     description: Official documentation of ${applicationName}
+    configuration:
+      title: ${applicationName}
+      description: Official documentation of ${applicationName}
 
 Sample using a variable to set a boolean:
 
 .. code-block:: yaml
 
-   categories:
-     MyExperiments:
-       display: ${displayExperimentals}
+    categories:
+      MyExperiments:
+        display: ${displayExperimentals}
 
 Sample using a variable used in extends context:
 
 .. code-block:: yaml
 
-   versions:
-     v1:
-       ...
-     v2:
-       extends: ${officialVersion}
+    versions:
+      v1:
+        ...
+      v2:
+        extends: ${officialVersion}
 
 Extends
 -------
@@ -743,78 +743,78 @@ Sample using an extension on the version:
 
 .. code-block:: yaml
 
-   versions:
-     v1:
-       ...
-     v2:
-       extends: v1
+    versions:
+      v1:
+        ...
+      v2:
+        extends: v1
 
 Sample using an extension on a method with relative path and absolute path:
 
 .. code-block:: yaml
 
-   versions
-     v1:
-       methods:
-         Request:
-           ...
-         AuthentificatedRequest:
-           extends: Request
-     v2:
-       methods:
-         Login:
-           extends: v1/Request
+    versions
+      v1:
+        methods:
+          Request:
+            ...
+          AuthentificatedRequest:
+            extends: Request
+      v2:
+        methods:
+          Login:
+            extends: v1/Request
 
 Sample using an extension where the method ListClientWithDetails extends ListClients but not for the response_body which is redefined:
 
 .. code-block:: yaml
 
-   methods:
-     ListClients:
-       ...
-     ListClientWithDetails:
-       extends: ListClients
-       response_body:
-         inherit: false
-       ...
+    methods:
+      ListClients:
+        ...
+      ListClientWithDetails:
+        extends: ListClients
+        response_body:
+          inherit: false
+        ...
 
 Sample using an extension where the section SessionAuthentification extends FormAuthentification but the content of the body of the method Login is removed:
 
 .. code-block:: yaml
 
-   methods:
-     Login:
-       request_body:
-         type: object
-         properties:
-           login:
-             type: string
-           password:
-             type: string
-     SSO:
-       extends: Login
-       request_parameters:
-         token_id:
-           type: string
-       request_body:
-         removed: true
+    methods:
+      Login:
+        request_body:
+          type: object
+          properties:
+            login:
+              type: string
+            password:
+              type: string
+      SSO:
+        extends: Login
+        request_parameters:
+          token_id:
+            type: string
+        request_body:
+          removed: true
 
 You can extend multiple elements by providing an list of extensions.
 
 .. code-block:: yaml
 
-   Methods:
-     Authentificated:
-       request_header:
-         X-Auth-Token:
-           type: string
-     Paginated:
-       request_parameter:
-         index:
-           type: integer
-         limit:;
-           type: integer
-     Customers:
-       extends:
-         - Authentificated
-         - Paginated
+    Methods:
+      Authentificated:
+        request_header:
+          X-Auth-Token:
+            type: string
+      Paginated:
+        request_parameter:
+          index:
+            type: integer
+          limit:;
+            type: integer
+      Customers:
+        extends:
+        - Authentificated
+        - Paginated
