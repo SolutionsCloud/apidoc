@@ -30,7 +30,7 @@ else:
 
 setup(
     name='ApiDoc',
-    version='1.0',
+    version='1.1a0',
     description='Api Documentation Generator',
     long_description='''ApiDoc is a documentation generator designe for API built with Python.
 It's developed by Jérémy Derussé and SFR Business Team.

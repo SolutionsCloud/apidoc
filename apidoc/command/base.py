@@ -32,7 +32,7 @@ class Base():
             help="rendered output file"
         )
         self.parser.add_argument(
-            "-v", "--version", action='version', version='%(prog)s 1.0'
+            "-v", "--version", action='version', version='%(prog)s 1.1'
         )
         self.parser.add_argument(
             "-n", "--no-validate", help="disable validation", action='store_const', const=True
