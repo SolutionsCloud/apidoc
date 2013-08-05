@@ -39,7 +39,7 @@ versions:
         request_headers:
           X-Auth-Token:
             type: string
-            description: Authentification token
+            description: Authentication token
             sample: 1234567890abcdefghij
           content-type:
             type: string

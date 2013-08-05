@@ -248,7 +248,7 @@ sample:
         generic: true
       X-Auth-Token:
         type: string
-        description: Authentification token
+        description: Authentication token
 
 .. _source-page-request_body:
 
@@ -758,7 +758,7 @@ Sample using an extension on a method with relative path and absolute path:
         methods:
           Request:
             ...
-          AuthentificatedRequest:
+          AuthenticatedRequest:
             extends: Request
       v2:
         methods:
@@ -778,7 +778,7 @@ Sample using an extension where the method ListClientWithDetails extends ListCli
           inherit: false
         ...
 
-Sample using an extension where the section SessionAuthentification extends FormAuthentification but the content of the body of the method Login is removed:
+Sample using an extension where the section SessionAuthentication extends FormAuthentication but the content of the body of the method Login is removed:
 
 .. code-block:: yaml
 
@@ -804,7 +804,7 @@ You can extend multiple elements by providing an list of extensions.
 .. code-block:: yaml
 
     Methods:
-      Authentificated:
+      Authenticated:
         request_header:
           X-Auth-Token:
             type: string
@@ -816,5 +816,5 @@ You can extend multiple elements by providing an list of extensions.
             type: integer
       Customers:
         extends:
-        - Authentificated
+        - Authenticated
         - Paginated

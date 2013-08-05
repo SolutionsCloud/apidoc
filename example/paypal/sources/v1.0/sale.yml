@@ -3,7 +3,7 @@ versions:
     methods:
       LookupSale:
         category: Sale
-        extends: authentificated
+        extends: authenticated
         uri: /payments/sale/{id}
         request_parameters:
           id:
@@ -50,7 +50,7 @@ versions:
               description: HATEOAS links related to this call. Assigned in response.
       refoundSale:
         category: Sale
-        extends: authentificated
+        extends: authenticated
         uri: /payments/sale/{id}/refund
         method: post
         request_parameters:

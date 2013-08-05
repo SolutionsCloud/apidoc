@@ -3,7 +3,7 @@ versions:
     methods:
       LookupRefund:
         category: Refund
-        extends: authentificated
+        extends: authenticated
         uri: /payments/refund/{id}
         request_parameters:
           id:
