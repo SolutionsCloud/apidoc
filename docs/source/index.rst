@@ -44,7 +44,6 @@ Contents
    config
    source
    contributing
-   todo
 
 
 Licenses
