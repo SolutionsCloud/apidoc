@@ -2,7 +2,7 @@ import unittest
 
 from apidoc.factory.source.object import Object as ObjectFactory
 
-from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
+from apidoc.object.source_raw import Object, ObjectObject, ObjectArray, Constraint
 from apidoc.object.source_raw import ObjectNumber, ObjectInteger, ObjectString, ObjectBoolean, ObjectNone, ObjectEnum
 from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst
 
@@ -268,3 +268,31 @@ class TestObject(unittest.TestCase):
         self.assertEqual(1, len(response.descriptions))
         self.assertEqual("a", response.descriptions[0].name)
         self.assertEqual(None, response.descriptions[0].description)
+
+    def test_create_from_name_and_dictionary__constraint(self):
+        datas = {
+            "description": "c",
+            "type": "object",
+            "properties": {
+                "foo": {
+                    "type": "string",
+                    "constraints": {
+                        "maxLength": 32,
+                        "custom": "bar"
+                    }
+                }
+            }
+        }
+
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIn("foo", response.properties)
+        self.assertIsInstance(response.properties["foo"], ObjectString)
+        self.assertIsInstance(response.properties["foo"].constraints, dict)
+        self.assertIn("maxLength", response.properties["foo"].constraints)
+        self.assertIn("custom", response.properties["foo"].constraints)
+        self.assertIsInstance(response.properties["foo"].constraints["maxLength"], Constraint)
+        self.assertEqual("maxLength", response.properties["foo"].constraints["maxLength"].name)
+        self.assertEqual(32, response.properties["foo"].constraints["maxLength"].constraint)
+
+        self.assertTrue(response.properties["foo"].constraints["maxLength"] > response.properties["foo"].constraints["custom"])

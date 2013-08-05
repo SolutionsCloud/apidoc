@@ -487,6 +487,8 @@ function isSmallDevice() {
 }
 
 function toggleDiffLayout(item) {
+    $('.i-constraint[data-content]', item).popover('hide')
+
     item.toggleClass("diff-mode");
     if (item.is(".diff-mode")) {
         if (isSmallDevice()) {
@@ -716,6 +718,7 @@ function shortcutToggleSide(event, key) {
 
     if (current.length > 0) {
         var element = $(current.data('target'));
+        $('.i-constraint[data-content]', element).popover('hide')
         if (!element.is(".diff-mode")) {
             toggleDiffLayout($(current.data('target')));
             diffActivateModeInline(element);
@@ -735,6 +738,7 @@ function shortcutToggleFull(event, key) {
 
     if (current.length > 0) {
         var element = $(current.data('target'));
+        $('.i-constraint[data-content]', element).popover('hide')
         if (!element.is(".diff-mode")) {
             toggleDiffLayout($(current.data('target')));
             diffActivateModeMini(element);
@@ -838,6 +842,8 @@ $(document).ready(function () {
     initSearch();
     initShortcuts();
     initHelp();
+
+    $('.i-constraint[data-content]').popover({html: true});
 
     onNavigationChange();
 });

@@ -61,12 +61,18 @@ versions:
           properties:
             name:
               type: string
+              constraints:
+                enum:
+                  - foo
+                  - bar
             choice:
               type: enum
               values:
               - Foo
               - Bar
               description: Resource Name
+              constraints:
+                foo: bar
             ref:
               type: version
             elements:
@@ -168,12 +174,18 @@ versions:
             removed: true
           size:
             type: integer
+            constraints:
+              minimum: 10
+              exclusiveMinimum: true
+              multipleOf: 10
           active:
             type: boolean
           version:
             type: version
             description: A link to the type
             optional: true
+            constraints:
+              foo: bar
           nothing:
             type: none
           sub_element:
@@ -270,12 +282,15 @@ versions:
         request_body:
           type: object
           properties:
+            choice:
+              constraints:
+                foo: baz
             name:
               type: string
               description: Resource Name
             ref:
               type: version
-              description: Resource Name
+              description: Resource reference
             elements:
               type: array
               description: A list of elements

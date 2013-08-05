@@ -5,7 +5,7 @@
     {%- for  object in objects -%}
         {%- if object.value.type|lower == "object" %}
     <tr class="diff_version {%- if object.value.optional %} optional{% endif %}" data-version="{{ object.versions|join(" ") }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="pun">{</span></td>
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="pun">{</span>{{ util.constraints(object.value) }}</td>
         <td class="com">{{ util.none_to_empty(object.value.description) }}</td>
     </tr>
             {%- for (property_name, property_value) in object.value.properties.items()|sort %}
@@ -21,7 +21,7 @@
     </tr>
         {%- elif object.value.type|lower == "array" %}
     <tr class="diff_version {%- if object.value.optional %} optional{% endif %}" data-version="{{ object.versions|join(" ") }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="pun">[</span></td>
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="pun">[</span>{{ util.constraints(object.value) }}</td>
         <td class="com">{{ util.none_to_empty(object.value.description) }}</td>
     </tr>
             {{- diff_code_commented(object.value.items, "", "", pad_length+1) }}
@@ -31,12 +31,12 @@
     </tr>
         {%- elif object.value.type|lower in ("number", "integer", "string", "boolean") %}
     <tr class="diff_version {%- if object.value.optional %} optional{% endif %}" data-version="{{ object.versions|join(" ") }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">{{ object.value.type|lower }}</span>{{ suffix }}</td>
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">{{ object.value.type|lower }}</span>{{ suffix }}{{ util.constraints(object.value) }}</td>
         <td class="com">{{ util.none_to_empty(object.value.description) }}</td>
     </tr>
         {%- elif object.value.type|lower == "none" %}
     <tr class="diff_version {%- if object.value.optional %} optional{% endif %}" data-version="{{ object.versions|join(" ") }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">null</span>{{ suffix }}</td>
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">null</span>{{ suffix }}{{ util.constraints(object.value) }}</td>
         <td class="com">{{ util.none_to_empty(object.value.description) }}</td>
     </tr>
         {%- elif object.value.type|lower == "const" %}
@@ -46,12 +46,12 @@
         {%- elif object.value.const_type|lower == "integer" %}<span class="lit">"{{ object.value.value }}"</span>
         {%- elif object.value.const_type|lower == "string" %}<span class="str">"{{ object.value.value }}"</span>
         {%- elif object.value.const_type|lower == "boolean" %}<span class="lit">{{ object.value.value }}</span>
-        {%- endif %}{{ suffix }}</td>
+        {%- endif %}{{ suffix }}{{ util.constraints(object.value) }}</td>
         <td class="com">{{ util.none_to_empty(object.value.description) }}</td>
     </tr>
         {%- elif object.value.type|lower == "enum" %}
     <tr class="diff_version {%- if object.value.optional %} optional{% endif %}" data-version="{{ object.versions|join(" ") }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">enum</span>{{ suffix }}</td>
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">enum</span>{{ suffix }}{{ util.constraints(object.value) }}</td>
         <td class="com">{{ util.none_to_empty(object.value.description) }} (
             {%- for value in object.value.values|sort %}
                 {%- if loop.first -%}
@@ -64,11 +64,11 @@
     </tr>
         {%- elif object.value.type|lower == "dynamic" %}
     <tr class="diff_version {%- if object.value.optional %} optional{% endif %}" data-version="{{ object.versions|join(" ") }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="pun">{</span></td>
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="pun">{</span><{{ util.constraints(object.value) }}/td>
         <td class="com">{{ util.none_to_empty(object.value.description) }}</td>
     </tr>
     <tr class="diff_version {%- if object.value.optional %} optional{% endif %}" data-version="{{ object.versions|join(" ") }}">
-        <td>{{ code.indent(pad_length + 1) }}<span class="typ">string</span><span class="pun">: </span><span class="typ">{{ object.items }}</span></td>
+        <td>{{ code.indent(pad_length + 1) }}<span class="typ">string</span><span class="pun">: </span><span class="typ">{{ object.items }}</span>{{ util.constraints(object.value) }}</td>
         <td class="com">{{ util.none_to_empty(object.value.description) }}</td>
     </tr>
     <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
@@ -77,7 +77,7 @@
     </tr>
         {%- elif object.value.type|lower == "type" %}
     <tr class="diff_version {%- if object.value.optional %} optional{% endif %}" data-version="{{ object.versions|join(" ") }}">
-        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ"><a href="javascript:navigateTo({type: '{{object.value.type_object.name}}'}, ['category', 'method'])">{{ object.value.type_object.name }}</a></span>{{ suffix }}</td>
+        <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ"><a href="javascript:navigateTo({type: '{{object.value.type_object.name}}'}, ['category', 'method'])">{{ object.value.type_object.name }}</a></span>{{ suffix }}{{ util.constraints(object.value) }}</td>
         <td class="com">{{ util.none_to_empty(object.value.description) }}</td>
     </tr>
         {%- endif %}

@@ -2,6 +2,20 @@
     {{ none_to_default(value, "") }}
 {%- endmacro -%}
 
+{%- macro constraints(object) -%}
+    {%- if object.constraints -%}
+    {{ " " }}<i class="i-constraint" data-content="<table class='table table-condensed'>
+        {%- for constraint in object.constraints.values()|sort -%}
+            {%- if constraint.name == "enum" -%}
+                <tr><td>{{ constraint.name }}</td><td>{{ constraint.constraint|sort|join('<br>') }}</td></tr>
+            {%- else -%}
+                <tr><td>{{ constraint.name }}</td><td>{{ constraint.constraint }}</td></tr>
+            {%- endif -%}
+        {%- endfor -%}
+    </table>"></i>
+    {%- endif -%}
+{%- endmacro -%}
+
 {%- macro none_to_default(value, default) -%}
     {%- if value != None %}
         {{- value -}}

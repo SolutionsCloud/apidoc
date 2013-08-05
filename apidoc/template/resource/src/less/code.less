@@ -27,6 +27,23 @@
             color:#066;
         }
     }
+
+    .i-constraint {
+        cursor: pointer;
+    }
+
+    .i-constraint+.popover {
+        z-index: 9;
+        .popover-content {
+            padding: 0;
+            TABLE {
+                margin: 0;
+                TR:first-child>TD {
+                    border-top: none;
+                }
+            }
+        }
+    }
 }
 
 .code, PRE, CODE {
