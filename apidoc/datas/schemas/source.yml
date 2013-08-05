@@ -202,13 +202,6 @@ definitions:
         type: boolean
       constraints:
         type: object
-        properties:
-          maxProperties:
-            type: integer
-            minimum: 0
-          minProperties:
-            type: integer
-            minimum: 0
         additionalProperties:
           type: string
     required:

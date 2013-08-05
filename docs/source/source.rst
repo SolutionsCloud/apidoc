@@ -606,8 +606,6 @@ The object Object defines a complex object containing a dictionnary of propertie
 * properties: List of properties of the object
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
 * constraints: A dictionary of constraints
-  * maxProperties: A positive integer is expected.
-  * minProperties: A positive integer is expected.
   * everything else: A string is expected
 
 sample:
