@@ -324,7 +324,7 @@ function initNavigation() {
 }
 
 function focusNavigation() {
-    if (!window.matchMedia('(max-width: 767px)').matches) {
+    if (!isSmallDevice()) {
         // pas de focus si la souris est sur la navigation
         if ($(".doc-sidebar").data('hover')) {
             return;
@@ -482,10 +482,21 @@ function displayDiff(item, version) {
     refreshScrollNavigation();
 }
 
+function isSmallDevice() {
+    return window.matchMedia('(max-width: 767px)').matches;
+}
+
 function toggleDiffLayout(item) {
+    $('.i-constraint[data-content]', item).popover('hide')
+
     item.toggleClass("diff-mode");
     if (item.is(".diff-mode")) {
-        item.addClass("diff-mode-side").removeClass("diff-mode-inline");
+        if (isSmallDevice()) {
+            item.addClass("diff-mode-inline").removeClass("diff-mode-side");
+        } else {
+            item.addClass("diff-mode-side").removeClass("diff-mode-inline");
+        }
+
         item.addClass("diff-mode-full").removeClass("diff-mode-mini");
 
         displayDiff(item);
@@ -707,6 +718,7 @@ function shortcutToggleSide(event, key) {
 
     if (current.length > 0) {
         var element = $(current.data('target'));
+        $('.i-constraint[data-content]', element).popover('hide')
         if (!element.is(".diff-mode")) {
             toggleDiffLayout($(current.data('target')));
             diffActivateModeInline(element);
@@ -726,6 +738,7 @@ function shortcutToggleFull(event, key) {
 
     if (current.length > 0) {
         var element = $(current.data('target'));
+        $('.i-constraint[data-content]', element).popover('hide')
         if (!element.is(".diff-mode")) {
             toggleDiffLayout($(current.data('target')));
             diffActivateModeMini(element);
@@ -829,6 +842,8 @@ $(document).ready(function () {
     initSearch();
     initShortcuts();
     initHelp();
+
+    $('.i-constraint[data-content]').popover({html: true});
 
     onNavigationChange();
 });

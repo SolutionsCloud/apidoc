@@ -198,7 +198,7 @@
         </tr>
         <tr class="diff_version " data-version="v1.0 v2.0">
             <td><span class="str">customer_id</span></td>
-            <td><span class="typ">number<td><span class="lit"></span></td>
+            <td><span class="typ">integer<td><span class="lit"></span></td>
             <td><span class="com">Customer identifier</span></td>
         </tr>
         </tbody>
@@ -258,7 +258,7 @@
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1.0/customers/123</span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1.0/customers/42</span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 
 </div>
@@ -268,17 +268,17 @@
 
 <span class="pun">{
 </span>  <span class="str">"Customer"</span><span class="pun">: </span><span class="pun">{
-</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>    <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
 </span>    <span class="str">"users"</span><span class="pun">: </span><span class="pun">[
 </span>      <span class="pun">{
 </span>        <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
-</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>        <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
       <span class="pun">}</span><span class="pun">,
 </span>      <span class="pun">{
 </span>        <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
-</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>        <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
       <span class="pun">}</span>
     <span class="pun">]</span>
@@ -368,20 +368,20 @@
         <td class="com"></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
-        <td>      <span class="str">"id"</span><span class="pun">: </span><span class="typ">number</span><span class="pun">,</span></td>
+        <td>      <span class="str">"id"</span><span class="pun">: </span><span class="typ">integer</span><span class="pun">,</span></td>
         <td class="com">Object identifier</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
         <td>      <span class="str">"name"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
         <td class="com">Name of the object</td>
     </tr>
-    <tr class="diff_version" data-version="v2.0">
+    <tr class="diff_version optional" data-version="v2.0">
         <td>      <span class="str">"next"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Link to the next element</td>
+        <td class="com">Link to the next element</td>
     </tr>
-    <tr class="diff_version" data-version="v2.0">
+    <tr class="diff_version optional" data-version="v2.0">
         <td>      <span class="str">"previous"</span><span class="pun">: </span><span class="typ">string</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Link to the previous element</td>
+        <td class="com">Link to the previous element</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
         <td>    <span class="pun">}</span></td>
@@ -412,11 +412,11 @@
 <span class="pun">{
 </span>  <span class="str">"Customers"</span><span class="pun">: </span><span class="pun">[
 </span>    <span class="pun">{
-</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
     <span class="pun">}</span><span class="pun">,
 </span>    <span class="pun">{
-</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
     <span class="pun">}</span>
   <span class="pun">]</span>
@@ -435,13 +435,13 @@
 <span class="pun">{
 </span>  <span class="str">"Customers"</span><span class="pun">: </span><span class="pun">[
 </span>    <span class="pun">{
-</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
 </span>      <span class="str">"next"</span><span class="pun">: </span><span class="str">"my_next"</span><span class="pun">,
 </span>      <span class="str">"previous"</span><span class="pun">: </span><span class="str">"my_previous"</span>
     <span class="pun">}</span><span class="pun">,
 </span>    <span class="pun">{
-</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
 </span>      <span class="str">"next"</span><span class="pun">: </span><span class="str">"my_next"</span><span class="pun">,
 </span>      <span class="str">"previous"</span><span class="pun">: </span><span class="str">"my_previous"</span>
@@ -507,7 +507,7 @@
         </tr>
         <tr class="diff_version " data-version="v1.0 v2.0">
             <td><span class="str">customer_id</span></td>
-            <td><span class="typ">number<td><span class="lit"></span></td>
+            <td><span class="typ">integer<td><span class="lit"></span></td>
             <td><span class="com">Customer identifier</span></td>
         </tr>
         </tbody>
@@ -525,7 +525,7 @@
         <td class="com"></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
-        <td>  <span class="str">"id"</span><span class="pun">: </span><span class="typ">number</span></td>
+        <td>  <span class="str">"id"</span><span class="pun">: </span><span class="typ">integer</span></td>
         <td class="com">User identifier</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
@@ -594,11 +594,11 @@
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">POST</span> <span class="hur">/v1.0/customers/123/users</span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">POST</span> <span class="hur">/v1.0/customers/42/users</span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 
 <span class="pun">{
-</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span>
+</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span>
 <span class="pun">}</span></div>
         <h6>Response: </h6>
         <div class="code"><span class="hpr">HTTP/1.1</span> <span class="lit">200</span> <span class="str">OK</span>
@@ -606,17 +606,17 @@
 
 <span class="pun">{
 </span>  <span class="str">"Customer"</span><span class="pun">: </span><span class="pun">{
-</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>    <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
 </span>    <span class="str">"users"</span><span class="pun">: </span><span class="pun">[
 </span>      <span class="pun">{
 </span>        <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
-</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>        <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
       <span class="pun">}</span><span class="pun">,
 </span>      <span class="pun">{
 </span>        <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
-</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>        <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>        <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
       <span class="pun">}</span>
     <span class="pun">]</span>
@@ -627,7 +627,7 @@
         </ul>
     </li>
     <li class="category" id="c-Users"><h3>Users</h3>
-        <div class="description">Manage user and authentification</div>
+        <div class="description">Manage user and authentication</div>
         <ul class="unstyled">
             <li class="method item" id="m-UserCreate" data-method="POST">
                 <h4>Create</h4>
@@ -774,7 +774,7 @@
 <span class="pun">{
 </span>  <span class="str">"user"</span><span class="pun">: </span><span class="pun">{
 </span>    <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
-</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>    <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
 </span>    <span class="str">"phone"</span><span class="pun">: </span><span class="str">"my_phone"</span>
   <span class="pun">}</span>
@@ -786,7 +786,7 @@
 <span class="pun">{
 </span>  <span class="str">"User"</span><span class="pun">: </span><span class="pun">{
 </span>    <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
-</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>    <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
 </span>    <span class="str">"phone"</span><span class="pun">: </span><span class="str">"my_phone"</span>
   <span class="pun">}</span>
@@ -850,7 +850,7 @@
         </tr>
         <tr class="diff_version " data-version="v1.0 v2.0">
             <td><span class="str">user_id</span></td>
-            <td><span class="typ">number<td><span class="lit"></span></td>
+            <td><span class="typ">integer<td><span class="lit"></span></td>
             <td><span class="com">user identifier</span></td>
         </tr>
         </tbody>
@@ -910,7 +910,7 @@
 
 <h5><i class="i-sample"></i> Sample: </h5>
 <h6>Request: </h6>
-<div class="code"><span class="hme">GET</span> <span class="hur">/v1.0/users/123</span> <span class="hpr">HTTP/1.1</span>
+<div class="code"><span class="hme">GET</span> <span class="hur">/v1.0/users/42</span> <span class="hpr">HTTP/1.1</span>
 <span class="hat">Content-Type</span><span class="pun">: </span><span class="hva">application/json; charset=utf-8</span>
 
 </div>
@@ -921,7 +921,7 @@
 <span class="pun">{
 </span>  <span class="str">"User"</span><span class="pun">: </span><span class="pun">{
 </span>    <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
-</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>    <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>    <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
   <span class="pun">}</span>
 <span class="pun">}</span></div></div></div>
@@ -1009,20 +1009,20 @@
         <td class="com"></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
-        <td>      <span class="str">"id"</span><span class="pun">: </span><span class="typ">number</span><span class="pun">,</span></td>
+        <td>      <span class="str">"id"</span><span class="pun">: </span><span class="typ">integer</span><span class="pun">,</span></td>
         <td class="com">Object identifier</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
         <td>      <span class="str">"name"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
         <td class="com">Name of the object</td>
     </tr>
-    <tr class="diff_version" data-version="v2.0">
+    <tr class="diff_version optional" data-version="v2.0">
         <td>      <span class="str">"next"</span><span class="pun">: </span><span class="typ">string</span><span class="pun">,</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Link to the next element</td>
+        <td class="com">Link to the next element</td>
     </tr>
-    <tr class="diff_version" data-version="v2.0">
+    <tr class="diff_version optional" data-version="v2.0">
         <td>      <span class="str">"previous"</span><span class="pun">: </span><span class="typ">string</span></td>
-        <td class="com"><span class="optional lit">Optional</span>Link to the previous element</td>
+        <td class="com">Link to the previous element</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
         <td>    <span class="pun">}</span></td>
@@ -1053,11 +1053,11 @@
 <span class="pun">{
 </span>  <span class="str">"Users"</span><span class="pun">: </span><span class="pun">[
 </span>    <span class="pun">{
-</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
     <span class="pun">}</span><span class="pun">,
 </span>    <span class="pun">{
-</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
     <span class="pun">}</span>
   <span class="pun">]</span>
@@ -1076,13 +1076,13 @@
 <span class="pun">{
 </span>  <span class="str">"Users"</span><span class="pun">: </span><span class="pun">[
 </span>    <span class="pun">{
-</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
 </span>      <span class="str">"next"</span><span class="pun">: </span><span class="str">"my_next"</span><span class="pun">,
 </span>      <span class="str">"previous"</span><span class="pun">: </span><span class="str">"my_previous"</span>
     <span class="pun">}</span><span class="pun">,
 </span>    <span class="pun">{
-</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
 </span>      <span class="str">"next"</span><span class="pun">: </span><span class="str">"my_next"</span><span class="pun">,
 </span>      <span class="str">"previous"</span><span class="pun">: </span><span class="str">"my_previous"</span>
@@ -1136,7 +1136,7 @@
         <td class="com"></td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
-        <td>  <span class="str">"id"</span><span class="pun">: </span><span class="typ">number</span><span class="pun">,</span></td>
+        <td>  <span class="str">"id"</span><span class="pun">: </span><span class="typ">integer</span><span class="pun">,</span></td>
         <td class="com">Customer identifier</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
@@ -1168,17 +1168,17 @@
 <h5><i class="i-sample"></i> Formats: </h5>
 <h6>Sample: </h6>
 <div class="code"><span class="pun">{
-</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>  <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
 </span>  <span class="str">"users"</span><span class="pun">: </span><span class="pun">[
 </span>    <span class="pun">{
 </span>      <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
-</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
     <span class="pun">}</span><span class="pun">,
 </span>    <span class="pun">{
 </span>      <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
-</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>      <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>      <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
     <span class="pun">}</span>
   <span class="pun">]</span>
@@ -1225,7 +1225,7 @@
         <td class="com">Email address of the user</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
-        <td>  <span class="str">"id"</span><span class="pun">: </span><span class="typ">number</span><span class="pun">,</span></td>
+        <td>  <span class="str">"id"</span><span class="pun">: </span><span class="typ">integer</span><span class="pun">,</span></td>
         <td class="com">User identifier</td>
     </tr>
     <tr class="diff_version" data-version="v1.0 v2.0">
@@ -1250,7 +1250,7 @@
 <h6>Sample: </h6>
 <div class="code"><span class="pun">{
 </span>  <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
-</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>  <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span>
 <span class="pun">}</span></div></div><div data-version="v2.0">
 
@@ -1258,7 +1258,7 @@
 <h6>Sample: </h6>
 <div class="code"><span class="pun">{
 </span>  <span class="str">"email"</span><span class="pun">: </span><span class="str">"my_email"</span><span class="pun">,
-</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">123</span><span class="pun">,
+</span>  <span class="str">"id"</span><span class="pun">: </span><span class="lit">42</span><span class="pun">,
 </span>  <span class="str">"name"</span><span class="pun">: </span><span class="str">"my_name"</span><span class="pun">,
 </span>  <span class="str">"phone"</span><span class="pun">: </span><span class="str">"my_phone"</span>
 <span class="pun">}</span></div></div></div>
