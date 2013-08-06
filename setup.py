@@ -6,15 +6,16 @@ if sys.version_info < (3, 2):
     print("ApiDoc requires Python 3.2 or later")
     raise SystemExit(1)
 
-from setuptools.command.test import test as TestCommand
+from setuptools.command.test import test
+
 from setuptools import setup, find_packages
 
 from apidoc import __version__
 
 
-class PyTest(TestCommand):
+class ApiDocTest(test):
     def finalize_options(self):
-        TestCommand.finalize_options(self)
+        test.finalize_options(self)
         self.test_args = []
         self.test_suite = True
 
@@ -84,5 +85,7 @@ $ pip3 install apidoc''',
     ]},
     install_requires=requirements,
     tests_require=['mock', 'pytest'],
-    cmdclass={'test': PyTest}
+    cmdclass={
+        'test': ApiDocTest,
+    }
 )
