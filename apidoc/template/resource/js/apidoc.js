@@ -798,13 +798,7 @@ function shortcutGotoPreviousDiffVersion(event, key) {
 }
 
 function shortcutHelp(event, key) {
-    $(".help_popup, .help_overlay").show();
-    Mousetrap.bind('esc', shortcutHelpHide);
-}
-
-function shortcutHelpHide(event, key) {
-    $(".help_popup, .help_overlay").hide();
-    Mousetrap.unbind('esc', shortcutHelpHide);
+    $('#help-modal').modal()
 }
 
 function initShortcuts() {
@@ -826,10 +820,6 @@ function initShortcuts() {
     }
 }
 
-function initHelp() {
-    $(".help_overlay").click(shortcutHelpHide);
-}
-
 function initFooterLinks() {
     $("FOOTER .i-previous").click(shortcutGotoPrevious);
     $("FOOTER .i-next").click(shortcutGotoNext);
@@ -845,7 +835,6 @@ $(document).ready(function () {
     initDiff();
     initSearch();
     initShortcuts();
-    initHelp();
     initFooterLinks();
 
     $('.i-constraint[data-content]').popover({html: true});
