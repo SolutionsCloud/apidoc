@@ -15,6 +15,7 @@ The safest way to install ApiDoc for contributors is to use virtualenvs
     $ git clone https://github.com/SolutionsCloud/apidoc.git
     $ cd apidoc
     $ pip install -r requirements.txt
+    $ ./apidoc/template/resource/download.sh
 
 
 Generating self documentation
