@@ -31,13 +31,8 @@ class Template():
                 if config["output"]["componants"] == "local":
                     for template_dir in self.env.loader.searchpath:
                         files = (
-                            os.path.join(template_dir, "resource", "js", "apidoc.js"),
-                            os.path.join(template_dir, "resource", "js", "jquery.min.js"),
-                            os.path.join(template_dir, "resource", "js", "mousetrap.min.js"),
-                            os.path.join(template_dir, "resource", "js", "bootstrap.min.js"),
-                            os.path.join(template_dir, "resource", "css", "apidoc.css"),
-                            os.path.join(template_dir, "resource", "css", "font.css"),
-                            os.path.join(template_dir, "resource", "css", "bootstrap.min.css"),
+                            os.path.join(template_dir, "resource", "js", "combined.js"),
+                            os.path.join(template_dir, "resource", "css", "combined.css"),
                             os.path.join(template_dir, "resource", "font", "apidoc.eot"),
                             os.path.join(template_dir, "resource", "font", "apidoc.woff"),
                             os.path.join(template_dir, "resource", "font", "apidoc.ttf"),
@@ -61,9 +56,8 @@ class Template():
                 if config["output"]["componants"] == "remote":
                     for template_dir in self.env.loader.searchpath:
                         files = (
-                            os.path.join(template_dir, "resource", "js", "apidoc.js"),
-                            os.path.join(template_dir, "resource", "css", "apidoc.css"),
-                            os.path.join(template_dir, "resource", "css", "font.css"),
+                            os.path.join(template_dir, "resource", "js", "combined.js"),
+                            os.path.join(template_dir, "resource", "css", "combined-embedded.css"),
                             os.path.join(template_dir, "resource", "font", "apidoc.eot"),
                             os.path.join(template_dir, "resource", "font", "apidoc.woff"),
                             os.path.join(template_dir, "resource", "font", "apidoc.ttf"),
