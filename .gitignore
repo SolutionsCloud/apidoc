@@ -6,7 +6,10 @@ ApiDoc.egg-info/*
 build/*
 dist/*
 docs/build/*
-apidoc/template/resource/css/bootstrap.min.css
-apidoc/template/resource/js/bootstrap.min.js
-apidoc/template/resource/js/jquery.min.js
-apidoc/template/resource/js/mousetrap.min.js
+apidoc/template/resource/css/combined.css
+apidoc/template/resource/css/combined-embedded.css
+apidoc/template/resource/js/combined.js
+apidoc/template/resource/src/css/bootstrap.min.css
+apidoc/template/resource/src/js/bootstrap.min.js
+apidoc/template/resource/src/js/jquery.min.js
+apidoc/template/resource/src/js/mousetrap.min.js
