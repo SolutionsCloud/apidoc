@@ -31,6 +31,8 @@ For developers who want to contribute code to ApiDoc
 * coverage
 * mock
 * nose
+* yuicompressor
+* Sphinx
 
 
 Contents

@@ -96,7 +96,6 @@ class Resource(Command):
         try:
             self._merge_files(input_files, merged_filename)
 
-            command_args = ['java', '-jar', yuicompressor.get_jar_filename(), '--type', format, '-o' , output_file, merged_filename]
-            os.system(" ".join(command_args))
+            os.system('java -jar %s --type %s -o %s --charset utf-8 %s' % (yuicompressor.get_jar_filename(), format, output_file, merged_filename))
         finally:
             os.remove(merged_filename)
