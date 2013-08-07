@@ -1,6 +1,7 @@
 import os
 import shutil
 import sys
+import logging
 
 
 class Template():
@@ -51,7 +52,11 @@ class Template():
 
                             if not os.path.exists(os.path.join(dir, dirname)):
                                 os.makedirs(os.path.join(dir, dirname))
-                            shutil.copyfile(file, os.path.join(dir, dirname, filename))
+                            if os.path.exists(file):
+                                shutil.copyfile(file, os.path.join(dir, dirname, filename))
+                            else:
+                                logging.getLogger().warn('Missing resource file "%s". If you run apidoc in virtualenv, run "%s"' % (filename, os.path.join(template_dir, "download.sh")))
+
 
                 if config["output"]["componants"] == "remote":
                     for template_dir in self.env.loader.searchpath:
@@ -73,5 +78,9 @@ class Template():
 
                             if not os.path.exists(os.path.join(dir, dirname)):
                                 os.makedirs(os.path.join(dir, dirname))
-                            shutil.copyfile(file, os.path.join(dir, dirname, filename))
+                            if os.path.exists(file):
+                                shutil.copyfile(file, os.path.join(dir, dirname, filename))
+                            else:
+                                logging.getLogger().warn('Missing resource file "%s". If you run apidoc in virtualenv, run "%s"' % (filename, os.path.join(template_dir, "download.sh")))
+
             open(self.output, "w").write(output)

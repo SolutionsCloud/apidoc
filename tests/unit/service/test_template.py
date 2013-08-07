@@ -1,6 +1,7 @@
 import unittest
 import tempfile
 import os
+import shutil
 from io import StringIO
 
 from apidoc.service.template import Template as TemplateService
@@ -44,7 +45,37 @@ class Testtemplate(unittest.TestCase):
         self.assertIn("css", files)
         self.assertIn("js", files)
         files_js = [f for f in os.listdir(os.path.join(self.temp_dir, "js"))]
-        self.assertIn("jquery.min.js", files_js)
+        self.assertIn("apidoc.js", files_js)
+
+    def test_render__folder_not_failed_on_missing_file(self):
+        template_dir = self.template.env.loader.searchpath[0]
+
+        source = Root()
+        config = Config()
+        config["output"]["componants"] = "local"
+
+        self.template.output = os.path.join(self.temp_dir, "index.html")
+
+        try:
+            shutil.move(os.path.join(template_dir, "resource", "js", "apidoc.js"), '/tmp/apidoc.js')
+            self.template.render(source, config)
+        finally:
+            shutil.move('/tmp/apidoc.js', os.path.join(template_dir, "resource", "js", "apidoc.js"))
+
+    def test_render__folder_not_failed_on_missing_file_remote(self):
+        template_dir = self.template.env.loader.searchpath[0]
+
+        source = Root()
+        config = Config()
+        config["output"]["componants"] = "remote"
+
+        self.template.output = os.path.join(self.temp_dir, "index.html")
+
+        try:
+            shutil.move(os.path.join(template_dir, "resource", "js", "apidoc.js"), '/tmp/apidoc.js')
+            self.template.render(source, config)
+        finally:
+            shutil.move('/tmp/apidoc.js', os.path.join(template_dir, "resource", "js", "apidoc.js"))
 
     def test_render__remote(self):
         source = Root()

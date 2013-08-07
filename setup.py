@@ -6,13 +6,16 @@ if sys.version_info < (3, 2):
     print("ApiDoc requires Python 3.2 or later")
     raise SystemExit(1)
 
-from setuptools.command.test import test as TestCommand
+from setuptools.command.test import test
+
 from setuptools import setup, find_packages
 
+from apidoc import __version__
 
-class PyTest(TestCommand):
+
+class ApiDocTest(test):
     def finalize_options(self):
-        TestCommand.finalize_options(self)
+        test.finalize_options(self)
         self.test_args = []
         self.test_suite = True
 
@@ -30,23 +33,36 @@ else:
 
 setup(
     name='ApiDoc',
-    version='1.1a0',
+    version=__version__,
     description='Api Documentation Generator',
-    long_description='''ApiDoc is a documentation generator designe for API built with Python.
-It's developed by Jérémy Derussé and SFR Business Team.
+    long_description='''About
+=====
 
-Full documentation available on http://apidoc.rtfd.org.''',
+ApiDoc is a documentation generator designe for API built with Python.
+
+Full documentation available on https://apidoc.rtfd.org.
+
+Installation
+============
+
+$ pip3 install apidoc''',
     author='Jérémy Derussé',
     author_email='jeremy.derusse@sfr.com',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
         'Environment :: Console',
         'Intended Audience :: Developers',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'Natural Language :: English',
+        'Operating System :: MacOS',
+        'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 3',
         'Topic :: Documentation',
         'Topic :: Software Development :: Documentation',
     ],
     platforms=['Any'],
+    license='GPLv3+',
+    url='http://solutionscloud.github.io/apidoc/',
     packages=find_packages(exclude=['tests', 'tests.*', 'example', 'example.*', 'docs', 'docs.*']),
     entry_points={
         'console_scripts': [
@@ -69,5 +85,7 @@ Full documentation available on http://apidoc.rtfd.org.''',
     ]},
     install_requires=requirements,
     tests_require=['mock', 'pytest'],
-    cmdclass={'test': PyTest}
+    cmdclass={
+        'test': ApiDocTest,
+    }
 )
