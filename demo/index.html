@@ -5,14 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ApiDoc demo</title>
     
-<link href="http://fonts.googleapis.com/css?family=Source+Code+Pro" media="all" rel="stylesheet" type="text/css" />
-<link href="./css/bootstrap.min.css" rel="stylesheet">
-<link href="./css/apidoc.css" rel="stylesheet">
-<link href="./css/font.css" rel="stylesheet">
-<script type="text/javascript" src="./js/jquery.min.js"></script>
-<script type="text/javascript" src="./js/mousetrap.min.js"></script>
-<script type="text/javascript" src="./js/bootstrap.min.js"></script>
-<script type="text/javascript" src="./js/apidoc.js"></script>
+<link href="./css/combined.css" rel="stylesheet">
+<script type="text/javascript" src="./js/combined.js"></script>
      
 </head>
 <body>
@@ -21,78 +15,82 @@
         <h1>ApiDoc demo</h1><p>
         A sample demo for ApiDoc
         </p></div>
-</header><div class="help_overlay" style="display:none"></div>
-<div class="help_popup" style="display:none">
-    <h2>Keyboard Shortcuts</h2>
-    <div class="help_row">
-        <h3>Site wide shortcuts</h3>
-        <dl class="keyboard-mappings">
-            <dt>?</dt>
-            <dd>Bring up this help dialog</dd>
-        </dl>
-        <dl class="keyboard-mappings">
-            <dt>esc</dt>
-            <dd>Hide this help dialog</dd>
-        </dl>
-        <dl class="keyboard-mappings">
-            <dt>/</dt>
-            <dd>Focus search bar</dd>
-        </dl>
+</header><div id="help-modal" class="modal hide fade" tabindex="-1" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3>Keyboard Shortcuts</h3>
     </div>
-    <div class="help_row">
-        <h3>Navigation</h3>
-        <dl class="keyboard-mappings">
-            <dt>j <em>or</em> n</dt>
-            <dd>Move to next method or type</dd>
-        </dl>
-        <dl class="keyboard-mappings">
-            <dt>k <em>or</em> p</dt>
-            <dd>Move to previous method or type</dd>
-        </dl>
+    <div class="modal-body">
+        <div class="help_row">
+            <h4>Site wide shortcuts</h4>
+            <dl class="keyboard-mappings">
+                <dt>?</dt>
+                <dd>Bring up this help dialog</dd>
+            </dl>
+            <dl class="keyboard-mappings">
+                <dt>esc</dt>
+                <dd>Hide this help dialog</dd>
+            </dl>
+            <dl class="keyboard-mappings">
+                <dt>/</dt>
+                <dd>Focus search bar</dd>
+            </dl>
+        </div>
+        <div class="help_row">
+            <h4>Navigation</h4>
+            <dl class="keyboard-mappings">
+                <dt>j <em>or</em> n</dt>
+                <dd>Move to next method or type</dd>
+            </dl>
+            <dl class="keyboard-mappings">
+                <dt>k <em>or</em> p</dt>
+                <dd>Move to previous method or type</dd>
+            </dl>
     
-        <dl class="keyboard-mappings">
-            <dt>v</dt>
-            <dd>Move to next version</dd>
-        </dl>
-        <dl class="keyboard-mappings">
-            <dt>b</dt>
-            <dd>Move to previous version</dd>
-        </dl>
+            <dl class="keyboard-mappings">
+                <dt>v</dt>
+                <dd>Move to next version</dd>
+            </dl>
+            <dl class="keyboard-mappings">
+                <dt>b</dt>
+                <dd>Move to previous version</dd>
+            </dl>
+    
+        </div>
+    
+        <div class="help_row">
+            <h4>Diff</h4>
+            <dl class="keyboard-mappings">
+                <dt>&lt;shift&gt; + j</dt>
+                <dd>Move to next method or type with a diff</dd>
+            </dl>
+            <dl class="keyboard-mappings">
+                <dt>&lt;shift&gt; + k</dt>
+                <dd>Move to previous method or type with a diff</dd>
+            </dl>
+            <dl class="keyboard-mappings">
+                <dt>d</dt>
+                <dd>Toggle diff mode</dd>
+            </dl>
+            <dl class="keyboard-mappings">
+                <dt>s</dt>
+                <dd>Toggle side by side / inline mode</dd>
+            </dl>
+            <dl class="keyboard-mappings">
+                <dt>f</dt>
+                <dd>Toggle full / strict diff</dd>
+            </dl>
+            <dl class="keyboard-mappings">
+                <dt>&lt;shift&gt; + v</dt>
+                <dd>Move to next version to diff</dd>
+            </dl>
+            <dl class="keyboard-mappings">
+                <dt>&lt;shift&gt; + b</dt>
+                <dd>Move to previous version to diff</dd>
+            </dl>
+        </div>
     
     </div>
-    
-    <div class="help_row">
-        <h3>Diff</h3>
-        <dl class="keyboard-mappings">
-            <dt>&lt;shift&gt; + j</dt>
-            <dd>Move to next method or type with a diff</dd>
-        </dl>
-        <dl class="keyboard-mappings">
-            <dt>&lt;shift&gt; + k</dt>
-            <dd>Move to previous method or type with a diff</dd>
-        </dl>
-        <dl class="keyboard-mappings">
-            <dt>d</dt>
-            <dd>Toggle diff mode</dd>
-        </dl>
-        <dl class="keyboard-mappings">
-            <dt>s</dt>
-            <dd>Toggle side by side / inline mode</dd>
-        </dl>
-        <dl class="keyboard-mappings">
-            <dt>f</dt>
-            <dd>Toggle full / strict diff</dd>
-        </dl>
-        <dl class="keyboard-mappings">
-            <dt>&lt;shift&gt; + v</dt>
-            <dd>Move to next version to diff</dd>
-        </dl>
-        <dl class="keyboard-mappings">
-            <dt>&lt;shift&gt; + b</dt>
-            <dd>Move to previous version to diff</dd>
-        </dl>
-    </div>
-    
 </div><div class="container-fluid">
     <div class="row-fluid">
         <div class="span3">
@@ -1320,6 +1318,12 @@
         </div>
     </div>
 </div>
+
+<footer>
+    <button class="btn btn-large i-previous" type="button"></button>
+    <button class="btn btn-large i-top" type="button"></button>
+    <button class="btn btn-large i-next" type="button"></button>
+</footer>
 
 </body>
 </html>
