@@ -10,34 +10,22 @@
 </title>
     {% if config["componants"] == "embedded" %}
 <style type="text/css">
-{% include "resource/css/bootstrap.min.css" %}
-{% include "resource/css/apidoc.css" %}
-{% include "resource/css/font-embedded.css" %}
+{% include "resource/css/combined-embedded.css" %}
 </style>
 <script text="application/javascript">
-{% include "resource/js/jquery.min.js" %}
-{% include "resource/js/mousetrap.min.js" %}
-{% include "resource/js/bootstrap.min.js" %}
-{% include "resource/js/apidoc.js" %}
+{% include "resource/js/combined.js" %}
 </script>
      {% elif config["componants"] == "local" %}
-<link href="http://fonts.googleapis.com/css?family=Source+Code+Pro" media="all" rel="stylesheet" type="text/css" />
-<link href="./css/bootstrap.min.css" rel="stylesheet">
-<link href="./css/apidoc.css" rel="stylesheet">
-<link href="./css/font.css" rel="stylesheet">
-<script type="text/javascript" src="./js/jquery.min.js"></script>
-<script type="text/javascript" src="./js/mousetrap.min.js"></script>
-<script type="text/javascript" src="./js/bootstrap.min.js"></script>
-<script type="text/javascript" src="./js/apidoc.js"></script>
+<link href="./css/combined.css" rel="stylesheet">
+<script type="text/javascript" src="./js/combined.js"></script>
      {% elif config["componants"] == "remote" %}
 <link href="http://fonts.googleapis.com/css?family=Source+Code+Pro" media="all" rel="stylesheet" type="text/css" />
 <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css" rel="stylesheet">
-<link href="./css/apidoc.css" rel="stylesheet">
-<link href="./css/font.css" rel="stylesheet">
+<link href="./css/combined-embedded.css" rel="stylesheet">
 <script text="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script text="application/javascript" src="http://cdn.craig.is/js/mousetrap/mousetrap.min.js?a0717"></script>
 <script type="text/javascript" src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="./js/apidoc.js"></script>
+<script type="text/javascript" src="./js/combined.js"></script>
     {%- endif %}
 {%- endblock -%}
 
