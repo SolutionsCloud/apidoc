@@ -34,7 +34,7 @@ class Method(Comparable):
         return (str(self.name))
 
 
-class Parameter():
+class Parameter(Comparable):
 
     def __init__(self, parameter_raw):
         self.name = parameter_raw.name
@@ -45,6 +45,11 @@ class Parameter():
     @property
     def is_query_string(self):
         return self.position < 0
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name), str(self.sample))
 
 
 class Object():

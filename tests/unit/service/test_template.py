@@ -35,8 +35,11 @@ class Testtemplate(unittest.TestCase):
         config = Config()
         config["output"]["componants"] = "local"
 
+        template_dir = self.template.env.loader.searchpath[0]
+        if os.path.exists(os.path.join(template_dir, "resource", "js", "combined.js")):
+            os.remove(os.path.join(template_dir, "resource", "js", "combined.js"))
+
         self.template.output = os.path.join(self.temp_dir, "index.html")
-        self.template.render(source, config)
         self.template.render(source, config)
 
         files = [f for f in os.listdir(os.path.join(self.temp_dir))]
@@ -50,8 +53,11 @@ class Testtemplate(unittest.TestCase):
         config = Config()
         config["output"]["componants"] = "remote"
 
+        template_dir = self.template.env.loader.searchpath[0]
+        if os.path.exists(os.path.join(template_dir, "resource", "js", "combined.js")):
+            os.remove(os.path.join(template_dir, "resource", "js", "combined.js"))
+
         self.template.output = os.path.join(self.temp_dir, "foo", "index.html")
-        self.template.render(source, config)
         self.template.render(source, config)
 
         files = [f for f in os.listdir(os.path.join(self.temp_dir, "foo"))]
