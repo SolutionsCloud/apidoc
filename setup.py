@@ -3,9 +3,7 @@
 import os
 import sys
 import shutil
-from minify import command as minify
 from distutils.cmd import Command
-from subprocess import call
 
 if sys.version_info < (3, 2):
     print("ApiDoc requires Python 3.2 or later")
@@ -84,15 +82,34 @@ class Resource(Command):
             if not os.path.exists(folder):
                 os.makedirs(folder)
 
-        os.system('/usr/bin/env python3 %s minify_css --sources "%s/*.css %s/font.css" --output "%s/combined.css"' % (__file__, resource_src_css_dir, resource_css_dir, resource_css_dir))
+        self._compress("css", ["%s/bootstrap.min.css" % resource_src_css_dir, "%s/apidoc.css" % resource_src_css_dir, "%s/font.css" % resource_css_dir], "%s/combined.css" % resource_css_dir)
         assert os.path.exists('%s/combined.css' % resource_css_dir), 'Combined css file not found'
 
-        os.system('/usr/bin/env python3 %s minify_css --sources "%s/*.css %s/font-embedded.css" --output "%s/combined-embedded.css"' % (__file__, resource_src_css_dir, resource_css_dir, resource_css_dir))
+        self._compress("css", ["%s/bootstrap.min.css" % resource_src_css_dir, "%s/apidoc.css" % resource_src_css_dir, "%s/font-embedded.css" % resource_css_dir], "%s/combined-embedded.css" % resource_css_dir)
         assert os.path.exists('%s/combined-embedded.css' % resource_css_dir), 'Combined embedded css file not found'
 
-        os.system('/usr/bin/env python3 %s minify_js --sources "%s/*.js" --output "%s/combined.js"' % (__file__, resource_src_js_dir, resource_js_dir))
+        self._compress("js", ["%s/jquery.min.js" % resource_src_js_dir, "%s/bootstrap.min.js" % resource_src_js_dir, "%s/mousetrap.min.js" % resource_src_js_dir, "%s/apidoc.js" % resource_src_js_dir], "%s/combined.js" % resource_js_dir)
         assert os.path.exists('%s/combined.js' % resource_js_dir), 'Combined js file not found'
 
+    def _merge_files(self, input_files, output_file):
+        """Combine the input files to a big output file"""
+        # we assume that all the input files have the same charset
+        with open(output_file, mode='wb') as out:
+            for input_file in input_files:
+                out.write(open(input_file, mode='rb').read())
+
+    def _compress(self, format, input_files, output_file):
+        import yuicompressor, subprocess, tempfile
+
+        handle, merged_filename = tempfile.mkstemp(prefix='minify')
+        os.close(handle)
+        try:
+            self._merge_files(input_files, merged_filename)
+
+            command_args = ['java', '-jar', yuicompressor.get_jar_filename(), '--type', format, '-o' , output_file, merged_filename]
+            os.system(" ".join(command_args))
+        finally:
+            os.remove(merged_filename)
 
 
 if (3, 2) <= sys.version_info < (3, 3):
@@ -158,7 +175,5 @@ $ pip3 install apidoc''',
     cmdclass={
         'test': ApiDocTest,
         'resources': Resource,
-        'minify_js': minify.minify_js,
-        'minify_css': minify.minify_css
     }
 )
