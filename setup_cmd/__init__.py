@@ -1,4 +1,3 @@
-
 import os
 import sys
 import shutil
@@ -89,7 +88,7 @@ class Resource(Command):
                 out.write(open(input_file, mode='rb').read())
 
     def _compress(self, format, input_files, output_file):
-        import yuicompressor, subprocess, tempfile
+        import yuicompressor, tempfile
 
         handle, merged_filename = tempfile.mkstemp(prefix='minify')
         os.close(handle)
