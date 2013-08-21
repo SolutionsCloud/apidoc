@@ -89,10 +89,10 @@ Now you can make your changes locally.
     $ git push origin name-of-your-bugfix-or-feature
 
 7. Check that the test coverage hasn't dropped::
-    coverage run --branch --source apidoc setup.py test
-    coverage report --include=apidoc* -m
+    coverage3 run --branch --source apidoc setup.py test
+    coverage3 report -m
 
-    coverage run --branch `which behave` tests/features/
+    coverage3 run --branch `which behave` tests/features/
 
 
 8. Submit a pull request through the GitHub website.
