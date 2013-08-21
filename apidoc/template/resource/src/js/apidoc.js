@@ -483,7 +483,7 @@ function displayDiff(item, version) {
 }
 
 function toggleDiffLayout(item) {
-    $('.i-constraint[data-content]', item).popover('hide')
+    $('.i-constraint[data-content]', item).popover('hide');
 
     item.toggleClass("diff-mode");
     if (item.is(".diff-mode")) {
@@ -714,7 +714,7 @@ function shortcutToggleSide(event, key) {
 
     if (current.length > 0) {
         var element = $(current.data('target'));
-        $('.i-constraint[data-content]', element).popover('hide')
+        $('.i-constraint[data-content]', element).popover('hide');
         if (!element.is(".diff-mode")) {
             toggleDiffLayout($(current.data('target')));
             diffActivateModeInline(element);
@@ -734,7 +734,7 @@ function shortcutToggleFull(event, key) {
 
     if (current.length > 0) {
         var element = $(current.data('target'));
-        $('.i-constraint[data-content]', element).popover('hide')
+        $('.i-constraint[data-content]', element).popover('hide');
         if (!element.is(".diff-mode")) {
             toggleDiffLayout($(current.data('target')));
             diffActivateModeMini(element);
@@ -798,7 +798,7 @@ function shortcutGotoPreviousDiffVersion(event, key) {
 }
 
 function shortcutHelp(event, key) {
-    $('#help-modal').modal()
+    $('#help-modal').modal();
 }
 
 function initShortcuts() {

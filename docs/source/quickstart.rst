@@ -11,7 +11,7 @@ The fastest way to get started is by using the command line tool
    $ sudo apt-get install python3-pip
    $ sudo pip3 install apidoc
 
-if the package python3-pip does not exists.
+If the package python3-pip does not exists.
 
 .. code-block:: console
 

@@ -34,6 +34,8 @@ setup(
         'Operating System :: MacOS',
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
         'Topic :: Documentation',
         'Topic :: Software Development :: Documentation',
     ],
