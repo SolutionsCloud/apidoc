@@ -72,7 +72,7 @@ Feature: Source config Body manipulation
             """
          When a source_factory load this file
          Then the response body of method "a" is a "number" for the version "v1"
-          And the response body sample of method "a" is "123" for the version "v1"
+          And the response body sample of method "a" is "13.37" for the version "v1"
 
     Scenario: Body as boolean
         Given a "yaml" source file containing

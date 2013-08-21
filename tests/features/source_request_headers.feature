@@ -55,6 +55,6 @@ Feature: Source config URI manipulation
             """
          When a source_factory load this file
          Then the "request_headers" of method "a" contains a sample "my_b" for parameter "b" for the version "v1"
-         Then the "request_headers" of method "a" contains a sample "123" for parameter "c" for the version "v1"
+         Then the "request_headers" of method "a" contains a sample "13.37" for parameter "c" for the version "v1"
          Then the "request_headers" of method "a" contains a sample "True" for parameter "d" for the version "v1"
          Then the "request_headers" of method "a" contains a sample "b" for parameter "g" for the version "v1"
