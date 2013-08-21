@@ -13,16 +13,17 @@ ApiDoc
 Summary
 -------
 
-`ApiDoc <http://solutionscloud.github.io/apidoc>`_ is a documentation generator designe for API built with Python.
+`ApiDoc <http://solutionscloud.github.io/apidoc>`_ is a documentation generator designe for API built with Python and given by `SFR Business Team <http://www.sfrbusinessteam.fr>`_.
 
 .. image:: https://raw.github.com/SolutionsCloud/apidoc/master/docs/source/_static/screenshot_sample.png
 
-It's developed by `Jérémy Derussé <http://github.com/jeremy-derusse>`_ and `SFR Business Team <http://www.sfrbusinessteam.fr>`_.
-
-`Full documentation available on ReadTheDocs. <http://apidoc.rtfd.org>`_
-
-`Demo available on http://solutionscloud.github.io/apidoc/demo <http://solutionscloud.github.io/apidoc/demo>`_
-
+* Demo: http://solutionscloud.github.io/apidoc/demo
+* Home Page: http://solutionscloud.github.io/apidoc
+* Documentation: http://apidoc.rtfd.org
+* Bug Tracker: https://github.com/SolutionsCloud/apidoc/issues
+* GitHub: https://github.com/SolutionsCloud/apidoc
+* PyPI: https://pypi.python.org/pypi/apidoc
+* License: GPLv3+
 
 
 Installation
@@ -35,22 +36,13 @@ The fastest way to get started is by using the command line tool
     $ sudo apt-get install python3-pip
     $ pip3 install apidoc
 
-
-The config parser script depends on PyYAML which links with LibYAML, which brings a performance boost to the PyYAML parser. However, installing LibYAML is optional but recommended. On Mac OS X, you can use homebrew to install LibYAML:
-
+If the package python3-pip does not exists
 
 .. code-block:: console
 
-    $ brew install libyaml
-
-On Linux, use your favorite package manager to install LibYAML. Here's how you do it on Debian/Ubuntu:
-
-
-.. code-block:: console
-
-    $ sudo apt-get install libyaml-dev
-
-On Windows, please install PyYAML using the binaries they provide
+   $ sudo apt-get install python3-setuptools
+   $ sudo easy_install3 pip
+   $ sudo pip3-2 install apidoc
 
 
 Try it

@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.1 (2013-08-07)
+1.1 (2013-??-??)
 ----------------
 
 * `Feature #6 <https://github.com/SolutionsCloud/apidoc/issues/6>`_ Reduce resources size
