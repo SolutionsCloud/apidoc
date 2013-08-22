@@ -5,6 +5,7 @@ import shutil
 from distutils.cmd import Command
 from setuptools.command.test import test
 
+
 class ApiDocTest(test):
     def finalize_options(self):
         test.finalize_options(self)
@@ -15,6 +16,7 @@ class ApiDocTest(test):
         import pytest
         errno = pytest.main(self.test_args)
         sys.exit(errno)
+
 
 class Resource(Command):
     user_options = []
@@ -67,7 +69,7 @@ class Resource(Command):
 
         os.system('lessc -x "%s/apidoc.less" "%s/apidoc.css"' % (resource_src_less_dir, resource_src_css_dir))
 
-        for folder in  [resource_css_dir, resource_js_dir]:
+        for folder in [resource_css_dir, resource_js_dir]:
             if not os.path.exists(folder):
                 os.makedirs(folder)
 
@@ -88,7 +90,8 @@ class Resource(Command):
                 out.write(open(input_file, mode='rb').read())
 
     def _compress(self, format, input_files, output_file):
-        import yuicompressor, tempfile
+        import yuicompressor
+        import tempfile
 
         handle, merged_filename = tempfile.mkstemp(prefix='minify')
         os.close(handle)
