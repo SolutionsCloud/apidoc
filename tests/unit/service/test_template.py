@@ -1,7 +1,6 @@
 import unittest
 import tempfile
 import os
-import shutil
 from io import StringIO
 
 from apidoc.service.template import Template as TemplateService
