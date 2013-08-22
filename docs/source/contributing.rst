@@ -78,7 +78,7 @@ Now you can make your changes locally.
 5. When you're done making changes, check that your changes pass the tests and flake8::
 
     $ pip install -r requirements-dev.txt
-    $ flake8 apidoc tests
+    $ flake8 --show-source --ignore=E501 --statistics apidoc tests
     $ python setup.py test
     $ tox
 
