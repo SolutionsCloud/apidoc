@@ -192,7 +192,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
     ('index', 'ApiDoc.tex', 'ApiDoc Documentation',
-        'Jérémy Derussé', 'manual'),
+        'Jeremy Derusse', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -222,7 +222,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'apidoc', 'ApiDoc Documentation',
-     ['Jérémy Derussé'], 1)
+     ['Jeremy Derusse'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -236,7 +236,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'ApiDoc', 'ApiDoc Documentation',
-        'Jérémy Derussé', 'ApiDoc', 'One line description of project.',
+        'Jeremy Derusse', 'ApiDoc', 'One line description of project.',
         'Miscellaneous'),
 ]
 
