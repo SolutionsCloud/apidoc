@@ -151,6 +151,9 @@ def then_sample_of_body(context, method, value, version):
 
     if str(methods[method].samples[version].response_body.type) == "array":
         assert_equals(str(methods[method].samples[version].response_body.sample_count), value)
+    elif isinstance(methods[method].samples[version].response_body.sample, dict):
+        import ast
+        assert_equals(methods[method].samples[version].response_body.sample, ast.literal_eval(value))
     else:
         assert_equals(str(methods[method].samples[version].response_body.sample), value)
 
