@@ -3,11 +3,12 @@ python:
   - "3.2"
   - "3.3"
 install:
-  - pip install -r requirements/test.txt --use-mirrors
+  - pip install -e .[ci]
 before_script:
   - flake8 --show-source --ignore=E501 --statistics .
 script:
   - behave --format progress2 tests/features/
+
   - coverage run setup.py test
   - coverage report -m
 notifications:

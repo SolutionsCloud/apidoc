@@ -77,7 +77,7 @@ Now you can make your changes locally.
 
 5. When you're done making changes, check that your changes pass the tests and flake8::
 
-    $ pip install -r requirements/contribute.txt
+    $ pip install -e .[contribute]
     $ flake8 --show-source --ignore=E501 --statistics .
     $ python setup.py test
 
