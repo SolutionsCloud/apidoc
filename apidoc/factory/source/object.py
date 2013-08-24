@@ -104,6 +104,10 @@ class Object(ElementFactory):
         return object
 
     def set_constraints(self, object, datas):
+        for option in ['maxItems', 'minItems', 'uniqueItems', 'maxLength', 'minLength', 'pattern', 'format', 'enum', 'default', 'multipleOf', 'maximum', 'exclusiveMaximum', 'minimum', 'exclusiveMinimum']:
+            if option in datas:
+                object.constraints[option] = Constraint(option, datas[option])
+
         if 'constraints' in datas:
             for name, constraint in datas['constraints'].items():
                 object.constraints[name] = Constraint(name, constraint)

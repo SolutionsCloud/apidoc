@@ -276,8 +276,8 @@ class TestObject(unittest.TestCase):
             "properties": {
                 "foo": {
                     "type": "string",
+                    "maxLength": 32,
                     "constraints": {
-                        "maxLength": 32,
                         "custom": "bar"
                     }
                 }

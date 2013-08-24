@@ -61,10 +61,9 @@ versions:
           properties:
             name:
               type: string
-              constraints:
-                enum:
-                  - foo
-                  - bar
+              enum:
+                - foo
+                - bar
             choice:
               type: enum
               values:
@@ -174,10 +173,9 @@ versions:
             removed: true
           size:
             type: integer
-            constraints:
-              minimum: 10
-              exclusiveMinimum: true
-              multipleOf: 10
+            minimum: 10
+            exclusiveMinimum: true
+            multipleOf: 10
           active:
             type: boolean
           version:
