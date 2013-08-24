@@ -435,9 +435,9 @@ class TestSource(unittest.TestCase):
         response = self.source.get_reference(reference, {"r1": reference1, "r2": reference2})
 
         self.assertNotEqual(reference2, response)
-        self.assertEquals("a", response.name)
-        self.assertEquals("b", response.description)
-        self.assertEquals(True, response.optional)
+        self.assertEqual("a", response.name)
+        self.assertEqual("b", response.description)
+        self.assertEqual(True, response.optional)
 
     def test_remove_hidden_elements(self):
         root = Root()
