@@ -417,14 +417,14 @@ The object String defines a string.
 * description: A description of the string
 * sample: A sample value which will be displayed in the sample fieldset.
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* maxLength: A positive integer is expected.
+* minLength: A positive integer is expected.
+* pattern: A string is expected. It who should be a regular expression, according to the ECMA 262 regular expression dialect.
+* format: A string is expteced. It must be one of the values ​​found in this list (date-time, email, hostname, ipv4, ipv6, uri).
+* enum: An array of string is expected.
+* default: A string is expected.
 * constraints: A dictionary of constraints
-  * maxLength: A positive integer is expected.
-  * minLength: A positive integer is expected.
-  * pattern: A string is expected. It who should be a regular expression, according to the ECMA 262 regular expression dialect.
-  * format: A string is expteced. It must be one of the values ​​found in this list (date-time, email, hostname, ipv4, ipv6, uri).
-  * enum: An array of string is expected.
-  * default: A string is expected.
-  * everything else: A string is expected
+  * {constraint_name}: A string is expected
 
 sample:
 
@@ -434,9 +434,8 @@ sample:
       type: string
       description: Name of the user
       sample: John Doe
-      constraints:
-        minLength: 1
-        maxLength: 32
+      minLength: 1
+      maxLength: 32
 
 Number
 ^^^^^^
@@ -446,15 +445,15 @@ The object Number defines a numeric value with optionals decimals.
 * description: A description of the number
 * sample: A sample value which will be displayed in the sample fieldset.
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* multipleOf: A number is expected.
+* maximum: A number is expected.
+* exclusiveMaximum: A boolean is expected.
+* minimum: A number is expected.
+* exclusiveMinimum: A boolean is expected.
+* enum: An array of number is expected.
+* default: A number is expected.
 * constraints: A dictionary of constraints
-  * multipleOf: A number is expected.
-  * maximum: A number is expected.
-  * exclusiveMaximum: A boolean is expected.
-  * minimum: A number is expected.
-  * exclusiveMinimum: A boolean is expected.
-  * enum: An array of number is expected.
-  * default: A number is expected.
-  * everything else: A string is expected
+  * {constraint_name}: A string is expected
 
 sample:
 
@@ -464,9 +463,8 @@ sample:
       type: number
       description: Price in dollars
       sample: 20.3
-      constraints:
-        maximum: 0
-        multipleOf: 0.01
+      maximum: 0
+      multipleOf: 0.01
 
 Integer
 ^^^^^^^
@@ -476,15 +474,15 @@ The object Integer defines a numeric value without decimal.
 * description: A description of the number
 * sample: A sample value which will be displayed in the sample fieldset.
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* multipleOf: A integer is expected.
+* maximum: A integer is expected.
+* exclusiveMaximum: A boolean is expected.
+* minimum: A integer is expected.
+* exclusiveMinimum: A boolean is expected.
+* enum: An array of integer is expected.
+* default: A integer is expected.
 * constraints: A dictionary of constraints
-  * multipleOf: A integer is expected.
-  * maximum: A integer is expected.
-  * exclusiveMaximum: A boolean is expected.
-  * minimum: A integer is expected.
-  * exclusiveMinimum: A boolean is expected.
-  * enum: An array of integer is expected.
-  * default: A integer is expected.
-  * everything else: A string is expected
+  * {constraint_name}: A string is expected
 
 sample:
 
@@ -494,8 +492,7 @@ sample:
       type: number
       description: Age of the user
       sample: 20
-      constraints:
-        maximum: 0
+      maximum: 0
 
 Boolean
 ^^^^^^^
@@ -505,9 +502,9 @@ The object Boolean defines a boolean.
 * description: A description of the boolean
 * sample: A sample value which will be displayed on the sample fieldset.
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* default: A boolean is expected.
 * constraints: A dictionary of constraints
-  * default: A boolean is expected.
-  * everything else: A string is expected
+  * {constraint_name}: A string is expected
 
 sample:
 
@@ -517,8 +514,7 @@ sample:
       type: boolean
       description: Define if the group is the default group
       sample: false
-      constraints:
-        default: false
+      default: false
 
 None
 ^^^^
@@ -528,7 +524,7 @@ The object None defines an empty object. Sometime used in a request when a key i
 * description: A description of the object
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
 * constraints: A dictionary of constraints
-  * everything: A string is expected
+  * {constraint_name}: A string is expected
 
 sample:
 
@@ -550,7 +546,7 @@ The object Const defines an constant property. Sometime used in a request like t
 * value: The value associated to the property
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
 * constraints: A dictionary of constraints
-  * everything: A string is expected
+  * {constraint_name}: A string is expected
 
 sample:
 
@@ -574,7 +570,7 @@ The object Enum defines a list a availables values. When this object is the prim
 * descriptions: A dictionnary of description for each value
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
 * constraints: A dictionary of constraints
-  * everything: A string is expected
+  * {constraint_name}: A string is expected
 
 sample:
 
@@ -606,7 +602,7 @@ The object Object defines a complex object containing a dictionnary of propertie
 * properties: List of properties of the object
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
 * constraints: A dictionary of constraints
-  * everything else: A string is expected
+  * {constraint_name}: A string is expected
 
 sample:
 
@@ -631,11 +627,11 @@ The object Array defines an array of objects.
 * items: A representation of the items contained in the array
 * sample_count: Number of items to display in the sample fieldset
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* maxItems: A positive integer is expected.
+* minItems: A positive integer is expected.
+* uniqueItems: A boolean is expected.
 * constraints: A dictionary of constraints
-  * maxItems: A positive integer is expected.
-  * minItems: A positive integer is expected.
-  * uniqueItems: A boolean is expected.
-  * everything else: A string is expected
+  * {constraint_name}: A string is expected
 
 sample:
 
@@ -650,8 +646,7 @@ sample:
           name:
             type: string
             description: New name of the user
-      constraints:
-        maxItems: 10
+      maxItems: 10
 
 Reference
 ^^^^^^^^^
@@ -679,10 +674,10 @@ The object Dynamic defines a special object where the key, which must be a strin
 * items: A representation of the items contained in the object
 * sample: A sample value which will be displayed on the sample fieldset.
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* maxItems: A positive integer is expected.
+* minItems: A positive integer is expected.
 * constraints: A dictionary of constraints
-  * maxItems: A positive integer is expected.
-  * minItems: A positive integer is expected.
-  * everything else: A string is expected
+  * {constraint_name}: A string is expected
 
 sample:
 

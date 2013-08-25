@@ -77,10 +77,9 @@ Now you can make your changes locally.
 
 5. When you're done making changes, check that your changes pass the tests and flake8::
 
-    $ pip install -r requirements-dev.txt
-    $ flake8 apidoc tests
+    $ pip install -e .[contribute]
+    $ flake8 --show-source --ignore=E501 --statistics .
     $ python setup.py test
-    $ tox
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -89,11 +88,10 @@ Now you can make your changes locally.
     $ git push origin name-of-your-bugfix-or-feature
 
 7. Check that the test coverage hasn't dropped::
-    coverage3 run --branch --source apidoc setup.py test
-    coverage3 report -m
+    $ behave --format progress2 tests/features/
 
-    coverage3 run --branch `which behave` tests/features/
-
+    $ coverage3 run --branch --source apidoc setup.py test
+    $ coverage3 report -m
 
 8. Submit a pull request through the GitHub website.
 

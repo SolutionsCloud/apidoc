@@ -2,6 +2,7 @@ import unittest
 import tempfile
 import os
 import shutil
+
 from io import StringIO
 
 from apidoc.service.template import Template as TemplateService
@@ -37,16 +38,20 @@ class Testtemplate(unittest.TestCase):
 
         template_dir = self.template.env.loader.searchpath[0]
         if os.path.exists(os.path.join(template_dir, "resource", "js", "combined.js")):
-            os.remove(os.path.join(template_dir, "resource", "js", "combined.js"))
+            shutil.move(os.path.join(template_dir, "resource", "js", "combined.js"), "/tmp/apidoc_combined.js")
 
-        self.template.output = os.path.join(self.temp_dir, "index.html")
-        self.template.render(source, config)
+        try:
+            self.template.output = os.path.join(self.temp_dir, "index.html")
+            self.template.render(source, config)
 
-        files = [f for f in os.listdir(os.path.join(self.temp_dir))]
-        self.assertIn("index.html", files)
-        self.assertIn("font", files)
-        self.assertIn("css", files)
-        self.assertIn("js", files)
+            files = [f for f in os.listdir(os.path.join(self.temp_dir))]
+            self.assertIn("index.html", files)
+            self.assertIn("font", files)
+            self.assertIn("css", files)
+            self.assertIn("js", files)
+        finally:
+            if os.path.exists("/tmp/apidoc_combined.js"):
+                shutil.move("/tmp/apidoc_combined.js", os.path.join(template_dir, "resource", "js", "combined.js"))
 
     def test_render__remote(self):
         source = Root()
@@ -55,18 +60,22 @@ class Testtemplate(unittest.TestCase):
 
         template_dir = self.template.env.loader.searchpath[0]
         if os.path.exists(os.path.join(template_dir, "resource", "js", "combined.js")):
-            os.remove(os.path.join(template_dir, "resource", "js", "combined.js"))
+            shutil.move(os.path.join(template_dir, "resource", "js", "combined.js"), "/tmp/apidoc_combined.js")
 
-        self.template.output = os.path.join(self.temp_dir, "foo", "index.html")
-        self.template.render(source, config)
+        try:
+            self.template.output = os.path.join(self.temp_dir, "foo", "index.html")
+            self.template.render(source, config)
 
-        files = [f for f in os.listdir(os.path.join(self.temp_dir, "foo"))]
-        self.assertIn("index.html", files)
-        self.assertIn("font", files)
-        self.assertIn("css", files)
-        self.assertIn("js", files)
-        files_js = [f for f in os.listdir(os.path.join(self.temp_dir, "foo", "js"))]
-        self.assertNotIn("jquery.min.js", files_js)
+            files = [f for f in os.listdir(os.path.join(self.temp_dir, "foo"))]
+            self.assertIn("index.html", files)
+            self.assertIn("font", files)
+            self.assertIn("css", files)
+            self.assertIn("js", files)
+            files_js = [f for f in os.listdir(os.path.join(self.temp_dir, "foo", "js"))]
+            self.assertNotIn("jquery.min.js", files_js)
+        finally:
+            if os.path.exists("/tmp/apidoc_combined.js"):
+                shutil.move("/tmp/apidoc_combined.js", os.path.join(template_dir, "resource", "js", "combined.js"))
 
     def test_render__output(self):
         source = Root()

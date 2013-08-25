@@ -17,14 +17,14 @@ class TestEnum(unittest.TestCase):
         self.assertFalse(object() in Foo)
 
     def test_instance(self):
-        self.assertEquals(Foo(1), Foo.bar)
-        self.assertEquals(Foo("bar"), Foo.bar)
+        self.assertEqual(Foo(1), Foo.bar)
+        self.assertEqual(Foo("bar"), Foo.bar)
 
     def test_repr(self):
-        self.assertEquals("Foo.bar", repr(Foo(1)))
+        self.assertEqual("Foo.bar", repr(Foo(1)))
 
     def test_new__boolean(self):
-        self.assertEquals(None, Foo(object))
+        self.assertEqual(None, Foo(object))
 
 
 class Foo(Enum):

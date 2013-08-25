@@ -1,9 +1,10 @@
 import os
 import sys
-import shutil
+import json
 
 from distutils.cmd import Command
 from setuptools.command.test import test
+
 
 class ApiDocTest(test):
     def finalize_options(self):
@@ -15,6 +16,7 @@ class ApiDocTest(test):
         import pytest
         errno = pytest.main(self.test_args)
         sys.exit(errno)
+
 
 class Resource(Command):
     user_options = []
@@ -42,22 +44,37 @@ class Resource(Command):
         resource_js_dir = os.path.realpath(os.path.join(resource_dir, 'js'))
         resource_css_dir = os.path.realpath(os.path.join(resource_dir, 'css'))
 
-        os.system("wget --post-data='css=%s&js=%s' -O '/tmp/bootstrap.zip' %s" % (
-            '["reset.less","scaffolding.less","grid.less","layouts.less","type.less","code.less","tables.less","forms.less","navs.less","navbar.less","tooltip.less","popovers.less","modals.less","wells.less","close.less","utilities.less","component-animations.less","responsive-utilities.less","responsive-767px-max.less","responsive-768px-979px.less","responsive-1200px-min.less","responsive-navbar.less"]',
-            '["bootstrap-transition.js","bootstrap-modal.js","bootstrap-scrollspy.js","bootstrap-tooltip.js","bootstrap-popover.js","bootstrap-affix.js"]',
-            'http://bootstrap.herokuapp.com'
-        ))
-
-        assert os.path.exists('/tmp/bootstrap.zip'), 'Downloaded bootstrap zip not found'
-
         try:
-            os.system('unzip /tmp/bootstrap.zip -d /tmp/apidoc-bootstrap')
+            os.system('wget -O "%s" "%s"' % ('/tmp/bootstrap-raw', 'http://getbootstrap.com/assets/js/raw-files.js'))
+            assert os.path.exists('/tmp/bootstrap-raw'), 'Downloaded bootstrap zip not found'
 
-            shutil.move('/tmp/apidoc-bootstrap/js/bootstrap.min.js', '%s/bootstrap.min.js' % resource_src_js_dir)
-            shutil.move('/tmp/apidoc-bootstrap/css/bootstrap.min.css', '%s/bootstrap.min.css' % resource_src_css_dir)
+            with open('/tmp/bootstrap-raw') as f:
+                js_raw = json.loads(f.readline()[11:])
+                less_raw = json.loads(f.readline()[13:])
+
+            js_full = ''
+            for js_file in ["transition.js", "modal.js", "scrollspy.js", "tooltip.js", "popover.js", "affix.js"]:
+                js_full += js_raw[js_file]
+
+            with open('%s/bootstrap.js' % resource_src_js_dir, 'w') as f:
+                f.write(js_full)
+
+            if not os.path.exists('%s/bootstrap' % resource_src_less_dir):
+                os.mkdir('%s/bootstrap' % resource_src_less_dir)
+            less_full = ''
+            for less_file in ['variables.less', 'mixins.less', 'type.less', 'theme.less', 'scaffolding.less', 'code.less', 'grid.less', 'utilities.less', 'normalize.less', 'component-animations.less', 'popovers.less', 'navbar.less', 'responsive-utilities.less', 'jumbotron.less', 'tooltip.less', 'tables.less', 'wells.less', 'forms.less', 'print.less', 'navs.less', 'modals.less', 'close.less']:
+                with open('%s/bootstrap/%s' % (resource_src_less_dir, less_file), 'w') as f:
+                    f.write(less_raw[less_file])
+                less_full += '@import "bootstrap/%s";\n' % less_file
+
+            less_full += '@import "variables.less";\n'
+            with open('%s/bootstrap.less' % resource_src_less_dir, 'w') as f:
+                f.write(less_full)
+
+            os.system('lessc %s %s' % ('%s/bootstrap.less' % resource_src_less_dir, '%s/bootstrap.css' % resource_src_css_dir))
         finally:
-            os.remove('/tmp/bootstrap.zip')
-            shutil.rmtree('/tmp/apidoc-bootstrap')
+            os.remove('/tmp/bootstrap-raw')
+            pass
 
         os.system('wget -O "%s" "%s"' % ('%s/jquery.min.js' % resource_src_js_dir, 'http://code.jquery.com/jquery-2.0.3.min.js'))
         assert os.path.exists('%s/mousetrap.min.js' % resource_src_js_dir), 'Downloaded jquery file not found'
@@ -67,17 +84,17 @@ class Resource(Command):
 
         os.system('lessc -x "%s/apidoc.less" "%s/apidoc.css"' % (resource_src_less_dir, resource_src_css_dir))
 
-        for folder in  [resource_css_dir, resource_js_dir]:
+        for folder in [resource_css_dir, resource_js_dir]:
             if not os.path.exists(folder):
                 os.makedirs(folder)
 
-        self._compress("css", ["%s/bootstrap.min.css" % resource_src_css_dir, "%s/apidoc.css" % resource_src_css_dir, "%s/font.css" % resource_css_dir], "%s/combined.css" % resource_css_dir)
+        self._compress("css", ["%s/bootstrap.css" % resource_src_css_dir, "%s/apidoc.css" % resource_src_css_dir, "%s/font.css" % resource_css_dir], "%s/combined.css" % resource_css_dir)
         assert os.path.exists('%s/combined.css' % resource_css_dir), 'Combined css file not found'
 
-        self._compress("css", ["%s/bootstrap.min.css" % resource_src_css_dir, "%s/apidoc.css" % resource_src_css_dir, "%s/font-embedded.css" % resource_css_dir], "%s/combined-embedded.css" % resource_css_dir)
+        self._compress("css", ["%s/bootstrap.css" % resource_src_css_dir, "%s/apidoc.css" % resource_src_css_dir, "%s/font-embedded.css" % resource_css_dir], "%s/combined-embedded.css" % resource_css_dir)
         assert os.path.exists('%s/combined-embedded.css' % resource_css_dir), 'Combined embedded css file not found'
 
-        self._compress("js", ["%s/jquery.min.js" % resource_src_js_dir, "%s/bootstrap.min.js" % resource_src_js_dir, "%s/mousetrap.min.js" % resource_src_js_dir, "%s/apidoc.js" % resource_src_js_dir], "%s/combined.js" % resource_js_dir)
+        self._compress("js", ["%s/jquery.min.js" % resource_src_js_dir, "%s/bootstrap.js" % resource_src_js_dir, "%s/mousetrap.min.js" % resource_src_js_dir, "%s/apidoc.js" % resource_src_js_dir], "%s/combined.js" % resource_js_dir)
         assert os.path.exists('%s/combined.js' % resource_js_dir), 'Combined js file not found'
 
     def _merge_files(self, input_files, output_file):
@@ -88,7 +105,8 @@ class Resource(Command):
                 out.write(open(input_file, mode='rb').read())
 
     def _compress(self, format, input_files, output_file):
-        import yuicompressor, tempfile
+        import yuicompressor
+        import tempfile
 
         handle, merged_filename = tempfile.mkstemp(prefix='minify')
         os.close(handle)

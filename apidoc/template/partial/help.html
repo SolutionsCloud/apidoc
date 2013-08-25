@@ -1,77 +1,81 @@
-<div id="help-modal" class="modal hide fade" tabindex="-1" role="dialog">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3>Keyboard Shortcuts</h3>
-    </div>
-    <div class="modal-body">
-        <div class="help_row">
-            <h4>Site wide shortcuts</h4>
-            <dl class="keyboard-mappings">
-                <dt>?</dt>
-                <dd>Bring up this help dialog</dd>
-            </dl>
-            <dl class="keyboard-mappings">
-                <dt>esc</dt>
-                <dd>Hide this help dialog</dd>
-            </dl>
-            <dl class="keyboard-mappings">
-                <dt>/</dt>
-                <dd>Focus search bar</dd>
-            </dl>
+<div id="help-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>Keyboard Shortcuts</h3>
+            </div>
+            <div class="modal-body">
+                <div class="help_row">
+                    <h4>Site wide shortcuts</h4>
+                    <dl class="keyboard-mappings">
+                        <dt>?</dt>
+                        <dd>Bring up this help dialog</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>esc</dt>
+                        <dd>Hide this help dialog</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>/</dt>
+                        <dd>Focus search bar</dd>
+                    </dl>
+                </div>
+                <div class="help_row">
+                    <h4>Navigation</h4>
+                    <dl class="keyboard-mappings">
+                        <dt>j <em>or</em> n</dt>
+                        <dd>Move to next method or type</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>k <em>or</em> p</dt>
+                        <dd>Move to previous method or type</dd>
+                    </dl>
+            {% if sources.versions|length > 1 %}
+                    <dl class="keyboard-mappings">
+                        <dt>v</dt>
+                        <dd>Move to next version</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>b</dt>
+                        <dd>Move to previous version</dd>
+                    </dl>
+            {% endif %}
+                </div>
+            {% if sources.versions|length > 1 %}
+                <div class="help_row">
+                    <h4>Diff</h4>
+                    <dl class="keyboard-mappings">
+                        <dt>&lt;shift&gt; + j</dt>
+                        <dd>Move to next method or type with a diff</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>&lt;shift&gt; + k</dt>
+                        <dd>Move to previous method or type with a diff</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>d</dt>
+                        <dd>Toggle diff mode</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>s</dt>
+                        <dd>Toggle side by side / inline mode</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>f</dt>
+                        <dd>Toggle full / strict diff</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>&lt;shift&gt; + v</dt>
+                        <dd>Move to next version to diff</dd>
+                    </dl>
+                    <dl class="keyboard-mappings">
+                        <dt>&lt;shift&gt; + b</dt>
+                        <dd>Move to previous version to diff</dd>
+                    </dl>
+                </div>
+            {% endif %}
+            </div>
         </div>
-        <div class="help_row">
-            <h4>Navigation</h4>
-            <dl class="keyboard-mappings">
-                <dt>j <em>or</em> n</dt>
-                <dd>Move to next method or type</dd>
-            </dl>
-            <dl class="keyboard-mappings">
-                <dt>k <em>or</em> p</dt>
-                <dd>Move to previous method or type</dd>
-            </dl>
-    {% if sources.versions|length > 1 %}
-            <dl class="keyboard-mappings">
-                <dt>v</dt>
-                <dd>Move to next version</dd>
-            </dl>
-            <dl class="keyboard-mappings">
-                <dt>b</dt>
-                <dd>Move to previous version</dd>
-            </dl>
-    {% endif %}
-        </div>
-    {% if sources.versions|length > 1 %}
-        <div class="help_row">
-            <h4>Diff</h4>
-            <dl class="keyboard-mappings">
-                <dt>&lt;shift&gt; + j</dt>
-                <dd>Move to next method or type with a diff</dd>
-            </dl>
-            <dl class="keyboard-mappings">
-                <dt>&lt;shift&gt; + k</dt>
-                <dd>Move to previous method or type with a diff</dd>
-            </dl>
-            <dl class="keyboard-mappings">
-                <dt>d</dt>
-                <dd>Toggle diff mode</dd>
-            </dl>
-            <dl class="keyboard-mappings">
-                <dt>s</dt>
-                <dd>Toggle side by side / inline mode</dd>
-            </dl>
-            <dl class="keyboard-mappings">
-                <dt>f</dt>
-                <dd>Toggle full / strict diff</dd>
-            </dl>
-            <dl class="keyboard-mappings">
-                <dt>&lt;shift&gt; + v</dt>
-                <dd>Move to next version to diff</dd>
-            </dl>
-            <dl class="keyboard-mappings">
-                <dt>&lt;shift&gt; + b</dt>
-                <dd>Move to previous version to diff</dd>
-            </dl>
-        </div>
-    {% endif %}
     </div>
 </div>

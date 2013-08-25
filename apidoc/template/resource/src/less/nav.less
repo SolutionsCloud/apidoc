@@ -1,55 +1,57 @@
+ @import "variables.less";
 
 .doc-sidenav {
     &.nav {
-        margin: 20px 0 0;
-        border: 1px solid #e5e5e5;
-        position:relative;
-        -webkit-border-radius: 6px;
-           -moz-border-radius: 6px;
-                border-radius: 6px;
-        -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
-           -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
-                box-shadow: 0 1px 4px rgba(0,0,0,.065);
+        margin: 30px 0 0;
+
+        padding-top:    10px;
+        padding-bottom: 10px;
+        text-shadow: 0 1px 0 #fff;
+        background-color: @app-bg;
+        border-radius: 5px;
+
         >li {
-            &.nav-header > a {
-                padding-left: 15px;
-                margin-top: 0;
+            &.nav-header {
+                font-weight: bold;
+                color: hsl(220, 7%, 45%);
+                text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+                text-transform: uppercase;
+                > H5 {
+                    padding-left: 10px;
+                }
+                > a {
+                    padding-left: 15px;
+                    margin-top: 0;
+                }
             }
 
-            &:first-child > a {
-                -webkit-border-radius: 6px 6px 0 0;
-                   -moz-border-radius: 6px 6px 0 0;
-                        border-radius: 6px 6px 0 0;
+            &:not(:first-child):hover,
+            &:not(:first-child):focus {
+                background-color: @nav-link-hover-bg;
             }
-            &:last-child > a {
-                -webkit-border-radius: 0 0 6px 6px;
-                   -moz-border-radius: 0 0 6px 6px;
-                        border-radius: 0 0 6px 6px;
-            }
-            &.active > a {
-                text-shadow: 0 1px 0 rgba(0,0,0,.15);
-                -webkit-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
-                   -moz-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
-                        box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
-                padding-right: 24px;
-                > .i-chevron {
-                    right: 12px;
+            &.active {
+                background-color: transparent;
+                > a {
+                    color: @brand-primary;
+                    border-right: 1px solid @brand-primary;
+                    > SPAN, H6 {
+                        font-weight: bold;
+                    }
                 }
             }
             > a {
+                background-color: transparent;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 padding-left: 32px;
+                color: hsl(220, 7%, 45%);
+
                 &:focus {
                     outline: none;
                 }
-
-                > .i-chevron {
-                    position: absolute;
-                    right: 4px;
-                    margin-top: 3px;
-                }
-
+            }
+            + .nav-header {
+              margin-top: 9px;
             }
         }
 
@@ -71,9 +73,7 @@
     padding-top: 20px;
     padding-bottom: 20px;
     padding-right: 10px;
-    width: 100% !important;
     &.affix {
-        width: inherit !important;
         top: 0;
         bottom: 0;
         overflow: auto;
@@ -86,19 +86,35 @@
     }
 }
 
+@media screen and (min-width: @screen-desktop) {
+    .doc-sidebar.affix {
+        width: 223px;
+    }
+}
+
+@media screen and (min-width: @screen-lg-desktop) {
+    .doc-sidebar.affix {
+        width: 278px;
+    }
+}
+
+@media screen and (min-width: @screen-vlg-desktop) {
+    .doc-sidebar.affix {
+        width: 372px;
+    }
+}
 
 
-@media (max-width: 767px) {
-    /* Remove any padding from the body */
+@media (max-width: @screen-sm-max) {
     body {
         padding-top: 0;
     }
 
-    /* Sidenav */
     .doc-sidenav {
         width: auto;
         margin-bottom: 20px;
     }
+
     .doc-sidebar.affix {
         position: static;
         width: auto;
