@@ -67,7 +67,8 @@ Here's how to set up `ApiDoc` for local development.
 
     $ mkvirtualenv apidoc
     $ cd apidoc/
-    $ python setup.py develop
+    $ pip install .-e [contribute]
+
 
 4. Create a branch for local development::
 
