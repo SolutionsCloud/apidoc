@@ -12,6 +12,7 @@ Changelog
 * `Feature #12 <https://github.com/SolutionsCloud/apidoc/issues/12>`_ Add rules on properties
 * `Feature #13 <https://github.com/SolutionsCloud/apidoc/issues/13>`_ Add PATCH and OPTION method
 * `Feature #14 <https://github.com/SolutionsCloud/apidoc/issues/14>`_ Replace shortcup popin by bootstrap modal
+* `Feature #16 <https://github.com/SolutionsCloud/apidoc/issues/16>`_ Upgrade to Bootstrap 3
 
 1.0 (2013-07-23)
 ----------------
