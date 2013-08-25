@@ -162,7 +162,7 @@ function displayScrollHeader() {
     }
 
     header.css({
-            width: element.outerWidth() - ($(".doc-sidebar.affix").css("position") != "static" ? 1 : 0),
+            width: element.outerWidth() - ((element.offset().left * 2) % 2),
             top: Math.min(-1, elementTop + element.height() - scrollTop - header.height() - 30)
         })
         .show();
