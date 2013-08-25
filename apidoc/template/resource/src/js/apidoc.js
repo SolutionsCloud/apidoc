@@ -70,9 +70,9 @@ function displayScrollHeader() {
     header.find(".stack").hide();
     var subScrollTop = scrollTop + header.outerHeight();
     for (var i = 0, l = items.length; i < l; i++) {
-        var pos = $(items[i]).offset().top - subScrollTop + $(items[i]).outerHeight();
+        var pos = $(items[i]).offset().top - subScrollTop - 5;
         if (pos > 0) {
-            if (pos < 30) {
+            if (pos < $(items[i]).outerHeight() + 5) {
                 subElement = null;
             }
 
