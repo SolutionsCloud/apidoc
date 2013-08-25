@@ -70,7 +70,7 @@ function displayScrollHeader() {
     header.find(".stack").hide();
     var subScrollTop = scrollTop + header.outerHeight();
     for (var i = 0, l = items.length; i < l; i++) {
-        var pos = $(items[i]).offset().top - subScrollTop;
+        var pos = $(items[i]).offset().top - subScrollTop + $(items[i]).outerHeight();
         if (pos > 0) {
             if (pos < 30) {
                 subElement = null;
@@ -162,7 +162,7 @@ function displayScrollHeader() {
     }
 
     header.css({
-            width: element.width() + 2,
+            width: element.outerWidth() - ($(".doc-sidebar.affix").css("position") != "static" ? 1 : 0),
             top: Math.min(-1, elementTop + element.height() - scrollTop - header.height() - 30)
         })
         .show();
@@ -324,11 +324,12 @@ function initNavigation() {
 }
 
 function focusNavigation() {
-    if (!window.matchMedia('(max-width: 767px)').matches) {
+    if ($(".doc-sidebar.affix").css("position") != "static") {
         // pas de focus si la souris est sur la navigation
         if ($(".doc-sidebar").data('hover')) {
             return;
         }
+
         var target = $(".scroll-spyable .active");
         var container = $(".doc-sidebar");
         var relativeTop = target.offset().top - container.offset().top;
@@ -344,7 +345,7 @@ function initScrollNavigation() {
     $(window).scrollspy({target: '.scroll-spyable'});
     $('.doc-sidebar').affix({
         offset: {
-            top: $(".container").outerHeight() + $(".container").offset().top
+            top: $(".jumbotron").outerHeight() + $(".jumbotron").offset().top
         }
     });
 
@@ -487,7 +488,7 @@ function toggleDiffLayout(item) {
 
     item.toggleClass("diff-mode");
     if (item.is(".diff-mode")) {
-        if (window.matchMedia('(max-width: 979px)').matches) {
+        if (window.matchMedia('(max-width: 767px)').matches) {
             item.addClass("diff-mode-inline").removeClass("diff-mode-side");
         } else {
             item.addClass("diff-mode-side").removeClass("diff-mode-inline");
@@ -837,7 +838,7 @@ $(document).ready(function () {
     initShortcuts();
     initFooterLinks();
 
-    $('.i-constraint[data-content]').popover({html: true});
+    $('.i-constraint[data-content]').popover({html: true, trigger: "hover"});
 
     onNavigationChange();
 });

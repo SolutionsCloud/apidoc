@@ -30,7 +30,7 @@
 {%- endblock -%}
 
 {%- block body -%}
-<header>
+<div class="jumbotron">
     <div class="container">
         <h1>
     {%- if sources.configuration.title != None -%}
@@ -45,19 +45,19 @@
         </p>
     {%- endif -%}
     </div>
-</header>
+</div>
 
 {%- include "partial/help.html" -%}
 
-<div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span3">
-            <div class="doc-sidebar span3">
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="doc-sidebar">
                 {%- include "partial/navigation.html" %}
             </div>
         </div>
-        <div class="span9">
-            <div id="item-head" class="span9 item">
+        <div class="col-md-9">
+            <div id="item-head" class="item">
                 <h4></h4>
                 <div class="diff-header"></div>
                 <div class="stack">
@@ -67,13 +67,13 @@
             <div class="page-header">
                 <h2>Methods</h2>
             </div>
-            <ul class="unstyled">
+            <ul class="list-unstyled">
                 {%- include "partial/method_category.html" %}
             </ul>
             <div class="page-header">
                 <h2>Types</h2>
             </div>
-            <ul class="unstyled">
+            <ul class="list-unstyled">
                 {%- include "partial/type_category.html" %}
             </ul>
         </div>

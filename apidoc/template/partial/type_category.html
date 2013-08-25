@@ -6,7 +6,7 @@
         <div class="description">{{ category.description }}</div>
         {%- endif %}
     {%- endif %}
-        <ul class="unstyled">
+        <ul class="list-unstyled">
     {%- for type in category.types|sort %}
             <li class="type item" id="t-{{ type.name }}">
                 <h4>{{ type.name }}</h4>
@@ -21,7 +21,7 @@
                         <i class="i-diff"></i>
                          Diff
                     </h5>
-                    <ul class="versions inline">
+                    <ul class="versions list-inline">
             {%- for version in sources.versions|sort %}
                         <li data-version="{{ version.name }}" data-changed="{{ type.changes_status[version.name]|lower }}"
                 {%- if version.name not in type.versions -%}
