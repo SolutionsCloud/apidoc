@@ -80,7 +80,7 @@ class Resource(Command):
             pass
 
         os.system('wget -O "%s" "%s"' % ('%s/jquery.min.js' % resource_src_js_dir, 'http://code.jquery.com/jquery-2.0.3.min.js'))
-        assert os.path.exists('%s/mousetrap.min.js' % resource_src_js_dir), 'Downloaded jquery file not found'
+        assert os.path.exists('%s/jquery.min.js' % resource_src_js_dir), 'Downloaded jquery file not found'
 
         os.system('wget -O "%s" "%s"' % ('%s/mousetrap.min.js' % resource_src_js_dir, 'http://cdn.craig.is/js/mousetrap/mousetrap.min.js'))
         assert os.path.exists('%s/mousetrap.min.js' % resource_src_js_dir), 'Downloaded mousetrap file not found'
