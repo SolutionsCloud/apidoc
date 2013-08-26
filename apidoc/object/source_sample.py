@@ -80,6 +80,7 @@ class Object():
         self.type = object_raw.type
         self.optional = object_raw.optional
         self.sample = object_raw.get_sample()
+        self.constraints = object_raw.constraints
 
 
 class ObjectObject(Object):
