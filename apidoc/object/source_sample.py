@@ -1,4 +1,5 @@
 from apidoc.object.source_raw import Object as ObjectRaw
+from apidoc.object.source_raw import Constraintable
 from apidoc.object import Comparable
 
 
@@ -80,7 +81,10 @@ class Object():
         self.type = object_raw.type
         self.optional = object_raw.optional
         self.sample = object_raw.get_sample()
-        self.constraints = object_raw.constraints
+        if isinstance(object_raw, Constraintable):
+            self.constraints = object_raw.constraints
+        else:
+            self.constraints = {}
 
 
 class ObjectObject(Object):
