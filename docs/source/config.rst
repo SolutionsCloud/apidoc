@@ -14,7 +14,7 @@ To use ApiDoc with a config file call the following arguments :
 
 .. code-block:: console
 
-    $ apidoc-render -c ./path-to-config.yaml
+    $ apidoc -c ./path-to-config.yaml
 
 Sample
 ------

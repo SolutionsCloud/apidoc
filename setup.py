@@ -45,9 +45,7 @@ setup(
     packages=find_packages(exclude=['tests', 'tests.*', 'example', 'example.*', 'docs', 'docs.*']),
     entry_points={
         'console_scripts': [
-            'apidoc-analyse = apidoc.command.analyse:main',
-            'apidoc-render = apidoc.command.render:main',
-            'apidoc-watch = apidoc.command.watch:main',
+            'apidoc = apidoc.command.run:main',
         ],
     },
     include_package_data=True,
@@ -59,8 +57,8 @@ setup(
         'template/resource/css/*.css',
         'template/resource/js/*.js',
         'template/resource/font/*',
-        'datas/schemas/*.yml',
-        'command/logging.yml',
+        'settings/schemas/*.yml',
+        'settings/logging.yml',
     ]},
     install_requires=requirements,
     tests_require=['pytest', 'mock'],
