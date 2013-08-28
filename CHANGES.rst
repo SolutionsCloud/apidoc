@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.2 (2013-??-??)
+----------------
+
+* `Feature #17 <https://github.com/SolutionsCloud/apidoc/issues/17>`_ Merge ApiDoc's binaries
+
 1.1 (2013-08-28)
 ----------------
 
@@ -13,6 +18,7 @@ Changelog
 * `Feature #13 <https://github.com/SolutionsCloud/apidoc/issues/13>`_ Add PATCH and OPTION method
 * `Feature #14 <https://github.com/SolutionsCloud/apidoc/issues/14>`_ Replace shortcup popin by bootstrap modal
 * `Feature #16 <https://github.com/SolutionsCloud/apidoc/issues/16>`_ Upgrade to Bootstrap 3
+* `Bug #19 <https://github.com/SolutionsCloud/apidoc/issues/19>`_ Add constraints in sampled objects
 
 1.0 (2013-07-23)
 ----------------
