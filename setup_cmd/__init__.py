@@ -62,9 +62,12 @@ class Resource(Command):
             if not os.path.exists('%s/bootstrap' % resource_src_less_dir):
                 os.mkdir('%s/bootstrap' % resource_src_less_dir)
             less_full = ''
-            for less_file in ['variables.less', 'mixins.less', 'type.less', 'theme.less', 'scaffolding.less', 'code.less', 'grid.less', 'utilities.less', 'normalize.less', 'component-animations.less', 'popovers.less', 'navbar.less', 'responsive-utilities.less', 'jumbotron.less', 'tooltip.less', 'tables.less', 'wells.less', 'forms.less', 'print.less', 'navs.less', 'modals.less', 'close.less']:
+
+            for less_file in less_raw.keys():
                 with open('%s/bootstrap/%s' % (resource_src_less_dir, less_file), 'w') as f:
                     f.write(less_raw[less_file])
+
+            for less_file in ['variables.less', 'mixins.less', 'type.less', 'buttons.less', 'button-groups.less', 'theme.less', 'scaffolding.less', 'code.less', 'grid.less', 'utilities.less', 'normalize.less', 'component-animations.less', 'popovers.less', 'navbar.less', 'responsive-utilities.less', 'jumbotron.less', 'tooltip.less', 'tables.less', 'wells.less', 'forms.less', 'print.less', 'navs.less', 'modals.less', 'close.less']:
                 less_full += '@import "bootstrap/%s";\n' % less_file
 
             less_full += '@import "variables.less";\n'
@@ -77,7 +80,7 @@ class Resource(Command):
             pass
 
         os.system('wget -O "%s" "%s"' % ('%s/jquery.min.js' % resource_src_js_dir, 'http://code.jquery.com/jquery-2.0.3.min.js'))
-        assert os.path.exists('%s/mousetrap.min.js' % resource_src_js_dir), 'Downloaded jquery file not found'
+        assert os.path.exists('%s/jquery.min.js' % resource_src_js_dir), 'Downloaded jquery file not found'
 
         os.system('wget -O "%s" "%s"' % ('%s/mousetrap.min.js' % resource_src_js_dir, 'http://cdn.craig.is/js/mousetrap/mousetrap.min.js'))
         assert os.path.exists('%s/mousetrap.min.js' % resource_src_js_dir), 'Downloaded mousetrap file not found'

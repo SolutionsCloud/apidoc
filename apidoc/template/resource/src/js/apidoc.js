@@ -70,9 +70,9 @@ function displayScrollHeader() {
     header.find(".stack").hide();
     var subScrollTop = scrollTop + header.outerHeight();
     for (var i = 0, l = items.length; i < l; i++) {
-        var pos = $(items[i]).offset().top - subScrollTop + $(items[i]).outerHeight();
+        var pos = $(items[i]).offset().top - subScrollTop - 5;
         if (pos > 0) {
-            if (pos < 30) {
+            if (pos < $(items[i]).outerHeight() + 5) {
                 subElement = null;
             }
 
@@ -162,7 +162,7 @@ function displayScrollHeader() {
     }
 
     header.css({
-            width: element.outerWidth() - ($(".doc-sidebar.affix").css("position") != "static" ? 1 : 0),
+            width: element.outerWidth() - ((element.offset().left * 2) % 2),
             top: Math.min(-1, elementTop + element.height() - scrollTop - header.height() - 30)
         })
         .show();
