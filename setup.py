@@ -26,7 +26,7 @@ setup(
     author='Jérémy Derussé',
     author_email='jeremy.derusse@sfr.com',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
