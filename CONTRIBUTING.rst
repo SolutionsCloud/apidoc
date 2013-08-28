@@ -88,8 +88,8 @@ Now you can make your changes locally.
     $ git push origin name-of-your-bugfix-or-feature
 
 7. Check that the test coverage hasn't dropped::
-    $ behave --format progress2 tests/features/
 
+    $ behave --format progress2 tests/features/
     $ coverage3 run --branch --source apidoc setup.py test
     $ coverage3 report -m
 
