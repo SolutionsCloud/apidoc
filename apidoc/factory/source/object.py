@@ -1,9 +1,9 @@
-from apidoc.object.source_raw import ObjectObject, ObjectArray, ObjectNumber, ObjectString, ObjectBool, ObjectReference, ObjectType, ObjectNone, ObjectDynamic, ObjectConst, ObjectEnum, EnumValue
+from apidoc.object.source_raw import ObjectObject, ObjectArray, ObjectNumber, ObjectInteger, ObjectString, ObjectBoolean, ObjectReference, ObjectType, ObjectNone, ObjectDynamic, ObjectConst, ObjectEnum, EnumValue, Constraint, Constraintable
 from apidoc.object.source_raw import Object as ObjectRaw
 
 from apidoc.factory.source.element import Element as ElementFactory
 
-from apidoc.lib.util.cast import to_bool
+from apidoc.lib.util.cast import to_boolean
 
 
 class Object(ElementFactory):
@@ -33,12 +33,14 @@ class Object(ElementFactory):
                 object.sample_count = int(datas["sample_count"])
         elif type is ObjectRaw.Types.number:
             object = ObjectNumber()
+        elif type is ObjectRaw.Types.integer:
+            object = ObjectInteger()
         elif type is ObjectRaw.Types.string:
             object = ObjectString()
-        elif type is ObjectRaw.Types.bool:
-            object = ObjectBool()
+        elif type is ObjectRaw.Types.boolean:
+            object = ObjectBoolean()
             if "sample" in datas:
-                object.sample = to_bool(datas["sample"])
+                object.sample = to_boolean(datas["sample"])
         elif type is ObjectRaw.Types.reference:
             object = ObjectReference()
             if "reference" in datas:
@@ -92,9 +94,20 @@ class Object(ElementFactory):
             object = ObjectRaw()
 
         self.set_common_datas(object, name, datas)
+        if isinstance(object, Constraintable):
+            self.set_constraints(object, datas)
         object.type = type
 
         if "optional" in datas:
-            object.optional = to_bool(datas["optional"])
+            object.optional = to_boolean(datas["optional"])
 
         return object
+
+    def set_constraints(self, object, datas):
+        for option in ['maxItems', 'minItems', 'uniqueItems', 'maxLength', 'minLength', 'pattern', 'format', 'enum', 'default', 'multipleOf', 'maximum', 'exclusiveMaximum', 'minimum', 'exclusiveMinimum']:
+            if option in datas:
+                object.constraints[option] = Constraint(option, datas[option])
+
+        if 'constraints' in datas:
+            for name, constraint in datas['constraints'].items():
+                object.constraints[name] = Constraint(name, constraint)

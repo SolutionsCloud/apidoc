@@ -56,6 +56,18 @@ class Sampleable():
         return "my_%s" % self.name
 
 
+class Constraintable():
+
+    """Element who can provide constraints
+    """
+
+    def __init__(self):
+        """Class instantiation
+        """
+        super().__init__()
+        self.constraints = {}
+
+
 class Displayable():
 
     """Element who can be displayed
@@ -143,7 +155,8 @@ class Method(Element, Displayable, Comparable):
         put = 3
         delete = 4
         head = 5
-        http = 6
+        option = 6
+        patch = 7
 
     @property
     def message(self):
@@ -263,6 +276,30 @@ class TypeFormat():
         self.advanced = None
 
 
+class Constraint(Comparable):
+
+    """An oobject's constraint
+    """
+
+    def __init__(self, name, constraint):
+        """Class instantiation
+        """
+        super().__init__()
+        self.name = name
+        self.constraint = constraint
+
+    def __str__(self):
+        return '%s: %s' % (self.name, str(self.constraint))
+
+    def __repr__(self):
+        return "%s(%r)" % (self.__class__, self.__dict__)
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name))
+
+
 class Object(Element, Sampleable):
 
     """Element Object
@@ -276,13 +313,14 @@ class Object(Element, Sampleable):
         array = 2
         number = 3
         string = 4
-        bool = 5
+        boolean = 5
         none = 6
         reference = 7
         type = 8
         dynamic = 9
         const = 10
         enum = 11
+        integer = 12
 
     @classmethod
     def factory(cls, str_type, version):
@@ -296,10 +334,12 @@ class Object(Element, Sampleable):
             object = ObjectArray()
         elif type is Object.Types.number:
             object = ObjectNumber()
+        elif type is Object.Types.integer:
+            object = ObjectInteger()
         elif type is Object.Types.string:
             object = ObjectString()
-        elif type is Object.Types.bool:
-            object = ObjectBool()
+        elif type is Object.Types.boolean:
+            object = ObjectBoolean()
         elif type is Object.Types.reference:
             object = ObjectReference()
         elif type is Object.Types.type:
@@ -326,7 +366,7 @@ class Object(Element, Sampleable):
         self.optional = False
 
 
-class ObjectObject(Object):
+class ObjectObject(Object, Constraintable):
 
     """Element ObjectObject
     """
@@ -339,7 +379,7 @@ class ObjectObject(Object):
         self.properties = {}
 
 
-class ObjectArray(Object):
+class ObjectArray(Object, Constraintable):
 
     """Element ObjectArray
     """
@@ -353,7 +393,7 @@ class ObjectArray(Object):
         self.sample_count = 2
 
 
-class ObjectNumber(Object):
+class ObjectNumber(Object, Constraintable):
 
     """Element ObjectNumber
     """
@@ -367,10 +407,27 @@ class ObjectNumber(Object):
     def get_default_sample(self):
         """Return default value for the element
         """
-        return '123'
+        return '13.37'
 
 
-class ObjectString(Object):
+class ObjectInteger(Object, Constraintable):
+
+    """Element ObjectInteger
+    """
+
+    def __init__(self):
+        """Class instantiation
+        """
+        super().__init__()
+        self.type = Object.Types("integer")
+
+    def get_default_sample(self):
+        """Return default value for the element
+        """
+        return '42'
+
+
+class ObjectString(Object, Constraintable):
 
     """Element ObjectString
     """
@@ -382,16 +439,16 @@ class ObjectString(Object):
         self.type = Object.Types("string")
 
 
-class ObjectBool(Object):
+class ObjectBoolean(Object, Constraintable):
 
-    """Element ObjectBool
+    """Element ObjectBoolean
     """
 
     def __init__(self):
         """Class instantiation
         """
         super().__init__()
-        self.type = Object.Types("bool")
+        self.type = Object.Types("boolean")
 
     def get_default_sample(self):
         """Return default value for the element
@@ -399,7 +456,7 @@ class ObjectBool(Object):
         return True
 
 
-class ObjectNone(Object):
+class ObjectNone(Object, Constraintable):
 
     """Element ObjectNone
     """
@@ -411,7 +468,7 @@ class ObjectNone(Object):
         self.type = Object.Types("none")
 
 
-class ObjectDynamic(Object):
+class ObjectDynamic(Object, Constraintable):
 
     """Element ObjectDynamic
     """
@@ -432,7 +489,7 @@ class ObjectDynamic(Object):
         }
 
 
-class ObjectConst(Object):
+class ObjectConst(Object, Constraintable):
 
     """Element ObjectConst
     """
@@ -442,8 +499,9 @@ class ObjectConst(Object):
         """List of availables Primaries for this element
         """
         string = 1
-        bool = 2
+        boolean = 2
         number = 3
+        integer = 4
 
     def __init__(self):
         """Class instantiation
@@ -459,7 +517,7 @@ class ObjectConst(Object):
         return self.value
 
 
-class ObjectEnum(Object):
+class ObjectEnum(Object, Constraintable):
 
     def __init__(self):
         """Class instantiation
@@ -498,7 +556,7 @@ class ObjectReference(Object):
         self.reference_name = None
 
 
-class ObjectType(Object):
+class ObjectType(Object, Constraintable):
 
     """Element ObjectType
     """

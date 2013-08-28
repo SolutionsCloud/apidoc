@@ -3,7 +3,16 @@
 @import "item.less";
 @import "help.less";
 @import "icon.less";
+@import "footer.less";
+@import "scrollbar.less";
+@import "variables.less";
 
 BODY {
     padding-bottom: 50%;
+}
+
+@media (min-width: @screen-vlg-desktop) {
+  .container {
+    max-width: @container-vlg-desktop;
+  }
 }

@@ -39,7 +39,7 @@ versions:
         request_headers:
           X-Auth-Token:
             type: string
-            description: Authentification token
+            description: Authentication token
             sample: 1234567890abcdefghij
           content-type:
             type: string
@@ -54,19 +54,24 @@ versions:
             description: Resource identifier
             optional: true
           does_not_exists:
-            type: number
+            type: integer
             description: Should not be displayed
         request_body:
           type: object
           properties:
             name:
               type: string
+              enum:
+                - foo
+                - bar
             choice:
               type: enum
               values:
               - Foo
               - Bar
               description: Resource Name
+              constraints:
+                foo: bar
             ref:
               type: version
             elements:
@@ -79,7 +84,7 @@ versions:
           type: object
           properties:
             id:
-              type: number
+              type: integer
               description: Resource identifier
             name:
               type: string
@@ -121,7 +126,7 @@ versions:
               items:
                 type: string
             id:
-              type: number
+              type: integer
       Baz:
         category: Category2
         extends: Bar
@@ -144,11 +149,13 @@ versions:
           complexe_type:
             type: complexe_type
           complexe_type_with_ref:
+            description: "a long description to check the issue #10"
             type: complexe_type_wr
+            optional: true
           values:
             type: array
             items:
-              type: number
+              type: integer
       element2:
         type: object
         properties:
@@ -157,7 +164,7 @@ versions:
           values:
             type: array
             items:
-              type: number
+              type: integer
       full_element:
         type: object
         extends: element
@@ -165,13 +172,18 @@ versions:
           name:
             removed: true
           size:
-            type: number
+            type: integer
+            minimum: 10
+            exclusiveMinimum: true
+            multipleOf: 10
           active:
-            type: bool
+            type: boolean
           version:
             type: version
             description: A link to the type
             optional: true
+            constraints:
+              foo: bar
           nothing:
             type: none
           sub_element:
@@ -258,7 +270,7 @@ versions:
         uri: /changes/{version}/{new_parameter}
         request_parameters:
           new_parameter:
-            type: number
+            type: integer
             description: New parameter in this version
         response_codes:
           - code: 403
@@ -268,17 +280,20 @@ versions:
         request_body:
           type: object
           properties:
+            choice:
+              constraints:
+                foo: baz
             name:
               type: string
               description: Resource Name
             ref:
               type: version
-              description: Resource Name
+              description: Resource reference
             elements:
               type: array
               description: A list of elements
               items:
-                type: bool
+                type: boolean
     references:
       ref_test:
         type: object

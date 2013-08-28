@@ -6,7 +6,7 @@
         <div class="description">{{ category.description }}</div>
         {%- endif %}
     {%- endif %}
-        <ul class="unstyled">
+        <ul class="list-unstyled">
     {%- for method in category.methods|sort %}
             <li class="method item" id="m-{{ method.name }}" data-method="{{ method.method|upper }}">
                 <h4>{{ method.label }}</h4>
@@ -21,7 +21,7 @@
                         <i class="i-diff"></i>
                          Diff
                     </h5>
-                    <ul class="versions inline">
+                    <ul class="versions list-inline">
             {%- for version in sources.versions|sort %}
                         <li data-version="{{ version.name }}" data-changed="{{ method.changes_status[version.name]|lower }}"
                 {%- if version.name not in method.versions -%}

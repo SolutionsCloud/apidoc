@@ -85,12 +85,27 @@ class TestSourceSample(unittest.TestCase):
         self.assertEqual("my_a", parameter_sample.sample)
         self.assertFalse(parameter_sample.is_query_string)
 
+    def test_parameter_compare__with_name(self):
+        parameter = Parameter()
+        parameter.name = "a"
+        parameter.type = "string"
+        parameter.optional = True
+        parameter.position = 0
+
+        parameter_sample1 = ParameterSample(parameter)
+        parameter_sample2 = ParameterSample(parameter)
+
+        parameter_sample1.name = "a"
+        parameter_sample2.name = "b"
+
+        self.assertTrue(parameter_sample1 < parameter_sample2)
+
     def test_object_factory(self):
         self.assertIsInstance(ObjectSample.factory(Object.factory("object", "v1")), ObjectObjectSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("array", "v1")), ObjectArraySample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("number", "v1")), ObjectSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("string", "v1")), ObjectSample)
-        self.assertIsInstance(ObjectSample.factory(Object.factory("bool", "v1")), ObjectSample)
+        self.assertIsInstance(ObjectSample.factory(Object.factory("boolean", "v1")), ObjectSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("type", "v1")), ObjectTypeSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("none", "v1")), ObjectSample)
         self.assertIsInstance(ObjectSample.factory(Object.factory("dynamic", "v1")), ObjectDynamicSample)

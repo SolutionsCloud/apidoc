@@ -1,38 +1,12 @@
-.help_overlay {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    height: 100%;
-    width: 100%;
-
-    background-color: #000;
-    z-index: 99;
-
-    display: block;
-    opacity: 0.2;
-}
-
-.help_popup {
-    position: fixed;
-    top: 50px;
-    left: 50%;
-    width: 400px;
-    margin-left: -203px;
-
-    z-index: 100;
-    text-align: left;
-
-    outline: 6px solid rgba(255, 255, 255, .6);
-    background-color: #FFF;
-
-    h2 {
-        padding: 5px;
-    }
+#help-modal {
 
     .help_row {
-        border-top: 1px solid #ddd;
-        padding: 5px;
         padding-bottom: 10px;
+
+        &:not(:first-child) {
+            padding-top: 5px;
+            border-top: 1px solid #ddd;
+        }
     }
 
     dl {
@@ -65,12 +39,5 @@
             color: #666;
         }
     }
-}
 
-@media (max-width: 767px) {
-    .help_popup {
-        top: 0;
-        width: 320px;
-        margin-left: -163px;
-    }
 }

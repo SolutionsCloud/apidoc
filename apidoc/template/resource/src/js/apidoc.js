@@ -70,9 +70,9 @@ function displayScrollHeader() {
     header.find(".stack").hide();
     var subScrollTop = scrollTop + header.outerHeight();
     for (var i = 0, l = items.length; i < l; i++) {
-        var pos = $(items[i]).offset().top - subScrollTop;
+        var pos = $(items[i]).offset().top - subScrollTop - 5;
         if (pos > 0) {
-            if (pos < 30) {
+            if (pos < $(items[i]).outerHeight() + 5) {
                 subElement = null;
             }
 
@@ -162,7 +162,7 @@ function displayScrollHeader() {
     }
 
     header.css({
-            width: element.width() + 2,
+            width: element.outerWidth() - ((element.offset().left * 2) % 2),
             top: Math.min(-1, elementTop + element.height() - scrollTop - header.height() - 30)
         })
         .show();
@@ -324,11 +324,12 @@ function initNavigation() {
 }
 
 function focusNavigation() {
-    if (!window.matchMedia('(max-width: 767px)').matches) {
+    if ($(".doc-sidebar.affix").css("position") != "static") {
         // pas de focus si la souris est sur la navigation
         if ($(".doc-sidebar").data('hover')) {
             return;
         }
+
         var target = $(".scroll-spyable .active");
         var container = $(".doc-sidebar");
         var relativeTop = target.offset().top - container.offset().top;
@@ -344,7 +345,7 @@ function initScrollNavigation() {
     $(window).scrollspy({target: '.scroll-spyable'});
     $('.doc-sidebar').affix({
         offset: {
-            top: $(".container").outerHeight() + $(".container").offset().top
+            top: $(".jumbotron").outerHeight() + $(".jumbotron").offset().top
         }
     });
 
@@ -483,9 +484,16 @@ function displayDiff(item, version) {
 }
 
 function toggleDiffLayout(item) {
+    $('.i-constraint[data-content]', item).popover('hide');
+
     item.toggleClass("diff-mode");
     if (item.is(".diff-mode")) {
-        item.addClass("diff-mode-side").removeClass("diff-mode-inline");
+        if (window.matchMedia('(max-width: 767px)').matches) {
+            item.addClass("diff-mode-inline").removeClass("diff-mode-side");
+        } else {
+            item.addClass("diff-mode-side").removeClass("diff-mode-inline");
+        }
+
         item.addClass("diff-mode-full").removeClass("diff-mode-mini");
 
         displayDiff(item);
@@ -707,6 +715,7 @@ function shortcutToggleSide(event, key) {
 
     if (current.length > 0) {
         var element = $(current.data('target'));
+        $('.i-constraint[data-content]', element).popover('hide');
         if (!element.is(".diff-mode")) {
             toggleDiffLayout($(current.data('target')));
             diffActivateModeInline(element);
@@ -726,6 +735,7 @@ function shortcutToggleFull(event, key) {
 
     if (current.length > 0) {
         var element = $(current.data('target'));
+        $('.i-constraint[data-content]', element).popover('hide');
         if (!element.is(".diff-mode")) {
             toggleDiffLayout($(current.data('target')));
             diffActivateModeMini(element);
@@ -789,13 +799,7 @@ function shortcutGotoPreviousDiffVersion(event, key) {
 }
 
 function shortcutHelp(event, key) {
-    $(".help_popup, .help_overlay").show();
-    Mousetrap.bind('esc', shortcutHelpHide);
-}
-
-function shortcutHelpHide(event, key) {
-    $(".help_popup, .help_overlay").hide();
-    Mousetrap.unbind('esc', shortcutHelpHide);
+    $('#help-modal').modal();
 }
 
 function initShortcuts() {
@@ -817,8 +821,12 @@ function initShortcuts() {
     }
 }
 
-function initHelp() {
-    $(".help_overlay").click(shortcutHelpHide);
+function initFooterLinks() {
+    $("FOOTER .i-previous").click(shortcutGotoPrevious);
+    $("FOOTER .i-next").click(shortcutGotoNext);
+    $("FOOTER .i-top").click(function() {
+        $(window).scrollTop(0);
+    });
 }
 
 $(document).ready(function () {
@@ -828,7 +836,9 @@ $(document).ready(function () {
     initDiff();
     initSearch();
     initShortcuts();
-    initHelp();
+    initFooterLinks();
+
+    $('.i-constraint[data-content]').popover({html: true, trigger: "hover"});
 
     onNavigationChange();
 });

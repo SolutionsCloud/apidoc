@@ -1,5 +1,6 @@
 from apidoc.lib.util.enum import Enum
 from apidoc.object.source_raw import Object as ObjectRaw
+from apidoc.object.source_raw import Constraintable
 from apidoc.object import Comparable
 
 
@@ -294,10 +295,13 @@ class Object(Element, Comparable):
         self.type = object.type
         self.optional = object.optional
 
+        if isinstance(object, Constraintable):
+            self.constraints = object.constraints
+
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
-        return (str(self.name), str(self.description), str(self.type), bool(self.optional))
+        return (str(self.name), str(self.description), str(self.type), bool(self.optional), str(self.constraints) if isinstance(self, Constraintable) else "")
 
 
 class ObjectObject(Object):
@@ -364,7 +368,7 @@ class ObjectEnum(Object):
     def get_comparable_values(self):
         """Return a tupple of values representing the unicity of the object
         """
-        return (str(self.name), str(self.description))
+        return (str(self.name), str(self.description), str(self.constraints))
 
 
 class EnumValue(Object):

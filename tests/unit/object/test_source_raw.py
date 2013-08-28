@@ -5,8 +5,8 @@ from apidoc.object.source_raw import Method
 from apidoc.object.source_raw import Parameter, ResponseCode
 from apidoc.object.source_raw import Type, TypeFormat
 from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
-from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone
-from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst, ObjectEnum, EnumValue
+from apidoc.object.source_raw import ObjectNumber, ObjectInteger, ObjectString, ObjectBoolean, ObjectNone
+from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst, ObjectEnum, EnumValue, Constraint
 from apidoc.object.source_raw import Object as ObjectRaw
 
 
@@ -72,7 +72,7 @@ class TestSourceRaw(unittest.TestCase):
         test = Parameter()
         test.type = "number"
 
-        self.assertEqual("123", test.get_default_sample())
+        self.assertEqual("13.37", test.get_default_sample())
 
     def test_parameter_get_default_sample__for_type(self):
         test = Parameter()
@@ -89,10 +89,15 @@ class TestSourceRaw(unittest.TestCase):
     def test_objectnumber_get_default_sample(self):
         test = ObjectNumber()
 
-        self.assertEqual('123', test.get_default_sample())
+        self.assertEqual('13.37', test.get_default_sample())
 
-    def test_objectbool_get_default_sample(self):
-        test = ObjectBool()
+    def test_objectinteger_get_default_sample(self):
+        test = ObjectInteger()
+
+        self.assertEqual('42', test.get_default_sample())
+
+    def test_objectboolean_get_default_sample(self):
+        test = ObjectBoolean()
 
         self.assertEqual('True', str(test.get_default_sample()))
 
@@ -133,8 +138,9 @@ class TestSourceRaw(unittest.TestCase):
         self.assertIsInstance(Object.factory("object", "v1"), ObjectObject)
         self.assertIsInstance(Object.factory("array", "v1"), ObjectArray)
         self.assertIsInstance(Object.factory("number", "v1"), ObjectNumber)
+        self.assertIsInstance(Object.factory("integer", "v1"), ObjectInteger)
         self.assertIsInstance(Object.factory("string", "v1"), ObjectString)
-        self.assertIsInstance(Object.factory("bool", "v1"), ObjectBool)
+        self.assertIsInstance(Object.factory("boolean", "v1"), ObjectBoolean)
         self.assertIsInstance(Object.factory("reference", "v1"), ObjectReference)
         self.assertIsInstance(Object.factory("type", "v1"), ObjectType)
         self.assertIsInstance(Object.factory("none", "v1"), ObjectNone)
@@ -172,3 +178,15 @@ class TestSourceRaw(unittest.TestCase):
         value2.description = "b"
 
         self.assertTrue(value1 < value2)
+
+    def test_constraint_str(self):
+        c = Constraint("key", "value")
+
+        self.assertEqual("key: value", str(c))
+
+    def test_constraint_repr(self):
+        c = Constraint("key", "value")
+
+        self.assertIn("<class 'apidoc.object.source_raw.Constraint'>", repr(c))
+        self.assertIn("'constraint': 'value'", repr(c))
+        self.assertIn("'name': 'key'", repr(c))

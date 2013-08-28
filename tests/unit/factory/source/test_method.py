@@ -44,6 +44,69 @@ class TestMethod(unittest.TestCase):
         self.assertIsInstance(response.response_body, ObjectNumber)
         self.assertEqual(1, len(response.response_codes))
 
+    def test_create_from_name_and_dictionary__method_get(self):
+        datas = {
+            "method": "get",
+        }
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, Method)
+        self.assertEqual(Method.Methods.get, response.method)
+
+    def test_create_from_name_and_dictionary__method_post(self):
+        datas = {
+            "method": "post",
+        }
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, Method)
+        self.assertEqual(Method.Methods.post, response.method)
+
+    def test_create_from_name_and_dictionary__method_put(self):
+        datas = {
+            "method": "put",
+        }
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, Method)
+        self.assertEqual(Method.Methods.put, response.method)
+
+    def test_create_from_name_and_dictionary__method_delete(self):
+        datas = {
+            "method": "delete",
+        }
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, Method)
+        self.assertEqual(Method.Methods.delete, response.method)
+
+    def test_create_from_name_and_dictionary__method_patch(self):
+        datas = {
+            "method": "patch",
+        }
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, Method)
+        self.assertEqual(Method.Methods.patch, response.method)
+
+    def test_create_from_name_and_dictionary__method_head(self):
+        datas = {
+            "method": "head",
+        }
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, Method)
+        self.assertEqual(Method.Methods.head, response.method)
+
+    def test_create_from_name_and_dictionary__method_option(self):
+        datas = {
+            "method": "option",
+        }
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIsInstance(response, Method)
+        self.assertEqual(Method.Methods.option, response.method)
+
     def test_create_from_name_and_dictionary__failed_wrong_method(self):
         with self.assertRaises(ValueError):
             self.factory.create_from_name_and_dictionary("o_name", {"method": "foo"})

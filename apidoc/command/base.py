@@ -1,6 +1,7 @@
 import sys
 import argparse
 
+from apidoc import __version__
 from apidoc.factory.config import Config as ConfigFactory
 from apidoc.service.config import Config as ConfigService
 from apidoc.object.config import Config as ConfigObject
@@ -32,7 +33,7 @@ class Base():
             help="rendered output file"
         )
         self.parser.add_argument(
-            "-v", "--version", action='version', version='%(prog)s 1.0'
+            "-v", "--version", action='version', version='%(prog)s ' + __version__
         )
         self.parser.add_argument(
             "-n", "--no-validate", help="disable validation", action='store_const', const=True

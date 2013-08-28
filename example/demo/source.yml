@@ -6,7 +6,7 @@ categories:
   Customers:
     description: Manage customers
   Users:
-    description: Manage user and authentification
+    description: Manage user and authentication
 versions:
   v1.0:
     status: deprecated
@@ -42,7 +42,7 @@ versions:
             description: Api version
             generic: true
           customer_id:
-            type: number
+            type: integer
             description: Customer identifier
         response_body:
           type: object
@@ -65,13 +65,13 @@ versions:
             description: Api version
             generic: true
           customer_id:
-            type: number
+            type: integer
             description: Customer identifier
         request_body:
           type: object
           properties:
             id:
-              type: number
+              type: integer
               description: User identifier
         response_body:
           type: object
@@ -114,7 +114,7 @@ versions:
             description: Api version
             generic: true
           user_id:
-            type: number
+            type: integer
             description: user identifier
         response_body:
           type: object
@@ -131,7 +131,7 @@ versions:
         type: object
         properties:
           id:
-            type: number
+            type: integer
             description: Object identifier
           name:
             type: string
@@ -152,7 +152,7 @@ versions:
           type: object
           properties:
             id:
-              type: number
+              type: integer
               description: Customer identifier
             name:
               type: string
@@ -168,7 +168,7 @@ versions:
           type: object
           properties:
             id:
-              type: number
+              type: integer
               description: User identifier
             name:
               type: string

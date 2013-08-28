@@ -6,47 +6,42 @@ if sys.version_info < (3, 2):
     print("ApiDoc requires Python 3.2 or later")
     raise SystemExit(1)
 
-from setuptools.command.test import test as TestCommand
 from setuptools import setup, find_packages
+from setup_cmd import ApiDocTest, Resource
 
-
-class PyTest(TestCommand):
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        import pytest
-        errno = pytest.main(self.test_args)
-        sys.exit(errno)
+from apidoc import __version__
 
 
 if (3, 2) <= sys.version_info < (3, 3):
-    requirements = ['Jinja2 == 2.6', 'PyYAML', 'jsonschema']
+    requirements = ['Jinja2 == 2.6', 'PyYAML==3.10', 'jsonschema==2.0.0']
 else:
-    requirements = ['Jinja2', 'PyYAML', 'jsonschema']
+    requirements = ['Jinja2', 'PyYAML==3.10', 'jsonschema==2.0.0']
 
 
 setup(
     name='ApiDoc',
-    version='1.0',
+    version=__version__,
     description='Api Documentation Generator',
-    long_description='''ApiDoc is a documentation generator designe for API built with Python.
-It's developed by Jérémy Derussé and SFR Business Team.
-
-Full documentation available on http://apidoc.rtfd.org.''',
+    long_description=open("README.rst").read() + "\n\n" + open("CHANGES.rst").read(),
     author='Jérémy Derussé',
     author_email='jeremy.derusse@sfr.com',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Developers',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'Natural Language :: English',
+        'Operating System :: MacOS',
+        'Operating System :: POSIX :: Linux',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
         'Topic :: Documentation',
         'Topic :: Software Development :: Documentation',
     ],
     platforms=['Any'],
+    license='GPLv3+',
+    url='http://solutionscloud.github.io/apidoc/',
     packages=find_packages(exclude=['tests', 'tests.*', 'example', 'example.*', 'docs', 'docs.*']),
     entry_points={
         'console_scripts': [
@@ -68,6 +63,13 @@ Full documentation available on http://apidoc.rtfd.org.''',
         'command/logging.yml',
     ]},
     install_requires=requirements,
-    tests_require=['mock', 'pytest'],
-    cmdclass={'test': PyTest}
+    tests_require=['pytest', 'mock'],
+    extras_require={
+        'ci': ['flake8', 'behave', 'coverage', 'coveralls', 'mock', 'pytest'],
+        'contribute': ['flake8', 'behave', 'coverage', 'mock', 'pytest', 'Sphinx', 'yuicompressor'],
+    },
+    cmdclass={
+        'test': ApiDocTest,
+        'resources': Resource,
+    }
 )

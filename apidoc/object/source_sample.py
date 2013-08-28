@@ -1,4 +1,5 @@
 from apidoc.object.source_raw import Object as ObjectRaw
+from apidoc.object.source_raw import Constraintable
 from apidoc.object import Comparable
 
 
@@ -34,7 +35,7 @@ class Method(Comparable):
         return (str(self.name))
 
 
-class Parameter():
+class Parameter(Comparable):
 
     def __init__(self, parameter_raw):
         self.name = parameter_raw.name
@@ -45,6 +46,11 @@ class Parameter():
     @property
     def is_query_string(self):
         return self.position < 0
+
+    def get_comparable_values(self):
+        """Return a tupple of values representing the unicity of the object
+        """
+        return (str(self.name), str(self.sample))
 
 
 class Object():
@@ -75,6 +81,10 @@ class Object():
         self.type = object_raw.type
         self.optional = object_raw.optional
         self.sample = object_raw.get_sample()
+        if isinstance(object_raw, Constraintable):
+            self.constraints = object_raw.constraints
+        else:
+            self.constraints = {}
 
 
 class ObjectObject(Object):

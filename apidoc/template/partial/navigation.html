@@ -1,4 +1,4 @@
-<input type="search" placeholder="search" class="span12">
+<input type="search" placeholder="search" class="col-md-12 form-control">
 
 {%- if sources.versions|length > 1 %}
 <ul id="nav-versions" class="nav nav-list doc-sidenav">
@@ -18,7 +18,7 @@
         <li class="nav-header" data-group="{{ category.name }}"><a href="javascript:navigateTo({category: '{{ category.name }}'}, ['category', 'method', 'type'])" data-target="#c-{{ category.name }}"><h6>{{ category.label }}</h6></a></li>
     {%- endif -%}
     {%- for method in category.methods|sort %}
-        <li data-group="{{ category.name }}"  data-item="{{ method.name|e }}"><a href="javascript:navigateTo({category: '{{ category.name }}', method: '{{ method.name }}'}, ['category', 'method'])" data-target="#m-{{ method.name }}"><i class="i-chevron"></i><span>{{ method.label }}</span></a></li>
+        <li data-group="{{ category.name }}"  data-item="{{ method.name|e }}"><a href="javascript:navigateTo({category: '{{ category.name }}', method: '{{ method.name }}'}, ['category', 'method'])" data-target="#m-{{ method.name }}"><span>{{ method.label }}</span></a></li>
     {%- endfor %}
     {%- if not loop.last %}
         <li class="separator"></li>
@@ -32,7 +32,7 @@
         <li class="nav-header" data-group="{{ category.name }}"><a href="javascript:navigateTo({category: '{{ category.name }}'}, ['category', 'method', 'type'])" data-target="#c-{{ category.name }}"><h6>{{ category.label }}</h6></a></li>
     {%- endif -%}
     {%- for type in category.types|sort %}
-        <li data-group="{{ category.name }}"  data-item="{{ type.name }}"><a href="javascript:navigateTo({category: '{{ category.name }}', type: '{{ type.name }}'}, ['category', 'method'])" data-target="#t-{{ type.name }}"><i class="i-chevron"></i><span>{{ type.name }}</span></a></li>
+        <li data-group="{{ category.name }}"  data-item="{{ type.name }}"><a href="javascript:navigateTo({category: '{{ category.name }}', type: '{{ type.name }}'}, ['category', 'method'])" data-target="#t-{{ type.name }}"><span>{{ type.name }}</span></a></li>
     {%- endfor %}
     {%- if not loop.last %}
         <li class="separator"></li>

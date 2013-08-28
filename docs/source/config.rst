@@ -14,7 +14,7 @@ To use ApiDoc with a config file call the following arguments :
 
 .. code-block:: console
 
-   $ apidoc-render -c ./path-to-config.yaml
+    $ apidoc-render -c ./path-to-config.yaml
 
 Sample
 ------
@@ -23,31 +23,31 @@ This is a minimalistic sample of a config file
 
 .. code-block:: yaml
 
-   input:
-     files:
-       - ./sources/one.yml
-   output:
-     location: ./output/sample.html
+    input:
+      files:
+        - ./sources/one.yml
+    output:
+      location: ./output/sample.html
 
 Here is a basic sample of a config file
 
 .. code-block:: yaml
 
-   input:
-     directories:
-       - ./sources
-     files:
-       - ./sources/one.yml
-     arguments:
-       url: api.sfr.com
-   filter:
-     versions:
-       excludes:
-         - v2
-   output:
-     location: ./output/sample.html
-     componants: local
-     template: default
+    input:
+      directories:
+        - ./sources
+      files:
+        - ./sources/one.yml
+      arguments:
+        url: api.sfr.com
+    filter:
+      versions:
+        excludes:
+          - v2
+    output:
+      location: ./output/sample.html
+      componants: local
+      template: default
 
 .. _config-page-input:
 
@@ -63,17 +63,17 @@ This is a full sample of the section input
 
 .. code-block:: yaml
 
-   input:
-     directories:
-       - ./project/api-sources
-       - ../common-api/sources
-     files:
-       - ./project/api-v2-source/demo.yaml
-       - ./project/api-v2-source/common.yaml
-     validate: False
-     arguments:
-       url: api.sfr.com
-       defaultVersion: v1
+    input:
+      directories:
+        - ./project/api-sources
+        - ../common-api/sources
+      files:
+        - ./project/api-v2-source/demo.yaml
+        - ./project/api-v2-source/common.yaml
+      validate: False
+      arguments:
+        url: api.sfr.com
+        defaultVersion: v1
 
 filter
 ------
@@ -107,7 +107,7 @@ Here is a full sample of a section filter
           - v3.0
       categories:
         include:
-          - Authentification
+          - Authentication
           - Common
 
 output
@@ -134,8 +134,8 @@ This is a full sample of the section ouput
 
 .. code-block:: yaml
 
-   output:
-     location: ./project/documentation.html
-     componants: ./project/template/custom.html
-     template: default
-     layout: default
+    output:
+      location: ./project/documentation.html
+      componants: ./project/template/custom.html
+      template: default
+      layout: default

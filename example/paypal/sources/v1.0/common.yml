@@ -30,7 +30,7 @@ versions:
         minor: 0
         uri: /v1
         methods:
-            authentificated:
+            authenticated:
                 category: common
                 request_headers:
                     Content-Type:

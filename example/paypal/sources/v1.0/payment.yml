@@ -3,7 +3,7 @@ versions:
     methods:
       CreateAPayment:
         category: Payments
-        extends: authentificated
+        extends: authenticated
         uri: /payments/payment
         method: post
         request_body:
@@ -76,7 +76,7 @@ versions:
               description: HATEOAS links related to this call. Assigned in response.
       ExecutePayment:
         category: Payments
-        extends: authentificated
+        extends: authenticated
         uri: payments/payment/{id}/execute
         method: post
         request_parameters:
@@ -120,7 +120,7 @@ versions:
               description: of links objects  HATEOAS links related to this call. Assigned in response.
       LookupPayment:
         category: Payments
-        extends: authentificated
+        extends: authenticated
         uri: payments/payment/{id}
         request_parameters:
           id:
@@ -167,7 +167,7 @@ versions:
               description: Time that the resource was last updated. Assigned in response.
       ListPayments:
         category: Payments
-        extends: authentificated
+        extends: authenticated
         uri: payments/payment/
         response_body:
           type: array

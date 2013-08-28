@@ -3,7 +3,7 @@ versions:
     methods:
       LookupUser:
         category: Identity
-        extends: authentificated
+        extends: authenticated
         uri: /identity/openidconnect/userinfo/?schema={schema}
         request_parameters:
           schema:
@@ -38,7 +38,7 @@ versions:
               type: string
               description: End-user’s preferred email address.
             email_verified:
-              type: bool
+              type: boolean
               description: True if the End-User’s e-mail address has been verified; otherwise false.
             gender:
               type: string
@@ -60,7 +60,7 @@ versions:
               reference: address
               description: End-user’s preferred address.
             verified_account:
-              type: bool
+              type: boolean
               description: Verified account status.
             account_type:
               type: string

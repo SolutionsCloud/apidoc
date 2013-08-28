@@ -31,7 +31,7 @@ definitions:
       description:
         type: string
       order:
-        type: number
+        type: integer
     additionalProperties: false
 
   version:
@@ -43,9 +43,9 @@ definitions:
       uri:
         type: string
       major:
-        type: number
+        type: integer
       minor:
-        type: number
+        type: integer
       status:
         enum:
         - current
@@ -85,15 +85,17 @@ definitions:
         - put
         - delete
         - head
-        - http
+        - option
+        - patch
         - GET
         - POST
         - PUT
         - DELETE
         - HEAD
-        - HTTP
+        - OPTION
+        - PATCH
       code:
-        type: number
+        type: integer
       request_parameters:
         patternProperties:
           ".*" :
@@ -152,6 +154,7 @@ definitions:
         type:
         - string
         - number
+        - integer
         - boolean
       generic:
         type: boolean
@@ -160,7 +163,7 @@ definitions:
   response_code:
     properties:
       code:
-        type: number
+        type: integer
       message:
         type: string
       description:
@@ -174,6 +177,7 @@ definitions:
     - $ref: "#/definitions/object_object"
     - $ref: "#/definitions/object_array"
     - $ref: "#/definitions/object_number"
+    - $ref: "#/definitions/object_integer"
     - $ref: "#/definitions/object_string"
     - $ref: "#/definitions/object_boolean"
     - $ref: "#/definitions/object_reference"
@@ -196,6 +200,10 @@ definitions:
             $ref: "#/definitions/object"
       optional:
         type: boolean
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
     required:
     - type
     - properties
@@ -211,9 +219,21 @@ definitions:
       items:
         $ref: "#/definitions/object"
       sample_count:
-        type: number
+        type: integer
       optional:
         type: boolean
+      maxItems:
+        type: integer
+        minimum: 0
+      minItems:
+        type: integer
+        minimum: 0
+      uniqueItems:
+        type: boolean
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
     required:
     - type
     - items
@@ -230,8 +250,38 @@ definitions:
         type:
         - string
         - number
+        - integer
       optional:
         type: boolean
+      maxLength:
+        type: integer
+        minimum: 0
+      minLength:
+        type: integer
+        minimum: 0
+      pattern:
+        type: string
+      format:
+        type: string
+        enum:
+          - date-time
+          - email
+          - hostname
+          - ipv4
+          - ipv6
+          - uri
+      enum:
+        type: array
+        uniqueItems: true
+        minItems: 1
+        items:
+          type: string
+      default:
+        type: string
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
     required:
     - type
     additionalProperties: false
@@ -247,6 +297,71 @@ definitions:
         type: number
       optional:
         type: boolean
+      multipleOf:
+        type: number
+        minimum: 0
+      maximum:
+        type: number
+        minimum: 0
+      exclusiveMaximum:
+        type: boolean
+      minimum:
+        type: number
+        minimum: 0
+      exclusiveMinimum:
+        type: boolean
+      enum:
+        type: array
+        uniqueItems: true
+        minItems: 1
+        items:
+          type: number
+      default:
+        type: number
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
+    required:
+    - type
+    additionalProperties: false
+
+  object_integer:
+    properties:
+      type:
+        enum:
+        - integer
+      description:
+        type: string
+      sample:
+        type: integer
+      optional:
+        type: boolean
+      multipleOf:
+        type: integer
+        minimum: 0
+      maximum:
+        type: integer
+        minimum: 0
+      exclusiveMaximum:
+        type: boolean
+      minimum:
+        type: integer
+        minimum: 0
+      exclusiveMinimum:
+        type: boolean
+      enum:
+        type: array
+        uniqueItems: true
+        minItems: 1
+        items:
+          type: integer
+      default:
+        type: integer
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
     required:
     - type
     additionalProperties: false
@@ -257,12 +372,19 @@ definitions:
       type:
         enum:
         - bool
+        - boolean
       description:
         type: string
       sample:
         type: boolean
       optional:
         type: boolean
+      default:
+        type: boolean
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
 
   object_reference:
     properties:
@@ -288,8 +410,10 @@ definitions:
           - object
           - array
           - number
+          - integer
           - string
           - bool
+          - boolean
           - reference
           - none
           - dynamic
@@ -301,6 +425,10 @@ definitions:
         type: boolean
       sample:
         type: string
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
     required:
     - type
     additionalProperties: false
@@ -314,6 +442,10 @@ definitions:
         type: string
       optional:
         type: boolean
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
     required:
     - type
     additionalProperties: false
@@ -331,6 +463,16 @@ definitions:
         type: object
       optional:
         type: boolean
+      maxItems:
+        type: integer
+        minimum: 0
+      minItems:
+        type: integer
+        minimum: 0
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
     required:
     - type
     - items
@@ -347,14 +489,20 @@ definitions:
         enum:
         - string
         - number
+        - integer
         - boolean
       value:
         type:
         - string
         - number
+        - integer
         - boolean
       optional:
         type: boolean
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
     required:
     - type
     - value
@@ -378,6 +526,7 @@ definitions:
           type:
           - string
           - number
+          - integer
           - boolean
         minItems: 1
       optional:
@@ -386,7 +535,12 @@ definitions:
         type:
           - string
           - number
+          - integer
           - boolean
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
     required:
     - type
     - values

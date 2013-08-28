@@ -2,8 +2,8 @@ import unittest
 
 from apidoc.factory.source.object import Object as ObjectFactory
 
-from apidoc.object.source_raw import Object, ObjectObject, ObjectArray
-from apidoc.object.source_raw import ObjectNumber, ObjectString, ObjectBool, ObjectNone, ObjectEnum
+from apidoc.object.source_raw import Object, ObjectObject, ObjectArray, Constraint
+from apidoc.object.source_raw import ObjectNumber, ObjectInteger, ObjectString, ObjectBoolean, ObjectNone, ObjectEnum
 from apidoc.object.source_raw import ObjectDynamic, ObjectReference, ObjectType, ObjectConst
 
 
@@ -29,8 +29,14 @@ class TestObject(unittest.TestCase):
                     "optional": "false",
                     "sample": "123.4"
                 },
+                "barfoo": {
+                    "type": "integer",
+                    "description": "c_barfoo",
+                    "optional": "false",
+                    "sample": "123"
+                },
                 "baz": {
-                    "type": "bool",
+                    "type": "boolean",
                     "description": "c_baz",
                     "sample": "true"
                 },
@@ -119,8 +125,15 @@ class TestObject(unittest.TestCase):
         self.assertEqual("123.4", response.properties["bar"].sample)
         self.assertEqual(False, response.properties["bar"].optional)
 
+        self.assertIn("barfoo", response.properties)
+        self.assertIsInstance(response.properties["barfoo"], ObjectInteger)
+        self.assertEqual("c_barfoo", response.properties["barfoo"].description)
+        self.assertEqual("barfoo", response.properties["barfoo"].name)
+        self.assertEqual("123", response.properties["barfoo"].sample)
+        self.assertEqual(False, response.properties["barfoo"].optional)
+
         self.assertIn("baz", response.properties)
-        self.assertIsInstance(response.properties["baz"], ObjectBool)
+        self.assertIsInstance(response.properties["baz"], ObjectBoolean)
         self.assertEqual("c_baz", response.properties["baz"].description)
         self.assertEqual("baz", response.properties["baz"].name)
         self.assertEqual(True, response.properties["baz"].sample)
@@ -205,14 +218,14 @@ class TestObject(unittest.TestCase):
         self.assertEqual(None, response.items)
         self.assertEqual(2, response.sample_count)
 
-    def test_create_from_name_and_dictionary__bool_default(self):
+    def test_create_from_name_and_dictionary__boolean_default(self):
         datas = {
-            "type": "bool",
+            "type": "boolean",
         }
 
         response = self.factory.create_from_name_and_dictionary("o_name", datas)
 
-        self.assertIsInstance(response, ObjectBool)
+        self.assertIsInstance(response, ObjectBoolean)
         self.assertEqual(None, response.sample)
 
     def test_create_from_name_and_dictionary__reference_default(self):
@@ -255,3 +268,31 @@ class TestObject(unittest.TestCase):
         self.assertEqual(1, len(response.descriptions))
         self.assertEqual("a", response.descriptions[0].name)
         self.assertEqual(None, response.descriptions[0].description)
+
+    def test_create_from_name_and_dictionary__constraint(self):
+        datas = {
+            "description": "c",
+            "type": "object",
+            "properties": {
+                "foo": {
+                    "type": "string",
+                    "maxLength": 32,
+                    "constraints": {
+                        "custom": "bar"
+                    }
+                }
+            }
+        }
+
+        response = self.factory.create_from_name_and_dictionary("o_name", datas)
+
+        self.assertIn("foo", response.properties)
+        self.assertIsInstance(response.properties["foo"], ObjectString)
+        self.assertIsInstance(response.properties["foo"].constraints, dict)
+        self.assertIn("maxLength", response.properties["foo"].constraints)
+        self.assertIn("custom", response.properties["foo"].constraints)
+        self.assertIsInstance(response.properties["foo"].constraints["maxLength"], Constraint)
+        self.assertEqual("maxLength", response.properties["foo"].constraints["maxLength"].name)
+        self.assertEqual(32, response.properties["foo"].constraints["maxLength"].constraint)
+
+        self.assertTrue(response.properties["foo"].constraints["maxLength"] > response.properties["foo"].constraints["custom"])

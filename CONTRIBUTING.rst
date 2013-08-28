@@ -69,7 +69,6 @@ Here's how to set up `ApiDoc` for local development.
     $ cd apidoc/
     $ pip install .-e [contribute]
 
-
 4. Create a branch for local development::
 
     $ git checkout -b name-of-your-bugfix-or-feature

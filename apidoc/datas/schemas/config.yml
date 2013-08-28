@@ -17,6 +17,7 @@ properties:
             type:
             - string
             - number
+            - integer
             - boolean
     additionalProperties: false
   filter:

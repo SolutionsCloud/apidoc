@@ -1,12 +1,8 @@
 .item {
     margin: 15px 0;
     padding: 0;
-    border: 1px solid #ccc;
-    min-height:30px;
     position: relative;
-    -webkit-border-radius: 4px;
-       -moz-border-radius: 4px;
-            border-radius: 4px;
+    border-radius: 4px;
     min-height: 60px;
 
     & {
@@ -18,25 +14,25 @@
             background-color: #666;
         }
     }
+
+    &#item-head {
+        min-height: 20px;
+    }
 }
 
 .method, #item-head {
     &[data-method]::after {
         content: attr(data-method);
         position: absolute;
-        top: -1px;
-        left: -1px;
-        width: 45px;
+        top: 0px;
+        width: 55px;
         padding: 3px 5px;
         font-size: 12px;
         font-weight: bold;
-        border: 1px solid #ccc;
         border-top: none;
         border-left: none;
         color: #FFF;
-        -webkit-border-radius: 4px 0 4px 0;
-           -moz-border-radius: 4px 0 4px 0;
-                border-radius: 4px 0 4px 0;
+        border-radius: 4px 0 4px 0;
     }
 
     &[data-method=GET] {
@@ -75,6 +71,33 @@
             background-color: hsl(0, 90%, 35%);
         }
     }
+    &[data-method=HEAD] {
+        background-color: hsl(0, 0%, 90%);
+        &, &::after, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
+            border-color: hsl(0, 0%, 70%);
+        }
+        &::after {
+            background-color: hsl(0, 0%, 35%);
+        }
+    }
+    &[data-method=OPTION] {
+        background-color: hsl(0, 0%, 97%);
+        &, &::after, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
+            border-color: hsl(0, 0%, 80%);
+        }
+        &::after {
+            background-color: hsl(0, 0%, 70%);
+        }
+    }
+    &[data-method=PATCH] {
+        background-color: hsl(65, 90%, 90%);
+        &, &::after, > .versions, > .diff-header, > .versions > LI, > .contents > .stack {
+            border-color: hsl(65, 90%, 70%);
+        }
+        &::after {
+            background-color: hsl(65, 90%, 40%);
+        }
+    }
 }
 
 #item-head {
@@ -83,23 +106,17 @@
     top: -1px;
     margin: 0;
     border-bottom: none;
-    z-index: 2;
+    z-index: 10;
 
     &.item {
-    -webkit-border-radius: 0;
-       -moz-border-radius: 0;
-            border-radius: 0;
+        border-radius: 0;
 
         &::after {
-            -webkit-border-radius: 0 0 4px 0;
-               -moz-border-radius: 0 0 4px 0;
-                    border-radius: 0 0 4px 0;
+            border-radius: 0 0 4px 0;
         }
 
         > .versions {
-            -webkit-border-radius: 0 0 0 4px;
-               -moz-border-radius: 0 0 0 4px;
-                    border-radius: 0 0 0 4px;
+            border-radius: 0 0 0 4px;
         }
     }
 }

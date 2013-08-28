@@ -1,0 +1,19 @@
+@import "variables.less";
+
+FOOTER {
+    position: fixed;
+
+    bottom: 3px;
+    right: 3px;
+    .i-previous, .i-next, .i-top {
+       line-height: 20px;
+       font-size: 10px;
+    }
+}
+
+
+@media (min-width: @screen-desktop) {
+    FOOTER {
+        display: none;
+    }
+}

@@ -9,63 +9,63 @@ This is a basic sample of a config file
 
 .. code-block:: yaml
 
-   configuration:
-     title: Hello API
-     description: An API dedicated to the hello service
-     uri: ${base_url}
-   categories:
-     Display:
-       description: Display messages
-     Config:
-       description: Configure the application
-   versions:
-     v1.0:
-       methods:
-         Hello:
-           category: Display
-           uri: /
-           description: Say hello
-           response_body:
-             type: string
-             sample: Hello
-         HelloName:
-           category: Display
-           uri: /{name}
-           request_parameters:
-             name:
-               type: string
-               description: Name of the user
-           request_headers:
-             Accept:
-               type: mimeType
-               description: List of accepted MimeTypes
-               sample: text/plain
-           response_body:
-             type: string
-             sample: Hello my_name
-         ConfigHello:
-           category: Config
-           uri: /
-           method: PUT
-           description: Configure the hello method
-           request_body:
-             type: object
-             properties:
-               language:
-                   type: string
-                   sample: "fr"
-           response_body:
-             type: bool
-       types:
-         mimeType:
-           item:
-             type: string
-             sample: application/json
-           format:
-             pretty: type/sous-type
-     v2.O:
-       status: beta
-       display: false
+    configuration:
+      title: Hello API
+      description: An API dedicated to the hello service
+      uri: ${base_url}
+    categories:
+      Display:
+        description: Display messages
+      Config:
+        description: Configure the application
+    versions:
+      v1.0:
+        methods:
+          Hello:
+            category: Display
+            uri: /
+            description: Say hello
+            response_body:
+              type: string
+              sample: Hello
+          HelloName:
+            category: Display
+            uri: /{name}
+            request_parameters:
+              name:
+                type: string
+                description: Name of the user
+            request_headers:
+              Accept:
+                type: mimeType
+                description: List of accepted MimeTypes
+                sample: text/plain
+            response_body:
+              type: string
+              sample: Hello my_name
+          ConfigHello:
+            category: Config
+            uri: /
+            method: PUT
+            description: Configure the hello method
+            request_body:
+              type: object
+              properties:
+                language:
+                  type: string
+                  sample: "fr"
+            response_body:
+              type: boolean
+        types:
+          mimeType:
+            item:
+              type: string
+              sample: application/json
+            format:
+              pretty: type/sous-type
+      v2.O:
+        status: beta
+        display: false
 
 All elements are optional, but a least one displayable method is required.
 
@@ -82,10 +82,10 @@ sample:
 
 .. code-block:: yaml
 
-   configuration:
-     title: Hello API
-     description: An API dedicated to the hello service
-     uri: https://api.sfr.com/services/hello
+    configuration:
+      title: Hello API
+      description: An API dedicated to the hello service
+      uri: https://api.sfr.com/services/hello
 
 versions
 --------
@@ -106,24 +106,24 @@ sample:
 
 .. code-block:: yaml
 
-   versions:
-     v1.0:
-       display: true
-       label: Version 1
-       uri: /v1
-       major: 1
-       minor: 0
-       status: current
-       methods:
-         ...
-     v2.0:
-       display: false
-       uri: /v2
-       major: 2
-       minor: 0
-       status: beta
-       methods:
-         ...
+    versions:
+      v1.0:
+        display: true
+        label: Version 1
+        uri: /v1
+        major: 1
+        minor: 0
+        status: current
+        methods:
+          ...
+      v2.0:
+        display: false
+        uri: /v2
+        major: 2
+        minor: 0
+        status: beta
+        methods:
+          ...
 
 categories
 ----------
@@ -139,16 +139,16 @@ sample:
 
 .. code-block:: yaml
 
-   categories:
-     Common:
-       display: false
-       description: a helper section use for extension
-     Version:
-       description: List the version of the API
-       order: 1
-     Authentication:
-       label: Authentication + Logout
-       description: How to login and logout the client
+    categories:
+      Common:
+        display: false
+        description: a helper section use for extension
+      Version:
+        description: List the version of the API
+        order: 1
+      Authentication:
+        label: Authentication + Logout
+        description: How to login and logout the client
 
 .. _source-page-methods:
 
@@ -173,23 +173,23 @@ sample:
 
 .. code-block:: console
 
-   methods:
-     Hello:
-       label: Echo
-       uri: /hello-{name}.json
-       method: get
-       code: 200
-       description: Say hello
-       request_parameters:
-         ...
-       request_headers:
-         ...
-       request_body:
-         ...
-       response_codes:
-         ...
-       response_body:
-         ...
+    methods:
+      Hello:
+        label: Echo
+        uri: /hello-{name}.json
+        method: get
+        code: 200
+        description: Say hello
+        request_parameters:
+          ...
+        request_headers:
+          ...
+        request_body:
+          ...
+        response_codes:
+          ...
+        response_body:
+          ...
 
 .. _source-page-request_parameters:
 
@@ -208,19 +208,19 @@ sample:
 
 .. code-block:: yaml
 
-   request_parameters:
-     name:
-       type: string
-       description: Name of the user
-       optional: false
-       sample: John Doe
-       generic: false
-     language:
-       type: string
-       description: Language of the response
-       optional: true
-       sample: fr
-       generic: true
+    request_parameters:
+      name:
+        type: string
+        description: Name of the user
+        optional: false
+        sample: John Doe
+        generic: false
+      language:
+        type: string
+        description: Language of the response
+        optional: true
+        sample: fr
+        generic: true
 
 .. _source-page-request_headers:
 
@@ -231,7 +231,7 @@ This element contains a dictionary of header parameters expected by the method. 
 
 * type: Type of the parameter (see :ref:`source-page-types`).
 * description: A description of the parameter.
-* optional: A bool indicated if the parameter is compulsory or optional.
+* optional: A boolean indicated if the parameter is compulsory or optional.
 * sample: A sample value which will be displayed in the sample fieldset.
 * generic: If true, the parameter will be displayed in an other color. Default False.
 
@@ -239,16 +239,16 @@ sample:
 
 .. code-block:: yaml
 
-   request_headers:
-     Accept:
-       type: mimeType
-       description: List of accepted MimeTypes
-       sample: text/plain
-       optional: true
-       generic: true
-     X-Auth-Token:
-       type: string
-       description: Authentification token
+    request_headers:
+      Accept:
+        type: mimeType
+        description: List of accepted MimeTypes
+        sample: text/plain
+        optional: true
+        generic: true
+      X-Auth-Token:
+        type: string
+        description: Authentication token
 
 .. _source-page-request_body:
 
@@ -261,14 +261,14 @@ sample:
 
 .. code-block:: yaml
 
-   request_body
-       type: object
-       description: Root envelope
-       properties:
-           login:
-               type: string
-           password:
-               type: string
+    request_body
+        type: object
+        description: Root envelope
+        properties:
+          login:
+            type: string
+          password:
+            type: string
 
 .. _source-page-response_codes:
 
@@ -286,13 +286,13 @@ sample:
 
 .. code-block:: yaml
 
-   response_codes:
-     - code: 400
-       message: Bad name format
-       description: The resource name is not correct
-     - code: 404
-       message: Resource not found
-       generic: true
+    response_codes:
+    - code: 400
+      message: Bad name format
+      description: The resource name is not correct
+    - code: 404
+      message: Resource not found
+      generic: true
 
 .. _source-page-response_body:
 
@@ -305,18 +305,18 @@ sample:
 
 .. code-block:: yaml
 
-   request_body
-       type: array
-       description: List of users
-       items:
-           type: object
-           properties:
-               name:
-                   type: string
-                   description: Name of the user
-               role:
-                   type: CustomRole
-                   description: Role of the user
+    request_body
+      type: array
+      description: List of users
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Name of the user
+          role:
+            type: CustomRole
+            description: Role of the user
 
 .. _source-page-types:
 
@@ -337,29 +337,29 @@ sample:
 
 .. code-block:: yaml
 
-   types:
-     mimeType:
-       category: Common
-       description: A mime type
-       item:
-         type: string
-         sample: application/json
-       format:
-         pretty: type/sous-type
-         advanced: [a-z]\/[a-z]
-     languages:
-       category: Lists
-       description: List of supported language
-       item:
-         type: enum
-         values:
-         - en
-         - fr
-         descriptions:
-           en:
-             description: English
-           fr:
-             description: Français
+    types:
+      mimeType:
+        category: Common
+        description: A mime type
+        item:
+          type: string
+          sample: application/json
+        format:
+          pretty: type/sous-type
+          advanced: [a-z]\/[a-z]
+      languages:
+        category: Lists
+        description: List of supported language
+        item:
+          type: enum
+          values:
+          - en
+          - fr
+          descriptions:
+            en:
+              description: English
+            fr:
+              description: Français
 
 .. _source-page-references:
 
@@ -373,39 +373,41 @@ sample:
 
 .. code-block:: yaml
 
-   methods:
-     listComments:
-       ...
-       response_body:
-         type: array
-         items:
-           type: reference
-           reference: comment
-   reference:
-     comment:
-       type: object
-       properties:
-         owner:
-           type: reference
-           reference: user
-         message:
-           type: string
-         date:
-           type: string
-     user:
-       type: object
-       name:
-         type: string
-       language:
-         type: string
+    methods:
+      listComments:
+        ...
+        response_body:
+          type: array
+          items:
+            type: reference
+            reference: comment
+    reference:
+      comment:
+        type: object
+        properties:
+          owner:
+            type: reference
+            reference: user
+          message:
+            type: string
+          date:
+            type: string
+      user:
+        type: object
+        name:
+          type: string
+        language:
+          type: string
 
 .. _source-page-Objects:
 
 Objects
 -------
 
-In the bodies of types, requests and responses you can define a complex object using basic elements. Those elements (defined below) contain always a keyword "type" which defines the type of the element.
-The known types, are (object, array, dynamic, bool, none, string, number, reference, const, enum). If the type is not in this list, ApiDoc will look in the elements declared in the `types` section (see :ref:`source-page-types`).
+In the bodies of types, requests and responses you can define a complex object using basic elements. These elements (defined below) contain always a keyword "type" which defines the type of the element.
+The known types, are `object`, `array`, `dynamic`, `boolean`, `none`, `string`, `number`, `integer`, `reference`, `const`, `enum`. If the type is not in this list, ApiDoc will look in the elements declared in the `types` section (see :ref:`source-page-types`).
+Each elements contains an attribute `optional` indicating if the element is compulsory or optional. They also contains an attribute `constraints` containing a dictionnary constraints. Some constraints are predefined depending of the type of the element, but it"s also possible to define custom constraints (a reference to yout business model for example). No check will be applied on sample according to these constraints, they only will be display in a popover in the rendered documentation. These constraints are derived from `Json Schema <http://json-schema.org/>`_
+
 
 String
 ^^^^^^
@@ -414,49 +416,105 @@ The object String defines a string.
 
 * description: A description of the string
 * sample: A sample value which will be displayed in the sample fieldset.
+* optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* maxLength: A positive integer is expected.
+* minLength: A positive integer is expected.
+* pattern: A string is expected. It who should be a regular expression, according to the ECMA 262 regular expression dialect.
+* format: A string is expteced. It must be one of the values ​​found in this list (date-time, email, hostname, ipv4, ipv6, uri).
+* enum: An array of string is expected.
+* default: A string is expected.
+* constraints: A dictionary of constraints
+  * {constraint_name}: A string is expected
 
 sample:
 
 .. code-block:: yaml
 
-   name:
-       type: string
-       description: Name of the user
-       sample: John Doe
+    name:
+      type: string
+      description: Name of the user
+      sample: John Doe
+      minLength: 1
+      maxLength: 32
 
 Number
 ^^^^^^
 
-The object Number defines a numeric value.
+The object Number defines a numeric value with optionals decimals.
 
 * description: A description of the number
 * sample: A sample value which will be displayed in the sample fieldset.
+* optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* multipleOf: A number is expected.
+* maximum: A number is expected.
+* exclusiveMaximum: A boolean is expected.
+* minimum: A number is expected.
+* exclusiveMinimum: A boolean is expected.
+* enum: An array of number is expected.
+* default: A number is expected.
+* constraints: A dictionary of constraints
+  * {constraint_name}: A string is expected
 
 sample:
 
 .. code-block:: yaml
 
-   age:
-       type: number
-       description: Age of the user
-       sample: 20
+    price:
+      type: number
+      description: Price in dollars
+      sample: 20.3
+      maximum: 0
+      multipleOf: 0.01
 
-Bool
-^^^^
+Integer
+^^^^^^^
 
-The object Bool defines a boolean.
+The object Integer defines a numeric value without decimal.
+
+* description: A description of the number
+* sample: A sample value which will be displayed in the sample fieldset.
+* optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* multipleOf: A integer is expected.
+* maximum: A integer is expected.
+* exclusiveMaximum: A boolean is expected.
+* minimum: A integer is expected.
+* exclusiveMinimum: A boolean is expected.
+* enum: An array of integer is expected.
+* default: A integer is expected.
+* constraints: A dictionary of constraints
+  * {constraint_name}: A string is expected
+
+sample:
+
+.. code-block:: yaml
+
+    age:
+      type: number
+      description: Age of the user
+      sample: 20
+      maximum: 0
+
+Boolean
+^^^^^^^
+
+The object Boolean defines a boolean.
 
 * description: A description of the boolean
 * sample: A sample value which will be displayed on the sample fieldset.
+* optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* default: A boolean is expected.
+* constraints: A dictionary of constraints
+  * {constraint_name}: A string is expected
 
 sample:
 
 .. code-block:: yaml
 
-   is_default:
-       type: bool
-       description: Define if the group is the default group
-       sample: false
+    is_default:
+      type: boolean
+      description: Define if the group is the default group
+      sample: false
+      default: false
 
 None
 ^^^^
@@ -464,14 +522,19 @@ None
 The object None defines an empty object. Sometime used in a request when a key is compulsory but no value is expected.
 
 * description: A description of the object
+* optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* constraints: A dictionary of constraints
+  * {constraint_name}: A string is expected
 
 sample:
 
 .. code-block:: yaml
 
-   reboot:
-     type: none
-     description: Set this key if you want reboot your server
+    reboot:
+      type: none
+      description: Set this key if you want reboot your server
+      constraints:
+        compulsory: yes
 
 Const
 ^^^^^
@@ -479,18 +542,23 @@ Const
 The object Const defines an constant property. Sometime used in a request like the property "method" in Json-RPC.
 
 * description: A description of the object
-* cont_type: A scalar type of the constant (allowed values are `string`, `number`, `bool`). If undefined `string` will be used
+* cont_type: A scalar type of the constant (allowed values are `string`, `number`, `integer`, `boolean`). If undefined `string` will be used
 * value: The value associated to the property
+* optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* constraints: A dictionary of constraints
+  * {constraint_name}: A string is expected
 
 sample:
 
 .. code-block:: yaml
 
-   method:
-     type: const
-     description: Json-RPC method name
-     const_type: string
-     value: "find"
+    method:
+      type: const
+      description: Json-RPC method name
+      const_type: string
+      value: "find"
+      constraints:
+        required: authenticated user
 
 Enum
 ^^^^
@@ -500,25 +568,30 @@ The object Enum defines a list a availables values. When this object is the prim
 * description: A description of the object
 * values: An array of values
 * descriptions: A dictionnary of description for each value
+* optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* constraints: A dictionary of constraints
+  * {constraint_name}: A string is expected
 
 sample:
 
 .. code-block:: yaml
 
-   httpMethods:
-     type: enum
-     description: List of Http methods used in Rest
-     values:
-     - GET
-     - POST
-     - PUT
-     - DELETE
-     descriptions:
-       GET: Like select
-       POST: Like insert
-       PUT: Like update
-       DELETE: Like delete
-     sample: GET
+    httpMethods:
+      type: enum
+      description: List of Http methods used in Rest
+      values:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      descriptions:
+        GET: Like select
+        POST: Like insert
+        PUT: Like update
+        DELETE: Like delete
+      sample: GET
+      constraints:
+        required: authenticated user
 
 Object
 ^^^^^^
@@ -527,18 +600,23 @@ The object Object defines a complex object containing a dictionnary of propertie
 
 * description: A description of the object
 * properties: List of properties of the object
+* optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* constraints: A dictionary of constraints
+  * {constraint_name}: A string is expected
 
 sample:
 
 .. code-block:: yaml
 
-   element:
-     type: object
-     description: User to update
-     properties:
-       name:
-         type: string
-         description: New name of the user
+    element:
+      type: object
+      description: User to update
+      properties:
+        name:
+          type: string
+          description: New name of the user
+      constraints:
+        required: authenticated user
 
 Array
 ^^^^^
@@ -548,35 +626,44 @@ The object Array defines an array of objects.
 * description: A description of the array
 * items: A representation of the items contained in the array
 * sample_count: Number of items to display in the sample fieldset
+* optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* maxItems: A positive integer is expected.
+* minItems: A positive integer is expected.
+* uniqueItems: A boolean is expected.
+* constraints: A dictionary of constraints
+  * {constraint_name}: A string is expected
 
 sample:
 
 .. code-block:: yaml
 
-   elements:
-     type: array
-     description: List of users
-     items:
-       type: object
-       properties:
-         name:
-           type: string
-           description: New name of the user
+    elements:
+      type: array
+      description: List of users
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: New name of the user
+      maxItems: 10
 
 Reference
 ^^^^^^^^^
 
-The object Reference defines a reference to a referenced object
+The object Reference defines a reference to a referenced object.
+Reference is the only one elements who does not have constraints. This constraints are defined in the refererenced item.
 
 * reference: Name of the reference
+* optional: A boolean indicating if the parameter is compulsory or optional. Default False.
 
 sample:
 
 .. code-block:: yaml
 
-   user:
-     type: reference
-     reference: GenericUser
+    user:
+      type: reference
+      reference: GenericUser
 
 Dynamic
 ^^^^^^^
@@ -586,15 +673,20 @@ The object Dynamic defines a special object where the key, which must be a strin
 * description: A description of the array
 * items: A representation of the items contained in the object
 * sample: A sample value which will be displayed on the sample fieldset.
+* optional: A boolean indicating if the parameter is compulsory or optional. Default False.
+* maxItems: A positive integer is expected.
+* minItems: A positive integer is expected.
+* constraints: A dictionary of constraints
+  * {constraint_name}: A string is expected
 
 sample:
 
 .. code-block:: yaml
 
-   metadatas:
-       type: dynamic
-       description: A list of key/value to store what you want
-       item: string
+    metadatas:
+      type: dynamic
+      description: A list of key/value to store what you want
+      item: string
 
 
 Customizations
@@ -613,27 +705,27 @@ Sample using a variable string context:
 
 .. code-block:: yaml
 
-   configuration:
-     title: ${applicationName}
-     description: Official documentation of ${applicationName}
+    configuration:
+      title: ${applicationName}
+      description: Official documentation of ${applicationName}
 
 Sample using a variable to set a boolean:
 
 .. code-block:: yaml
 
-   categories:
-     MyExperiments:
-       display: ${displayExperimentals}
+    categories:
+      MyExperiments:
+        display: ${displayExperimentals}
 
 Sample using a variable used in extends context:
 
 .. code-block:: yaml
 
-   versions:
-     v1:
-       ...
-     v2:
-       extends: ${officialVersion}
+    versions:
+      v1:
+        ...
+      v2:
+        extends: ${officialVersion}
 
 Extends
 -------
@@ -646,78 +738,78 @@ Sample using an extension on the version:
 
 .. code-block:: yaml
 
-   versions:
-     v1:
-       ...
-     v2:
-       extends: v1
+    versions:
+      v1:
+        ...
+      v2:
+        extends: v1
 
 Sample using an extension on a method with relative path and absolute path:
 
 .. code-block:: yaml
 
-   versions
-     v1:
-       methods:
-         Request:
-           ...
-         AuthentificatedRequest:
-           extends: Request
-     v2:
-       methods:
-         Login:
-           extends: v1/Request
+    versions
+      v1:
+        methods:
+          Request:
+            ...
+          AuthenticatedRequest:
+            extends: Request
+      v2:
+        methods:
+          Login:
+            extends: v1/Request
 
 Sample using an extension where the method ListClientWithDetails extends ListClients but not for the response_body which is redefined:
 
 .. code-block:: yaml
 
-   methods:
-     ListClients:
-       ...
-     ListClientWithDetails:
-       extends: ListClients
-       response_body:
-         inherit: false
-       ...
+    methods:
+      ListClients:
+        ...
+      ListClientWithDetails:
+        extends: ListClients
+        response_body:
+          inherit: false
+        ...
 
-Sample using an extension where the section SessionAuthentification extends FormAuthentification but the content of the body of the method Login is removed:
+Sample using an extension where the section SessionAuthentication extends FormAuthentication but the content of the body of the method Login is removed:
 
 .. code-block:: yaml
 
-   methods:
-     Login:
-       request_body:
-         type: object
-         properties:
-           login:
-             type: string
-           password:
-             type: string
-     SSO:
-       extends: Login
-       request_parameters:
-         token_id:
-           type: string
-       request_body:
-         removed: true
+    methods:
+      Login:
+        request_body:
+          type: object
+          properties:
+            login:
+              type: string
+            password:
+              type: string
+      SSO:
+        extends: Login
+        request_parameters:
+          token_id:
+            type: string
+        request_body:
+          removed: true
 
 You can extend multiple elements by providing an list of extensions.
 
 .. code-block:: yaml
 
-   Methods:
-     Authentificated:
-       request_header:
-         X-Auth-Token:
-           type: string
-     Paginated:
-       request_parameter:
-         index:
-           type: number
-         limit:;
-           type: number
-     Customers:
-       extends:
-         - Authentificated
-         - Paginated
+    Methods:
+      Authenticated:
+        request_header:
+          X-Auth-Token:
+            type: string
+      Paginated:
+        request_parameter:
+          index:
+            type: integer
+          limit:;
+            type: integer
+      Customers:
+        extends:
+        - Authenticated
+        - Paginated

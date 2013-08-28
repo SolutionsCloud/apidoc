@@ -3,7 +3,7 @@ versions:
     methods:
         StoreCreditCard:
           category: Vault
-          extends: authentificated
+          extends: authenticated
           uri: /payments/vault/credit-card
           method: post
           request_body:
@@ -54,7 +54,7 @@ versions:
             reference: created_credit_card
         LookupCreditCard:
           category: Vault
-          extends: authentificated
+          extends: authenticated
           uri: /payments/vault/credit-card/{id}
           request_parameters:
             id:

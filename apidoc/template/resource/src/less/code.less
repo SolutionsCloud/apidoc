@@ -8,16 +8,39 @@
     margin: 0 0 10px;
     border: 1px solid #ccc;
     border: 1px solid rgba(0,0,0,0.15);
-    -webkit-border-radius: 4px;
-       -moz-border-radius: 4px;
-            border-radius: 4px;
+    border-radius: 4px;
     TABLE {
         width: 100%;
     }
 
-    .optional {
-      margin-left: -15px;
-      margin-right: 10px;
+    TR>TD.com {
+        padding-left: 10px;
+    }
+
+    TR.optional>TD.com {
+        padding-left: 5px;
+        &:before {
+            content: "Optional";
+            padding-right: 5px;
+            color:#066;
+        }
+    }
+
+    .i-constraint {
+        cursor: pointer;
+    }
+
+    .i-constraint+.popover {
+        z-index: 9;
+        .popover-content {
+            padding: 0;
+            TABLE {
+                margin: 0;
+                TR:first-child>TD {
+                    border-top: none;
+                }
+            }
+        }
     }
 }
 
