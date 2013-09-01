@@ -6,8 +6,7 @@ Feature: Config file parsing
             ---
             """
          When a config_factory load this file
-         Then the object_config returned contains "None" for the attribute "input.directories"
-          And the object_config returned contains "None" for the attribute "input.files"
+         Then the object_config returned contains "None" for the attribute "input.locations"
           And the object_config returned contains "None" for the attribute "filter.versions.includes"
           And the object_config returned contains "None" for the attribute "filter.versions.excludes"
           And the object_config returned contains "None" for the attribute "filter.categories.includes"
@@ -21,12 +20,11 @@ Feature: Config file parsing
         Given a "yaml" config file containing
             """
             input:
-              files:
+              locations:
                 - ./sources/one.yml
             """
          When a config_factory load this file
-         Then the object_config returned contains "None" for the attribute "input.directories"
-          And the object_config returned contains the files "['sources/one.yml']" for the attribute "input.files"
+         Then the object_config returned contains the files "['sources/one.yml']" for the attribute "input.locations"
           And the object_config returned contains "None" for the attribute "filter.versions.includes"
           And the object_config returned contains "None" for the attribute "filter.versions.excludes"
           And the object_config returned contains "None" for the attribute "filter.categories.includes"
@@ -41,14 +39,14 @@ Feature: Config file parsing
             """
             {
               "input": {
-                "files": [
+                "locations": [
                   "./sources/one.yml"
                 ]
               }
             }
             """
          When a config_factory load this file
-         Then the object_config returned contains the files "['sources/one.yml']" for the attribute "input.files"
+         Then the object_config returned contains the files "['sources/one.yml']" for the attribute "input.locations"
 
 
     Scenario: Parse a special file
@@ -68,8 +66,7 @@ Feature: Config file parsing
               fail: True
             """
          When a config_factory load this file
-         Then the object_config returned contains "None" for the attribute "input.directories"
-          And the object_config returned contains "None" for the attribute "input.files"
+         Then the object_config returned contains "None" for the attribute "input.locations"
           And the object_config returned contains "None" for the attribute "filter.versions.includes"
           And the object_config returned contains "None" for the attribute "filter.versions.excludes"
           And the object_config returned contains "None" for the attribute "filter.categories.includes"
@@ -83,10 +80,9 @@ Feature: Config file parsing
         Given a "yaml" config file containing
             """
             input:
-              directories:
+              locations:
                 - ./sources
                 - ./sources/sub
-              files:
                 - ./sources/one.yml
                 - ./sources/two.yml
             filter:
@@ -117,8 +113,7 @@ Feature: Config file parsing
               componants: embedded
             """
          When a config_factory load this file
-         Then the object_config returned contains the files "['sources', 'sources/sub']" for the attribute "input.directories"
-          And the object_config returned contains the files "['sources/one.yml', 'sources/two.yml']" for the attribute "input.files"
+         Then the object_config returned contains the files "['sources', 'sources/sub', 'sources/one.yml', 'sources/two.yml']" for the attribute "input.locations"
           And the object_config returned contains "['v1.0', 'v1.1']" for the attribute "filter.versions.includes"
           And the object_config returned contains "['v2.0', 'v2.1']" for the attribute "filter.versions.excludes"
           And the object_config returned contains "['s1', 's2']" for the attribute "filter.categories.includes"

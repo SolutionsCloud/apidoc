@@ -43,7 +43,7 @@ def when_factory_config(context):
     factory = SourceFactory()
     config = context.object_config
 
-    config["input"]["files"] = context.conf_files
+    config["input"]["locations"] = context.conf_files
     response = factory.create_from_config(config)
     context.root = response
 
@@ -52,7 +52,7 @@ def when_factory_config(context):
 def when_factory_config_directory(context):
     factory = SourceFactory()
     config = context.object_config
-    config["input"]["directories"] = [context.temp_dir]
+    config["input"]["locations"] = [context.temp_dir]
     response = factory.create_from_config(config)
     context.root = response
 
