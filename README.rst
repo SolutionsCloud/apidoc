@@ -55,5 +55,5 @@ You can download a sample file and try to render it documentation
     $ mkdir apidoc
     $ cd apidoc
     $ wget https://raw.github.com/SolutionsCloud/apidoc/master/example/demo/source.yml
-    $ apidoc -f source.yml -o output/index.html
+    $ apidoc -i source.yml -o output/index.html
     $ firefox output/index.html
