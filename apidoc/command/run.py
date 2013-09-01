@@ -47,12 +47,8 @@ class ApiDoc():
             help="configuration file"
         )
         self.parser.add_argument(
-            "-d", "--directories", nargs='+', type=str, metavar="DIRECTORY",
-            help="directories containing documentation\'s source files"
-        )
-        self.parser.add_argument(
-            "-f", "--files", nargs='+', type=str, metavar="FILE",
-            help="documentation\'s source file"
+            "-i", "--input", nargs='+', type=str, metavar="DIRECTORY OR FILE",
+            help="directories and/or files containing documentation\'s source files"
         )
         self.parser.add_argument(
             "-o", "--output", type=str, metavar="FILE",
@@ -96,7 +92,7 @@ class ApiDoc():
         """return command's configuration from call's arguments
         """
         options = self.parser.parse_args()
-        if options.config is None and options.directories is None and options.files is None:
+        if options.config is None and options.input is None:
             self.parser.print_help()
             sys.exit(2)
 
@@ -106,12 +102,8 @@ class ApiDoc():
         else:
             config = ConfigObject()
 
-        if options.directories is not None:
-            config["input"]["directories"] = [str(x) for x in options.directories]
-
-        if options.files is not None:
-            config["input"]["files"] = [str(x) for x in options.files]
-
+        if options.input is not None:
+            config["input"]["locations"] = [str(x) for x in options.input]
         if options.arguments is not None:
             config["input"]["arguments"] = dict((x.partition("=")[0], x.partition("=")[2]) for x in options.arguments)
 
@@ -218,13 +210,9 @@ class ApiDoc():
         template_path = os.path.dirname(configService.get_template_from_config(self.config))
         observer.add_handler(template_path, template_handler)
 
-        if (self.config["input"]["directories"] is not None):
-            for directory in self.config["input"]["directories"]:
-                observer.add_handler(directory, source_handler)
-
-        if (self.config["input"]["files"] is not None):
-            for file in self.config["input"]["files"]:
-                observer.add_handler(file, source_handler)
+        if (self.config["input"]["locations"] is not None):
+            for location in self.config["input"]["locations"]:
+                observer.add_handler(location, source_handler)
 
         observer.start()
         try:
