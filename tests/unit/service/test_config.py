@@ -28,13 +28,13 @@ class TestConfig(unittest.TestCase):
 
     def test_validate__wrong_directories(self):
         config = Config()
-        config["input"]["directories"] = ["bla"]
+        config["input"]["locations"] = ["bla"]
         with self.assertRaises(ValueError):
             self.config.validate(config)
 
     def test_validate__wrong_file(self):
         config = Config()
-        config["input"]["files"] = ["bla"]
+        config["input"]["locations"] = ["bla"]
         with self.assertRaises(ValueError):
             self.config.validate(config)
 
@@ -48,8 +48,7 @@ class TestConfig(unittest.TestCase):
         config = Config()
         config["output"]["componants"] = "local"
         config["output"]["layout"] = "default"
-        config["input"]["directories"] = [os.path.dirname(__file__)]
-        config["input"]["files"] = [__file__]
+        config["input"]["locations"] = [os.path.dirname(__file__), __file__]
         config["input"]["arguments"] = {"foo": "bar"}
 
         self.config.validate(config)

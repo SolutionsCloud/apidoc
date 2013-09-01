@@ -19,23 +19,15 @@ class Config():
         if not config["output"]["layout"] in ("default", "content-only"):
             raise ValueError("Unknown layout \"%s\"." % config["output"]["layout"])
 
-        if config["input"]["directories"] is not None:
-            unknown_directories = [x for x in config["input"]["directories"] if not os.path.isdir(x)]
-            if len(unknown_directories) > 0:
+        if config["input"]["locations"] is not None:
+            unknown_locations = [x for x in config["input"]["locations"] if not os.path.exists(x)]
+            if len(unknown_locations) > 0:
                 raise ValueError(
-                    "Director%s \"%s\" does not exists"
-                    % ("ies" if len(unknown_directories) > 1 else "y", ("\" and \"").join(unknown_directories))
+                    "Location%s \"%s\" does not exists"
+                    % ("s" if len(unknown_locations) > 1 else "", ("\" and \"").join(unknown_locations))
                 )
 
-            config["input"]["directories"] = [os.path.realpath(x) for x in config["input"]["directories"]]
-
-        if config["input"]["files"] is not None:
-            unknown_files = [x for x in config["input"]["files"] if not os.path.isfile(x)]
-            if len(unknown_files) > 0:
-                raise ValueError(
-                    "File%s \"%s\" does not exists"
-                    % ("s" if len(unknown_files) > 1 else "", ("\" and \"").join(unknown_files))
-                )
+            config["input"]["locations"] = [os.path.realpath(x) for x in config["input"]["locations"]]
 
         if config["input"]["arguments"] is not None:
             if not isinstance(config["input"]["arguments"], dict):

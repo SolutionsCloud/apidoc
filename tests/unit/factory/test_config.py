@@ -49,11 +49,9 @@ class TestConfig(unittest.TestCase):
     def test_fix_all_path(self):
         sample = {
             "input": {
-                "directories": [
+                "locations": [
                     "directory",
-                    "directory2/subdirectory"
-                ],
-                "files": [
+                    "directory2/subdirectory",
                     "file",
                     "directory/file"
                 ]
@@ -64,18 +62,18 @@ class TestConfig(unittest.TestCase):
             }
         }
         self.config.fix_all_path(sample, "/root/path")
-        self.assertEqual("/root/path/directory", sample["input"]["directories"][0])
-        self.assertEqual("/root/path/directory2/subdirectory", sample["input"]["directories"][1])
-        self.assertEqual("/root/path/file", sample["input"]["files"][0])
-        self.assertEqual("/root/path/directory/file", sample["input"]["files"][1])
+
+        self.assertEqual("/root/path/directory", sample["input"]["locations"][0])
+        self.assertEqual("/root/path/directory2/subdirectory", sample["input"]["locations"][1])
+        self.assertEqual("/root/path/file", sample["input"]["locations"][2])
+        self.assertEqual("/root/path/directory/file", sample["input"]["locations"][3])
         self.assertEqual("/root/path/file2", sample["output"]["location"])
         self.assertEqual("/root/path/file3", sample["output"]["template"])
 
     def test_fix_all_path__empty_datas(self):
         sample = {
             "input": {
-                "directories": None,
-                "files": None
+                "locations": None,
             },
             "output": {
                 "location": "file2",
@@ -83,14 +81,12 @@ class TestConfig(unittest.TestCase):
             }
         }
         self.config.fix_all_path(sample, "/root/path")
-        self.assertEqual(None, sample["input"]["directories"])
-        self.assertEqual(None, sample["input"]["files"])
+        self.assertEqual(None, sample["input"]["locations"])
 
     def test_fix_all_path__empty_output(self):
         sample = {
             "input": {
-                "directories": None,
-                "files": None
+                "locations": None,
             },
             "output": {
                 "location": "stdout",

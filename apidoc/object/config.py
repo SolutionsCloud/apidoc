@@ -7,8 +7,7 @@ class Config(dict):
         """Class instantiation
         """
         self["input"] = {
-            "directories": None,
-            "files": None,
+            "locations": None,
             "arguments": None,
             "validate": True
         }
