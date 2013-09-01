@@ -1,11 +1,7 @@
 properties:
   input:
     properties:
-      directories:
-        items:
-          type: string
-        minItems: 1
-      files:
+      locations:
         items:
           type: string
         minItems: 1

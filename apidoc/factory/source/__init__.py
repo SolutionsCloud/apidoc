@@ -1,3 +1,5 @@
+import os
+
 from copy import deepcopy
 
 from apidoc.service.validator import Validator
@@ -68,12 +70,12 @@ class Source():
         """Load a set of source's file defined in the config
         """
         sources = []
-        if (config["input"]["directories"] is not None):
-            for directory in config["input"]["directories"]:
-                sources.extend(self.parser.load_all_from_directory(directory))
-        if (config["input"]["files"] is not None):
-            for file in config["input"]["files"]:
-                sources.append(self.parser.load_from_file(file))
+        if (config["input"]["locations"] is not None):
+            for location in config["input"]["locations"]:
+                if os.path.isdir(location):
+                    sources.extend(self.parser.load_all_from_directory(location))
+                else:
+                    sources.append(self.parser.load_from_file(location))
         return sources
 
     def inject_arguments_in_sources(self, sources, arguments):
