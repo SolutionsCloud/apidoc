@@ -1,5 +1,5 @@
+import os
 import unittest
-import tempfile
 
 from mock import patch, call
 from apidoc.factory.source import Source as SourceFactory
@@ -53,21 +53,22 @@ class TestSource(unittest.TestCase):
     @patch.object(Extender, "extends", return_value={})
     def test_create_from_config(self, mock_extender, mock_merger, mock_parser_directory, mock_parser_file):
         config = ConfigObject()
-        with tempfile.TemporaryDirectory() as tmpdirname1:
-            with tempfile.TemporaryDirectory() as tmpdirname2:
-                with tempfile.TemporaryFile() as tmpfilename1:
-                    with tempfile.TemporaryFile() as tmpfilename2:
-                        config["input"]["locations"] = [tmpdirname1, tmpdirname2, tmpfilename1, tmpfilename2]
-                        config["input"]["arguments"] = {"var": "value"}
+        init = os.path.isdir
+        try:
+            os.path.isdir = lambda x: x[0] == "d"
+            config["input"]["locations"] = ["d1", "d2", "f1", "f2"]
+            config["input"]["arguments"] = {"var": "value"}
 
-                        response = self.source.create_from_config(config)
+            response = self.source.create_from_config(config)
 
-                        self.assertIsInstance(response, RootDto)
+            self.assertIsInstance(response, RootDto)
 
-                        mock_extender.assert_called_once_with({"i": "j"}, paths=('categories/?', 'versions/?', 'versions/?/methods/?', 'versions/?/types/?', 'versions/?/references/?'))
-                        mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
-                        mock_parser_directory.assert_has_calls([call(tmpdirname1), call(tmpdirname2)])
-                        mock_parser_file.assert_has_calls([call(tmpfilename1), call(tmpfilename2)])
+            mock_extender.assert_called_once_with({"i": "j"}, paths=('categories/?', 'versions/?', 'versions/?/methods/?', 'versions/?/types/?', 'versions/?/references/?'))
+            mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
+            mock_parser_directory.assert_has_calls([call("d1"), call("d2")])
+            mock_parser_file.assert_has_calls([call("f1"), call("f2")])
+        finally:
+            os.path.isdir = init
 
     @patch.object(Parser, "load_from_file", side_effect=[{"e": "f"}, {"g": "h"}, {}])
     @patch.object(Parser, "load_all_from_directory", side_effect=[[{"a": "b"}, {"c": "d"}], [{"z": "y"}]])
@@ -75,22 +76,24 @@ class TestSource(unittest.TestCase):
     @patch.object(Extender, "extends", return_value={})
     def test_create_from_config__without_validation(self, mock_extender, mock_merger, mock_parser_directory, mock_parser_file):
         config = ConfigObject()
-        with tempfile.TemporaryDirectory() as tmpdirname1:
-            with tempfile.TemporaryDirectory() as tmpdirname2:
-                with tempfile.TemporaryFile() as tmpfilename1:
-                    with tempfile.TemporaryFile() as tmpfilename2:
-                        config["input"]["locations"] = [tmpdirname1, tmpdirname2, tmpfilename1, tmpfilename2]
-                        config["input"]["arguments"] = {"var": "value"}
-                        config["input"]["validate"] = False
+        init = os.path.isdir
+        try:
+            os.path.isdir = lambda x: x[0] == "d"
 
-                        response = self.source.create_from_config(config)
+            config["input"]["locations"] = ["d1", "d2", "f1", "f2"]
+            config["input"]["arguments"] = {"var": "value"}
+            config["input"]["validate"] = False
 
-                        self.assertIsInstance(response, RootDto)
+            response = self.source.create_from_config(config)
 
-                        mock_extender.assert_called_once_with({"i": "j"}, paths=('categories/?', 'versions/?', 'versions/?/methods/?', 'versions/?/types/?', 'versions/?/references/?'))
-                        mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
-                        mock_parser_directory.assert_has_calls([call(tmpdirname1), call(tmpdirname2)])
-                        mock_parser_file.assert_has_calls([call(tmpfilename1), call(tmpfilename2)])
+            self.assertIsInstance(response, RootDto)
+
+            mock_extender.assert_called_once_with({"i": "j"}, paths=('categories/?', 'versions/?', 'versions/?/methods/?', 'versions/?/types/?', 'versions/?/references/?'))
+            mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
+            mock_parser_directory.assert_has_calls([call("d1"), call("d2")])
+            mock_parser_file.assert_has_calls([call("f1"), call("f2")])
+        finally:
+            os.path.isdir = init
 
     def test_get_sources_from_config(self):
         config = ConfigObject()
