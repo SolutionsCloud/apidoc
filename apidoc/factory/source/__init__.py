@@ -181,6 +181,10 @@ class Source():
         elif object.type is ObjectObject.Types.object:
             for (property_name, property_value) in object.properties.items():
                 object.properties[property_name] = self.replace_references_in_object(property_value, references)
+            for (property_name, property_value) in object.pattern_properties.items():
+                object.pattern_properties[property_name] = self.replace_references_in_object(property_value, references)
+            if object.additional_properties:
+                object.additional_properties = self.replace_references_in_object(object.additional_properties, references)
 
         return object
 
@@ -202,6 +206,10 @@ class Source():
         elif object.type is ObjectObject.Types.object:
             for (property_name, property_value) in object.properties.items():
                 object.properties[property_name] = self.replace_types_in_object(property_value, types)
+            for (property_name, property_value) in object.pattern_properties.items():
+                object.pattern_properties[property_name] = self.replace_types_in_object(property_value, types)
+            if object.additional_properties:
+                object.additional_properties = self.replace_types_in_object(object.additional_properties, types)
 
         return object
 
@@ -238,7 +246,10 @@ class Source():
         elif object.type is ObjectObject.Types.object:
             for property in object.properties.values():
                 types += self.get_used_types_in_object(property)
-
+            for property in object.pattern_properties.values():
+                types += self.get_used_types_in_object(property)
+            if object.additional_properties:
+                types += self.get_used_types_in_object(object.additional_properties)
         return types
 
     def get_reference(self, object, references):

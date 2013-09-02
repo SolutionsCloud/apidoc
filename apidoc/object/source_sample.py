@@ -92,6 +92,8 @@ class ObjectObject(Object):
     def __init__(self, object_raw):
         super().__init__(object_raw)
         self.properties = dict((name, Object.factory(x)) for name, x in sorted(object_raw.properties.items()))
+        self.pattern_properties = dict((name, Object.factory(x)) for name, x in sorted(object_raw.pattern_properties.items()))
+        self.additional_properties = None if object_raw.additional_properties is None else Object.factory(object_raw.additional_properties)
 
 
 class ObjectArray(Object):

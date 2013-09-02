@@ -377,6 +377,8 @@ class ObjectObject(Object, Constraintable):
         super().__init__()
         self.type = Object.Types("object")
         self.properties = {}
+        self.pattern_properties = {}
+        self.additional_properties = None
 
 
 class ObjectArray(Object, Constraintable):

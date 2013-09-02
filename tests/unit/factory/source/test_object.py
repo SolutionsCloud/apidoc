@@ -101,6 +101,14 @@ class TestObject(unittest.TestCase):
                     }
 
                 }
+            },
+            "patternProperties": {
+                "farfoo": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": {
+                "type": "string"
             }
         }
 
@@ -187,6 +195,10 @@ class TestObject(unittest.TestCase):
         self.assertEqual(["a_foofum", "b_foofum"], response.properties["foofum"].values)
         self.assertEqual(2, len(response.properties["foofum"].descriptions))
 
+        self.assertIn("farfoo", response.pattern_properties)
+        self.assertIsInstance(response.pattern_properties["farfoo"], ObjectString)
+        self.assertIsInstance(response.additional_properties, ObjectString)
+
     def test_create_from_name_and_dictionary__failed_missing_type(self):
         with self.assertRaises(ValueError):
             self.factory.create_from_name_and_dictionary("o_name", {})
@@ -268,6 +280,14 @@ class TestObject(unittest.TestCase):
         self.assertEqual(1, len(response.descriptions))
         self.assertEqual("a", response.descriptions[0].name)
         self.assertEqual(None, response.descriptions[0].description)
+
+    def test_create_from_name_and_dictionary__additional_properties_false(self):
+        response = self.factory.create_from_name_and_dictionary("o_name", {"type": "object", "additionalProperties": False})
+        self.assertEqual(None, response.additional_properties)
+
+    def test_create_from_name_and_dictionary__additional_properties_true(self):
+        with self.assertRaises(ValueError):
+            self.factory.create_from_name_and_dictionary("o_name", {"type": "object", "additionalProperties": True})
 
     def test_create_from_name_and_dictionary__constraint(self):
         datas = {

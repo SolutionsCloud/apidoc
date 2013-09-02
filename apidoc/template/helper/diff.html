@@ -9,12 +9,22 @@
         <td class="com">{{ util.none_to_empty(object.value.description) }}</td>
     </tr>
             {%- for (property_name, property_value) in object.value.properties.items()|sort %}
-                {%- if loop.last %}
+                {%- if loop.last and not object.pattern_properties and not object.additional_properties %}
                     {{- diff_code_commented(property_value, code.property_name_decorator(property_name), "", pad_length + 1) }}
                 {%- else %}
                     {{- diff_code_commented(property_value, code.property_name_decorator(property_name), "<span class=\"pun\">,</span>", pad_length + 1) }}
                 {%- endif %}
             {%- endfor %}
+            {%- for (property_name, property_value) in object.value.pattern_properties.items()|sort %}
+                {%- if loop.last and not object.additional_properties %}
+                    {{- diff_code_commented(property_value, code.property_pattern_decorator(property_name), "", pad_length + 1) }}
+                {%- else %}
+                    {{- diff_code_commented(property_value, code.property_pattern_decorator(property_name), "<span class=\"pun\">,</span>", pad_length + 1) }}
+                {%- endif %}
+            {%- endfor %}
+        {%- if object.value.additional_properties -%}
+            {{- diff_code_commented(object.value.additional_properties, '<span class="typ">string</span><span class="pun">: </span>', "", pad_length+1) }}
+        {%- endif %}
     <tr class="diff_version" data-version="{{ object.versions|join(" ") }}">
         <td>{{ code.indent(pad_length) }}<span class="pun">}</span>{{ suffix }}</td>
         <td></td>

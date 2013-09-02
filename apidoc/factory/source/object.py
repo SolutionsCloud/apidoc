@@ -25,6 +25,15 @@ class Object(ElementFactory):
         if type is ObjectRaw.Types.object:
             object = ObjectObject()
             object.properties = self.create_dictionary_of_element_from_dictionary("properties", datas)
+            if "patternProperties" in datas:
+                object.pattern_properties = self.create_dictionary_of_element_from_dictionary("patternProperties", datas)
+            if "additionalProperties" in datas:
+                if isinstance(datas["additionalProperties"], dict):
+                    object.additional_properties = self.create_from_name_and_dictionary("additionalProperties", datas["additionalProperties"])
+                elif not to_boolean(datas["additionalProperties"]):
+                    object.additional_properties = None
+                else:
+                    raise ValueError("AdditionalProperties doe not allow empty value (yet)")
         elif type is ObjectRaw.Types.array:
             object = ObjectArray()
             if "items" in datas:

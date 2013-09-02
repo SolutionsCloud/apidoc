@@ -72,6 +72,14 @@ versions:
               description: Resource Name
               constraints:
                 foo: bar
+            dynamic:
+              type: object
+              properties: {}
+              additionalProperties:
+                type: integer
+              patternProperties:
+                "^.*$":
+                  type: integer
             ref:
               type: version
             elements:
@@ -208,6 +216,9 @@ versions:
         format:
           pretty: VN.N
           advanced: V\d+\.\d+
+      blah2:
+        item:
+          type: string
       complexe_type:
         description: A complexe type
         item:
@@ -283,6 +294,14 @@ versions:
             choice:
               constraints:
                 foo: baz
+            dynamic:
+              type: object
+              properties: {}
+              additionalProperties:
+                type: string
+              patternProperties:
+                "^.*$":
+                  type: string
             name:
               type: string
               description: Resource Name
@@ -307,6 +326,12 @@ versions:
           name:
             description: foooo
     types:
+      blah:
+        item:
+          type: string
+      blah2:
+        item:
+          type: string
       enumStatus:
         description: d2
         item:

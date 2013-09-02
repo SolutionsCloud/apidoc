@@ -343,7 +343,7 @@ class TestSource(unittest.TestCase):
         self.assertEqual(type1, method1.request_parameters["p1"].type_object)
         self.assertEqual(type1, method1.request_headers["p1"].type_object)
 
-    def test_replace_references_in_object(self):
+    def test_replace_references_in_object__properties(self):
         object = ObjectObject()
         array = ObjectArray()
         dynamic = ObjectDynamic()
@@ -360,7 +360,41 @@ class TestSource(unittest.TestCase):
 
         self.assertEqual(Object.Types.string, dynamic.items.type)
 
-    def test_replace_types_in_object(self):
+    def test_replace_references_in_object__pattern_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectReference()
+        reference.reference_name = "r1"
+
+        string1 = ObjectString()
+
+        object.pattern_properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        self.source.replace_references_in_object(object, {"r1": string1})
+
+        self.assertEqual(Object.Types.string, dynamic.items.type)
+
+    def test_replace_references_in_object__additional_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectReference()
+        reference.reference_name = "r1"
+
+        string1 = ObjectString()
+
+        object.additional_properties = array
+        array.items = dynamic
+        dynamic.items = reference
+
+        self.source.replace_references_in_object(object, {"r1": string1})
+
+        self.assertEqual(Object.Types.string, dynamic.items.type)
+
+    def test_replace_types_in_object__properties(self):
         object = ObjectObject()
         array = ObjectArray()
         dynamic = ObjectDynamic()
@@ -370,6 +404,40 @@ class TestSource(unittest.TestCase):
         type1 = Type()
 
         object.properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        self.source.replace_types_in_object(object, {"t1": type1})
+
+        self.assertEqual(type1, reference.type_object)
+
+    def test_replace_types_in_object__pattern_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectType()
+        reference.type_name = "t1"
+
+        type1 = Type()
+
+        object.pattern_properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        self.source.replace_types_in_object(object, {"t1": type1})
+
+        self.assertEqual(type1, reference.type_object)
+
+    def test_replace_types_in_object__additional_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectType()
+        reference.type_name = "t1"
+
+        type1 = Type()
+
+        object.additional_properties = array
         array.items = dynamic
         dynamic.items = reference
 
@@ -416,6 +484,36 @@ class TestSource(unittest.TestCase):
         reference.type_name = "t1"
 
         object.properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        response = self.source.get_used_types_in_object(object)
+
+        self.assertEqual(["t1"], response)
+
+    def test_get_used_types_in_object__pattern_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectType()
+        reference.type_name = "t1"
+
+        object.pattern_properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        response = self.source.get_used_types_in_object(object)
+
+        self.assertEqual(["t1"], response)
+
+    def test_get_used_types_in_object__additional_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectType()
+        reference.type_name = "t1"
+
+        object.additional_properties = array
         array.items = dynamic
         dynamic.items = reference
 

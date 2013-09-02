@@ -198,6 +198,15 @@ definitions:
         patternProperties:
           ".*" :
             $ref: "#/definitions/object"
+      patternProperties:
+        patternProperties:
+          ".*" :
+            $ref: "#/definitions/object"
+      additionalProperties:
+        type:
+        - boolean
+        - object
+        $ref: "#/definitions/object"
       optional:
         type: boolean
       constraints:
