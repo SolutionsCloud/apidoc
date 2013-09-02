@@ -596,10 +596,12 @@ sample:
 Object
 ^^^^^^
 
-The object Object defines a complex object containing a dictionnary of properties. Each property is associated with a key which is the name of the property.
+The object Object defines a complex object containing a dictionnary of properties, patternProperties or additionalProperties. Each property is associated with a key which is the name of the property.
 
 * description: A description of the object
 * properties: List of properties of the object
+* patternProperties: List of properties of the object where the key is a regular expression
+* additionalProperties: A boolean False when additional properties are not allowed, Otherwise it's an object
 * optional: A boolean indicating if the parameter is compulsory or optional. Default False.
 * constraints: A dictionary of constraints
   * {constraint_name}: A string is expected
@@ -615,6 +617,10 @@ sample:
         name:
           type: string
           description: New name of the user
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
       constraints:
         required: authenticated user
 
@@ -665,10 +671,11 @@ sample:
       type: reference
       reference: GenericUser
 
-Dynamic
-^^^^^^^
+Dynamic (deprecated)
+^^^^^^^^^^^^^^^^^^^^
 
 The object Dynamic defines a special object where the key, which must be a string, is dynamic.
+You should use object with additionalProperties instead of this dynamic element.
 
 * description: A description of the array
 * items: A representation of the items contained in the object
