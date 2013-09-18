@@ -13,7 +13,7 @@ function refreshScrollNavigation() {
 }
 
 function getCurrentItem() {
-    var scrollTop = $(window).scrollTop();
+    var scrollTop = $(window).scrollTop() + 10;
 
     var items = $(".item:not(#item-head)");
 
@@ -682,47 +682,27 @@ function shortcutGotoNextVersion(event, key) {
     }
 }
 
-function getActiveItem() {
-    var current = $(".scroll-spyable>UL>LI.active:visible[data-item]>A");
-    if (current.length === 0) {
-        var currentActive = $(".scroll-spyable>UL>LI.active:visible");
-        if (currentActive.length === 0) {
-            current = $(".scroll-spyable>UL>LI[data-item]:visible>A");
-        } else {
-            current = currentActive.nextAll("LI[data-item]:visible").find(">A");
-            if (current.length === 0) {
-                var ul = current.closest("UL");
-                current = current.closest("UL").next().find('>LI[data-item]:visible>A');
-            }
-        }
-
-        if (current.length > 0) {
-            current.get(0).click();
-        }
-    }
-    return current.first();
-}
 function shortcutToggleDiff(event, key) {
-    current = getActiveItem();
+    current = getCurrentItem();
 
-    if (current.length > 0) {
-        toggleDiffLayout($(current.data('target')));
+    if (current !== null) {
+        toggleDiffLayout($(current));
     }
 }
 
 function shortcutToggleSide(event, key) {
-    var current = getActiveItem();
+    var current = getCurrentItem();
 
-    if (current.length > 0) {
-        var element = $(current.data('target'));
+    if (current !== null) {
+        var element = $(current);
         $('.i-constraint[data-content]', element).popover('hide');
         if (!element.is(".diff-mode")) {
-            toggleDiffLayout($(current.data('target')));
+            toggleDiffLayout(element);
             diffActivateModeInline(element);
             return;
         }
 
-        if ($(current.data('target')).is(".diff-mode-side")) {
+        if (element.is(".diff-mode-side")) {
             diffActivateModeInline(element);
         } else {
             diffActivateModeSide(element);
@@ -731,18 +711,18 @@ function shortcutToggleSide(event, key) {
 }
 
 function shortcutToggleFull(event, key) {
-    var current = getActiveItem();
+    var current = getCurrentItem();
 
-    if (current.length > 0) {
-        var element = $(current.data('target'));
+    if (current !== null) {
+        var element = $(current);
         $('.i-constraint[data-content]', element).popover('hide');
         if (!element.is(".diff-mode")) {
-            toggleDiffLayout($(current.data('target')));
+            toggleDiffLayout(element);
             diffActivateModeMini(element);
             return;
         }
 
-        if ($(current.data('target')).is(".diff-mode-mini")) {
+        if (element.is(".diff-mode-mini")) {
             diffActivateModeFull(element);
         } else {
             diffActivateModeMini(element);
@@ -751,12 +731,12 @@ function shortcutToggleFull(event, key) {
 }
 
 function shortcutGotoNextDiffVersion(event, key) {
-    var current = getActiveItem();
+    var current = getCurrentItem();
 
-    if (current.length > 0) {
-        var element = $(current.data('target'));
+    if (current !== null) {
+        var element = $(current);
         if (!element.is(".diff-mode")) {
-            toggleDiffLayout($(current.data('target')));
+            toggleDiffLayout(element);
         }
 
         current = element.find(".diff_second");
@@ -775,12 +755,12 @@ function shortcutGotoNextDiffVersion(event, key) {
 }
 
 function shortcutGotoPreviousDiffVersion(event, key) {
-    var current = getActiveItem();
+    var current = getCurrentItem();
 
-    if (current.length > 0) {
-        var element = $(current.data('target'));
+    if (current !== null) {
+        var element = $(current);
         if (!element.is(".diff-mode")) {
-            toggleDiffLayout($(current.data('target')));
+            toggleDiffLayout(element);
         }
 
         current = element.find(".diff_second");
