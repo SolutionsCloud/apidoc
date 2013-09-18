@@ -372,7 +372,7 @@ function initSearch() {
     var lastSearch = null;
     var groupsElements = $(".doc-sidenav>LI[data-group]:not([data-item])");
 
-    $("[type=search]").bind('change keyup keypress search', function (event) {
+    $("[type=search]").bind('change keyup search', function (event) {
         if (event.keyCode == 13) {
             $(this).blur();
         }
@@ -402,7 +402,7 @@ function initSearch() {
             lastSearch = search;
 
             var words = escapeRegExp(search).split(/\s/);
-            var wordsReg = new RegExp("(" + words.join("|") + ")", 'gi');
+            var wordsReg = new RegExp("(" + words.join("|") + ")", 'i');
             for (var i=0, l=groupsElements.length; i<l; i++) {
                 var groupElement = $(groupsElements[i]);
                 var groupName = groupElement.data("group");
@@ -419,7 +419,7 @@ function initSearch() {
                     }
 
                     if (matchItem) {
-                        itemElement.find('A>SPAN').html(itemName.replace(wordsReg, '<span class="highlight">$1</span>'));
+                        itemElement.find('A>SPAN').html(itemName.replace(new RegExp("(" + words.join("|") + ")", 'gi'), '<span class="highlight">$1</span>'));
                         itemElement.show();
                     } else {
                         itemElement.find('A>SPAN').html(itemName);
@@ -428,7 +428,7 @@ function initSearch() {
                 }
 
                 if (matchGroup || matchOneitem) {
-                    groupElement.find('H6').html(groupName.replace(wordsReg, '<span class="highlight">$1</span>'));
+                    groupElement.find('H6').html(groupName.replace(new RegExp("(" + words.join("|") + ")", 'gi'), '<span class="highlight">$1</span>'));
                     groupElement.show();
                     if (matchGroup && !matchOneitem) {
                         itemsElements.show();
