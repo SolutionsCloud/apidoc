@@ -29,7 +29,7 @@ On Linux, use your favorite package manager to install LibYAML. Here's how you d
 
 .. code-block:: console
 
-   $ sudo apt-get install libyaml-dev
+   $ sudo apt-get install libyaml-dev python3-dev
 
 On Windows, please install PyYAML using the binaries they provide
 
