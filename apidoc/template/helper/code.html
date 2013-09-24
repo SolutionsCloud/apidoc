@@ -80,7 +80,7 @@
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.sample }}</span>{{ suffix }}
     {%- elif object.type|lower == "integer" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.sample }}</span>{{ suffix }}
-    {%- elif object.type|lower == "string" -%}
+    {%- elif object.type|lower in ("string", "any") -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.sample }}"</span>{{ suffix }}
     {%- elif object.type|lower == "boolean" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{% if object.sample %}true{% else %}false{% endif %}</span>{{ suffix }}

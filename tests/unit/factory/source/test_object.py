@@ -100,6 +100,9 @@ class TestObject(unittest.TestCase):
                         "a_foofum": "d_foofum"
                     }
 
+                },
+                "barbar": {
+                    "description": "c_barbar",
                 }
             },
             "patternProperties": {
@@ -195,13 +198,14 @@ class TestObject(unittest.TestCase):
         self.assertEqual(["a_foofum", "b_foofum"], response.properties["foofum"].values)
         self.assertEqual(2, len(response.properties["foofum"].descriptions))
 
+        self.assertIn("barbar", response.properties)
+        self.assertIsInstance(response.properties["barbar"], Object)
+        self.assertEqual("c_barbar", response.properties["barbar"].description)
+        self.assertEqual("barbar", response.properties["barbar"].name)
+
         self.assertIn("farfoo", response.pattern_properties)
         self.assertIsInstance(response.pattern_properties["farfoo"], ObjectString)
         self.assertIsInstance(response.additional_properties, ObjectString)
-
-    def test_create_from_name_and_dictionary__failed_missing_type(self):
-        with self.assertRaises(ValueError):
-            self.factory.create_from_name_and_dictionary("o_name", {})
 
     def test_create_from_name_and_dictionary__failed_wrong_type(self):
         with self.assertRaises(ValueError):

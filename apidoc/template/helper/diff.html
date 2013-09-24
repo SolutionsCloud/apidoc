@@ -39,7 +39,7 @@
         <td>{{ code.indent(pad_length) }}<span class="pun">]</span>{{ suffix }}</td>
         <td></td>
     </tr>
-        {%- elif object.value.type|lower in ("number", "integer", "string", "boolean") %}
+        {%- elif object.value.type|lower in ("number", "integer", "string", "boolean", "any") %}
     <tr class="diff_version {%- if object.value.optional %} optional{% endif %}" data-version="{{ object.versions|join(" ") }}">
         <td>{{ code.indent(pad_length) }}{{ prefix }}<span class="typ">{{ object.value.type|lower }}</span>{{ suffix }}{{ util.constraints(object.value) }}</td>
         <td class="com">{{ util.none_to_empty(object.value.description) }}</td>

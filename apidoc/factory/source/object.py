@@ -14,9 +14,10 @@ class Object(ElementFactory):
         """Return a populated object Object from dictionary datas
         """
         if "type" not in datas:
-            raise ValueError("Missing type in object \"%s\"  \"%s\"." % (name, repr(datas)))
+            str_type = "any"
+        else:
+            str_type = str(datas["type"]).lower()
 
-        str_type = str(datas["type"]).lower()
         if not str_type in ObjectRaw.Types:
             type = ObjectRaw.Types("type")
         else:

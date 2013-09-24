@@ -321,6 +321,7 @@ class Object(Element, Sampleable):
         const = 10
         enum = 11
         integer = 12
+        any = 13
 
     @classmethod
     def factory(cls, str_type, version):
