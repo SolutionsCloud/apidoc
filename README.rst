@@ -9,6 +9,8 @@ ApiDoc
         :target: https://crate.io/packages/ApiDoc
 .. image:: https://pypip.in/d/ApiDoc/badge.png
         :target: https://crate.io/packages/ApiDoc
+.. image:: https://requires.io/github/SolutionsCloud/apidoc/requirements.png?branch=develop
+        :target: https://requires.io/github/SolutionsCloud/apidoc/requirements/?branch=develop
 
 Summary
 -------

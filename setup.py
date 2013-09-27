@@ -13,9 +13,9 @@ from apidoc import __version__
 
 
 if (3, 2) <= sys.version_info < (3, 3):
-    requirements = ['Jinja2 == 2.6', 'PyYAML==3.10', 'jsonschema==2.0.0']
+    requirements = ['Jinja2==2.6', 'PyYAML==3.10', 'jsonschema==2.1.0']
 else:
-    requirements = ['Jinja2', 'PyYAML==3.10', 'jsonschema==2.1.0']
+    requirements = ['Jinja2==2.7.1', 'PyYAML==3.10', 'jsonschema==2.1.0']
 
 
 setup(
@@ -61,10 +61,10 @@ setup(
         'settings/logging.yml',
     ]},
     install_requires=requirements,
-    tests_require=['pytest', 'mock'],
+    tests_require=['pytest==2.4.1', 'mock==1.0.1'],
     extras_require={
-        'ci': ['flake8', 'behave', 'coverage', 'coveralls', 'mock', 'pytest'],
-        'contribute': ['flake8', 'behave', 'coverage', 'mock', 'pytest', 'Sphinx', 'yuicompressor'],
+        'ci': ['flake8==2.0', 'behave==1.2.3', 'coverage==3.6', 'coveralls==0.3', 'mock==1.0.1', 'pytest==2.4.1'],
+        'contribute': ['flake8==2.0', 'behave==1.2.3', 'coverage==3.6', 'mock==1.0.1', 'pytest==2.4.1', 'Sphinx==1.2b2', 'yuicompressor==2.4.8'],
     },
     cmdclass={
         'test': ApiDocTest,
