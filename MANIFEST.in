@@ -3,6 +3,7 @@ include CHANGES.rst
 include MANIFEST.in
 include LICENSE
 
+recursive-include apidoc/template *.html
 recursive-include apidoc/template/helper *.html
 recursive-include apidoc/template/partial *.html
 recursive-include apidoc/template/layout *.html
