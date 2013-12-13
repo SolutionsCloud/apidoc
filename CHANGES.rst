@@ -13,6 +13,7 @@ Changelog
 * `Feature #13 <https://github.com/SolutionsCloud/apidoc/issues/13>`_ Add PATCH and OPTION method
 * `Feature #14 <https://github.com/SolutionsCloud/apidoc/issues/14>`_ Replace shortcup popin by bootstrap modal
 * `Feature #16 <https://github.com/SolutionsCloud/apidoc/issues/16>`_ Upgrade to Bootstrap 3
+* `Bug #19 <https://github.com/SolutionsCloud/apidoc/issues/19>`_ Add constraints in sampled objects
 * `Bug #31 <https://github.com/SolutionsCloud/apidoc/issues/31>`_ Error "TemplateNotFound: default.html" in version 1.1
 
 1.0 (2013-07-23)

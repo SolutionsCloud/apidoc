@@ -217,6 +217,9 @@ class Source():
                 types += self.get_used_types_in_object(method.response_body)
                 types += [parameter.type for parameter in method.request_parameters.values() if parameter.type not in ObjectObject.Types]
                 types += [parameter.type for parameter in method.request_headers.values() if parameter.type not in ObjectObject.Types]
+            for type in version.types.values():
+                types += self.get_used_types_in_object(type.item)
+
         return list({}.fromkeys(types).keys())
 
     def get_used_types_in_object(self, object):
