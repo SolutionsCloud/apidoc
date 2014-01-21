@@ -16,7 +16,7 @@ By using this application you automatically require all of the necessary modules
 * Documentation: http://apidoc.rtfd.org
 * Bug Tracker: https://github.com/SolutionsCloud/apidoc/issues
 * GitHub: https://github.com/SolutionsCloud/apidoc
-* PyPI: https://pypi.python.org/pypi/apidoc
+* PyPI: https://preview-pypi.python.org/project/ApiDoc
 * License: GPLv3+
 
 Requirements
