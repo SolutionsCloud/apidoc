@@ -216,7 +216,6 @@ definitions:
           type: string
     required:
     - type
-    - properties
     additionalProperties: false
 
   object_array:
@@ -246,7 +245,6 @@ definitions:
           type: string
     required:
     - type
-    - items
     additionalProperties: false
 
   object_string:

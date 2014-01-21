@@ -7,6 +7,7 @@ Changelog
 * `Feature #17 <https://github.com/SolutionsCloud/apidoc/issues/17>`_ Merge ApiDoc's binaries
 * `Feature #18 <https://github.com/SolutionsCloud/apidoc/issues/18>`_ Merge cli arguments -f and -d in one argument -i (input)
 * `Feature #32 <https://github.com/SolutionsCloud/apidoc/issues/32>`_ Enhances the theme of the readthedocs
+* `Feature #22 <https://github.com/SolutionsCloud/apidoc/issues/22>`_ "properties" and "items" are optionals
 
 1.1 (2013-08-28)
 ----------------

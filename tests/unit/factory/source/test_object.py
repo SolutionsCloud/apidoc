@@ -103,6 +103,14 @@ class TestObject(unittest.TestCase):
                 },
                 "barbar": {
                     "description": "c_barbar",
+                },
+                "barbaz": {
+                    "description": "c_barbaz",
+                    "type": "object"
+                },
+                "barqux": {
+                    "type": "array",
+                    "description": "c_barqux",
                 }
             },
             "patternProperties": {
@@ -203,6 +211,18 @@ class TestObject(unittest.TestCase):
         self.assertEqual("c_barbar", response.properties["barbar"].description)
         self.assertEqual("barbar", response.properties["barbar"].name)
 
+        self.assertIn("barbaz", response.properties)
+        self.assertIsInstance(response.properties["barbaz"], Object)
+        self.assertEqual("c_barbaz", response.properties["barbaz"].description)
+        self.assertEqual("barbaz", response.properties["barbaz"].name)
+        self.assertEqual({}, response.properties["barbaz"].properties)
+
+        self.assertIn("barqux", response.properties)
+        self.assertIsInstance(response.properties["barqux"], ObjectArray)
+        self.assertEqual("c_barqux", response.properties["barqux"].description)
+        self.assertEqual("barqux", response.properties["barqux"].name)
+        self.assertIsInstance(response.properties["barqux"].items, ObjectObject)
+
         self.assertIn("farfoo", response.pattern_properties)
         self.assertIsInstance(response.pattern_properties["farfoo"], ObjectString)
         self.assertIsInstance(response.additional_properties, ObjectString)
@@ -231,7 +251,7 @@ class TestObject(unittest.TestCase):
         response = self.factory.create_from_name_and_dictionary("o_name", datas)
 
         self.assertIsInstance(response, ObjectArray)
-        self.assertEqual(None, response.items)
+        self.assertIsInstance(response.items, Object)
         self.assertEqual(2, response.sample_count)
 
     def test_create_from_name_and_dictionary__boolean_default(self):

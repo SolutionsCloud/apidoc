@@ -25,7 +25,8 @@ class Object(ElementFactory):
 
         if type is ObjectRaw.Types.object:
             object = ObjectObject()
-            object.properties = self.create_dictionary_of_element_from_dictionary("properties", datas)
+            if "properties" in datas:
+                object.properties = self.create_dictionary_of_element_from_dictionary("properties", datas)
             if "patternProperties" in datas:
                 object.pattern_properties = self.create_dictionary_of_element_from_dictionary("patternProperties", datas)
             if "additionalProperties" in datas:
@@ -39,6 +40,8 @@ class Object(ElementFactory):
             object = ObjectArray()
             if "items" in datas:
                 object.items = self.create_from_name_and_dictionary("items", datas["items"])
+            else:
+                object.items = ObjectObject()
             if "sample_count" in datas:
                 object.sample_count = int(datas["sample_count"])
         elif type is ObjectRaw.Types.number:
