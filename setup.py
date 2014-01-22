@@ -13,9 +13,9 @@ from apidoc import __version__
 
 
 if (3, 2) <= sys.version_info < (3, 3):
-    requirements = read_requirements("install-3.2")
+    requirements = read_requirements("install-32")
 else:
-    requirements = read_requirements("install-3.3")
+    requirements = read_requirements("install-33")
 
 
 setup(
