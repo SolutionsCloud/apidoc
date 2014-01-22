@@ -1,0 +1,8 @@
+flake8==2.1.0
+behave==1.2.3
+coverage==3.7.1
+mock==1.0.1
+pytest==2.5.1
+Sphinx==1.2
+sphinx_rtd_themen==0.1.5
+yuicompressor==2.4.8

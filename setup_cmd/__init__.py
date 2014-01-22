@@ -6,6 +6,12 @@ from distutils.cmd import Command
 from setuptools.command.test import test
 
 
+def read_requirements(file_name):
+    return [i.strip() for i in open(
+        os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "requirements", "%s.txt" % file_name))
+    ).readlines() if len(i.strip()) > 0]
+
+
 class ApiDocTest(test):
     def finalize_options(self):
         test.finalize_options(self)
