@@ -59,37 +59,49 @@ Setting Up the Code for Local Development
 Here's how to set up `ApiDoc` for local development.
 
 1. Fork the `ApiDoc` repo on GitHub.
-2. Clone your fork locally::
+2. Clone your fork locally
+
+.. code-block:: console
 
     $ git clone git@github.com:your_name_here/apidoc.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development
+
+.. code-block:: console
 
     $ mkvirtualenv apidoc
     $ cd apidoc/
-    $ pip install .-e [contribute]
+    $ pip install -e .[contribute]
 
-4. Create a branch for local development::
+
+4. Create a branch for local development
+
+.. code-block:: console
 
     $ git checkout -b name-of-your-bugfix-or-feature
 
 Now you can make your changes locally.
 
-5. When you're done making changes, check that your changes pass the tests and flake8::
+5. When you're done making changes, check that your changes pass the tests and flake8
 
-    $ pip install -e .[contribute]
+.. code-block:: console
+
     $ flake8 --show-source --ignore=E501 --statistics .
     $ python setup.py test
 
-6. Commit your changes and push your branch to GitHub::
+6. Commit your changes and push your branch to GitHub
+
+.. code-block:: console
 
     $ git add .
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-7. Check that the test coverage hasn't dropped::
-    $ behave --format progress2 tests/features/
+7. Check that the test coverage hasn't dropped
 
+.. code-block:: console
+
+    $ behave --format progress2 tests/features/
     $ coverage3 run --branch --source apidoc setup.py test
     $ coverage3 report -m
 
@@ -111,10 +123,14 @@ Before you submit a pull request, check that it meets these guidelines:
 Tips
 ----
 
-To run a particular test::
+To run a particular test
+
+.. code-block:: console
 
     $ python -m unittest tests.test_find.TestFind.test_find_template
 
-To run a subset of tests::
+To run a subset of tests
+
+.. code-block:: console
 
     $ python -m unittest tests.test_find

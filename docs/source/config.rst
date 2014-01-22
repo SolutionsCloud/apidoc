@@ -14,7 +14,7 @@ To use ApiDoc with a config file call the following arguments :
 
 .. code-block:: console
 
-    $ apidoc-render -c ./path-to-config.yaml
+    $ apidoc -c ./path-to-config.yaml
 
 Sample
 ------
@@ -24,7 +24,7 @@ This is a minimalistic sample of a config file
 .. code-block:: yaml
 
     input:
-      files:
+      locations:
         - ./sources/one.yml
     output:
       location: ./output/sample.html
@@ -34,10 +34,9 @@ Here is a basic sample of a config file
 .. code-block:: yaml
 
     input:
-      directories:
+      locations:
         - ./sources
-      files:
-        - ./sources/one.yml
+        - ./sources2/one.yml
       arguments:
         url: api.sfr.com
     filter:
@@ -54,8 +53,8 @@ Here is a basic sample of a config file
 input
 -----
 
-The section input defines where the source files are located. It contains three sub sections `directories`, `files` `validate` and `arguments`. The first subsection contains a list of directories, the second contains a list of files and the third a list of arguments (or variables) which will be used by the source files (see :ref:`source-page-variable`). The validate flag define if the sources files should be validate by the json schema validator.
-As for config files, the extensions of source files must be `.yaml` (or `.yml`) or `.json`. When a directory is specified in the `directories` subsection, all the source files (with a valid extension) contained in the directory (or in a sub directory) will be merged into a single virtual source file which will be used to generate the documentation (see :ref:`source-page`).
+The section input defines where the source files are located. It contains three sub sections `locations` `validate` and `arguments`. The first subsection contains a list of directories or files and the third a list of arguments (or variables) which will be used by the source files (see :ref:`source-page-variable`). The validate flag define if the sources files should be validate by the json schema validator.
+As for config files, the extensions of source files must be `.yaml` (or `.yml`) or `.json`. When a directory is specified in the `locations` subsection, all the source files (with a valid extension) contained in the directory (or in a sub directory) will be merged into a single virtual source file which will be used to generate the documentation (see :ref:`source-page`).
 A config file must reference at least one input source file.
 
 This is a full sample of the section input
@@ -64,10 +63,9 @@ This is a full sample of the section input
 .. code-block:: yaml
 
     input:
-      directories:
+      locations:
         - ./project/api-sources
         - ../common-api/sources
-      files:
         - ./project/api-v2-source/demo.yaml
         - ./project/api-v2-source/common.yaml
       validate: False

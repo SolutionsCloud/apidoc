@@ -14,9 +14,10 @@ class Object(ElementFactory):
         """Return a populated object Object from dictionary datas
         """
         if "type" not in datas:
-            raise ValueError("Missing type in object \"%s\"  \"%s\"." % (name, repr(datas)))
+            str_type = "any"
+        else:
+            str_type = str(datas["type"]).lower()
 
-        str_type = str(datas["type"]).lower()
         if not str_type in ObjectRaw.Types:
             type = ObjectRaw.Types("type")
         else:
@@ -24,11 +25,23 @@ class Object(ElementFactory):
 
         if type is ObjectRaw.Types.object:
             object = ObjectObject()
-            object.properties = self.create_dictionary_of_element_from_dictionary("properties", datas)
+            if "properties" in datas:
+                object.properties = self.create_dictionary_of_element_from_dictionary("properties", datas)
+            if "patternProperties" in datas:
+                object.pattern_properties = self.create_dictionary_of_element_from_dictionary("patternProperties", datas)
+            if "additionalProperties" in datas:
+                if isinstance(datas["additionalProperties"], dict):
+                    object.additional_properties = self.create_from_name_and_dictionary("additionalProperties", datas["additionalProperties"])
+                elif not to_boolean(datas["additionalProperties"]):
+                    object.additional_properties = None
+                else:
+                    raise ValueError("AdditionalProperties doe not allow empty value (yet)")
         elif type is ObjectRaw.Types.array:
             object = ObjectArray()
             if "items" in datas:
                 object.items = self.create_from_name_and_dictionary("items", datas["items"])
+            else:
+                object.items = ObjectObject()
             if "sample_count" in datas:
                 object.sample_count = int(datas["sample_count"])
         elif type is ObjectRaw.Types.number:

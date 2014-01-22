@@ -321,6 +321,7 @@ class Object(Element, Sampleable):
         const = 10
         enum = 11
         integer = 12
+        any = 13
 
     @classmethod
     def factory(cls, str_type, version):
@@ -377,6 +378,8 @@ class ObjectObject(Object, Constraintable):
         super().__init__()
         self.type = Object.Types("object")
         self.properties = {}
+        self.pattern_properties = {}
+        self.additional_properties = None
 
 
 class ObjectArray(Object, Constraintable):

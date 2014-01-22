@@ -1,3 +1,5 @@
+import os
+
 from copy import deepcopy
 
 from apidoc.service.validator import Validator
@@ -68,12 +70,12 @@ class Source():
         """Load a set of source's file defined in the config
         """
         sources = []
-        if (config["input"]["directories"] is not None):
-            for directory in config["input"]["directories"]:
-                sources.extend(self.parser.load_all_from_directory(directory))
-        if (config["input"]["files"] is not None):
-            for file in config["input"]["files"]:
-                sources.append(self.parser.load_from_file(file))
+        if (config["input"]["locations"] is not None):
+            for location in config["input"]["locations"]:
+                if os.path.isdir(location):
+                    sources.extend(self.parser.load_all_from_directory(location))
+                else:
+                    sources.append(self.parser.load_from_file(location))
         return sources
 
     def inject_arguments_in_sources(self, sources, arguments):
@@ -179,6 +181,10 @@ class Source():
         elif object.type is ObjectObject.Types.object:
             for (property_name, property_value) in object.properties.items():
                 object.properties[property_name] = self.replace_references_in_object(property_value, references)
+            for (property_name, property_value) in object.pattern_properties.items():
+                object.pattern_properties[property_name] = self.replace_references_in_object(property_value, references)
+            if object.additional_properties:
+                object.additional_properties = self.replace_references_in_object(object.additional_properties, references)
 
         return object
 
@@ -200,6 +206,10 @@ class Source():
         elif object.type is ObjectObject.Types.object:
             for (property_name, property_value) in object.properties.items():
                 object.properties[property_name] = self.replace_types_in_object(property_value, types)
+            for (property_name, property_value) in object.pattern_properties.items():
+                object.pattern_properties[property_name] = self.replace_types_in_object(property_value, types)
+            if object.additional_properties:
+                object.additional_properties = self.replace_types_in_object(object.additional_properties, types)
 
         return object
 
@@ -239,7 +249,10 @@ class Source():
         elif object.type is ObjectObject.Types.object:
             for property in object.properties.values():
                 types += self.get_used_types_in_object(property)
-
+            for property in object.pattern_properties.values():
+                types += self.get_used_types_in_object(property)
+            if object.additional_properties:
+                types += self.get_used_types_in_object(object.additional_properties)
         return types
 
     def get_reference(self, object, references):

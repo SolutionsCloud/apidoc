@@ -173,7 +173,7 @@ definitions:
     additionalProperties: false
 
   object:
-    oneOf:
+    anyOf:
     - $ref: "#/definitions/object_object"
     - $ref: "#/definitions/object_array"
     - $ref: "#/definitions/object_number"
@@ -186,6 +186,7 @@ definitions:
     - $ref: "#/definitions/object_dynamic"
     - $ref: "#/definitions/object_const"
     - $ref: "#/definitions/object_enum"
+    - $ref: "#/definitions/object_any"
 
   object_object:
     properties:
@@ -198,6 +199,15 @@ definitions:
         patternProperties:
           ".*" :
             $ref: "#/definitions/object"
+      patternProperties:
+        patternProperties:
+          ".*" :
+            $ref: "#/definitions/object"
+      additionalProperties:
+        type:
+        - boolean
+        - object
+        $ref: "#/definitions/object"
       optional:
         type: boolean
       constraints:
@@ -206,7 +216,6 @@ definitions:
           type: string
     required:
     - type
-    - properties
     additionalProperties: false
 
   object_array:
@@ -236,7 +245,6 @@ definitions:
           type: string
     required:
     - type
-    - items
     additionalProperties: false
 
   object_string:
@@ -544,4 +552,18 @@ definitions:
     required:
     - type
     - values
+    additionalProperties: false
+
+  object_any:
+    properties:
+      description:
+        type: string
+      sample:
+        type: object
+      optional:
+        type: boolean
+      constraints:
+        type: object
+        additionalProperties:
+          type: string
     additionalProperties: false

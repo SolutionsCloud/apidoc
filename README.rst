@@ -6,9 +6,11 @@ ApiDoc
 .. image:: https://coveralls.io/repos/SolutionsCloud/apidoc/badge.png
         :target: https://coveralls.io/r/SolutionsCloud/apidoc
 .. image:: https://pypip.in/v/ApiDoc/badge.png
-        :target: https://crate.io/packages/ApiDoc
+        :target: https://preview-pypi.python.org/project/ApiDoc
 .. image:: https://pypip.in/d/ApiDoc/badge.png
-        :target: https://crate.io/packages/ApiDoc
+        :target: https://preview-pypi.python.org/project/ApiDoc
+.. image:: https://requires.io/github/SolutionsCloud/apidoc/requirements.png?branch=develop
+        :target: https://requires.io/github/SolutionsCloud/apidoc/requirements/?branch=develop
 
 Summary
 -------
@@ -22,7 +24,7 @@ Summary
 * Documentation: http://apidoc.rtfd.org
 * Bug Tracker: https://github.com/SolutionsCloud/apidoc/issues
 * GitHub: https://github.com/SolutionsCloud/apidoc
-* PyPI: https://pypi.python.org/pypi/apidoc
+* PyPI: https://preview-pypi.python.org/project/ApiDoc
 * License: GPLv3+
 
 
@@ -55,5 +57,5 @@ You can download a sample file and try to render it documentation
     $ mkdir apidoc
     $ cd apidoc
     $ wget https://raw.github.com/SolutionsCloud/apidoc/master/example/demo/source.yml
-    $ apidoc-render -f source.yml -o output/index.html
+    $ apidoc -i source.yml -o output/index.html
     $ firefox output/index.html

@@ -35,12 +35,8 @@ class Config():
     def fix_all_path(self, config, root_path):
         """Fix config's content's relative path by injecting config location
         """
-        if config["input"]["directories"] is not None:
-            config["input"]["directories"] = [
-                self.fix_path(x, root_path) for x in config["input"]["directories"]
-            ]
-        if config["input"]["files"] is not None:
-            config["input"]["files"] = [self.fix_path(x, root_path) for x in config["input"]["files"]]
+        if config["input"]["locations"] is not None:
+            config["input"]["locations"] = [self.fix_path(x, root_path) for x in config["input"]["locations"]]
         if not config["output"]["location"] in ("stdout"):
             config["output"]["location"] = self.fix_path(config["output"]["location"], root_path)
         if not config["output"]["template"] in ("default"):

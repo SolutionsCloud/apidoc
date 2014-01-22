@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from mock import patch, call
@@ -52,18 +53,22 @@ class TestSource(unittest.TestCase):
     @patch.object(Extender, "extends", return_value={})
     def test_create_from_config(self, mock_extender, mock_merger, mock_parser_directory, mock_parser_file):
         config = ConfigObject()
-        config["input"]["directories"] = ["directory1", "directory2"]
-        config["input"]["files"] = ["file1", "file2"]
-        config["input"]["arguments"] = {"var": "value"}
+        init = os.path.isdir
+        try:
+            os.path.isdir = lambda x: x[0] == "d"
+            config["input"]["locations"] = ["d1", "d2", "f1", "f2"]
+            config["input"]["arguments"] = {"var": "value"}
 
-        response = self.source.create_from_config(config)
+            response = self.source.create_from_config(config)
 
-        self.assertIsInstance(response, RootDto)
+            self.assertIsInstance(response, RootDto)
 
-        mock_extender.assert_called_once_with({"i": "j"}, paths=('categories/?', 'versions/?', 'versions/?/methods/?', 'versions/?/types/?', 'versions/?/references/?'))
-        mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
-        mock_parser_directory.assert_has_calls([call('directory1'), call('directory2')])
-        mock_parser_file.assert_has_calls([call('file1'), call('file2')])
+            mock_extender.assert_called_once_with({"i": "j"}, paths=('categories/?', 'versions/?', 'versions/?/methods/?', 'versions/?/types/?', 'versions/?/references/?'))
+            mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
+            mock_parser_directory.assert_has_calls([call("d1"), call("d2")])
+            mock_parser_file.assert_has_calls([call("f1"), call("f2")])
+        finally:
+            os.path.isdir = init
 
     @patch.object(Parser, "load_from_file", side_effect=[{"e": "f"}, {"g": "h"}, {}])
     @patch.object(Parser, "load_all_from_directory", side_effect=[[{"a": "b"}, {"c": "d"}], [{"z": "y"}]])
@@ -71,19 +76,24 @@ class TestSource(unittest.TestCase):
     @patch.object(Extender, "extends", return_value={})
     def test_create_from_config__without_validation(self, mock_extender, mock_merger, mock_parser_directory, mock_parser_file):
         config = ConfigObject()
-        config["input"]["directories"] = ["directory1", "directory2"]
-        config["input"]["files"] = ["file1", "file2"]
-        config["input"]["arguments"] = {"var": "value"}
-        config["input"]["validate"] = False
+        init = os.path.isdir
+        try:
+            os.path.isdir = lambda x: x[0] == "d"
 
-        response = self.source.create_from_config(config)
+            config["input"]["locations"] = ["d1", "d2", "f1", "f2"]
+            config["input"]["arguments"] = {"var": "value"}
+            config["input"]["validate"] = False
 
-        self.assertIsInstance(response, RootDto)
+            response = self.source.create_from_config(config)
 
-        mock_extender.assert_called_once_with({"i": "j"}, paths=('categories/?', 'versions/?', 'versions/?/methods/?', 'versions/?/types/?', 'versions/?/references/?'))
-        mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
-        mock_parser_directory.assert_has_calls([call('directory1'), call('directory2')])
-        mock_parser_file.assert_has_calls([call('file1'), call('file2')])
+            self.assertIsInstance(response, RootDto)
+
+            mock_extender.assert_called_once_with({"i": "j"}, paths=('categories/?', 'versions/?', 'versions/?/methods/?', 'versions/?/types/?', 'versions/?/references/?'))
+            mock_merger.assert_called_once_with([{"a": "b"}, {"c": "d"}, {"z": "y"}, {"e": "f"}, {"g": "h"}])
+            mock_parser_directory.assert_has_calls([call("d1"), call("d2")])
+            mock_parser_file.assert_has_calls([call("f1"), call("f2")])
+        finally:
+            os.path.isdir = init
 
     def test_get_sources_from_config(self):
         config = ConfigObject()
@@ -333,7 +343,7 @@ class TestSource(unittest.TestCase):
         self.assertEqual(type1, method1.request_parameters["p1"].type_object)
         self.assertEqual(type1, method1.request_headers["p1"].type_object)
 
-    def test_replace_references_in_object(self):
+    def test_replace_references_in_object__properties(self):
         object = ObjectObject()
         array = ObjectArray()
         dynamic = ObjectDynamic()
@@ -350,7 +360,41 @@ class TestSource(unittest.TestCase):
 
         self.assertEqual(Object.Types.string, dynamic.items.type)
 
-    def test_replace_types_in_object(self):
+    def test_replace_references_in_object__pattern_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectReference()
+        reference.reference_name = "r1"
+
+        string1 = ObjectString()
+
+        object.pattern_properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        self.source.replace_references_in_object(object, {"r1": string1})
+
+        self.assertEqual(Object.Types.string, dynamic.items.type)
+
+    def test_replace_references_in_object__additional_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectReference()
+        reference.reference_name = "r1"
+
+        string1 = ObjectString()
+
+        object.additional_properties = array
+        array.items = dynamic
+        dynamic.items = reference
+
+        self.source.replace_references_in_object(object, {"r1": string1})
+
+        self.assertEqual(Object.Types.string, dynamic.items.type)
+
+    def test_replace_types_in_object__properties(self):
         object = ObjectObject()
         array = ObjectArray()
         dynamic = ObjectDynamic()
@@ -360,6 +404,40 @@ class TestSource(unittest.TestCase):
         type1 = Type()
 
         object.properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        self.source.replace_types_in_object(object, {"t1": type1})
+
+        self.assertEqual(type1, reference.type_object)
+
+    def test_replace_types_in_object__pattern_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectType()
+        reference.type_name = "t1"
+
+        type1 = Type()
+
+        object.pattern_properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        self.source.replace_types_in_object(object, {"t1": type1})
+
+        self.assertEqual(type1, reference.type_object)
+
+    def test_replace_types_in_object__additional_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectType()
+        reference.type_name = "t1"
+
+        type1 = Type()
+
+        object.additional_properties = array
         array.items = dynamic
         dynamic.items = reference
 
@@ -406,6 +484,36 @@ class TestSource(unittest.TestCase):
         reference.type_name = "t1"
 
         object.properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        response = self.source.get_used_types_in_object(object)
+
+        self.assertEqual(["t1"], response)
+
+    def test_get_used_types_in_object__pattern_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectType()
+        reference.type_name = "t1"
+
+        object.pattern_properties = {"p1": array}
+        array.items = dynamic
+        dynamic.items = reference
+
+        response = self.source.get_used_types_in_object(object)
+
+        self.assertEqual(["t1"], response)
+
+    def test_get_used_types_in_object__additional_properties(self):
+        object = ObjectObject()
+        array = ObjectArray()
+        dynamic = ObjectDynamic()
+        reference = ObjectType()
+        reference.type_name = "t1"
+
+        object.additional_properties = array
         array.items = dynamic
         dynamic.items = reference
 

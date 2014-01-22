@@ -28,11 +28,11 @@
         }
 
         > .stack {
-            border-bottom: 1px dotted #ddd;
+            border-top: 1px dotted #ddd;
             padding: 10px 15px 15px 15px;
 
-            &:last-child {
-                border-bottom: none;
+            &:first-of-type {
+                border-top: none;
             }
         }
 
@@ -117,6 +117,9 @@
             }
         }
 
+        > .stack.sample {
+            display:none;
+        }
         &.content-left .diff_new {
             visibility: hidden;
         }

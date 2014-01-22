@@ -10,5 +10,4 @@ recursive-include apidoc/template/layout *.html
 recursive-include apidoc/template/resource/css *.css
 recursive-include apidoc/template/resource/js *.js
 recursive-include apidoc/template/resource/font *
-recursive-include apidoc/datas/schemas *.yml
-recursive-include apidoc/command logging.yml
+recursive-include apidoc/settings *.yml

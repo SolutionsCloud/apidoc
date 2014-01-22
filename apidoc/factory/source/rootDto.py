@@ -199,6 +199,10 @@ class Hydrator():
                 for (property_name, property_value) in source_object.properties.items():
                     source_dto.properties[property_name] = []
                     changes += self.hydrate_object(source_dto.properties[property_name], property_value)
+                for (property_name, property_value) in source_object.pattern_properties.items():
+                    source_dto.pattern_properties[property_name] = []
+                    changes += self.hydrate_object(source_dto.pattern_properties[property_name], property_value)
+                changes += self.hydrate_object(source_dto.additional_properties, source_object.additional_properties)
             elif source_dto.type is ObjectRaw.Types.array:
                 source_dto.items = []
                 changes += self.hydrate_object(source_dto.items, source_object.items)
@@ -222,6 +226,13 @@ class Hydrator():
                     else:
                         find.value.properties[property_name] = []
                         changes += self.hydrate_object(find.value.properties[property_name], property_value)
+                for (property_name, property_value) in source_object.pattern_properties.items():
+                    if find.value.type is ObjectRaw.Types.object and property_name in find.value.pattern_properties.keys():
+                        changes += self.hydrate_object(find.value.pattern_properties[property_name], property_value)
+                    else:
+                        find.value.pattern_properties[property_name] = []
+                        changes += self.hydrate_object(find.value.pattern_properties[property_name], property_value)
+                changes += self.hydrate_object(find.value.additional_properties, source_object.additional_properties)
             elif source_dto.type is ObjectRaw.Types.array:
                 changes += self.hydrate_object(find.value.items, source_object.items)
             elif source_dto.type is ObjectRaw.Types.dynamic:

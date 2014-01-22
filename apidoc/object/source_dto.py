@@ -314,6 +314,8 @@ class ObjectObject(Object):
         """
         super().__init__(object)
         self.properties = {}
+        self.pattern_properties = {}
+        self.additional_properties = []
 
 
 class ObjectArray(Object):

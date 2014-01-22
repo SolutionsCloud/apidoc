@@ -409,6 +409,10 @@ class TestHydrator(unittest.TestCase):
 
         object1.properties = {"p1": array, "p3": const, "p4": enum}
         object2.properties = {"p1": array, "p3": const, "p4": enum, "p2": type}
+        object1.pattern_properties = {"p1": array, "p3": const, "p4": enum}
+        object2.pattern_properties = {"p1": array, "p3": const, "p4": enum, "p2": type}
+        object1.additional_properties = array
+        object2.additional_properties = type
         array.items = dynamic
         dynamic.items = string
 
@@ -429,6 +433,16 @@ class TestHydrator(unittest.TestCase):
         self.assertEqual("f", object_dto[0].value.properties["p2"][0].value.type_object)
         self.assertEqual("g", object_dto[0].value.properties["p3"][0].value.value)
         self.assertEqual("h", object_dto[0].value.properties["p4"][0].value.values[0].value)
+        self.assertEqual("b", object_dto[0].value.pattern_properties["p1"][0].value.name)
+        self.assertEqual("c", object_dto[0].value.pattern_properties["p1"][0].value.items[0].value.name)
+        self.assertEqual("d", object_dto[0].value.pattern_properties["p1"][0].value.items[0].value.items[0].value.name)
+        self.assertEqual("e", object_dto[0].value.pattern_properties["p2"][0].value.name)
+        self.assertEqual("f", object_dto[0].value.pattern_properties["p2"][0].value.type_object)
+        self.assertEqual("g", object_dto[0].value.pattern_properties["p3"][0].value.value)
+        self.assertEqual("h", object_dto[0].value.pattern_properties["p4"][0].value.values[0].value)
+        self.assertEqual("b", object_dto[0].value.additional_properties[0].value.name)
+        self.assertEqual("c", object_dto[0].value.additional_properties[0].value.items[0].value.name)
+        self.assertEqual("d", object_dto[0].value.additional_properties[0].value.items[0].value.items[0].value.name)
 
     def test_get_previous_version__first(self):
         version1 = Version()

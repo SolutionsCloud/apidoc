@@ -100,7 +100,26 @@ class TestObject(unittest.TestCase):
                         "a_foofum": "d_foofum"
                     }
 
+                },
+                "barbar": {
+                    "description": "c_barbar",
+                },
+                "barbaz": {
+                    "description": "c_barbaz",
+                    "type": "object"
+                },
+                "barqux": {
+                    "type": "array",
+                    "description": "c_barqux",
                 }
+            },
+            "patternProperties": {
+                "farfoo": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": {
+                "type": "string"
             }
         }
 
@@ -187,9 +206,26 @@ class TestObject(unittest.TestCase):
         self.assertEqual(["a_foofum", "b_foofum"], response.properties["foofum"].values)
         self.assertEqual(2, len(response.properties["foofum"].descriptions))
 
-    def test_create_from_name_and_dictionary__failed_missing_type(self):
-        with self.assertRaises(ValueError):
-            self.factory.create_from_name_and_dictionary("o_name", {})
+        self.assertIn("barbar", response.properties)
+        self.assertIsInstance(response.properties["barbar"], Object)
+        self.assertEqual("c_barbar", response.properties["barbar"].description)
+        self.assertEqual("barbar", response.properties["barbar"].name)
+
+        self.assertIn("barbaz", response.properties)
+        self.assertIsInstance(response.properties["barbaz"], Object)
+        self.assertEqual("c_barbaz", response.properties["barbaz"].description)
+        self.assertEqual("barbaz", response.properties["barbaz"].name)
+        self.assertEqual({}, response.properties["barbaz"].properties)
+
+        self.assertIn("barqux", response.properties)
+        self.assertIsInstance(response.properties["barqux"], ObjectArray)
+        self.assertEqual("c_barqux", response.properties["barqux"].description)
+        self.assertEqual("barqux", response.properties["barqux"].name)
+        self.assertIsInstance(response.properties["barqux"].items, ObjectObject)
+
+        self.assertIn("farfoo", response.pattern_properties)
+        self.assertIsInstance(response.pattern_properties["farfoo"], ObjectString)
+        self.assertIsInstance(response.additional_properties, ObjectString)
 
     def test_create_from_name_and_dictionary__failed_wrong_type(self):
         with self.assertRaises(ValueError):
@@ -215,7 +251,7 @@ class TestObject(unittest.TestCase):
         response = self.factory.create_from_name_and_dictionary("o_name", datas)
 
         self.assertIsInstance(response, ObjectArray)
-        self.assertEqual(None, response.items)
+        self.assertIsInstance(response.items, Object)
         self.assertEqual(2, response.sample_count)
 
     def test_create_from_name_and_dictionary__boolean_default(self):
@@ -268,6 +304,14 @@ class TestObject(unittest.TestCase):
         self.assertEqual(1, len(response.descriptions))
         self.assertEqual("a", response.descriptions[0].name)
         self.assertEqual(None, response.descriptions[0].description)
+
+    def test_create_from_name_and_dictionary__additional_properties_false(self):
+        response = self.factory.create_from_name_and_dictionary("o_name", {"type": "object", "additionalProperties": False})
+        self.assertEqual(None, response.additional_properties)
+
+    def test_create_from_name_and_dictionary__additional_properties_true(self):
+        with self.assertRaises(ValueError):
+            self.factory.create_from_name_and_dictionary("o_name", {"type": "object", "additionalProperties": True})
 
     def test_create_from_name_and_dictionary__constraint(self):
         datas = {

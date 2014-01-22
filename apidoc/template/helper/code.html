@@ -8,6 +8,10 @@
     <span class="str">"{{ name }}"</span><span class="pun">: </span>
 {%- endmacro -%}
 
+{%- macro property_pattern_decorator(name) -%}
+    <span class="lit">/{{ name }}/</span><span class="pun">: </span>
+{%- endmacro -%}
+
 {%- macro uri_sampled(uri, parameters) %}
     {%- if parameters %}
         {%- set sampled = uri %}
@@ -41,13 +45,24 @@
 {{ indent(pad_length) }}{{ prefix }}<span class="pun">{
 </span>
         {%- for property_name in object.properties.keys()|sort -%}
-            {%- if loop.last -%}
+            {%- if loop.last and not object.pattern_properties and not object.additional_properties -%}
                 {{- code_sampled(object.properties[property_name], property_name_decorator(property_name), "", pad_length+1) }}
             {%- else -%}
                 {{- code_sampled(object.properties[property_name], property_name_decorator(property_name), "<span class=\"pun\">,
 </span>", pad_length+1) }}
             {%- endif -%}
         {%- endfor %}
+        {%- for property_name in object.pattern_properties.keys()|sort -%}
+            {%- if loop.last and not object.additional_properties -%}
+                {{- code_sampled(object.pattern_properties[property_name], property_name_decorator(property_name), "", pad_length+1) }}
+            {%- else -%}
+                {{- code_sampled(object.pattern_properties[property_name], property_name_decorator(property_name), "<span class=\"pun\">,
+</span>", pad_length+1) }}
+            {%- endif -%}
+        {%- endfor %}
+        {%- if object.additional_properties -%}
+            {{- code_sampled(object.additional_properties, property_name_decorator(object.additional_properties.name), "", pad_length+1) }}
+        {%- endif %}
 {{ indent(pad_length) }}<span class="pun">}</span>{{ suffix }}
     {%- elif object.type|lower == "array" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="pun">[
@@ -65,7 +80,7 @@
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.sample }}</span>{{ suffix }}
     {%- elif object.type|lower == "integer" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{{ object.sample }}</span>{{ suffix }}
-    {%- elif object.type|lower == "string" -%}
+    {%- elif object.type|lower in ("string", "any") -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="str">"{{ object.sample }}"</span>{{ suffix }}
     {%- elif object.type|lower == "boolean" -%}
 {{ indent(pad_length) }}{{ prefix }}<span class="lit">{% if object.sample %}true{% else %}false{% endif %}</span>{{ suffix }}

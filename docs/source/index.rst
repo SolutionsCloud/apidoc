@@ -8,11 +8,16 @@ Summary
 
 `ApiDoc <http://solutionscloud.github.io/apidoc>`_ is a documentation generator designe for API built with Python and given by `SFR Business Team <http://www.sfrbusinessteam.fr>`_.
 
-`Demo available on http://solutionscloud.github.io/apidoc/demo <http://solutionscloud.github.io/apidoc/demo>`_
-
 ApiDoc consists of a command line interface. It is maintained in a single repository.
 By using this application you automatically require all of the necessary modules dependencies which are:
 
+* Demo: http://solutionscloud.github.io/apidoc/demo
+* Home Page: http://solutionscloud.github.io/apidoc
+* Documentation: http://apidoc.rtfd.org
+* Bug Tracker: https://github.com/SolutionsCloud/apidoc/issues
+* GitHub: https://github.com/SolutionsCloud/apidoc
+* PyPI: https://preview-pypi.python.org/project/ApiDoc
+* License: GPLv3+
 
 Requirements
 ------------

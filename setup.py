@@ -13,9 +13,9 @@ from apidoc import __version__
 
 
 if (3, 2) <= sys.version_info < (3, 3):
-    requirements = ['Jinja2 == 2.6', 'PyYAML==3.10', 'jsonschema==2.0.0']
+    requirements = ['Jinja2==2.6', 'PyYAML==3.10', 'jsonschema==2.1.0']
 else:
-    requirements = ['Jinja2', 'PyYAML==3.10', 'jsonschema==2.0.0']
+    requirements = ['Jinja2==2.7.1', 'PyYAML==3.10', 'jsonschema==2.3.0']
 
 
 setup(
@@ -45,9 +45,7 @@ setup(
     packages=find_packages(exclude=['tests', 'tests.*', 'example', 'example.*', 'docs', 'docs.*']),
     entry_points={
         'console_scripts': [
-            'apidoc-analyse = apidoc.command.analyse:main',
-            'apidoc-render = apidoc.command.render:main',
-            'apidoc-watch = apidoc.command.watch:main',
+            'apidoc = apidoc.command.run:main',
         ],
     },
     include_package_data=True,
@@ -59,14 +57,14 @@ setup(
         'template/resource/css/*.css',
         'template/resource/js/*.js',
         'template/resource/font/*',
-        'datas/schemas/*.yml',
-        'command/logging.yml',
+        'settings/schemas/*.yml',
+        'settings/logging.yml',
     ]},
     install_requires=requirements,
-    tests_require=['pytest', 'mock'],
+    tests_require=['pytest==2.5.1', 'mock==1.0.1'],
     extras_require={
-        'ci': ['flake8', 'behave', 'coverage', 'coveralls', 'mock', 'pytest'],
-        'contribute': ['flake8', 'behave', 'coverage', 'mock', 'pytest', 'Sphinx', 'yuicompressor'],
+        'ci': ['flake8==2.1.0', 'behave==1.2.3', 'coverage==3.7.1', 'coveralls==0.3', 'mock==1.0.1', 'pytest==2.5.1'],
+        'contribute': ['flake8==2.1.0', 'behave==1.2.3', 'coverage==3.7.1', 'mock==1.0.1', 'pytest==2.5.1', 'Sphinx==1.2', 'sphinx_rtd_themen==0.1.5', 'yuicompressor==2.4.8'],
     },
     cmdclass={
         'test': ApiDocTest,

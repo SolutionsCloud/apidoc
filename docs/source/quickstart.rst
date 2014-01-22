@@ -29,7 +29,7 @@ On Linux, use your favorite package manager to install LibYAML. Here's how you d
 
 .. code-block:: console
 
-   $ sudo apt-get install libyaml-dev
+   $ sudo apt-get install libyaml-dev python3-dev
 
 On Windows, please install PyYAML using the binaries they provide
 
@@ -41,5 +41,5 @@ Run a sample demo
    $ mkdir apidoc
    $ cd apidoc
    $ wget https://raw.github.com/SolutionsCloud/apidoc/master/example/demo/source.yml
-   $ apidoc-render -f source.yml -o output/index.html
+   $ apidoc -i source.yml -o output/index.html
    $ firefox output/index.html
