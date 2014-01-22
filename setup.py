@@ -7,16 +7,13 @@ if sys.version_info < (3, 2):
     raise SystemExit(1)
 
 from setuptools import setup, find_packages
-from setup_cmd import ApiDocTest, Resource, read_requirements
+from setup_cmd import ApiDocTest, Resource, read_requirements, patch_requirements
 
 from apidoc import __version__
 
-
+requirements = read_requirements("install.txt")
 if (3, 2) <= sys.version_info < (3, 3):
-    requirements = read_requirements("install-32")
-else:
-    requirements = read_requirements("install-33")
-
+    requirements = patch_requirements(requirements, "install-32.patch")
 
 setup(
     name='ApiDoc',
@@ -63,8 +60,8 @@ setup(
     install_requires=requirements,
     tests_require=['pytest==2.5.1', 'mock==1.0.1'],
     extras_require={
-        'ci': read_requirements("ci"),
-        'contribute': read_requirements("contribute"),
+        'ci': read_requirements("ci.txt"),
+        'contribute': read_requirements("contribute.txt"),
     },
     cmdclass={
         'test': ApiDocTest,
