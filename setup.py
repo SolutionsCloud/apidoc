@@ -58,7 +58,7 @@ setup(
         'settings/logging.yml',
     ]},
     install_requires=requirements,
-    tests_require=['pytest==2.5.1', 'mock==1.0.1'],
+    tests_require=read_requirements("test.txt"),
     extras_require={
         'ci': read_requirements("ci.txt"),
         'contribute': read_requirements("contribute.txt"),
