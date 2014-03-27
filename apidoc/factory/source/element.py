@@ -52,6 +52,6 @@ class Element():
         """Factory enum type
         """
         str_property = str(datas[property]).lower()
-        if not str_property in enum:
+        if str_property not in enum:
             raise ValueError("Unknow enum \"%s\" for \"%s\"." % (str_property, property))
         return enum(str_property)

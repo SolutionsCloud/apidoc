@@ -5,7 +5,7 @@ python:
 install:
   - pip install -e .[ci]
 before_script:
-  - flake8 --show-source --ignore=E501 --statistics --exclude ./docs/themes .
+  - flake8 --show-source --ignore=E501 --statistics --exclude ./docs/ .
 script:
   - behave --format progress2 tests/features/
 
