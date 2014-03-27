@@ -29,6 +29,5 @@ class Source():
                     method_parameters = [method_parameters_version.value.name for method_parameters_version in method.request_parameters if version in method_parameters_version.versions]
                     for missing_parameter in set(parameter_re.findall(uri_version.value)).difference(method_parameters):
                         parameters.append({"uri": uri_version.value, "name": missing_parameter, "method": method.name, "version": version})
-                        #print(uri_parameter)
 
         return parameters
