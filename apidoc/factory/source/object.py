@@ -99,7 +99,7 @@ class Object(ElementFactory):
                     object.descriptions.append(value)
 
             descriptions = [description.name for description in object.descriptions]
-            for value_name in [value for value in object.values if value not in descriptions]:
+            for value_name in [x for x in object.values if x not in descriptions]:
                 value = EnumValue()
                 value.name = value_name
                 object.descriptions.append(value)
