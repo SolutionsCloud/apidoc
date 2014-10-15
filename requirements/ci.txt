@@ -1,4 +1,4 @@
-flake8==2.2.3
+flake8==2.2.4
 behave==1.2.4
 coverage==3.7.1
 coveralls==0.4.4
