@@ -2,6 +2,8 @@ include README.rst
 include CHANGES.rst
 include MANIFEST.in
 include LICENSE
+include requirements/install.txt
+include requirements/install-32.patch
 
 recursive-include apidoc/template *.html
 recursive-include apidoc/template/helper *.html
