@@ -37,9 +37,9 @@ class Config():
         """
         if config["input"]["locations"] is not None:
             config["input"]["locations"] = [self.fix_path(x, root_path) for x in config["input"]["locations"]]
-        if not config["output"]["location"] in ("stdout"):
+        if config["output"]["location"] not in ("stdout", ):
             config["output"]["location"] = self.fix_path(config["output"]["location"], root_path)
-        if not config["output"]["template"] in ("default"):
+        if config["output"]["template"] not in ("default", ):
             config["output"]["template"] = self.fix_path(config["output"]["template"], root_path)
 
     def fix_path(self, path, root_path):

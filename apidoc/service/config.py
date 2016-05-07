@@ -13,10 +13,10 @@ class Config():
         if not isinstance(config, ConfigObject):
             raise Exception("Config object expected")
 
-        if not config["output"]["componants"] in ("local", "remote", "embedded", "without"):
+        if config["output"]["componants"] not in ("local", "remote", "embedded", "without"):
             raise ValueError("Unknown componant \"%s\"." % config["output"]["componants"])
 
-        if not config["output"]["layout"] in ("default", "content-only"):
+        if config["output"]["layout"] not in ("default", "content-only"):
             raise ValueError("Unknown layout \"%s\"." % config["output"]["layout"])
 
         if config["input"]["locations"] is not None:

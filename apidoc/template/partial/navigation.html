@@ -32,7 +32,7 @@
         <li class="nav-header" data-group="{{ category.label }}"><a href="javascript:navigateTo({category: '{{ category.name }}'}, ['category', 'method', 'type'])" data-target="#c-{{ category.name }}"><h6>{{ category.label }}</h6></a></li>
     {%- endif -%}
     {%- for type in category.types|sort %}
-        <li data-group="{{ category.name }}"  data-item="{{ type.label }}"><a href="javascript:navigateTo({category: '{{ category.name }}', type: '{{ type.name }}'}, ['category', 'method'])" data-target="#t-{{ type.name }}"><span>{{ type.name }}</span></a></li>
+        <li data-group="{{ category.name }}" data-item="{{ type.name|e }}"><a href="javascript:navigateTo({category: '{{ category.name }}', type: '{{ type.name }}'}, ['category', 'method'])" data-target="#t-{{ type.name }}"><span>{{ type.name }}</span></a></li>
     {%- endfor %}
     {%- if not loop.last %}
         <li class="separator"></li>

@@ -15,7 +15,7 @@ ApiDoc
 Summary
 -------
 
-`ApiDoc <http://solutionscloud.github.io/apidoc>`_ is a documentation generator designe for API built with Python and given by `SFR Business Team <http://www.sfrbusinessteam.fr>`_.
+`ApiDoc <http://solutionscloud.github.io/apidoc>`_ is a documentation generator designed for API built with Python and given by `SFR Business Team <http://www.sfrbusinessteam.fr>`_.
 
 .. image:: https://raw.github.com/SolutionsCloud/apidoc/master/docs/source/_static/screenshot_sample.png
 

@@ -7,16 +7,13 @@ if sys.version_info < (3, 2):
     raise SystemExit(1)
 
 from setuptools import setup, find_packages
-from setup_cmd import ApiDocTest, Resource
+from setup_cmd import ApiDocTest, Resource, read_requirements, patch_requirements
 
 from apidoc import __version__
 
-
+requirements = read_requirements("install.txt")
 if (3, 2) <= sys.version_info < (3, 3):
-    requirements = ['Jinja2==2.6', 'PyYAML==3.10', 'jsonschema==2.1.0']
-else:
-    requirements = ['Jinja2==2.7.1', 'PyYAML==3.10', 'jsonschema==2.3.0']
-
+    requirements = patch_requirements(requirements, "install-32.patch")
 
 setup(
     name='ApiDoc',
@@ -61,10 +58,10 @@ setup(
         'settings/logging.yml',
     ]},
     install_requires=requirements,
-    tests_require=['pytest==2.5.1', 'mock==1.0.1'],
+    tests_require=read_requirements("test.txt"),
     extras_require={
-        'ci': ['flake8==2.1.0', 'behave==1.2.3', 'coverage==3.7.1', 'coveralls==0.3', 'mock==1.0.1', 'pytest==2.5.1'],
-        'contribute': ['flake8==2.1.0', 'behave==1.2.3', 'coverage==3.7.1', 'mock==1.0.1', 'pytest==2.5.1', 'Sphinx==1.2', 'sphinx_rtd_themen==0.1.5', 'yuicompressor==2.4.8'],
+        'ci': read_requirements("ci.txt"),
+        'contribute': read_requirements("contribute.txt"),
     },
     cmdclass={
         'test': ApiDocTest,

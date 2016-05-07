@@ -29,7 +29,7 @@
                 {%- if first_param -%}
                     {{ parameter.name }}={{ parameter.sample }}
                 {%- else -%}
-                    &amps;{{ parameter.name }}={{ parameter.sample }}
+                    &amp;{{ parameter.name }}={{ parameter.sample }}
                 {%- endif -%}
                 {%- set active_query_string = false -%}
                 {%- set first_param = false -%}

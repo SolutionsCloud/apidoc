@@ -18,7 +18,7 @@ class Object(ElementFactory):
         else:
             str_type = str(datas["type"]).lower()
 
-        if not str_type in ObjectRaw.Types:
+        if str_type not in ObjectRaw.Types:
             type = ObjectRaw.Types("type")
         else:
             type = ObjectRaw.Types(str_type)
@@ -78,17 +78,17 @@ class Object(ElementFactory):
             object = ObjectConst()
             if "const_type" in datas:
                 const_type = str(datas["const_type"])
-                if not const_type in ObjectConst.Types:
+                if const_type not in ObjectConst.Types:
                     raise ValueError("Const type \"%s\" unknwon" % const_type)
             else:
                 const_type = ObjectConst.Types.string
             object.const_type = const_type
-            if not "value" in datas:
+            if "value" not in datas:
                 raise ValueError("Missing const value")
             object.value = datas["value"]
         elif type is ObjectRaw.Types.enum:
             object = ObjectEnum()
-            if not "values" in datas or not isinstance(datas['values'], list):
+            if "values" not in datas or not isinstance(datas['values'], list):
                 raise ValueError("Missing enum values")
             object.values = [str(value) for value in datas["values"]]
             if "descriptions" in datas and isinstance(datas['descriptions'], dict):
@@ -99,7 +99,7 @@ class Object(ElementFactory):
                     object.descriptions.append(value)
 
             descriptions = [description.name for description in object.descriptions]
-            for value_name in [value for value in object.values if value not in descriptions]:
+            for value_name in [x for x in object.values if x not in descriptions]:
                 value = EnumValue()
                 value.name = value_name
                 object.descriptions.append(value)

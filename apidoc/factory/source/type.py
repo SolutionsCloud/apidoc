@@ -14,7 +14,7 @@ class Type(ElementFactory):
     def create_from_name_and_dictionary(self, name, datas):
         """Return a populated object Type from dictionary datas
         """
-        if not "item" in datas:
+        if "item" not in datas:
             raise ValueError("An item must be set in type \"%s\"." % name)
 
         type = ObjectType()

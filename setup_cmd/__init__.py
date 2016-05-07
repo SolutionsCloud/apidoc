@@ -1,9 +1,24 @@
 import os
 import sys
+import re
 import json
 
 from distutils.cmd import Command
 from setuptools.command.test import test
+
+
+def read_requirements(file_name):
+    return [i.strip() for i in open(
+        os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "requirements", "%s" % file_name))
+    ).readlines() if len(i.strip()) > 0]
+
+
+def patch_requirements(requirements, file_name):
+    modified_requirements = read_requirements(file_name)
+    modified_packages = [re.split('[=><]+', x)[0] for x in modified_requirements]
+    patched_requirements = modified_requirements
+
+    return patched_requirements + [x for x in requirements if re.split('[=><]+', x)[0] not in modified_packages]
 
 
 class ApiDocTest(test):

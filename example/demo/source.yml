@@ -56,7 +56,7 @@ versions:
       AddUser:
         label: UserAdd
         method: POST
-        description: Add an existing unser in a customer
+        description: Add an existing user in a customer
         uri: /{version}/customers/{customer_id}/users
         category: Customers
         request_parameters:
