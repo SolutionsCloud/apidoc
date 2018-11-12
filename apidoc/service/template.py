@@ -30,7 +30,8 @@ class Template():
                 try:
                     os.makedirs(dir)
                 except IOError as ioerror:
-                    logger.error('Error on creating dir "{}": {}.format(dir, str(ioerror)))
+                    logger.error('Error on creating dir "{}": {}'.format(dir, str(ioerror)))
+                    return
             if config["output"]["template"] == "default":
                 if config["output"]["componants"] == "local":
                     for template_dir in self.env.loader.searchpath:
