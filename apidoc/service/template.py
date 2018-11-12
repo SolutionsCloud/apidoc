@@ -17,9 +17,9 @@ class Template():
         self.env = None
 
     def render(self, sources, config, out=sys.stdout):
-        logger = logging.getLogger()
         """Render the documentation as defined in config Object
         """
+        logger = logging.getLogger()
         template = self.env.get_template(self.input)
         output = template.render(sources=sources, layout=config["output"]["layout"], config=config["output"])
         if self.output == "stdout":
