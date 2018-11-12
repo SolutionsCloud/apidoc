@@ -19,14 +19,19 @@ class Template():
     def render(self, sources, config, out=sys.stdout):
         """Render the documentation as defined in config Object
         """
+        logger = logging.getLogger()
         template = self.env.get_template(self.input)
         output = template.render(sources=sources, layout=config["output"]["layout"], config=config["output"])
         if self.output == "stdout":
             out.write(output)
         else:
             dir = os.path.dirname(self.output)
-            if not os.path.exists(dir):
-                os.makedirs(dir)
+            if dir and not os.path.exists(dir):
+                try:
+                    os.makedirs(dir)
+                except IOError as ioerror:
+                    logger.error('Error on creating dir "{}": {}'.format(dir, str(ioerror)))
+                    return
             if config["output"]["template"] == "default":
                 if config["output"]["componants"] == "local":
                     for template_dir in self.env.loader.searchpath:
@@ -50,7 +55,7 @@ class Template():
                             if os.path.exists(file):
                                 shutil.copyfile(file, os.path.join(dir, dirname, filename))
                             else:
-                                logging.getLogger().warn('Missing resource file "%s". If you run apidoc in virtualenv, run "%s"' % (filename, "python setup.py resources"))
+                                logger.warn('Missing resource file "%s". If you run apidoc in virtualenv, run "%s"' % (filename, "python setup.py resources"))
 
                 if config["output"]["componants"] == "remote":
                     for template_dir in self.env.loader.searchpath:
@@ -74,6 +79,6 @@ class Template():
                             if os.path.exists(file):
                                 shutil.copyfile(file, os.path.join(dir, dirname, filename))
                             else:
-                                logging.getLogger().warn('Missing resource file "%s". If you run apidoc in virtualenv, run "%s"' % (filename, "python setup.py resources"))
+                                logger.warn('Missing resource file "%s". If you run apidoc in virtualenv, run "%s"' % (filename, "python setup.py resources"))
 
             open(self.output, "w").write(output)
